@@ -1,0 +1,72 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "${title}",
+      "weight": "Bolder",
+      "size": "Medium",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "${subtitle}",
+      "wrap": true,
+      "isSubtle": true,
+      "spacing": "Small",
+      "$when": "${subtitle != ''}"
+    },
+    {
+      "type": "Input.Text",
+      "id": "field1",
+      "label": "${field1Label}",
+      "placeholder": "${field1Placeholder}",
+      "isRequired": true,
+      "errorMessage": "${field1Label} is required",
+      "spacing": "Medium"
+    },
+    {
+      "type": "Input.Date",
+      "id": "field2",
+      "label": "${field2Label}",
+      "isRequired": false,
+      "spacing": "Small",
+      "$when": "${showDateField}"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "field3",
+      "label": "${field3Label}",
+      "style": "compact",
+      "isRequired": false,
+      "choices": "${field3Choices}",
+      "spacing": "Small",
+      "$when": "${showChoiceField}"
+    },
+    {
+      "type": "Input.Text",
+      "id": "notes",
+      "label": "Additional notes (optional)",
+      "placeholder": "Any other information...",
+      "isMultiline": true,
+      "spacing": "Small",
+      "$when": "${showNotesField}"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "${submitLabel}",
+      "style": "positive"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Cancel",
+      "data": {
+        "action": "cancel"
+      }
+    }
+  ]
+}

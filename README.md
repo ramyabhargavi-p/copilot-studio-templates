@@ -1,6 +1,6 @@
 # Copilot Studio Templates
 
-Reusable YAML templates for building Copilot Studio agents — for teams of all experience levels. Covers every phase: Discovery → Design → Build → Eval → UAT → Deploy.
+Reusable YAML templates for building Copilot Studio agents — for teams of all experience levels. Covers every phase: Discovery → Design → Build → Eval → UAT → Deploy → Operate → Govern.
 
 ---
 
@@ -25,12 +25,20 @@ Reusable YAML templates for building Copilot Studio agents — for teams of all 
 | Folder / File | Contents |
 |--------|----------|
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | **Start here if new** — step-by-step guide for all phases |
+| [`INDUSTRY-GUIDELINES.md`](INDUSTRY-GUIDELINES.md) | Industry best practices and Microsoft-specific guidelines for agent development |
+| [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Required tools, VS Code extensions, and setup checklist |
 | [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design guidelines: error handling, logging, scope, naming, testing checklist |
+| [`ROADMAP.md`](ROADMAP.md) | Planned additions — what's not built yet |
 | [`base/`](base/) | Minimum viable agent YAML — start every project here |
 | [`components/`](components/) | Optional add-ons — pick what you need |
 | [`recipes/`](recipes/) | Documented combinations for common agent types |
-| [`project-delivery/`](project-delivery/) | Discovery, design, eval, UAT, and deployment documents |
+| [`project-delivery/`](project-delivery/) | Discovery, design, content audit, eval, UAT, and deployment documents |
 | [`prompts/`](prompts/) | Ready-made system prompt templates + AI generation prompts |
+| [`operations/`](operations/) | Monitoring KQL queries, alert setup, and operational runbook |
+| [`governance/`](governance/) | Responsible AI checklist and security review |
+| [`launch/`](launch/) | Go-live checklist, user communication template, hypercare guide |
+| [`ci-cd/`](ci-cd/) | GitHub Actions workflows for automated push and publish |
+| [`troubleshooting/`](troubleshooting/) | Common issues and fixes — Teams/Copilot publishing, YAML errors, auth |
 
 ---
 
@@ -91,6 +99,14 @@ Reusable YAML templates for building Copilot Studio agents — for teams of all 
 | Component | Scope | What it does | README |
 |-----------|-------|-------------|--------|
 | [`global-variable`](components/variables/global-variable/) | Conversation | Shared state across topics (user profile, locale, flags) | [→](components/variables/global-variable/README.md) |
+
+### Adaptive Cards
+
+| Component | Use case | README |
+|-----------|---------|--------|
+| [`confirmation-card`](components/adaptive-cards/confirmation-card.json) | Ask user to confirm or cancel before executing an action | [→](components/adaptive-cards/README.md) |
+| [`status-card`](components/adaptive-cards/status-card.json) | Display action result or data lookup with status colour | [→](components/adaptive-cards/README.md) |
+| [`form-card`](components/adaptive-cards/form-card.json) | Collect structured input (date, dropdown, text) from user | [→](components/adaptive-cards/README.md) |
 
 ---
 

@@ -25,3 +25,7 @@ Two types of reusable prompts for Copilot Studio agent development.
 ### Ready to test?
 1. Use `ai-prompts/review-agent.md` to audit your files
 2. Run the UAT checklist from `BEST-PRACTICES.md` Section 11
+
+### Building an Adaptive Card?
+1. Use `ai-prompts/generate-adaptive-card.md` to generate the card JSON
+2. Use the card templates in `components/adaptive-cards/` as a starting point

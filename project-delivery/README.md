@@ -1,6 +1,6 @@
 # Project Delivery
 
-Documents for delivering a Copilot Studio agent from SOW to production — covering all four phases: Discovery, Design, Build, and Deploy (including Eval and UAT).
+Documents for delivering a Copilot Studio agent from SOW to production — covering all phases: Discovery, Design, Build, Eval, UAT, and Deploy.
 
 ## Documents by Phase
 
@@ -9,8 +9,9 @@ Documents for delivering a Copilot Studio agent from SOW to production — cover
 | Discovery | [`01-requirements-questionnaire.md`](01-requirements-questionnaire.md) | First stakeholder meeting, before any technical work | Developer + Project Owner |
 | Discovery | [`02-technical-discovery.md`](02-technical-discovery.md) | After requirements, before build — with IT/admin | Developer + Environment Admin |
 | Design | [`03-agent-design-worksheet.md`](03-agent-design-worksheet.md) | After discovery, before writing YAML | Developer |
-| Eval | [`05-eval-scenarios.md`](05-eval-scenarios.md) | During build (topic routing tests) and before UAT | Developer |
+| Design | [`06-content-audit.md`](06-content-audit.md) | Before adding knowledge sources — assess document readiness | Developer + Content Owner |
 | UAT | [`04-uat-test-plan.md`](04-uat-test-plan.md) | After build, before publishing — with stakeholder | Developer + Project Owner |
+| Eval | [`05-eval-scenarios.md`](05-eval-scenarios.md) | During build (topic routing tests) and before UAT | Developer |
 
 ## Recommended Delivery Sequence
 
@@ -25,12 +26,14 @@ Documents for delivering a Copilot Studio agent from SOW to production — cover
         ▼
 3. DESIGN
    03-agent-design-worksheet.md      (developer, internal)
+   06-content-audit.md               (if using knowledge sources — assess documents first)
    prompts/system-prompts/           (write agent instructions)
    prompts/ai-prompts/               (generate topic YAML if needed)
         │
         ▼
 4. BUILD
    Copy base/ → add components/ → write custom topics and actions
+   governance/ai-ethics-checklist.md + governance/security-review.md
    pac copilot push → smoke test in Copilot Studio test canvas
         │
         ▼
@@ -48,8 +51,19 @@ Documents for delivering a Copilot Studio agent from SOW to production — cover
         │
         ▼
 7. DEPLOY
+   launch/launch-checklist.md        (all items must pass before publish)
    pac copilot push → Publish in Copilot Studio → verify published version
-   Configure Application Insights alerts
+   launch/user-communication-template.md  (announce to users)
+   operations/alert-setup.md         (configure Azure Monitor alerts)
+        │
+        ▼
+8. HYPERCARE (weeks 1–2)
+   launch/hypercare-guide.md         (daily monitoring + response)
+        │
+        ▼
+9. ONGOING OPERATIONS
+   operations/monitoring-queries.md  (weekly/monthly health checks)
+   operations/runbook.md             (incident response)
    Hand over monitoring + repo to agent owner
 ```
 
