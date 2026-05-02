@@ -1,6 +1,6 @@
 # Name: Sign In
 # Trigger: Fires when authentication is required (OnSignIn)
-# Purpose: Prompt the user to sign in when the agent requires identity
+# Purpose: Prompt the user to sign in and log authentication events for auditing
 # Prerequisite: settings.mcs.yml must have authenticationMode: ManualAzureAD
 # NOTE: Replace all _REPLACE suffixes with unique random strings before use
 kind: AdaptiveDialog
@@ -8,18 +8,41 @@ beginDialog:
   kind: OnSignIn
   id: main
   actions:
+    # Log the sign-in trigger — distinguish first-time sign-in from token refreshes
+    - kind: LogCustomTelemetryEvent
+      id: logSignInStarted_REPLACE1
+      eventName: Auth.SignInStarted
+      properties: >-
+        ={
+          SignInReason: System.SignInReason,
+          ConversationId: System.Conversation.Id,
+          Channel: System.Activity.Channel,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }
+
     - kind: ConditionGroup
-      id: conditionGroup_REPLACE1
+      id: conditionGroup_REPLACE2
       conditions:
-        - id: conditionItem_REPLACE2
-          # Only show the sign-in prompt if it's the first time (not a token refresh)
+        - id: conditionItem_REPLACE3
+          # Only show the sign-in prompt on first sign-in — not on background token refreshes
           condition: =System.SignInReason = SignInReason.SignInRequired
           actions:
             - kind: SendActivity
-              id: sendMessage_REPLACE3
+              id: sendMessage_REPLACE4
               activity: Hi! To personalise your experience, I need you to sign in first.
 
     - kind: OAuthInput
-      id: oauthInput_REPLACE4
+      id: oauthInput_REPLACE5
       title: Sign In
       text: Please sign in to continue
+
+    # Log successful sign-in completion
+    - kind: LogCustomTelemetryEvent
+      id: logSignInCompleted_REPLACE6
+      eventName: Auth.SignInCompleted
+      properties: >-
+        ={
+          ConversationId: System.Conversation.Id,
+          Channel: System.Activity.Channel,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }

@@ -2,7 +2,7 @@
 
 Reusable YAML templates for building Copilot Studio agents. Clone once, use everywhere.
 
-Every template includes inline comments explaining each field and a README explaining when and how to use it.
+Every template includes inline comments explaining each field and a README explaining when and how to use it. See [BEST-PRACTICES.md](BEST-PRACTICES.md) for design guidelines.
 
 ---
 
@@ -25,6 +25,7 @@ Every template includes inline comments explaining each field and a README expla
 | [`base/`](base/) | Minimum viable agent — start here |
 | [`components/`](components/) | Optional add-ons — pick what you need |
 | [`recipes/`](recipes/) | Documented combinations for common agent types |
+| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design guidelines: error handling, logging, scope, naming |
 
 ---
 
@@ -34,11 +35,11 @@ Every template includes inline comments explaining each field and a README expla
 
 | File | Purpose |
 |------|---------|
-| [`base/agent.mcs.yml`](base/agent.mcs.yml) | Agent identity, system prompt, conversation starters, AI model |
+| [`base/agent.mcs.yml`](base/agent.mcs.yml) | Agent identity, system prompt (with scope + out-of-scope guidance), conversation starters |
 | [`base/settings.mcs.yml`](base/settings.mcs.yml) | Auth mode, recognizer, language, access policy |
-| [`base/topics/Greeting.topic.mcs.yml`](base/topics/Greeting.topic.mcs.yml) | Welcome message on conversation start |
-| [`base/topics/Fallback.topic.mcs.yml`](base/topics/Fallback.topic.mcs.yml) | Unknown intent handler — retries 3× then escalates |
-| [`base/topics/OnError.topic.mcs.yml`](base/topics/OnError.topic.mcs.yml) | System error handler with telemetry logging |
+| [`base/topics/Greeting.topic.mcs.yml`](base/topics/Greeting.topic.mcs.yml) | Welcome message + `Conversation.Started` telemetry |
+| [`base/topics/Fallback.topic.mcs.yml`](base/topics/Fallback.topic.mcs.yml) | Unknown intent — retries 3× with telemetry, then escalates |
+| [`base/topics/OnError.topic.mcs.yml`](base/topics/OnError.topic.mcs.yml) | System error handler — test mode detail, prod safe message, `Agent.ErrorOccurred` telemetry |
 
 → See [`base/README.md`](base/README.md) for setup steps and key decisions.
 
@@ -50,11 +51,14 @@ Every template includes inline comments explaining each field and a README expla
 
 | Component | Trigger | What it does | README |
 |-----------|---------|-------------|--------|
-| [`auth`](components/topics/auth/) | `OnSignIn` | Sign-in flow with OAuthInput | [→](components/topics/auth/README.md) |
-| [`conversation-init`](components/topics/conversation-init/) | `OnActivity` (first message) | Loads M365 user profile + glossary into global variables | [→](components/topics/conversation-init/README.md) |
-| [`disambiguation`](components/topics/disambiguation/) | `OnSelectIntent` | Clarifies which topic the user meant when multiple match | [→](components/topics/disambiguation/README.md) |
-| [`knowledge-search`](components/topics/knowledge-search/) | `OnUnknownIntent` | Generative answers from knowledge sources | [→](components/topics/knowledge-search/README.md) |
+| [`auth`](components/topics/auth/) | `OnSignIn` | Sign-in flow with `Auth.SignInStarted` / `Auth.SignInCompleted` telemetry | [→](components/topics/auth/README.md) |
+| [`conversation-init`](components/topics/conversation-init/) | `OnActivity` (first message) | Loads M365 profile with error handling + safe defaults; logs `ConversationInit.Completed` | [→](components/topics/conversation-init/README.md) |
+| [`disambiguation`](components/topics/disambiguation/) | `OnSelectIntent` | Clarifies ambiguous intents; logs `Agent.DisambiguationTriggered` with match count | [→](components/topics/disambiguation/README.md) |
+| [`escalation`](components/topics/escalation/) | `OnRecognizedIntent` / `BeginDialog` | Human handoff via `TransferConversation`; logs `Agent.EscalationTriggered` with reason | [→](components/topics/escalation/README.md) |
+| [`knowledge-search`](components/topics/knowledge-search/) | `OnUnknownIntent` | Generative answers from knowledge sources; logs `Knowledge.SearchInvoked` / `AnswerFound` / `AnswerNotFound` | [→](components/topics/knowledge-search/README.md) |
+| [`out-of-scope`](components/topics/out-of-scope/) | `OnRecognizedIntent` | Redirects clearly out-of-scope queries; logs `Agent.OutOfScope` | [→](components/topics/out-of-scope/README.md) |
 | [`question-branch`](components/topics/question-branch/) | `OnRecognizedIntent` | Collects user input and branches the conversation | [→](components/topics/question-branch/README.md) |
+| [`action-invoke`](components/topics/action-invoke/) | `OnRecognizedIntent` | Calls an action with output validation + `Action.Succeeded` / `Action.Failed` telemetry | [→](components/topics/action-invoke/README.md) |
 | [`remove-citations`](components/topics/remove-citations/) | `OnGeneratedResponse` | Strips `[1][2]` citation markers from AI responses | [→](components/topics/remove-citations/README.md) |
 
 ### Actions
@@ -100,6 +104,33 @@ Start here if you know what type of agent you're building:
 
 ---
 
+## Telemetry Events Reference
+
+All templates use a consistent `{Category}.{Action}` naming convention:
+
+| Event | Fired by | Key properties |
+|-------|----------|----------------|
+| `Conversation.Started` | Greeting | Channel, BotName |
+| `Agent.FallbackTriggered` | Fallback | UserQuery, FallbackCount |
+| `Agent.EscalationTriggered` | Fallback, Escalation | Reason, FallbackCount |
+| `Agent.DisambiguationTriggered` | Disambiguation | UserQuery, MatchCount |
+| `Agent.OutOfScope` | Out of Scope | UserQuery |
+| `Agent.ErrorOccurred` | On Error | ErrorCode, ErrorMessage, IsTestMode |
+| `Auth.SignInStarted` | Sign In | SignInReason |
+| `Auth.SignInCompleted` | Sign In | — |
+| `Knowledge.SearchInvoked` | Knowledge Search | UserQuery |
+| `Knowledge.AnswerFound` | Knowledge Search | — |
+| `Knowledge.AnswerNotFound` | Knowledge Search | UserQuery |
+| `ConversationInit.Completed` | Conversation Init | UserCountry |
+| `ConversationInit.ProfileLoadFailed` | Conversation Init | — |
+| `Topic.Started` | Action Invoke | TopicName, UserQuery |
+| `Action.Succeeded` | Action Invoke | TopicName, ActionName |
+| `Action.Failed` | Action Invoke | TopicName, ActionName |
+
+All events include `ConversationId` and `TimeUTC`.
+
+---
+
 ## Conventions
 
 | Convention | Rule |
@@ -112,9 +143,9 @@ Start here if you know what type of agent you're building:
 
 ### Generating Node IDs
 
-Replace `_REPLACE`, `_REPLACE1`, `_REPLACE2`, etc. with 6-character random alphanumeric strings. Quick options:
+Replace `_REPLACE`, `_REPLACE1`, etc. with 6-character random alphanumeric strings:
 - VS Code Copilot Studio extension — auto-generates IDs on save
-- Online generator: `https://it-tools.tech/token-generator` (set length to 6)
+- Online: `https://it-tools.tech/token-generator` (length 6)
 - PowerShell: `[System.Web.Security.Membership]::GeneratePassword(6, 0)`
 
 ---
@@ -123,5 +154,6 @@ Replace `_REPLACE`, `_REPLACE1`, `_REPLACE2`, etc. with 6-character random alpha
 
 1. Add new YAML template + `README.md` under the appropriate `components/` subfolder
 2. Update the component table in this file
-3. If it's a common combination, add a recipe under `recipes/`
-4. Keep each template focused on a single purpose — one file per component
+3. Add the telemetry events to the Telemetry Events Reference table
+4. If it's a common combination, add a recipe under `recipes/`
+5. Keep each template focused on a single purpose — one file per component

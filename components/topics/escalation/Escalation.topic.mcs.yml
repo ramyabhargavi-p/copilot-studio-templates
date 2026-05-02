@@ -1,0 +1,55 @@
+# Name: Escalate
+# Trigger: Can be triggered two ways:
+#   1. Directly — user asks to speak to a human (OnRecognizedIntent phrases below)
+#   2. Programmatically — called via BeginDialog from Fallback or OutOfScope topics
+# Purpose: Hand the conversation to a human agent with consistent messaging and telemetry.
+#          The Fallback topic references this as <AGENT_SCHEMA>.topic.Escalate
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+# NOTE: Replace <EscalationQueueName> with your live-agent handoff queue name
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Escalate to Human
+    triggerQueries:
+      - speak to a human
+      - talk to a person
+      - I need a human
+      - connect me to a real person
+      - speak to an agent
+      - human please
+      - talk to someone
+      - I want to speak to a person
+      - can I speak to support
+      - transfer me
+      - let me speak to your team
+      - I want to raise a complaint
+
+  actions:
+    # Log the escalation — include reason and context for triage
+    - kind: LogCustomTelemetryEvent
+      id: logEscalation_REPLACE1
+      eventName: Agent.EscalationTriggered
+      properties: >-
+        ={
+          Reason: "UserRequested",
+          UserQuery: System.Activity.Text,
+          FallbackCount: System.FallbackCount,
+          ConversationId: System.Conversation.Id,
+          Channel: System.Activity.Channel,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }
+
+    - kind: SendActivity
+      id: sendMessage_REPLACE2
+      activity:
+        text:
+          - I'm connecting you with a team member now. Please hold on a moment.
+          - Let me transfer you to a human agent who can help. One moment please.
+
+    # Hand off to your live-agent queue
+    # NOTE: The queue name must match what's configured in your agent's escalation settings
+    - kind: TransferConversation
+      id: transfer_REPLACE3
+      targetName: <EscalationQueueName>

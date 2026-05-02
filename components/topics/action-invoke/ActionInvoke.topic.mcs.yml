@@ -1,0 +1,105 @@
+# Name: <Topic Name>
+# Template: Topic that invokes a connector action with error handling and telemetry
+# Use this instead of QuestionBranch when the topic's primary purpose is to call an action.
+# Copy this template once per action-driven topic in your agent.
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+# NOTE: Replace all <PLACEHOLDER> values with your content
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: <Topic Name>
+    triggerQueries:
+      - <trigger phrase 1>
+      - <trigger phrase 2>
+      - <trigger phrase 3>
+      - <trigger phrase 4>
+      - <trigger phrase 5>
+
+  actions:
+    # Step 1: Log that this topic was triggered
+    - kind: LogCustomTelemetryEvent
+      id: logTopicStarted_REPLACE1
+      eventName: Topic.Started
+      properties: >-
+        ={
+          TopicName: "<Topic Name>",
+          UserQuery: System.Activity.Text,
+          ConversationId: System.Conversation.Id,
+          Channel: System.Activity.Channel,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }
+
+    # Step 2: (Optional) Collect additional input from the user before calling the action
+    # Remove this Question node if the action has no required inputs
+    - kind: Question
+      id: question_REPLACE2
+      variable: init:Topic.UserInput
+      prompt: <What information do you need from the user before calling the action?>
+      entity: StringPrebuiltEntity
+      alwaysPrompt: false                 # false: skip if AI already extracted the value from context
+      interruptionPolicy:
+        allowInterruption: false
+
+    # Step 3: Show a progress message (optional — remove if the action is near-instant)
+    - kind: SendActivity
+      id: sendWorking_REPLACE3
+      activity: Let me look that up for you...
+
+    # Step 4: Invoke the action
+    # Replace <AGENT_SCHEMA>.topic.<ActionName> with the full schema name of your action
+    # e.g. hr_assistant.topic.GetLeaveBalance
+    - kind: BeginDialog
+      id: invokeAction_REPLACE4
+      dialog: <AGENT_SCHEMA>.topic.<ActionName>
+      input:
+        binding:
+          <InputParam>: =Topic.UserInput   # Pass the collected input (or a fixed value)
+      output:
+        binding:
+          Response: Topic.ActionResponse   # Capture the action's output
+
+    # Step 5: Handle the response — always validate before sending
+    - kind: ConditionGroup
+      id: conditionGroup_REPLACE5
+      conditions:
+        - id: conditionItem_REPLACE6
+          condition: =!IsBlank(Topic.ActionResponse)
+          actions:
+            # Success: action returned data — send it to the user
+            - kind: SendActivity
+              id: sendSuccess_REPLACE7
+              activity: "{Topic.ActionResponse}"
+
+            - kind: LogCustomTelemetryEvent
+              id: logActionSucceeded_REPLACE8
+              eventName: Action.Succeeded
+              properties: >-
+                ={
+                  TopicName: "<Topic Name>",
+                  ActionName: "<ActionName>",
+                  ConversationId: System.Conversation.Id,
+                  TimeUTC: Text(Now(), DateTimeFormat.UTC)
+                }
+
+      elseActions:
+        # Failure: action returned empty/null — show a safe error and log it
+        - kind: SendActivity
+          id: sendError_REPLACE9
+          activity:
+            text:
+              - I wasn't able to retrieve that right now. Please try again in a moment.
+              - Something went wrong on my end. If this keeps happening, please contact support (Ref: {System.Conversation.Id}).
+
+        - kind: LogCustomTelemetryEvent
+          id: logActionFailed_REPLACE10
+          eventName: Action.Failed
+          properties: >-
+            ={
+              TopicName: "<Topic Name>",
+              ActionName: "<ActionName>",
+              ConversationId: System.Conversation.Id,
+              Channel: System.Activity.Channel,
+              TimeUTC: Text(Now(), DateTimeFormat.UTC)
+            }

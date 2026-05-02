@@ -1,33 +1,46 @@
 # Name: Multiple Topics Matched
 # Trigger: Fires when the recognizer matches multiple topics with similar scores (OnSelectIntent)
-# Purpose: Ask the user to clarify which topic they meant — prevents the agent from guessing
+# Purpose: Ask the user to clarify which topic they meant — prevents the agent from guessing.
+#          Includes telemetry so you can track disambiguation frequency and identify overlap.
 # NOTE: Replace all _REPLACE suffixes with unique random strings before use
 # NOTE: Replace <AGENT_SCHEMA> with your agent's schemaName from settings.mcs.yml
 kind: AdaptiveDialog
 beginDialog:
   kind: OnSelectIntent
   id: main
-  triggerBehavior: Always                 # Always show disambiguation, even if one score is higher
+  triggerBehavior: Always
   actions:
+    # Log disambiguation trigger — high rates indicate overlapping topic triggers that need tuning
+    - kind: LogCustomTelemetryEvent
+      id: logDisambiguation_REPLACE1
+      eventName: Agent.DisambiguationTriggered
+      properties: >-
+        ={
+          UserQuery: System.Activity.Text,
+          MatchCount: CountRows(System.Recognizer.IntentOptions),
+          ConversationId: System.Conversation.Id,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }
+
     - kind: SetVariable
-      id: setVariable_REPLACE1
+      id: setVariable_REPLACE2
       variable: init:Topic.IntentOptions
       value: =System.Recognizer.IntentOptions
 
-    # Add a "None of these" option so users can escape disambiguation
+    # Add a "None of these" escape option so users can exit disambiguation
     - kind: SetTextVariable
-      id: setTextVariable_REPLACE2
+      id: setTextVariable_REPLACE3
       variable: Topic.NoneOfTheseDisplayName
       value: None of these
 
     - kind: EditTable
-      id: editTable_REPLACE3
+      id: editTable_REPLACE4
       changeType: Add
       itemsVariable: Topic.IntentOptions
       value: "={ DisplayName: Topic.NoneOfTheseDisplayName, TopicId: \"NoTopic\", TriggerId: \"NoTrigger\", Score: 1.0 }"
 
     - kind: Question
-      id: question_REPLACE4
+      id: question_REPLACE5
       interruptionPolicy:
         allowInterruption: false
       alwaysPrompt: true
@@ -38,12 +51,12 @@ beginDialog:
         items: =Topic.IntentOptions
 
     - kind: ConditionGroup
-      id: conditionGroup_REPLACE5
+      id: conditionGroup_REPLACE6
       conditions:
-        - id: conditionItem_REPLACE6
+        - id: conditionItem_REPLACE7
           condition: =System.Recognizer.SelectedIntent.TopicId = "NoTopic"
           actions:
-            # User selected "None of these" — fall through to the Fallback topic
+            # User picked "None of these" — route to Fallback
             - kind: ReplaceDialog
-              id: replaceDialog_REPLACE7
+              id: replaceDialog_REPLACE8
               dialog: <AGENT_SCHEMA>.topic.Fallback
