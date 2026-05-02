@@ -1,12 +1,14 @@
 # Copilot Studio Templates
 
-Reusable YAML templates for building Copilot Studio agents. Clone once, use everywhere.
-
-Every template includes inline comments explaining each field and a README explaining when and how to use it. See [BEST-PRACTICES.md](BEST-PRACTICES.md) for design guidelines.
+Reusable YAML templates for building Copilot Studio agents — for teams of all experience levels. Covers every phase: Discovery → Design → Build → Eval → UAT → Deploy.
 
 ---
 
-## Quick Start
+## New to Copilot Studio? Start here → [GETTING-STARTED.md](GETTING-STARTED.md)
+
+---
+
+## Quick Start (experienced developers)
 
 ```
 1. Copy base/ into your new agent project folder
@@ -20,12 +22,15 @@ Every template includes inline comments explaining each field and a README expla
 
 ## Repository Structure
 
-| Folder | Contents |
+| Folder / File | Contents |
 |--------|----------|
-| [`base/`](base/) | Minimum viable agent — start here |
+| [`GETTING-STARTED.md`](GETTING-STARTED.md) | **Start here if new** — step-by-step guide for all phases |
+| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design guidelines: error handling, logging, scope, naming, testing checklist |
+| [`base/`](base/) | Minimum viable agent YAML — start every project here |
 | [`components/`](components/) | Optional add-ons — pick what you need |
 | [`recipes/`](recipes/) | Documented combinations for common agent types |
-| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design guidelines: error handling, logging, scope, naming |
+| [`project-delivery/`](project-delivery/) | Discovery, design, eval, UAT, and deployment documents |
+| [`prompts/`](prompts/) | Ready-made system prompt templates + AI generation prompts |
 
 ---
 

@@ -1,8 +1,10 @@
-# Name: On Error
-# Trigger: Fires on any unhandled system error during a conversation
-# Purpose: Show debug details in test mode; show a safe, user-friendly message in production.
-#          Always logs structured telemetry — never swallow errors silently.
-# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+mcs.metadata:
+  componentName: On Error
+  description: |-
+    Trigger: Fires on any unhandled system error during a conversation
+    Purpose: Show debug details in test mode; show a safe, user-friendly message in production.
+             Always logs structured telemetry — never swallow errors silently.
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
 kind: AdaptiveDialog
 startBehavior: UseLatestPublishedContentAndCancelOtherTopics
 beginDialog:
@@ -20,7 +22,6 @@ beginDialog:
         - id: conditionItem_REPLACE3
           condition: =System.Conversation.InTestMode = true
           actions:
-            # Test mode: show full error details for debugging — never show this in production
             - kind: SendActivity
               id: sendMessageTest_REPLACE4
               activity: |-
@@ -32,7 +33,6 @@ beginDialog:
                 Time (UTC):   {Topic.CurrentTime}
 
       elseActions:
-        # Production: safe message only — never expose error internals to end users
         - kind: SendActivity
           id: sendMessageProd_REPLACE5
           activity:
@@ -43,19 +43,7 @@ beginDialog:
             speak:
               - Something went wrong. Please try again.
 
-    # Always log — minimum required properties for alerting, triage, and correlation
     - kind: LogCustomTelemetryEvent
       id: logError_REPLACE6
       eventName: Agent.ErrorOccurred
-      properties: >-
-        ={
-          ErrorMessage: System.Error.Message,
-          ErrorCode: System.Error.Code,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          IsTestMode: System.Conversation.InTestMode,
-          TimeUTC: Topic.CurrentTime
-        }
-
-    - kind: CancelAllDialogs
-      id: cancelAllDialogs_REPLACE7
+      properties:
