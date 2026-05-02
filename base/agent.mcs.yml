@@ -1,0 +1,25 @@
+mcs.metadata:
+  componentName: <AgentName>              # Required: internal identifier — no spaces or special chars (e.g. HrAssistant)
+kind: GptComponentMetadata
+displayName: <Agent Display Name>         # Required: friendly name shown in Copilot Studio UI
+
+instructions: |
+  You are a helpful assistant for <describe the agent's purpose and domain>.
+
+  Guidelines:
+  - Be concise and clear in your responses
+  - Only answer questions within your area of expertise
+  - Ask clarifying questions when the user's intent is unclear
+  - If you cannot help with a request, say so clearly and offer to escalate to a human agent
+
+conversationStarters:
+  - title: Get Started
+    text: How can you help me?
+  - title: What can you do?
+    text: What kinds of questions can you answer?
+  - title: Learn More
+    text: Tell me more about what you can assist with.
+
+aISettings:
+  model:
+    modelNameHint: GPT5Chat               # Options: GPT5Chat (GPT-4o) | GPT4o | GPT35TurboChat

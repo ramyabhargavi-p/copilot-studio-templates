@@ -1,0 +1,49 @@
+# Name: Multiple Topics Matched
+# Trigger: Fires when the recognizer matches multiple topics with similar scores (OnSelectIntent)
+# Purpose: Ask the user to clarify which topic they meant — prevents the agent from guessing
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+# NOTE: Replace <AGENT_SCHEMA> with your agent's schemaName from settings.mcs.yml
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnSelectIntent
+  id: main
+  triggerBehavior: Always                 # Always show disambiguation, even if one score is higher
+  actions:
+    - kind: SetVariable
+      id: setVariable_REPLACE1
+      variable: init:Topic.IntentOptions
+      value: =System.Recognizer.IntentOptions
+
+    # Add a "None of these" option so users can escape disambiguation
+    - kind: SetTextVariable
+      id: setTextVariable_REPLACE2
+      variable: Topic.NoneOfTheseDisplayName
+      value: None of these
+
+    - kind: EditTable
+      id: editTable_REPLACE3
+      changeType: Add
+      itemsVariable: Topic.IntentOptions
+      value: "={ DisplayName: Topic.NoneOfTheseDisplayName, TopicId: \"NoTopic\", TriggerId: \"NoTrigger\", Score: 1.0 }"
+
+    - kind: Question
+      id: question_REPLACE4
+      interruptionPolicy:
+        allowInterruption: false
+      alwaysPrompt: true
+      variable: System.Recognizer.SelectedIntent
+      prompt: "To clarify, did you mean:"
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Topic.IntentOptions
+
+    - kind: ConditionGroup
+      id: conditionGroup_REPLACE5
+      conditions:
+        - id: conditionItem_REPLACE6
+          condition: =System.Recognizer.SelectedIntent.TopicId = "NoTopic"
+          actions:
+            # User selected "None of these" — fall through to the Fallback topic
+            - kind: ReplaceDialog
+              id: replaceDialog_REPLACE7
+              dialog: <AGENT_SCHEMA>.topic.Fallback

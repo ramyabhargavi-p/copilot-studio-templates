@@ -1,0 +1,35 @@
+# Name: Fallback
+# Trigger: Fires when no topic matches the user's message (OnUnknownIntent)
+# Purpose: Gracefully handle unmatched inputs — retry up to 3× then escalate to human
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+# NOTE: Replace <AGENT_SCHEMA> with your agent's schemaName from settings.mcs.yml
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnknownIntent
+  id: main
+  priority: -1                            # Lowest priority — only fires if no other topic matches
+  actions:
+    - kind: ConditionGroup
+      id: conditionGroup_REPLACE1
+      conditions:
+        - id: conditionItem_REPLACE2
+          condition: =System.FallbackCount < 3
+          actions:
+            - kind: SendActivity
+              id: sendMessage_REPLACE3
+              activity:
+                text:
+                  - I'm not sure I understand. Could you rephrase that?
+                  - I didn't quite get that. Can you try asking in a different way?
+                  - I'm having trouble understanding. Could you say that differently?
+
+      elseActions:
+        - kind: SendActivity
+          id: sendMessage_REPLACE4
+          activity:
+            text:
+              - I'm having trouble understanding your request. Let me connect you with someone who can help.
+
+        - kind: BeginDialog
+          id: beginDialog_REPLACE5
+          dialog: <AGENT_SCHEMA>.topic.Escalate

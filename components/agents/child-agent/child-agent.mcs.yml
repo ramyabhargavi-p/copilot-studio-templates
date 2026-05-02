@@ -1,0 +1,46 @@
+# Name: <Child Agent Display Name>
+# Internal name: <ChildAgentName>           (no spaces, used in schemaName)
+# Purpose: A specialist sub-agent that handles a specific domain within an orchestrator pattern.
+#          The parent (orchestrator) agent routes to this agent based on the description below.
+# NOTE: Replace all <PLACEHOLDER> values with your content
+kind: AgentDialog
+
+beginDialog:
+  kind: OnToolSelected
+  id: main
+  # Optional: restrict this agent to specific channels (remove if not needed)
+  # condition: =System.Activity.Channel = ChannelId.MsTeams
+  description: >
+    <Be specific about what this child agent handles. Include:
+    - The domain or subject area (e.g. "HR leave and absence queries")
+    - Types of questions it answers (e.g. "questions about leave balance, leave requests, leave policies")
+    - Example user messages (e.g. "How many days off do I have?", "I want to request annual leave")
+    The parent orchestrator uses this description to decide when to route here.>
+
+settings:
+  instructions: |
+    You are a specialist assistant that handles <specialisation area>.
+
+    Rules:
+    - Be concise and clear in your responses
+    - Only answer questions within your specialisation: <specialisation area>
+    - If a question is outside your scope, say: "I only handle <specialisation area>. Let me route you back."
+    - Do not attempt to answer questions that belong to other specialists
+
+# Optional: inputs the parent agent passes to this child agent
+# Remove inputType entirely (or use inputType: {}) if no inputs are needed
+inputType:
+  properties:
+    AdditionalContext:
+      displayName: Additional Context
+      description: <Describe what context the parent agent passes — e.g. "User's department for personalised responses">
+      type: String
+
+# Optional: outputs this child agent returns to the parent agent
+# Remove outputType entirely (or use outputType: {}) if no outputs are needed
+outputType:
+  properties:
+    Result:
+      displayName: Result
+      description: <Describe what this agent returns — e.g. "The leave balance or confirmation of request submitted">
+      type: String

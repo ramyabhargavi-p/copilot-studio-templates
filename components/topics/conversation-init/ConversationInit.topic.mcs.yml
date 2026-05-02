@@ -1,0 +1,61 @@
+# Name: Conversation Init
+# Trigger: Fires on the first user message in a conversation (OnActivity, type: Message)
+# Purpose: JIT-provision user context before any topic logic runs —
+#          loads the M365 user profile and an agent-specific glossary into global variables.
+#          Remove either block if not needed.
+# Prerequisites:
+#   - Office 365 Users connector must be added to the agent (shared_office365users)
+#   - A knowledge source named "<AGENT-SCHEMA-NAME>.knowledge.glossary" must exist (for glossary block)
+#   - Global variables Global.UserCountry and Global.Glossary must be declared
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName
+kind: AdaptiveDialog
+modelDescription: null
+beginDialog:
+  kind: OnActivity
+  id: main
+  type: Message
+  # Only runs once per conversation — skipped on subsequent messages once Global.UserCountry is set
+  condition: =IsBlank(Global.UserCountry)
+  actions:
+
+    # --- Block 1: Load M365 User Profile ---
+    # Retrieves the signed-in user's profile from Office 365 (name, country, job title, etc.)
+    - kind: InvokeConnectorAction
+      id: getProfile_REPLACE1
+      connectionReference: shared_office365users
+      connectionProperties:
+        mode: Invoker
+      operationId: UserGet_V2
+      output:
+        kind: SingleVariableOutputBinding
+        variable: init:Topic.M365Profile
+
+    - kind: SetVariable
+      id: setCountry_REPLACE2
+      variable: Global.UserCountry
+      value: =If(IsBlank(Topic.M365Profile.country), "Unknown", Topic.M365Profile.country)
+
+    - kind: SetVariable
+      id: setDisplayName_REPLACE3
+      variable: Global.UserDisplayName
+      value: =If(IsBlank(Topic.M365Profile.displayName), "User", Topic.M365Profile.displayName)
+
+    # --- Block 2: Load Glossary from Knowledge Source ---
+    # Fetches agent-specific terminology so the AI can reference it throughout the conversation
+    - kind: SearchAndSummarizeContent
+      id: searchGlossary_REPLACE4
+      autoSend: false
+      variable: Topic.GlossaryResult
+      userInput: ='*'
+      responseCaptureType: FullResponse
+      applyModelKnowledgeSetting: false
+      knowledgeSources:
+        kind: SearchSpecificKnowledgeSources
+        knowledgeSources:
+          - <AGENT-SCHEMA-NAME>.knowledge.glossary
+
+    - kind: SetVariable
+      id: setGlossary_REPLACE5
+      variable: Global.Glossary
+      value: =Topic.GlossaryResult

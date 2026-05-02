@@ -1,0 +1,37 @@
+# Name: Knowledge Search
+# Trigger: Fires when no topic matches the user's message (OnUnknownIntent)
+# Purpose: Generate an answer from the agent's knowledge sources using generative AI.
+#          Use this as a smarter alternative to (or alongside) the Fallback topic.
+#          If an answer is found it ends the dialog; if not, the Fallback topic handles it.
+# Prerequisite: At least one knowledge source must be added to the agent
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnknownIntent
+  id: main
+  priority: -1                            # Fires before Fallback (priority -1 vs Fallback's -1; order in file wins)
+  actions:
+
+    # Step 1: Rewrite the user's message into an optimised search query
+    # Preserves context from the conversation history for better retrieval
+    - kind: CreateSearchQuery
+      id: createSearchQuery_REPLACE1
+      userInput: =System.Activity.Text
+      result: Topic.SearchQuery
+
+    # Step 2: Search all agent knowledge sources and generate a summarised answer
+    - kind: SearchAndSummarizeContent
+      id: searchContent_REPLACE2
+      variable: Topic.Answer
+      userInput: =Topic.SearchQuery.SearchQuery
+
+    # Step 3: Only end the dialog if an answer was found — otherwise let Fallback handle it
+    - kind: ConditionGroup
+      id: conditionGroup_REPLACE3
+      conditions:
+        - id: conditionItem_REPLACE4
+          condition: =!IsBlank(Topic.Answer)
+          actions:
+            - kind: EndDialog
+              id: endDialog_REPLACE5
+              clearTopicQueue: true

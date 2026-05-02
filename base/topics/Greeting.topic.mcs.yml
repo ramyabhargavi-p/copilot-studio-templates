@@ -1,0 +1,16 @@
+# Name: Greeting
+# Trigger: Fires automatically when a conversation starts
+# Purpose: Welcome the user and set context for what the agent can do
+# NOTE: Replace all _REPLACE suffixes with unique random strings (e.g. _a1b2c3) before use
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnConversationStart
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendMessage_REPLACE
+      activity:
+        text:
+          - Hello! I'm {System.Bot.Name}. How can I help you today?
+          - Hi there! Welcome to {System.Bot.Name}. What can I assist you with?
+          - Greetings! I'm {System.Bot.Name} and I'm here to help. What would you like to know?

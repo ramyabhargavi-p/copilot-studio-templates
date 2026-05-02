@@ -1,0 +1,52 @@
+# Name: On Error
+# Trigger: Fires on any unhandled system error during a conversation
+# Purpose: Show debug details in test mode; show a safe, user-friendly message in production
+#          Logs all errors to custom telemetry for monitoring
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+kind: AdaptiveDialog
+startBehavior: UseLatestPublishedContentAndCancelOtherTopics
+beginDialog:
+  kind: OnError
+  id: main
+  actions:
+    - kind: SetVariable
+      id: setVariable_REPLACE1
+      variable: init:Topic.CurrentTime
+      value: =Text(Now(), DateTimeFormat.UTC)
+
+    - kind: ConditionGroup
+      id: conditionGroup_REPLACE2
+      conditions:
+        - id: conditionItem_REPLACE3
+          condition: =System.Conversation.InTestMode = true
+          actions:
+            # In test mode: show full error details to aid debugging
+            - kind: SendActivity
+              id: sendMessage_REPLACE4
+              activity: |-
+                **[Test Mode Error]**
+                Error Message: {System.Error.Message}
+                Error Code: {System.Error.Code}
+                Conversation Id: {System.Conversation.Id}
+                Time (UTC): {Topic.CurrentTime}
+
+      elseActions:
+        # In production: show a safe message, never expose internal error details
+        - kind: SendActivity
+          id: sendMessage_REPLACE5
+          activity:
+            text:
+              - |-
+                Something went wrong. Please try again or contact support.
+                Reference: {System.Conversation.Id}
+            speak:
+              - Something went wrong. Please try again.
+
+    # Always log to telemetry for monitoring and alerting
+    - kind: LogCustomTelemetryEvent
+      id: logTelemetry_REPLACE6
+      eventName: AgentErrorOccurred
+      properties: "={ErrorMessage: System.Error.Message, ErrorCode: System.Error.Code, TimeUTC: Topic.CurrentTime, ConversationId: System.Conversation.Id}"
+
+    - kind: CancelAllDialogs
+      id: cancelAllDialogs_REPLACE7

@@ -1,0 +1,25 @@
+# Name: Sign In
+# Trigger: Fires when authentication is required (OnSignIn)
+# Purpose: Prompt the user to sign in when the agent requires identity
+# Prerequisite: settings.mcs.yml must have authenticationMode: ManualAzureAD
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnSignIn
+  id: main
+  actions:
+    - kind: ConditionGroup
+      id: conditionGroup_REPLACE1
+      conditions:
+        - id: conditionItem_REPLACE2
+          # Only show the sign-in prompt if it's the first time (not a token refresh)
+          condition: =System.SignInReason = SignInReason.SignInRequired
+          actions:
+            - kind: SendActivity
+              id: sendMessage_REPLACE3
+              activity: Hi! To personalise your experience, I need you to sign in first.
+
+    - kind: OAuthInput
+      id: oauthInput_REPLACE4
+      title: Sign In
+      text: Please sign in to continue

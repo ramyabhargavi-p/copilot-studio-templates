@@ -1,0 +1,48 @@
+# Name: Remove Citations
+# Trigger: Fires after every AI-generated response (OnGeneratedResponse)
+# Purpose: Strip [1][2]...[10] citation markers from AI responses before they reach the user.
+#          Useful when knowledge sources are internal and you don't want reference markers shown.
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+# NOTE: Extend the Substitute() chain if you have more than 10 knowledge sources
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnGeneratedResponse
+  id: main
+  actions:
+    # Suppress the original AI response — we'll send our own cleaned version
+    - kind: SetVariable
+      id: setVariable_REPLACE1
+      variable: System.ContinueResponse
+      value: =false
+
+    # Strip citation markers [1] through [10] using nested Substitute()
+    # Add more Substitute() wrappers if you have more than 10 knowledge sources
+    - kind: SetVariable
+      id: setVariable_REPLACE2
+      variable: init:Topic.CleanedText
+      value: >-
+        =Substitute(
+          Substitute(
+            Substitute(
+              Substitute(
+                Substitute(
+                  Substitute(
+                    Substitute(
+                      Substitute(
+                        Substitute(
+                          Substitute(System.Response.FormattedText,
+                            "[1]", ""),
+                          "[2]", ""),
+                        "[3]", ""),
+                      "[4]", ""),
+                    "[5]", ""),
+                  "[6]", ""),
+                "[7]", ""),
+              "[8]", ""),
+            "[9]", ""),
+          "[10]", "")
+
+    # Send the cleaned response
+    - kind: SendActivity
+      id: sendActivity_REPLACE3
+      activity: "{Topic.CleanedText}"
