@@ -6,6 +6,8 @@ Reusable YAML templates for building Copilot Studio agents — for teams of all 
 
 ## New to Copilot Studio? Start here → [GETTING-STARTED.md](GETTING-STARTED.md)
 
+## Sharing this with your team? → [TEAM-GUIDE.md](TEAM-GUIDE.md)
+
 ---
 
 ## Quick Start (experienced developers)
@@ -25,6 +27,7 @@ Reusable YAML templates for building Copilot Studio agents — for teams of all 
 | Folder / File | Contents |
 |--------|----------|
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | **Start here if new** — step-by-step guide for all phases |
+| [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | **Sharing with your team** — who uses what, blockers, reusable prompts E2E reference |
 | [`INDUSTRY-GUIDELINES.md`](INDUSTRY-GUIDELINES.md) | Industry best practices and Microsoft-specific guidelines for agent development |
 | [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Required tools, VS Code extensions, and setup checklist |
 | [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design guidelines: error handling, logging, scope, naming, testing checklist |
