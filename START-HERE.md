@@ -114,6 +114,7 @@ Each step links to the document you need. Check steps off as you complete them.
 
 | Document | What it covers | Most relevant at | Skills |
 |----------|---------------|-----------------|--------|
+| [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | **Reusable function library** — call signatures for every component, card, action, and prompt. Check before writing any YAML. | Build | — |
 | [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | Which Claude skill to use at every step | All phases | — |
 | [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design guidelines, naming conventions, testing checklist | Build + Operate | `/copilot-studio:best-practices` |
 | [`INDUSTRY-GUIDELINES.md`](INDUSTRY-GUIDELINES.md) | Microsoft-specific and industry best practices | Design + Build | — |

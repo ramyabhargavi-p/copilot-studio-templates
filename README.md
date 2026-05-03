@@ -33,6 +33,7 @@ Reusable YAML templates for building Copilot Studio agents — for teams of all 
 | Folder / File | Contents |
 |--------|----------|
 | [`START-HERE.md`](START-HERE.md) | **Entry point for everyone** — numbered 28-step index across 7 phases with skill at each step |
+| [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | **Reusable function library** — every component, card, action, and prompt with its call signature |
 | [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | **Claude skills guide** — every installed skill mapped to the phase and step where it applies |
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | Developer step-by-step guide for all phases |
 | [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | **Sharing with your team** — who uses what, blockers, reusable prompts E2E reference |
