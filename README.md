@@ -4,7 +4,13 @@ Reusable YAML templates for building Copilot Studio agents — for teams of all 
 
 ---
 
-## New to Copilot Studio? Start here → [GETTING-STARTED.md](GETTING-STARTED.md)
+## Not sure where to begin? → [START-HERE.md](START-HERE.md)
+
+**`START-HERE.md` is the entry point for everyone** — business owners, project managers, testers, security reviewers, and developers. It tells each role exactly what to do and in what order, in plain language.
+
+---
+
+## New to Copilot Studio (developer)? → [GETTING-STARTED.md](GETTING-STARTED.md)
 
 ## Sharing this with your team? → [TEAM-GUIDE.md](TEAM-GUIDE.md)
 
@@ -26,7 +32,8 @@ Reusable YAML templates for building Copilot Studio agents — for teams of all 
 
 | Folder / File | Contents |
 |--------|----------|
-| [`GETTING-STARTED.md`](GETTING-STARTED.md) | **Start here if new** — step-by-step guide for all phases |
+| [`START-HERE.md`](START-HERE.md) | **Entry point for everyone** — role-based paths for business owners, PMs, developers, testers, security reviewers, and agent owners |
+| [`GETTING-STARTED.md`](GETTING-STARTED.md) | Developer step-by-step guide for all phases |
 | [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | **Sharing with your team** — who uses what, blockers, reusable prompts E2E reference |
 | [`INDUSTRY-GUIDELINES.md`](INDUSTRY-GUIDELINES.md) | Industry best practices and Microsoft-specific guidelines for agent development |
 | [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Required tools, VS Code extensions, and setup checklist |
