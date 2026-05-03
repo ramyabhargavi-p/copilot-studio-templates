@@ -1,243 +1,150 @@
-# Start Here — What Is This and How Do I Use It?
+# Copilot Studio Agent — Master Index
 
-This repository is a toolkit for building AI agents using Microsoft Copilot Studio. It contains everything a project team needs — from the first business conversation through to go-live and beyond — organised so that each role knows exactly what to do and when.
+This is the single guide to follow from start to finish. Work through the steps in order.
+Each step links to the document you need. Check steps off as you complete them.
 
-**You do not need to be a developer to use most of this toolkit.**
-
----
-
-## What is a Copilot Studio Agent?
-
-A Copilot Studio agent is an AI-powered assistant that lives inside Microsoft Teams, Microsoft Copilot, or your organisation's website. Users chat with it to get information, complete requests, or be connected to the right person — without waiting for email responses or searching through SharePoint.
-
-Examples:
-- An **HR agent** that answers leave policy questions and accepts leave requests
-- An **IT helpdesk agent** that troubleshoots common problems and raises tickets automatically
-- A **knowledge agent** that searches your internal documents and answers questions in plain language
+**Not a developer?** Every step is labelled with who does it. You do not need to touch YAML or code.
 
 ---
 
-## Who does what?
+## Before You Begin — Tools Setup
 
-Find your role and go straight to what you need.
-
----
-
-### I am a business owner / project sponsor
-
-You define what the agent should do and for whom. You don't need to know anything technical.
-
-**Your steps:**
-
-| Step | What you do | Document |
-|------|------------|---------|
-| 1 | Decide whether an AI agent is the right solution | [`project-delivery/00-ai-decision-framework.md`](project-delivery/00-ai-decision-framework.md) |
-| 2 | Answer questions about the agent's purpose, scope, and who it serves | [`project-delivery/01-requirements-questionnaire.md`](project-delivery/01-requirements-questionnaire.md) |
-| 3 | Review and approve what the agent will and won't do | [`project-delivery/07-functional-design-document.md`](project-delivery/07-functional-design-document.md) |
-| 4 | Review and sign off on test results before go-live | [`project-delivery/04-uat-test-plan.md`](project-delivery/04-uat-test-plan.md) |
-| 5 | Approve the pre-go-live checklist | [`launch/launch-checklist.md`](launch/launch-checklist.md) |
-| 6 | Nominate someone as the ongoing agent owner | [`governance/enterprise-ai-governance-framework.md`](governance/enterprise-ai-governance-framework.md) Section 2 |
-
-**What you don't need to do:** anything involving YAML, code, or the Power Platform admin portal.
+| # | Do this | File | Who |
+|---|---------|------|-----|
+| 0 | Install required tools (pac CLI, VS Code extension, Git) | [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Developer |
 
 ---
 
-### I am a project manager / delivery lead
+## Phase 1 — Decision
+*Should we build this? Before any technical or design work starts.*
 
-You coordinate the delivery from first meeting to go-live. You don't write code, but you run the process.
+| # | Do this | File | Who |
+|---|---------|------|-----|
+| 1 | Decide whether an AI agent is the right solution | [`project-delivery/00-ai-decision-framework.md`](project-delivery/00-ai-decision-framework.md) | Business Owner + Developer |
+| 2 | Confirm the organisation is ready (licences, environments, governance) | [`project-delivery/10-enterprise-readiness-assessment.md`](project-delivery/10-enterprise-readiness-assessment.md) | Tech Lead + Security |
 
-**Your delivery checklist:**
-
-| Phase | Document | Your role |
-|-------|---------|----------|
-| Pre-project | [`project-delivery/10-enterprise-readiness-assessment.md`](project-delivery/10-enterprise-readiness-assessment.md) | Ensure all readiness checks are completed before committing |
-| Discovery | [`project-delivery/01-requirements-questionnaire.md`](project-delivery/01-requirements-questionnaire.md) | Facilitate the stakeholder session |
-| Discovery | [`project-delivery/11-user-workflow-analysis.md`](project-delivery/11-user-workflow-analysis.md) | Ensure user representatives are involved |
-| Design | [`project-delivery/07-functional-design-document.md`](project-delivery/07-functional-design-document.md) | Get stakeholder sign-off before build starts |
-| Governance | [`governance/ai-ethics-checklist.md`](governance/ai-ethics-checklist.md) | Ensure this is completed before UAT |
-| UAT | [`project-delivery/04-uat-test-plan.md`](project-delivery/04-uat-test-plan.md) | Coordinate the testing session; collect sign-off |
-| Launch | [`launch/launch-checklist.md`](launch/launch-checklist.md) | Gate the go-live decision |
-| Launch | [`launch/user-communication-template.md`](launch/user-communication-template.md) | Send the announcement |
-| Post-launch | [`launch/hypercare-guide.md`](launch/hypercare-guide.md) | Monitor the first two weeks |
-
-**Full delivery sequence:** See [`project-delivery/README.md`](project-delivery/README.md)
+**Gate:** Both documents must be completed and signed off before Discovery begins.
 
 ---
 
-### I am a developer (new to Copilot Studio)
+## Phase 2 — Discovery
+*What does the agent need to do, and what do we have to work with?*
 
-You'll build the agent. This toolkit gives you the YAML templates, component library, and step-by-step guides so you don't start from scratch.
+| # | Do this | File | Who |
+|---|---------|------|-----|
+| 3 | Capture requirements — what the agent must do and for whom | [`project-delivery/01-requirements-questionnaire.md`](project-delivery/01-requirements-questionnaire.md) | Developer + Business Owner |
+| 4 | Confirm the technical environment — environments, connectors, auth, App Insights | [`project-delivery/02-technical-discovery.md`](project-delivery/02-technical-discovery.md) | Developer + IT Admin |
+| 5 | Map how users work today and how the agent will change that | [`project-delivery/11-user-workflow-analysis.md`](project-delivery/11-user-workflow-analysis.md) | Developer + Business SME |
 
-**Where to start:**
-
-1. Read `GETTING-STARTED.md` — it walks you through every phase with exact commands
-2. Install the tools in `TOOLS-AND-PLUGINS.md` (especially the VS Code extension)
-3. Copy `base/` into your agent project folder
-4. Pick the recipe from `recipes/` that most closely matches your agent type
-5. Use the prompts in `prompts/ai-prompts/` to generate YAML you're not sure how to write
-
-**When the design documents are approved:** follow `project-delivery/12-build-specification.md` — it's a step-by-step build checklist aligned to every approved design document.
+**Gate:** All three documents complete before Design begins.
 
 ---
 
-### I am a developer (experienced with Copilot Studio)
+## Phase 3 — Design
+*Decide what to build and how it will behave. Get sign-off before writing any YAML.*
 
-Go straight to [`README.md`](README.md) for the full component and recipe reference.
+| # | Do this | File | Who |
+|---|---------|------|-----|
+| 6 | Choose which components the agent needs (topics, knowledge, actions, auth) | [`project-delivery/03-agent-design-worksheet.md`](project-delivery/03-agent-design-worksheet.md) | Developer |
+| 7 | Review and grade the documents/content the agent will search | [`project-delivery/06-content-audit.md`](project-delivery/06-content-audit.md) | Developer + Content Owner |
+| 8 | Define every use case, business rule, and data requirement | [`project-delivery/07-functional-design-document.md`](project-delivery/07-functional-design-document.md) | Developer + Business Owner |
+| 9 | Design conversation flows, branching logic, and slot collection | [`project-delivery/08-workflow-logic-design.md`](project-delivery/08-workflow-logic-design.md) | Developer |
+| 10 | Design security, prompt patterns, and error handling architecture | [`project-delivery/09-technical-design-document.md`](project-delivery/09-technical-design-document.md) | Developer + Security |
+| 11 | Select prompt engineering patterns and write the agent system prompt | [`prompts/ai-prompts/prompt-engineering-patterns.md`](prompts/ai-prompts/prompt-engineering-patterns.md) → then [`prompts/system-prompts/`](prompts/system-prompts/) | Developer |
 
-Key shortcuts:
-- Build checklist: [`project-delivery/12-build-specification.md`](project-delivery/12-build-specification.md)
-- Prompt patterns: [`prompts/ai-prompts/prompt-engineering-patterns.md`](prompts/ai-prompts/prompt-engineering-patterns.md)
-- CI/CD pipelines: [`ci-cd/`](ci-cd/)
-- Solution CLI reference: [`ci-cd/solution-cli-guide.md`](ci-cd/solution-cli-guide.md)
-
----
-
-### I am a tester / QA analyst
-
-You validate the agent works correctly before it goes live. You don't need to understand the YAML.
-
-**Your documents:**
-
-| Document | What you do with it |
-|---------|---------------------|
-| [`project-delivery/05-eval-scenarios.md`](project-delivery/05-eval-scenarios.md) | Understand what evaluation tests are and review the test CSV |
-| [`project-delivery/04-uat-test-plan.md`](project-delivery/04-uat-test-plan.md) | Run through each test section; record Pass/Fail; note issues |
-
-**How UAT works in practice:**
-1. The developer shares the link to the agent in the Copilot Studio test canvas (or Teams)
-2. You work through `04-uat-test-plan.md` section by section — it tells you exactly what to type and what to expect
-3. You record Pass or Fail for each test
-4. Outstanding issues go in the table at the bottom of the document
-5. When all critical tests pass, you sign off
+**Gate:** Steps 8 (FDD) and 10 (TDD) must be signed off by Business Owner and Security before Build begins.
 
 ---
 
-### I am a security or compliance reviewer
+## Phase 4 — Build
+*Implement the agent in YAML following the approved design.*
 
-You ensure the agent handles data correctly, meets organisational policies, and doesn't expose the organisation to risk.
-
-**Your documents:**
-
-| Document | What to check |
-|---------|--------------|
-| [`governance/ai-ethics-checklist.md`](governance/ai-ethics-checklist.md) | Responsible AI — fairness, safety, privacy, transparency, accountability, prompt injection |
-| [`governance/security-review.md`](governance/security-review.md) | Authentication, data handling, DLP, connectors, channel security |
-| [`project-delivery/09-technical-design-document.md`](project-delivery/09-technical-design-document.md) | Security design section — review Section 3 |
-| [`governance/enterprise-ai-governance-framework.md`](governance/enterprise-ai-governance-framework.md) | Data classification policy, DLP requirements, incident governance |
-
-You do not need to read any YAML files. The checklist documents are written in plain language.
+| # | Do this | File | Who |
+|---|---------|------|-----|
+| 12 | Pick the recipe closest to your agent type | [`recipes/`](recipes/) | Developer |
+| 13 | Copy `base/` into your agent folder and replace all placeholders | [`base/`](base/) → [`base/README.md`](base/README.md) | Developer |
+| 14 | Add components from the component library as needed | [`components/`](components/) | Developer |
+| 15 | Follow the build checklist aligned to the approved design documents | [`project-delivery/12-build-specification.md`](project-delivery/12-build-specification.md) | Developer |
+| 16 | Set up CI/CD pipelines for Dev → UAT → Prod promotion | [`ci-cd/`](ci-cd/) → [`ci-cd/README.md`](ci-cd/README.md) | Developer |
 
 ---
 
-### I am the agent owner (post-launch)
+## Phase 5 — Test and Review
+*Verify the agent works correctly and safely before any user sees it.*
 
-You are responsible for the agent after it goes live. You manage its health, approve changes, and ensure it stays accurate over time.
+| # | Do this | File | Who |
+|---|---------|------|-----|
+| 17 | Run automated topic routing tests (Eval) — target ≥ 85% accuracy | [`project-delivery/05-eval-scenarios.md`](project-delivery/05-eval-scenarios.md) | Developer |
+| 18 | Complete the Responsible AI checklist | [`governance/ai-ethics-checklist.md`](governance/ai-ethics-checklist.md) | Developer + Project Owner |
+| 19 | Complete the Security review | [`governance/security-review.md`](governance/security-review.md) | Developer + Security |
+| 20 | Run User Acceptance Testing with real stakeholders — get sign-off | [`project-delivery/04-uat-test-plan.md`](project-delivery/04-uat-test-plan.md) | Tester + Business Owner |
 
-**Your ongoing responsibilities:**
-
-| When | What you do | Where |
-|------|------------|-------|
-| Daily (first 2 weeks) | Check for errors and user feedback | [`launch/hypercare-guide.md`](launch/hypercare-guide.md) |
-| Weekly | Review the monitoring dashboard | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) |
-| Monthly | Review knowledge gaps and trigger phrase accuracy | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) — "Unanswered questions" query |
-| Quarterly | Full agent review with the developer | [`BEST-PRACTICES.md`](BEST-PRACTICES.md) Section 11 |
-| When something breaks | Follow the incident procedures | [`operations/runbook.md`](operations/runbook.md) |
-
-You don't need to write any code. Your role is oversight, sign-off on changes, and being the first call when something goes wrong.
+**Gate:** All four steps must pass and be signed off. No exceptions before go-live.
 
 ---
 
-## The Big Picture — What Happens and In What Order
+## Phase 6 — Launch
+*Go live and tell users.*
 
-```
-SHOULD WE BUILD AN AGENT?
-  Is this the right tool for this problem?
-  → project-delivery/00-ai-decision-framework.md
-        │
-        ▼
-ARE WE READY TO BUILD?
-  Licensing, environments, governance, support model in place?
-  → project-delivery/10-enterprise-readiness-assessment.md
-        │
-        ▼
-WHAT DOES THE AGENT NEED TO DO?
-  Discovery: requirements, technical setup, user workflows
-  → project-delivery/01, 02, 11
-        │
-        ▼
-HOW WILL IT WORK?
-  Design: use cases, conversation flows, security, prompt patterns
-  → project-delivery/03, 06, 07, 08, 09
-  → prompts/ai-prompts/prompt-engineering-patterns.md
-        │
-        ▼
-BUILD IT
-  Implement in YAML following the approved design
-  → project-delivery/12-build-specification.md
-  → base/ + components/ + recipes/
-        │
-        ▼
-DOES IT WORK?
-  Eval (automated routing accuracy) + UAT (stakeholder testing)
-  → project-delivery/05-eval-scenarios.md
-  → project-delivery/04-uat-test-plan.md
-        │
-        ▼
-IS IT SAFE?
-  Responsible AI + Security review
-  → governance/ai-ethics-checklist.md
-  → governance/security-review.md
-        │
-        ▼
-GO LIVE
-  Pre-go-live checklist → deploy → announce to users
-  → launch/launch-checklist.md
-  → launch/user-communication-template.md
-        │
-        ▼
-KEEP IT WORKING
-  Monitor, improve, review quarterly
-  → operations/
-  → launch/hypercare-guide.md
-```
+| # | Do this | File | Who |
+|---|---------|------|-----|
+| 21 | Complete every item on the pre-go-live checklist | [`launch/launch-checklist.md`](launch/launch-checklist.md) | Developer + Project Manager |
+| 22 | Send the user announcement | [`launch/user-communication-template.md`](launch/user-communication-template.md) | Project Manager |
+| 23 | Configure Azure Monitor alerts for errors and availability | [`operations/alert-setup.md`](operations/alert-setup.md) | Developer |
 
 ---
 
-## Plain Language Glossary
+## Phase 7 — Operate
+*Keep the agent healthy after go-live. Ongoing responsibility of the Agent Owner.*
 
-| Term | What it means |
-|------|--------------|
-| **Copilot Studio** | Microsoft's tool for building AI agents — no coding experience required for simple agents; YAML editing required for advanced ones |
-| **Agent** | The AI assistant your users will chat with |
-| **Topic** | A specific task or conversation the agent can handle (e.g. "Check leave balance") |
-| **Knowledge source** | A SharePoint document library or website the agent can search to answer questions |
-| **Action** | A connection to another system (e.g. submitting a leave request to an HR system) |
-| **Trigger phrase** | The type of message a user sends that starts a particular topic |
-| **Fallback** | What the agent does when it doesn't understand the user's message |
-| **Escalation** | Transferring the user to a human agent |
-| **Eval** | Automated testing of whether the agent routes user messages to the correct topic |
-| **UAT** | User Acceptance Testing — a structured session where real users test the agent before go-live |
-| **YAML** | The file format used to define the agent's structure — only developers need to read or write this |
-| **pac CLI** | A command-line tool for pushing agent files to the Microsoft Power Platform — developers only |
-| **Environment** | A Microsoft Power Platform workspace — like a folder in the cloud where the agent lives |
-| **Telemetry** | Usage data sent to Application Insights — shows how users interact with the agent |
-| **DLP** | Data Loss Prevention — a policy that controls which external systems the agent can connect to |
+| # | Do this | File | Who | Frequency |
+|---|---------|------|-----|-----------|
+| 24 | Monitor and respond to issues in the first two weeks | [`launch/hypercare-guide.md`](launch/hypercare-guide.md) | Agent Owner | Daily — weeks 1–2 |
+| 25 | Run the health check dashboard queries | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) | Agent Owner | Weekly |
+| 26 | Review unanswered questions and routing gaps | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) — "Unanswered questions" section | Agent Owner | Monthly |
+| 27 | Respond to incidents using the runbook | [`operations/runbook.md`](operations/runbook.md) | Agent Owner | When needed |
+| 28 | Full quarterly review with developer | [`BEST-PRACTICES.md`](BEST-PRACTICES.md) Section 11 | Agent Owner + Developer | Quarterly |
 
 ---
 
-## Common Questions from Non-Developers
+## Reference Materials
+*Use these at any point in the project — they support multiple phases.*
 
-**Q: Do I need to write code to use this?**
-No — the requirements questionnaire, design worksheets, UAT test plan, governance checklists, and launch documents are all plain-language Word-style documents. Only the YAML building step requires a developer.
+| Document | What it covers | Most relevant at |
+|----------|---------------|-----------------|
+| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design guidelines, naming conventions, testing checklist | Build + Operate |
+| [`INDUSTRY-GUIDELINES.md`](INDUSTRY-GUIDELINES.md) | Microsoft-specific and industry best practices | Design + Build |
+| [`governance/enterprise-ai-governance-framework.md`](governance/enterprise-ai-governance-framework.md) | Full enterprise governance — roles, lifecycle, DLP, change control, incidents | All phases |
+| [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | What can be reused, onboarding checklist, known blockers | Before build starts |
+| [`troubleshooting/README.md`](troubleshooting/README.md) | Common issues — Teams publishing, YAML errors, auth, routing | Build + Operate |
+| [`prompts/ai-prompts/`](prompts/ai-prompts/) | AI generation prompts for topics, evals, adaptive cards | Build |
+| [`ci-cd/solution-cli-guide.md`](ci-cd/solution-cli-guide.md) | Full `pac solution` CLI reference for solution-based ALM | Build + Deploy |
 
-**Q: How long does it take to build an agent?**
-A simple FAQ agent (knowledge search + out-of-scope + escalation) takes 1–2 days to build after the design is approved. A full-featured agent with multiple topics, connector actions, and authentication takes 1–2 weeks. This toolkit significantly reduces both timelines.
+---
 
-**Q: What if the agent gives wrong answers?**
-All knowledge agents can give imprecise answers — this is inherent to AI. The eval testing and grounding patterns in this toolkit reduce this significantly. The `governance/ai-ethics-checklist.md` includes specific prompt injection and hallucination tests that must pass before go-live. The monitoring setup ensures you catch problems quickly after launch.
+## Quick-Start Paths
 
-**Q: Who is responsible for the agent once it's live?**
-The **agent owner** — a named individual, not a team. They receive incident alerts, approve changes, and ensure the content stays up to date. See `governance/enterprise-ai-governance-framework.md` for the full owner responsibilities.
+If you already know your situation, skip ahead:
 
-**Q: Can we add features after go-live?**
-Yes — this is called a change. The governance framework defines what level of approval is needed: minor changes (text updates) need agent owner only; new topics or connectors need agent owner + project owner. All changes go through the same eval and test process as the original build.
+| Situation | Start at |
+|-----------|---------|
+| Just want to build a quick FAQ bot | Step 12 → pick `recipes/01-basic-faq.md` |
+| First agent for the organisation — need full governance | Step 1 — do not skip Phase 1 |
+| Re-using this kit for a second agent | Step 3 (skip Steps 1–2 if org readiness is already confirmed) |
+| Something broke in production | [`troubleshooting/README.md`](troubleshooting/README.md) or [`operations/runbook.md`](operations/runbook.md) |
+| New developer joining mid-project | [`TEAM-GUIDE.md`](TEAM-GUIDE.md) onboarding checklist |
+| Need to explain the project to a stakeholder | [`project-delivery/07-functional-design-document.md`](project-delivery/07-functional-design-document.md) |
+
+---
+
+## Who Does What — Role Summary
+
+| Role | Steps they own |
+|------|---------------|
+| **Business Owner / Project Sponsor** | 1, 3 (input), 8 (sign-off), 20 (sign-off), 21 (approve) |
+| **Project Manager / Delivery Lead** | Gates between phases, coordinates 3–5, sends 22 |
+| **Developer** | 0, 4–6, 8–16, 17, 18–19, 23 |
+| **IT Admin / Environment Admin** | 4 (input), 16 (environment setup) |
+| **Tester / QA** | 17–20 |
+| **Security / Compliance Reviewer** | 2 (input), 10 (sign-off), 19 |
+| **Agent Owner (post-launch)** | 24–28 |

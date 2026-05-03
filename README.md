@@ -4,15 +4,15 @@ Reusable YAML templates for building Copilot Studio agents — for teams of all 
 
 ---
 
-## Not sure where to begin? → [START-HERE.md](START-HERE.md)
+## Where to start → [START-HERE.md](START-HERE.md)
 
-**`START-HERE.md` is the entry point for everyone** — business owners, project managers, testers, security reviewers, and developers. It tells each role exactly what to do and in what order, in plain language.
+`START-HERE.md` is a numbered step-by-step index covering all 28 steps across 7 phases — Decision → Discovery → Design → Build → Test → Launch → Operate. Every step links directly to the document you need. Works for all roles, including non-developers.
 
 ---
 
 ## New to Copilot Studio (developer)? → [GETTING-STARTED.md](GETTING-STARTED.md)
 
-## Sharing this with your team? → [TEAM-GUIDE.md](TEAM-GUIDE.md)
+## Joining mid-project? → [TEAM-GUIDE.md](TEAM-GUIDE.md)
 
 ---
 
