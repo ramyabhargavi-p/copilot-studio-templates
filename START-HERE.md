@@ -1,7 +1,8 @@
 # Copilot Studio Agent — Master Index
 
-This is the single guide to follow from start to finish. Work through the steps in order.
-Each step links to the document you need. Check steps off as you complete them.
+**Just want to build quickly?** → [`QUICKSTART.md`](QUICKSTART.md) — working agent in under 1 hour, no reading required.
+
+This index is the full project delivery sequence — all roles, all phases, from decision to operations.
 
 **Not a developer?** Every step is labelled with who does it. You do not need to touch YAML or code.
 

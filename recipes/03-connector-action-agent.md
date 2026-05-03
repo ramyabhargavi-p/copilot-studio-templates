@@ -41,24 +41,39 @@ User: "I want to submit a leave request"
     └─ Returns response to user
 ```
 
+## Values to change
+
+| File | Find | Replace with |
+|------|------|-------------|
+| `agent.mcs.yml` | `<AgentName>` | e.g. `it_helpdesk` |
+| `agent.mcs.yml` | `<Agent Display Name>` | e.g. `IT Helpdesk` |
+| `settings.mcs.yml` | `<agent_schema_name>` | same as `<AgentName>` |
+| `settings.mcs.yml` | `authenticationMode: None` | `ManualAzureAD` if action runs as signed-in user |
+| `connector-action.mcs.yml` | `<CONNECTOR_LOGICAL_NAME>` | e.g. `shared_sharepointonline` |
+| `connector-action.mcs.yml` | `<OPERATION_ID>` | e.g. `CreateItem` |
+| `connector-action.mcs.yml` | `<modelDescription>` | plain-English description of what the action does |
+| `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | same as `<AgentName>` |
+
+Then run the `_REPLACE` script from `QUICKSTART.md`.
+
+## Copy commands
+
+```bash
+cp -r base/ agents/<your-agent>/
+mkdir -p agents/<your-agent>/actions
+cp components/actions/connector/connector-action.mcs.yml agents/<your-agent>/actions/<ActionName>.mcs.yml
+# repeat the last line for each connector operation
+# then: pac copilot push
+```
+
 ## Setup Checklist
 
-- [ ] Copy `base/` into your agent project
-- [ ] Copy `connector-action.mcs.yml` into your agent's `actions/` folder (one copy per operation)
-- [ ] `connector-action.mcs.yml` — replace all placeholders:
-  - [ ] Action name in the comment header
-  - [ ] `connectionReference` (e.g. `shared_sharepointonline`)
-  - [ ] `operationId` (e.g. `CreateItem`)
-  - [ ] `ManualTaskInput` values for fixed parameters
-  - [ ] `AutomaticTaskInput` for dynamic parameters with clear `description` fields
-  - [ ] `modelDisplayName` and `modelDescription` — be specific
-- [ ] `settings.mcs.yml`:
-  - If the connector runs as the signed-in user: set `authenticationMode: ManualAzureAD` or `IntegratedAzureAD`
-  - If the connector runs as the service principal: `authenticationMode: None`, set `mode: Caller`
-  - Set `GenerativeActionsEnabled: true` if you want the AI to auto-invoke the action without an explicit topic
-- [ ] Add the connector connection in Copilot Studio (Settings → Connections)
-- [ ] All topic files — replace every `_REPLACE` suffix with unique random strings
-- [ ] Push and test — ask the agent to perform the action in natural language
+- [ ] Copy files using commands above
+- [ ] Fill in all values in the table above
+- [ ] Run `_REPLACE` script from `QUICKSTART.md`
+- [ ] Add the connector connection in Copilot Studio → Settings → Connections
+- [ ] `pac copilot push --environment <ENV_URL>`
+- [ ] Test by asking the agent to perform the action in natural language
 
 ## Multiple Actions
 

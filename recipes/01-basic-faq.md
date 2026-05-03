@@ -45,17 +45,35 @@ User message
                     └─ No answer → Fallback topic → retry or escalate
 ```
 
+## Values to change
+
+| File | Find | Replace with |
+|------|------|-------------|
+| `agent.mcs.yml` | `<AgentName>` | e.g. `hr_assistant` |
+| `agent.mcs.yml` | `<Agent Display Name>` | e.g. `HR Assistant` |
+| `agent.mcs.yml` | `<SYSTEM_PROMPT>` | 2–3 sentences: what the agent does and what it won't answer |
+| `settings.mcs.yml` | `<agent_schema_name>` | same as `<AgentName>` above |
+| `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | same as `<AgentName>` above |
+| `sharepoint.knowledge.mcs.yml` | `<SHAREPOINT_SITE_URL>` | your SharePoint library URL |
+
+Then run the `_REPLACE` script from `QUICKSTART.md` to generate unique node IDs.
+
+## Copy commands
+
+```bash
+cp -r base/ agents/<your-agent>/
+cp components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml agents/<your-agent>/topics/
+cp components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml agents/<your-agent>/knowledge/
+# then: pac copilot push
+```
+
 ## Setup Checklist
 
-- [ ] Copy `base/` into your agent project folder
-- [ ] Copy `components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml` into your agent's `topics/` folder
-- [ ] Copy `components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml` into your agent's `knowledge/` folder
-- [ ] `agent.mcs.yml` — replace `<AgentName>`, `<Agent Display Name>`, update `instructions` to describe the knowledge domain
-- [ ] `settings.mcs.yml` — replace `<agent_schema_name>` and `<Agent Display Name>`; leave `authenticationMode: None`
-- [ ] `sharepoint.knowledge.mcs.yml` — replace the `site` URL with your SharePoint library path
-- [ ] All topic files — replace every `_REPLACE` suffix with a unique random string
-- [ ] `Fallback.topic.mcs.yml` — replace `<AGENT_SCHEMA>` with your `schemaName`
-- [ ] Push to Copilot Studio and test with questions your knowledge base should answer
+- [ ] Copy files using commands above
+- [ ] Fill in all values in the table above
+- [ ] Run `_REPLACE` script from `QUICKSTART.md`
+- [ ] `pac copilot push --environment <ENV_URL>`
+- [ ] Test in Copilot Studio test canvas
 
 ## Optional Additions
 

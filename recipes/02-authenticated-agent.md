@@ -57,17 +57,38 @@ Subsequent messages
        Topics run with Global.UserDisplayName available
 ```
 
+## Values to change
+
+| File | Find | Replace with |
+|------|------|-------------|
+| `agent.mcs.yml` | `<AgentName>` | e.g. `hr_assistant` |
+| `agent.mcs.yml` | `<Agent Display Name>` | e.g. `HR Assistant` |
+| `agent.mcs.yml` | `<SYSTEM_PROMPT>` | Include: `"Address the user as {Global.UserDisplayName}"` |
+| `settings.mcs.yml` | `<agent_schema_name>` | same as `<AgentName>` |
+| `settings.mcs.yml` | `authenticationMode: None` | `authenticationMode: ManualAzureAD` |
+| `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | same as `<AgentName>` |
+| `ConversationInit.topic.mcs.yml` | `<AGENT-SCHEMA-NAME>` | same as `<AgentName>` |
+
+Then run the `_REPLACE` script from `QUICKSTART.md`.
+
+## Copy commands
+
+```bash
+cp -r base/ agents/<your-agent>/
+cp components/topics/auth/SignIn.topic.mcs.yml agents/<your-agent>/topics/
+cp components/topics/conversation-init/ConversationInit.topic.mcs.yml agents/<your-agent>/topics/
+cp components/variables/global-variable/global-variable.variable.mcs.yml agents/<your-agent>/
+# then: pac copilot push
+```
+
 ## Setup Checklist
 
-- [ ] Copy `base/` and the components listed above into your agent project
-- [ ] `settings.mcs.yml` — set `authenticationMode: ManualAzureAD`
-- [ ] `agent.mcs.yml` — update `instructions` to reference the user's name: `"Address the user as {Global.UserDisplayName}"`
-- [ ] Create `global-variable.variable.mcs.yml` for `Global.UserCountry` and `Global.UserDisplayName`
-- [ ] `ConversationInit.topic.mcs.yml` — replace `<AGENT-SCHEMA-NAME>` with your `schemaName`; remove the Glossary block if not needed
-- [ ] Add the **Office 365 Users** connector to the agent in Copilot Studio
-- [ ] All topic files — replace every `_REPLACE` suffix with unique random strings
-- [ ] `Fallback.topic.mcs.yml` — replace `<AGENT_SCHEMA>`
-- [ ] Push to Copilot Studio and test sign-in flow in the test canvas
+- [ ] Copy files using commands above
+- [ ] Fill in all values in the table above
+- [ ] Run `_REPLACE` script from `QUICKSTART.md`
+- [ ] Add **Office 365 Users** connector in Copilot Studio → Settings → Connections
+- [ ] `pac copilot push --environment <ENV_URL>`
+- [ ] Test sign-in flow in Copilot Studio test canvas
 
 ## Optional Additions
 
