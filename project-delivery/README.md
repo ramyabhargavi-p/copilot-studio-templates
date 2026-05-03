@@ -6,12 +6,18 @@ Documents for delivering a Copilot Studio agent from SOW to production — cover
 
 | Phase | Document | When | Who |
 |-------|----------|------|-----|
+| Pre-project | [`10-enterprise-readiness-assessment.md`](10-enterprise-readiness-assessment.md) | Before committing to any agent program — licensing, infra, governance | Tech Lead + CTO + Security |
 | Discovery | [`01-requirements-questionnaire.md`](01-requirements-questionnaire.md) | First stakeholder meeting, before any technical work | Developer + Project Owner |
 | Discovery | [`02-technical-discovery.md`](02-technical-discovery.md) | After requirements, before build — with IT/admin | Developer + Environment Admin |
-| Design | [`03-agent-design-worksheet.md`](03-agent-design-worksheet.md) | After discovery, before writing YAML | Developer |
+| Discovery | [`11-user-workflow-analysis.md`](11-user-workflow-analysis.md) | Before design — map current and future user workflows | Developer + Business SME |
+| Design | [`03-agent-design-worksheet.md`](03-agent-design-worksheet.md) | After discovery — high-level component decisions | Developer |
 | Design | [`06-content-audit.md`](06-content-audit.md) | Before adding knowledge sources — assess document readiness | Developer + Content Owner |
-| UAT | [`04-uat-test-plan.md`](04-uat-test-plan.md) | After build, before publishing — with stakeholder | Developer + Project Owner |
+| Design | [`07-functional-design-document.md`](07-functional-design-document.md) | After discovery — define what the agent must do, use cases, business rules | Developer + Project Owner |
+| Design | [`08-workflow-logic-design.md`](08-workflow-logic-design.md) | After FDD — design conversation flows, branching logic, state management | Developer |
+| Design | [`09-technical-design-document.md`](09-technical-design-document.md) | After workflow design — security, prompt patterns, error handling architecture | Developer + Security |
+| Build | [`12-build-specification.md`](12-build-specification.md) | During build — step-by-step implementation checklist aligned to approved designs | Developer |
 | Eval | [`05-eval-scenarios.md`](05-eval-scenarios.md) | During build (topic routing tests) and before UAT | Developer |
+| UAT | [`04-uat-test-plan.md`](04-uat-test-plan.md) | After build, before publishing — with stakeholder | Developer + Project Owner |
 
 ## Recommended Delivery Sequence
 
@@ -19,20 +25,28 @@ Documents for delivering a Copilot Studio agent from SOW to production — cover
 1. SOW / project brief received
         │
         ▼
+1.5. PRE-PROJECT (enterprise / multi-agent programs)
+   10-enterprise-readiness-assessment.md  (tech lead + security + exec sponsor)
+        │
+        ▼
 2. DISCOVERY
    01-requirements-questionnaire.md  (with stakeholder)
    02-technical-discovery.md         (with environment admin)
+   11-user-workflow-analysis.md       (with business SME + representative users)
         │
         ▼
 3. DESIGN
-   03-agent-design-worksheet.md      (developer, internal)
-   06-content-audit.md               (if using knowledge sources — assess documents first)
-   prompts/system-prompts/           (write agent instructions)
-   prompts/ai-prompts/               (generate topic YAML if needed)
+   03-agent-design-worksheet.md           (developer, internal — component selection)
+   06-content-audit.md                    (if using knowledge sources — assess documents first)
+   07-functional-design-document.md       (use cases, business rules, data requirements)
+   08-workflow-logic-design.md            (conversation flows, branching, state management)
+   09-technical-design-document.md        (security, prompt patterns, error handling)
+   prompts/system-prompts/               (write agent instructions using approved patterns)
+   prompts/ai-prompts/prompt-engineering-patterns.md  (select patterns for system prompt)
         │
         ▼
 4. BUILD
-   Copy base/ → add components/ → write custom topics and actions
+   12-build-specification.md              (implementation checklist — aligned to approved designs)
    governance/ai-ethics-checklist.md + governance/security-review.md
    pac copilot push → smoke test in Copilot Studio test canvas
         │

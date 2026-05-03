@@ -4,12 +4,30 @@ Automated push and publish workflows for Copilot Studio agents using GitHub Acti
 
 ---
 
-## Workflows
+## Two deployment approaches
+
+| Approach | Workflows | When to use |
+|----------|-----------|------------|
+| **Direct YAML push** | `push-on-pr.yml`, `promote-dev-to-uat.yml`, `promote-uat-to-prod.yml` | Rapid development iteration; single-agent deployments |
+| **Solution-based** | `solution-build-and-deploy.yml` | Enterprise ALM; multi-component solutions; managed layer for Prod |
+
+→ **Can you build solutions from CLI?** Yes. See [`solution-cli-guide.md`](solution-cli-guide.md) for the full `pac solution` command reference.
+
+---
+
+## Workflows — Direct YAML Push
 
 | File | Trigger | What it does |
 |------|---------|-------------|
-| [`push-on-pr.yml`](push-on-pr.yml) | Pull request to `main` | Validates YAML and pushes to dev/test environment |
-| [`publish-on-release.yml`](publish-on-release.yml) | GitHub Release created | Pushes and publishes to production environment |
+| [`push-on-pr.yml`](push-on-pr.yml) | Pull request to `main` | Validates YAML and pushes to dev environment |
+| [`promote-dev-to-uat.yml`](promote-dev-to-uat.yml) | Merge to `main` | Pushes agent to UAT environment (requires UAT environment approval) |
+| [`promote-uat-to-prod.yml`](promote-uat-to-prod.yml) | GitHub Release published | Pushes and publishes to production (requires production environment approval) |
+
+## Workflows — Solution-Based
+
+| File | Trigger | What it does |
+|------|---------|-------------|
+| [`solution-build-and-deploy.yml`](solution-build-and-deploy.yml) | Push to `main` or manual dispatch | Exports managed solution from Dev → imports to UAT or Prod with approval gates |
 
 ---
 
@@ -50,13 +68,33 @@ Your agent YAML files should live in a subfolder named after the agent's `schema
 
 ---
 
+## Required GitHub Secrets and Variables
+
+| Secret | Value |
+|--------|-------|
+| `POWER_PLATFORM_CLIENT_ID` | Service principal app registration client ID |
+| `POWER_PLATFORM_CLIENT_SECRET` | Client secret |
+| `POWER_PLATFORM_TENANT_ID` | Azure AD tenant ID |
+| `POWER_PLATFORM_DEV_URL` | Dev environment URL |
+| `POWER_PLATFORM_UAT_URL` | UAT environment URL |
+| `POWER_PLATFORM_PROD_URL` | Production environment URL |
+
+| Variable | Value |
+|----------|-------|
+| `AGENT_SCHEMA_NAME` | Agent's `schemaName` from `settings.mcs.yml` |
+| `SOLUTION_NAME` | Solution unique name (solution-based workflows only) |
+
+---
+
 ## Branching Strategy
 
 ```
 feature/* ─────────────────────────────────────────────── dev branches
-              ↓ PR
-main ──────────────────────────────────────────────────── push to dev/test env
-              ↓ GitHub Release
+              ↓ PR (push-on-pr.yml validates + pushes to dev)
+main ──────────────────────────────────────────────────── auto-promote to UAT
+              ↓ (promote-dev-to-uat.yml — requires UAT approval)
+uat ────────────────────────────────────────────────────── UAT testing
+              ↓ GitHub Release (promote-uat-to-prod.yml — requires prod approval)
 production ────────────────────────────────────────────── push + publish to prod
 ```
 
