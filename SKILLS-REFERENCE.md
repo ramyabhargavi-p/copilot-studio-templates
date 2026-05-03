@@ -3,7 +3,68 @@
 This document maps every installed Claude skill to its use in the Copilot Studio agent build process.
 Invoke any skill by typing its slash command in your Claude session.
 
-**Quick navigation:** [Copilot Studio Skills](#copilot-studio-skills) · [Superpowers Skills](#superpowers-skills) · [Other Plugins](#other-plugins) · [By Phase](#skills-by-phase)
+**Quick navigation:** [WorkIQ — M365 Context](#workiq--m365-context) · [Copilot Studio Skills](#copilot-studio-skills) · [Superpowers Skills](#superpowers-skills) · [Other Plugins](#other-plugins) · [By Phase](#skills-by-phase) · [Developer Cheat Sheet](#developer-cheat-sheet)
+
+---
+
+## WorkIQ — M365 Context
+
+WorkIQ reads your Microsoft 365 data — attended meetings, Teams chats, emails, SharePoint, calendar, and Planner — and feeds that context directly into your development work. Instead of hunting through notes or asking colleagues what was decided, you ask WorkIQ and it pulls the answer from your actual M365 activity.
+
+**The core pattern:** Ask WorkIQ first to load context → then use that context to drive the next dev action.
+
+### Plugin: `workiq` — Natural language M365 queries
+
+| Command | What it does | Developer use case |
+|---------|-------------|-------------------|
+| `/workiq` | Query any M365 data in plain English — emails, meetings, chats, documents, people | Use before any task where the requirement came from a meeting or Teams conversation |
+
+**Example questions to ask via `/workiq`:**
+
+| You want to know | Ask WorkIQ |
+|-----------------|-----------|
+| What was agreed in the requirements meeting | "What decisions were made in the [agent name] requirements meeting?" |
+| What connectors were discussed | "What did the team discuss about connectors for the HR agent in Teams?" |
+| What the stakeholder emailed about scope | "Any emails from [stakeholder] about what the agent should handle?" |
+| Who owns the SharePoint site you need | "Who manages the HR SharePoint site?" |
+| What environment URLs were shared | "What Power Platform environment URLs were shared in emails this week?" |
+| What test feedback came in | "What did [tester] say about the agent UAT results?" |
+| What broke in production | "Any Teams messages or emails about the agent not working today?" |
+| What action items came out of sprint planning | "What action items were assigned to me in the sprint planning meeting?" |
+
+### Plugin: `workiq-productivity` — Structured M365 productivity skills
+
+| Command | What it does | Developer use case |
+|---------|-------------|-------------------|
+| `/workiq:action-item-extractor` | Extracts action items with owners, deadlines, and priorities from a meeting | After every project meeting — turn meeting chat into a tracked task list |
+| `/workiq:channel-digest` | Consolidated summary of activity across Teams channels — decisions, action items, mentions | Morning standup prep; catching up after time off; pre-build context |
+| `/workiq:daily-outlook-triage` | Summary of today's inbox and calendar | Start of day — understand what needs attention before coding |
+| `/workiq:multi-plan-search` | Search tasks across all Planner plans | Find outstanding tasks for the agent project across all boards |
+| `/workiq:site-explorer` | Browse SharePoint sites, lists, and document libraries | Discovering available knowledge sources before Step 7 (content audit) |
+| `/workiq:email-analytics` | Email volume, senders, response patterns | Understanding stakeholder communication load; finding who is active on a project |
+| `/workiq:org-chart` | Visual org chart for any person | Finding who owns a system or approves a connector |
+| `/workiq:channel-audit` | Audit Teams channels for inactivity | Identifying the right channels to monitor for agent feedback |
+| `/workiq:meeting-cost-calculator` | Time and money cost of meetings | Quantifying the time cost that an agent could deflect |
+
+### WorkIQ aligned to the build lifecycle
+
+| Phase | What you use WorkIQ for | Command |
+|-------|------------------------|---------|
+| **Discovery — Step 3** | Pull context from requirements meetings before filling in the questionnaire | `/workiq` → "What was discussed in the [project] kick-off meeting?" |
+| **Discovery — Step 3** | Extract action items from the requirements session | `/workiq:action-item-extractor` → meeting: "requirements" |
+| **Discovery — Step 4** | Find environment URLs, connector details, auth config shared in emails | `/workiq` → "What environment URLs were shared for the HR agent project?" |
+| **Discovery — Step 5** | Understand current user workflows from Teams discussions | `/workiq` → "What did [team] say about how they submit leave requests today?" |
+| **Design — Step 8** | Check what use cases were agreed in design workshops | `/workiq` → "What use cases were finalised in the agent design meeting?" |
+| **Design — Step 10** | Find security requirements from emails or security review meetings | `/workiq` → "Any emails from security team about agent data handling requirements?" |
+| **Build — Step 14** | Look up connector details, API endpoints, SharePoint site structure | `/workiq` → "What SharePoint sites were mentioned for the knowledge source?" |
+| **Build — Step 14** | Find who to contact when a connector or system is unclear | `/workiq` → "Who owns the leave management API?" |
+| **Build — Steps 14–15** | Stay current with team decisions without leaving your dev session | `/workiq:channel-digest` → Engineering channel, last 24h |
+| **Test — Step 20** | Pull UAT feedback from Teams or email before fixing | `/workiq` → "What feedback did [tester] share about the agent in Teams?" |
+| **Test — Step 20** | Extract action items from UAT sessions | `/workiq:action-item-extractor` → meeting: "UAT session" |
+| **Operate — Step 27** | Check if incident was discussed in Teams before investigating | `/workiq` → "Any Teams messages about the HR agent failing today?" |
+| **Operate — Step 26** | Catch up on agent-related channel activity | `/workiq:channel-digest` → agent support channel |
+| **Any phase** | Find relevant SharePoint knowledge sources | `/workiq:site-explorer` |
+| **Any phase** | Know your tasks and priorities for the day | `/workiq:daily-outlook-triage` |
 
 ---
 
@@ -96,7 +157,12 @@ These skills guide the development process — how to plan, build, test, and rev
 | `context7` | `/context7` | Pulls in up-to-date library and SDK documentation as context | 14, 15 — when working with connectors or MCP |
 | `skill-creator` | `/skill-creator` | Creates new custom skills for repeated project-specific tasks | When you want to automate a recurring workflow |
 | `claude-md-management` | `/claude-md-management` | Creates and updates CLAUDE.md files for project-specific Claude behaviour | Project setup — define coding standards |
-| `workiq` | `/workiq` | Work IQ tools for task and productivity management | Any — task tracking |
+| `workiq` | `/workiq` | Query M365 data — emails, meetings, Teams chats, documents, people | Any — load M365 context before any task |
+| `workiq-productivity` | `/workiq:action-item-extractor` | Extract action items from meeting content | After requirements, design, UAT meetings |
+| `workiq-productivity` | `/workiq:channel-digest` | Summarise Teams channel activity — decisions, action items, mentions | Start of day, pre-standup, catching up |
+| `workiq-productivity` | `/workiq:daily-outlook-triage` | Today's inbox and calendar summary | Start of each dev day |
+| `workiq-productivity` | `/workiq:multi-plan-search` | Search tasks across all Planner plans | Tracking project tasks |
+| `workiq-productivity` | `/workiq:site-explorer` | Browse SharePoint sites and libraries | Step 7 — content audit, knowledge source discovery |
 
 ---
 
@@ -113,12 +179,20 @@ No skills required. Complete the assessment documents manually.
 ### Phase 2 — Discovery
 | Skill | When |
 |-------|------|
-| `/brainstorming` | Steps 3 and 5 — turn a requirements session into a structured spec |
+| `/workiq` | Step 3 — pull context from requirements meetings before filling in the questionnaire |
+| `/workiq:action-item-extractor` | Step 3 — extract action items from the requirements session |
+| `/workiq` | Step 4 — find environment URLs, connector details, auth config from emails |
+| `/workiq` | Step 5 — understand current user workflows from Teams discussions |
+| `/workiq:site-explorer` | Step 5 — discover SharePoint sites users work with today |
+| `/brainstorming` | Steps 3 and 5 — turn requirements into a structured spec |
 | `/microsoft-docs` | Any point — look up Microsoft licensing, connector, or environment docs |
 
 ### Phase 3 — Design
 | Skill | When |
 |-------|------|
+| `/workiq` | Step 8 — check what use cases were agreed in design workshops |
+| `/workiq` | Step 10 — find security requirements from emails or security review meetings |
+| `/workiq:org-chart` | Step 10 — identify who approves connectors and security decisions |
 | `/brainstorming` | Steps 8, 9, 10 — design FDD, conversation flows, technical architecture |
 | `/copilot-studio:best-practices` | Steps 6, 11 — validate component selection and prompt patterns |
 | `/optibot` | Step 11 — optimise the agent system prompt |
@@ -127,6 +201,9 @@ No skills required. Complete the assessment documents manually.
 ### Phase 4 — Build
 | Skill | When |
 |-------|------|
+| `/workiq:channel-digest` | Start of each build session — catch up on what was discussed overnight |
+| `/workiq` | Step 14 — look up connector details, API endpoints, SharePoint structure shared in chats/emails |
+| `/workiq` | Step 14 — find who to ask when a connector or system requirement is unclear |
 | `/copilot-studio:detect-mode` | Step 12 — determine correct build mode before starting |
 | `/copilot-studio:clone-agent` | Step 13 — scaffold new agent from base |
 | `/copilot-studio:new-topic` | Step 14 — every new topic you add |
@@ -149,6 +226,8 @@ No skills required. Complete the assessment documents manually.
 ### Phase 5 — Test and Review
 | Skill | When |
 |-------|------|
+| `/workiq` | Step 20 — pull UAT feedback from Teams or email before fixing bugs |
+| `/workiq:action-item-extractor` | Step 20 — extract action items from UAT session meeting |
 | `/copilot-studio:create-eval` | Step 17 — build the eval test suite |
 | `/copilot-studio:run-eval` | Step 17 — run routing accuracy tests |
 | `/copilot-studio:analyze-evals` | Step 17 — identify and fix low-accuracy topics |
@@ -163,6 +242,7 @@ No skills required. Complete the assessment documents manually.
 ### Phase 6 — Launch
 | Skill | When |
 |-------|------|
+| `/workiq` | Step 21 — confirm go/no-go decisions from stakeholder emails or chats |
 | `/copilot-studio:validate` | Step 21 — final pre-launch validation |
 | `/copilot-studio:manage-agent` | Step 21 — push and publish to production |
 | `/verification-before-completion` | Step 21 — final completeness check |
@@ -170,7 +250,85 @@ No skills required. Complete the assessment documents manually.
 ### Phase 7 — Operate
 | Skill | When |
 |-------|------|
+| `/workiq` | Step 27 — check Teams/email for incident reports before investigating |
+| `/workiq:channel-digest` | Steps 25, 26 — catch up on agent support channel activity |
+| `/workiq:action-item-extractor` | After incident reviews — extract follow-up actions from the meeting |
 | `/copilot-studio:analyze-evals` | Steps 24, 25, 26 — read monitoring data and identify gaps |
 | `/systematic-debugging` | Step 27 — structured incident investigation |
 | `/copilot-studio:best-practices` | Step 28 — quarterly agent health review |
 | `/copilot-studio:known-issues` | Step 27 — check against known bugs when something breaks |
+
+---
+
+## Developer Cheat Sheet
+
+The fastest way to use your installed skills together as a developer.
+
+### Starting a new day
+
+```
+1. /workiq:daily-outlook-triage        → what's in my inbox and calendar today
+2. /workiq:channel-digest              → what was discussed in project channels overnight
+3. /workiq:multi-plan-search           → what tasks are assigned to me across Planner boards
+```
+
+### Starting a new agent project
+
+```
+1. /workiq → "What was discussed in the [project] kick-off meeting?"
+2. /workiq:action-item-extractor       → pull action items from that meeting
+3. /brainstorming                      → structure requirements into a spec
+4. /copilot-studio:detect-mode         → confirm authoring mode
+5. /copilot-studio:clone-agent         → scaffold the agent
+```
+
+### Building a new topic
+
+```
+1. /workiq → "What did [stakeholder] say about [use case] in Teams?"
+2. /copilot-studio:new-topic           → scaffold the topic YAML
+3. /copilot-studio:lookup-schema       → check node schema if unsure
+4. /copilot-studio:add-node            → add nodes as you build
+5. /copilot-studio:chat-with-agent     → test immediately after each topic
+```
+
+### Adding a knowledge source
+
+```
+1. /workiq:site-explorer               → discover available SharePoint sites
+2. /workiq → "Who manages the [team] SharePoint site?"
+3. /copilot-studio:add-knowledge       → wire it into the agent
+4. /copilot-studio:chat-with-agent     → test a question against the knowledge source
+```
+
+### Before raising a PR
+
+```
+1. /copilot-studio:validate            → catch YAML errors
+2. /copilot-studio:list-topics         → confirm all topics are present
+3. /code-review                        → quality review of YAML
+4. /code-simplifier                    → clean up repetitive patterns
+5. /finishing-a-development-branch     → commit, PR prep
+```
+
+### Running eval and UAT
+
+```
+1. /copilot-studio:create-eval         → build test suite from topic list
+2. /copilot-studio:run-eval            → run routing accuracy
+3. /copilot-studio:analyze-evals       → find low-accuracy topics to fix
+4. /copilot-studio:run-tests-kit       → full UAT kit
+5. /workiq → "What feedback did [tester] share about the agent?"
+6. /workiq:action-item-extractor       → extract fixes from UAT meeting
+```
+
+### When something breaks in production
+
+```
+1. /workiq → "Any Teams messages or emails about the agent failing?"
+2. /workiq:channel-digest              → check the agent support channel
+3. /systematic-debugging              → structured investigation
+4. /copilot-studio:known-issues        → check against known bugs
+5. /copilot-studio:validate            → confirm YAML is still valid
+6. /copilot-studio:manage-agent        → push a fix
+```
