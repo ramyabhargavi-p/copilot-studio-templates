@@ -6,6 +6,27 @@ Complete this alongside `07-functional-design-document.md`. User workflows valid
 
 ---
 
+## WorkIQ Pre-Read — Run Before User Interviews
+
+Use WorkIQ to understand how users currently work before interviewing them. This gives you concrete data points to validate or challenge during sessions.
+
+**Run these queries via `/workiq`:**
+
+| Query | What it reveals |
+|---|---|
+| `"What questions does [team] receive most often in Teams or email?"` | High-frequency workflows — these become your first topics |
+| `"How do [users] currently submit [request type]? What do they say about the process?"` | Current state pain points |
+| `"What complaints or frustrations has [team] expressed about [process] in Teams?"` | Pain level input for W-02 priority scoring |
+| `"What does [team] channel activity look like around [process] — volume and timing?"` | Frequency data for workflow inventory |
+| `"Who are the main users of [process] based on email and Teams activity?"` | Persona identification |
+| `"What channel does [team] use most to ask [topic] questions?"` | Current channel (Teams DM, email, phone) |
+
+**Run `/workiq:channel-digest`** on the team's support or general channel to see real workflow patterns before the analysis session.
+
+**Run `/workiq:email-analytics`** to understand email volume and response patterns that the agent could deflect.
+
+---
+
 ## How to Use This Document
 
 1. For each workflow the agent will touch, complete one Workflow Analysis Block (Section 3)

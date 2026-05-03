@@ -1,0 +1,269 @@
+kind: AdaptiveDialog
+modelDescription: Collects user CSAT feedback at the end of a conversation using a thumbs up/down → star rating → optional free text sequence. Logs all feedback to Application Insights.
+id: <SCHEMA_NAME>_feedback_REPLACE
+name: Feedback
+language: 1033
+
+triggers:
+  - kind: OnRecognizedIntent
+    id: feedbackTrigger_REPLACE
+    intent:
+      triggerQueries:
+        - feedback
+        - rate this
+        - leave feedback
+        - was this helpful
+        - not helpful
+        - thumbs up
+        - thumbs down
+        - rate the assistant
+        - give feedback
+        - how did I do
+    actions:
+      - kind: GotoAction
+        id: gotoCollectFeedback_REPLACE
+        actionId: collectThumbsFeedback_REPLACE
+
+  # ── Thumbs up / down ──────────────────────────────────────────────────────
+  - kind: OnActivity
+    id: collectThumbsFeedback_REPLACE
+    activityType: message
+    actions:
+      - kind: SendActivity
+        id: sendThumbsCard_REPLACE
+        activity:
+          attachments:
+            - contentType: application/vnd.microsoft.card.adaptive
+              content:
+                $schema: http://adaptivecards.io/schemas/adaptive-card.json
+                type: AdaptiveCard
+                version: "1.5"
+                body:
+                  - type: TextBlock
+                    text: Was this helpful?
+                    weight: Bolder
+                    size: Medium
+                    wrap: true
+                  - type: TextBlock
+                    text: Your feedback helps us improve this assistant.
+                    size: Small
+                    isSubtle: true
+                    wrap: true
+                actions:
+                  - type: Action.Submit
+                    title: "👍  Yes, it helped"
+                    style: positive
+                    data:
+                      feedbackType: thumbs
+                      feedbackValue: positive
+                      score: 1
+                  - type: Action.Submit
+                    title: "👎  No, it didn't"
+                    data:
+                      feedbackType: thumbs
+                      feedbackValue: negative
+                      score: 0
+
+      - kind: Question
+        id: waitForThumbsResponse_REPLACE
+        variable: Topic.ThumbsResponse
+        prompt: ""
+        entityType: UserEntireResponse
+
+      - kind: SetVariable
+        id: setThumbsScore_REPLACE
+        variable: Topic.ThumbsScore
+        value: =Topic.ThumbsResponse.score
+
+      - kind: LogCustomTelemetryEvent
+        id: logThumbsFeedback_REPLACE
+        eventName: Feedback.Thumbs
+        properties:
+          feedbackValue: =Topic.ThumbsResponse.feedbackValue
+          score: =Text(Topic.ThumbsScore)
+          conversationId: =System.Activity.Conversation.Id
+
+      # ── If positive: thank and close ──────────────────────────────────────
+      - kind: ConditionGroup
+        id: checkThumbsResult_REPLACE
+        conditions:
+          - id: positiveThumbsBranch_REPLACE
+            condition: =Topic.ThumbsResponse.feedbackValue = "positive"
+            actions:
+              - kind: SendActivity
+                id: sendPositiveThanks_REPLACE
+                activity:
+                  text: >-
+                    Thank you for the positive feedback — glad I could help! 😊
+              - kind: EndDialog
+                id: endOnPositive_REPLACE
+
+          # ── If negative: ask for star rating ──────────────────────────────
+          - id: negativeThumbsBranch_REPLACE
+            condition: =Topic.ThumbsResponse.feedbackValue = "negative"
+            actions:
+              - kind: SendActivity
+                id: sendRatingCard_REPLACE
+                activity:
+                  attachments:
+                    - contentType: application/vnd.microsoft.card.adaptive
+                      content:
+                        $schema: http://adaptivecards.io/schemas/adaptive-card.json
+                        type: AdaptiveCard
+                        version: "1.5"
+                        body:
+                          - type: TextBlock
+                            text: How would you rate this conversation?
+                            weight: Bolder
+                            size: Medium
+                            wrap: true
+                          - type: TextBlock
+                            text: "1 = Very poor  ·  5 = Excellent"
+                            size: Small
+                            isSubtle: true
+                        actions:
+                          - type: Action.Submit
+                            title: "⭐  1"
+                            data:
+                              feedbackType: rating
+                              feedbackValue: "1"
+                              score: 1
+                          - type: Action.Submit
+                            title: "⭐⭐  2"
+                            data:
+                              feedbackType: rating
+                              feedbackValue: "2"
+                              score: 2
+                          - type: Action.Submit
+                            title: "⭐⭐⭐  3"
+                            data:
+                              feedbackType: rating
+                              feedbackValue: "3"
+                              score: 3
+                          - type: Action.Submit
+                            title: "⭐⭐⭐⭐  4"
+                            data:
+                              feedbackType: rating
+                              feedbackValue: "4"
+                              score: 4
+                          - type: Action.Submit
+                            title: "⭐⭐⭐⭐⭐  5"
+                            style: positive
+                            data:
+                              feedbackType: rating
+                              feedbackValue: "5"
+                              score: 5
+
+              - kind: Question
+                id: waitForRating_REPLACE
+                variable: Topic.RatingResponse
+                prompt: ""
+                entityType: UserEntireResponse
+
+              - kind: SetVariable
+                id: setRatingScore_REPLACE
+                variable: Topic.RatingScore
+                value: =Topic.RatingResponse.score
+
+              - kind: LogCustomTelemetryEvent
+                id: logRatingFeedback_REPLACE
+                eventName: Feedback.Rating
+                properties:
+                  score: =Text(Topic.RatingScore)
+                  conversationId: =System.Activity.Conversation.Id
+
+              # ── If rating ≤ 3: ask for free text ──────────────────────────
+              - kind: ConditionGroup
+                id: checkRatingScore_REPLACE
+                conditions:
+                  - id: lowRatingBranch_REPLACE
+                    condition: =Topic.RatingScore <= 3
+                    actions:
+                      - kind: SendActivity
+                        id: sendTextCard_REPLACE
+                        activity:
+                          attachments:
+                            - contentType: application/vnd.microsoft.card.adaptive
+                              content:
+                                $schema: http://adaptivecards.io/schemas/adaptive-card.json
+                                type: AdaptiveCard
+                                version: "1.5"
+                                body:
+                                  - type: TextBlock
+                                    text: What could we improve?
+                                    weight: Bolder
+                                    size: Medium
+                                    wrap: true
+                                  - type: TextBlock
+                                    text: Optional — your comments help us make this assistant better.
+                                    size: Small
+                                    isSubtle: true
+                                    wrap: true
+                                  - type: Input.Text
+                                    id: feedbackText
+                                    placeholder: Tell us what was missing or what went wrong...
+                                    isMultiline: true
+                                    maxLength: 500
+                                  - type: Input.ChoiceSet
+                                    id: feedbackCategory
+                                    label: What best describes the issue?
+                                    style: compact
+                                    choices:
+                                      - title: Answer was wrong or inaccurate
+                                        value: wrong_answer
+                                      - title: Answer was incomplete
+                                        value: incomplete
+                                      - title: Couldn't understand my question
+                                        value: not_understood
+                                      - title: Topic not covered
+                                        value: out_of_scope
+                                      - title: Took too long / too many steps
+                                        value: too_slow
+                                      - title: Other
+                                        value: other
+                                actions:
+                                  - type: Action.Submit
+                                    title: Submit feedback
+                                    style: positive
+                                    data:
+                                      feedbackType: text
+                                  - type: Action.Submit
+                                    title: Skip
+                                    data:
+                                      feedbackType: text
+                                      skipped: true
+
+                      - kind: Question
+                        id: waitForTextResponse_REPLACE
+                        variable: Topic.TextResponse
+                        prompt: ""
+                        entityType: UserEntireResponse
+
+                      - kind: ConditionGroup
+                        id: checkIfSkipped_REPLACE
+                        conditions:
+                          - id: notSkippedBranch_REPLACE
+                            condition: =!Topic.TextResponse.skipped
+                            actions:
+                              - kind: LogCustomTelemetryEvent
+                                id: logTextFeedback_REPLACE
+                                eventName: Feedback.Text
+                                properties:
+                                  feedbackText: =Topic.TextResponse.feedbackText
+                                  feedbackCategory: =Topic.TextResponse.feedbackCategory
+                                  ratingScore: =Text(Topic.RatingScore)
+                                  conversationId: =System.Activity.Conversation.Id
+
+                  - id: highRatingBranch_REPLACE
+                    condition: =Topic.RatingScore > 3
+                    actions: []
+
+              - kind: SendActivity
+                id: sendFinalThanks_REPLACE
+                activity:
+                  text: >-
+                    Thank you for your feedback — it helps us improve.
+                    If you need anything else, I'm here to help.
+
+      - kind: EndDialog
+        id: endFeedback_REPLACE

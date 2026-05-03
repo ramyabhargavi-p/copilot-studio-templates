@@ -5,6 +5,30 @@ Each answer maps directly to a template decision. Unanswered questions become ri
 
 ---
 
+## WorkIQ Pre-Read — Run Before the Stakeholder Meeting
+
+Before sitting down with the stakeholder, use WorkIQ to pull context from emails, Teams chats, and meeting notes that already exist about this project. Paste findings into the relevant questions below. This reduces the meeting time and surfaces requirements the stakeholder may have forgotten to mention.
+
+**Run these queries in your Claude session using `/workiq`:**
+
+| Query to run | Paste result into |
+|---|---|
+| `"What emails or Teams messages discuss requirements for the [project/team] agent?"` | Q1, Q4, Q5 |
+| `"What was decided in the [project] kick-off or requirements meeting?"` | Q1, Q4, Q8 |
+| `"What are the most common questions or requests the [team] receives by email or Teams?"` | Q4 |
+| `"What things does the [team] frequently say they cannot help with?"` | Q5 |
+| `"Who currently handles [process] requests and how?"` | Q6 (escalation path) |
+| `"What SharePoint sites does the [team] use for their documents?"` | Q9 |
+| `"Who owns or manages the [team] SharePoint site?"` | Q9 |
+| `"Any emails or messages about a go-live date or deadline for the [project] agent?"` | Q19 |
+| `"What Planner tasks are assigned for the [agent] project?"` | Q19, Q20 |
+
+**Run `/workiq:action-item-extractor`** on the most recent project meeting to get a pre-built list of open items before the session starts.
+
+**Run `/workiq:site-explorer`** to browse and list available SharePoint sites the agent could use as knowledge sources before Q9.
+
+---
+
 ## Section 1 — Business Context
 
 **1. What is the primary purpose of this agent?**
@@ -135,8 +159,22 @@ Add to agent instructions: _______________
 | Monthly active conversations | |
 | Fallback rate (unanswered questions) | < ___% |
 | Escalation rate | < ___% |
-| User satisfaction score (CSAT) | > ___ |
+| User satisfaction (CSAT thumbs-up rate) | > ___% |
+| Star rating average (1–5) | > ___ |
 | Knowledge search hit rate | > ___% |
+
+**18a. Which feedback collection method will this agent use?**
+See `operations/user-feedback.md` for card templates and wiring instructions.
+- [ ] Thumbs up / down — shown after every conversation (default, lowest friction)
+- [ ] Star rating (1–5) — shown after resolved topics
+- [ ] Free-text statement — shown when user rates 3 stars or below
+- [ ] All three in sequence (thumbs → star if negative → text if star ≤ 3)
+
+**18b. Where will feedback data be stored?**
+- [ ] Application Insights custom events (default — no extra connector)
+- [ ] SharePoint list
+- [ ] Dataverse table
+- [ ] Not collected
 
 **19. What is the go-live date?**
 > Date:

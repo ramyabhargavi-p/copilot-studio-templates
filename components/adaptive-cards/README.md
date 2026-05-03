@@ -6,11 +6,25 @@ JSON card templates for use in Copilot Studio topics. These are data templates �
 
 ## Cards
 
+### Interaction Cards
+
 | File | Use case |
 |------|---------|
 | [`confirmation-card.json`](confirmation-card.json) | Ask the user to confirm or cancel an action (e.g. "Submit leave request?") |
 | [`status-card.json`](status-card.json) | Display the result of an action or lookup (e.g. "Leave balance: 12 days") |
 | [`form-card.json`](form-card.json) | Collect structured input from the user (e.g. date range, category, notes) |
+
+### Feedback / CSAT Cards
+
+| File | Use case | When to show |
+|------|---------|-------------|
+| [`feedback-thumbs.json`](feedback-thumbs.json) | 👍 / 👎 Yes or No — was this helpful? | End of every conversation (default) |
+| [`feedback-rating.json`](feedback-rating.json) | ⭐ Star rating 1–5 | After thumbs-down, or after high-value topic completions |
+| [`feedback-text.json`](feedback-text.json) | 💬 Free text + category dropdown | After rating ≤ 3 (optional — always has a Skip button) |
+
+**To use all three in sequence:** add the `components/topics/feedback/` topic to your agent. It chains all three cards automatically with branching logic.
+
+See `operations/user-feedback.md` for KPI targets, telemetry queries, and wiring instructions.
 
 ---
 

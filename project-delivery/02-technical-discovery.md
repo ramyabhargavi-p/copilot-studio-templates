@@ -5,6 +5,24 @@ These answers determine environment setup, auth configuration, and connector ava
 
 ---
 
+## WorkIQ Pre-Read — Run Before the Technical Discovery Session
+
+Use these queries to pull technical details already shared in emails or Teams before the session. Reduces back-and-forth and speeds up discovery.
+
+**Run these queries via `/workiq`:**
+
+| Query | Feeds into |
+|---|---|
+| `"What Power Platform environment URLs were shared for the [project] agent?"` | Section 1 — environment URL |
+| `"Any emails with Azure AD tenant ID or app registration details for [project]?"` | Section 2 — auth config |
+| `"What connectors or APIs were discussed for the [agent] project?"` | Section 3 — connectors |
+| `"Who is the Power Platform admin or IT contact for [team/org]?"` | Section 1 — admin contact |
+| `"Any Teams messages about DLP policies or connector restrictions for Power Platform?"` | Section 5 — DLP |
+| `"Was Application Insights mentioned for the [project] agent monitoring?"` | Section 6 — monitoring |
+| `"What SharePoint sites or libraries were mentioned for knowledge sources?"` | Section 4 — knowledge sources |
+
+---
+
 ## 1. Power Platform Environment
 
 | Item | Value |

@@ -1,0 +1,69 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "How would you rate this conversation?",
+      "weight": "Bolder",
+      "size": "Medium",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "1 = Very poor  ·  5 = Excellent",
+      "size": "Small",
+      "isSubtle": true,
+      "wrap": true
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "⭐  1",
+      "data": {
+        "feedbackType": "rating",
+        "feedbackValue": "1",
+        "score": 1
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "⭐⭐  2",
+      "data": {
+        "feedbackType": "rating",
+        "feedbackValue": "2",
+        "score": 2
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "⭐⭐⭐  3",
+      "data": {
+        "feedbackType": "rating",
+        "feedbackValue": "3",
+        "score": 3
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "⭐⭐⭐⭐  4",
+      "data": {
+        "feedbackType": "rating",
+        "feedbackValue": "4",
+        "score": 4
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "⭐⭐⭐⭐⭐  5",
+      "style": "positive",
+      "data": {
+        "feedbackType": "rating",
+        "feedbackValue": "5",
+        "score": 5
+      }
+    }
+  ]
+}

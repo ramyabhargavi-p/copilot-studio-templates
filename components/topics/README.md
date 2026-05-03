@@ -11,6 +11,7 @@ Each folder is an independent topic that you add to your agent as needed.
 | [`conversation-init/`](conversation-init/) | `OnActivity` (first message) | Loads M365 user profile with safe fallback defaults |
 | [`disambiguation/`](disambiguation/) | `OnSelectIntent` | Asks the user to clarify when multiple topics match |
 | [`escalation/`](escalation/) | `OnRecognizedIntent` | Human handoff via `TransferConversation` |
+| [`feedback/`](feedback/) | `OnRecognizedIntent` / `BeginDialog` | CSAT feedback sequence — thumbs → star rating → free text |
 | [`knowledge-search/`](knowledge-search/) | `OnUnknownIntent` | Generative answers from knowledge sources |
 | [`out-of-scope/`](out-of-scope/) | `OnRecognizedIntent` | Redirects clearly out-of-scope queries |
 | [`question-branch/`](question-branch/) | `OnRecognizedIntent` | Collects user input and branches the conversation |
