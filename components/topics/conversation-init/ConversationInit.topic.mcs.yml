@@ -1,0 +1,103 @@
+# Name: Conversation Init
+# Trigger: Fires on the first user message in a conversation (OnActivity, type: Message)
+# Purpose: JIT-provision user context before any topic logic runs —
+#          loads the M365 user profile and an agent-specific glossary into global variables.
+#          Includes error handling so a failed profile load never blocks the conversation.
+#          Remove either block (M365 Profile or Glossary) if not needed.
+# Prerequisites:
+#   - Office 365 Users connector must be added to the agent (shared_office365users)
+#   - A knowledge source named "<AGENT-SCHEMA-NAME>.knowledge.glossary" must exist (for glossary block)
+#   - Global variables Global.UserCountry, Global.UserDisplayName, Global.Glossary must be declared
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName
+kind: AdaptiveDialog
+modelDescription: null
+beginDialog:
+  kind: OnActivity
+  id: main
+  type: Message
+  # Only runs once per conversation — skipped on subsequent messages once Global.UserCountry is set
+  condition: =IsBlank(Global.UserCountry)
+  actions:
+
+    # --- Block 1: Load M365 User Profile ---
+    - kind: InvokeConnectorAction
+      id: getProfile_REPLACE1
+      connectionReference: shared_office365users
+      connectionProperties:
+        mode: Invoker
+      operationId: UserGet_V2
+      output:
+        kind: SingleVariableOutputBinding
+        variable: init:Topic.M365Profile
+
+    # Validate the profile response — set safe defaults if the API call failed
+    - kind: ConditionGroup
+      id: profileCheck_REPLACE2
+      conditions:
+        - id: profileCheckItem_REPLACE3
+          condition: =!IsBlank(Topic.M365Profile)
+          actions:
+            # Success: populate globals from real profile data
+            - kind: SetVariable
+              id: setCountry_REPLACE4
+              variable: Global.UserCountry
+              value: =If(IsBlank(Topic.M365Profile.country), "Unknown", Topic.M365Profile.country)
+
+            - kind: SetVariable
+              id: setDisplayName_REPLACE5
+              variable: Global.UserDisplayName
+              value: =If(IsBlank(Topic.M365Profile.displayName), "there", Topic.M365Profile.displayName)
+
+      elseActions:
+        # Failure: profile call returned null — set safe defaults so conversation continues
+        # This ensures a failed API call never blocks the user from getting help
+        - kind: SetVariable
+          id: setDefaultCountry_REPLACE6
+          variable: Global.UserCountry
+          value: "Unknown"
+
+        - kind: SetVariable
+          id: setDefaultName_REPLACE7
+          variable: Global.UserDisplayName
+          value: "there"
+
+        - kind: LogCustomTelemetryEvent
+          id: logProfileFailed_REPLACE8
+          eventName: ConversationInit.ProfileLoadFailed
+          properties: >-
+            ={
+              ConversationId: System.Conversation.Id,
+              Channel: System.Activity.Channel,
+              TimeUTC: Text(Now(), DateTimeFormat.UTC)
+            }
+
+    # Log successful init for diagnostics
+    - kind: LogCustomTelemetryEvent
+      id: logInitComplete_REPLACE9
+      eventName: ConversationInit.Completed
+      properties: >-
+        ={
+          UserCountry: Global.UserCountry,
+          ConversationId: System.Conversation.Id,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }
+
+    # --- Block 2: Load Glossary from Knowledge Source ---
+    # Fetches agent-specific terminology so the AI can reference it throughout the conversation
+    - kind: SearchAndSummarizeContent
+      id: searchGlossary_REPLACE10
+      autoSend: false
+      variable: Topic.GlossaryResult
+      userInput: ='*'
+      responseCaptureType: FullResponse
+      applyModelKnowledgeSetting: false
+      knowledgeSources:
+        kind: SearchSpecificKnowledgeSources
+        knowledgeSources:
+          - <AGENT-SCHEMA-NAME>.knowledge.glossary
+
+    - kind: SetVariable
+      id: setGlossary_REPLACE11
+      variable: Global.Glossary
+      value: =Topic.GlossaryResult

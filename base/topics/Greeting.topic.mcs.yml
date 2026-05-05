@@ -1,0 +1,23 @@
+mcs.metadata:
+  componentName: Greeting
+  description: |-
+    Trigger: Fires automatically when a conversation starts
+    Purpose: Welcome the user and log the conversation start for channel and session analytics
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnConversationStart
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendMessage_REPLACE1
+      activity:
+        text:
+          - Hello! I'm {System.Bot.Name}. How can I help you today?
+          - Hi there! Welcome to {System.Bot.Name}. What can I assist you with?
+          - Greetings! I'm {System.Bot.Name} and I'm here to help. What would you like to know?
+
+    - kind: LogCustomTelemetryEvent
+      id: logStart_REPLACE2
+      eventName: Conversation.Started
+      properties:

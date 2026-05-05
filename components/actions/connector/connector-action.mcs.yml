@@ -1,0 +1,40 @@
+# Name: <Action Name>
+# Description: <What this action does — shown to the AI for routing decisions>
+# Purpose: Call a Power Platform connector operation (SharePoint, Outlook, ServiceNow, etc.)
+#          as a TaskDialog action the AI can invoke in response to user requests.
+# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+# NOTE: Replace all <PLACEHOLDER> values with your content
+kind: TaskDialog
+
+# Inputs: values passed to the connector operation
+inputs:
+  # Fixed input: a hard-coded value, not collected from the user
+  - kind: ManualTaskInput
+    propertyName: <FixedPropertyName>       # Connector parameter name (e.g. siteAddress)
+    value: <Fixed Value>                    # Hard-coded value (e.g. https://contoso.sharepoint.com/sites/HR)
+    # NOTE: For OData $-prefixed params (e.g. SharePoint $filter), use:
+    #   propertyName: "'$filter'"           # Inner single quotes are required by the runtime
+
+  # Dynamic input: value the AI collects from the user before invoking the action
+  - kind: AutomaticTaskInput
+    propertyName: <DynamicPropertyName>     # Connector parameter name (e.g. subject)
+    description: <Describe what value the AI should collect from the user>
+    entity: StringPrebuiltEntity            # StringPrebuiltEntity | NumberPrebuiltEntity | DateTimePrebuiltEntity | BooleanPrebuiltEntity
+    shouldPromptUser: true                  # true: AI asks user if value is missing; false: AI infers from context
+
+# Display name and description for the AI — be specific so the AI routes correctly
+modelDisplayName: <Short display name shown in Copilot Studio>
+modelDescription: <One sentence: what does this action do and when should the AI use it>
+
+# Output: the connector operation's response is captured here
+outputs:
+  - propertyName: Response                  # Name used to reference the output in subsequent nodes
+
+action:
+  kind: InvokeConnectorTaskAction
+  connectionReference: <connection-reference-logical-name>   # e.g. shared_sharepointonline | shared_office365 | shared_commondataservice
+  connectionProperties:
+    mode: Invoker                           # Invoker: uses the signed-in user's identity; Caller: uses the agent's service identity
+  operationId: <OperationId>               # The connector's operation ID (find in Power Platform connector reference)
+
+outputMode: All                             # All: return all output fields; SingleValue: return only the first output field

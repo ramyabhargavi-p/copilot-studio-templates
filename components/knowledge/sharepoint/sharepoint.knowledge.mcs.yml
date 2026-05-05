@@ -1,0 +1,13 @@
+# Name: <Knowledge Source Name>
+# Description: <What content this knowledge source provides>
+# Purpose: Connect a SharePoint document library or folder as a knowledge source.
+#          The agent can search and summarise content from this source to answer user questions.
+# NOTE: Replace the site URL with your actual SharePoint library or folder URL
+kind: KnowledgeSourceConfiguration
+source:
+  kind: SharePointSearchSource
+  site: https://contoso.sharepoint.com/sites/MySite/Shared%20Documents/MyFolder
+  # Tips:
+  # - Point to the most specific folder possible — broader scope = less relevant results
+  # - URL-encode spaces as %20
+  # - The agent's service principal or the signed-in user must have read access to this path

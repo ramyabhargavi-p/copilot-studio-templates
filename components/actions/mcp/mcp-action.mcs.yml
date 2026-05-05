@@ -1,0 +1,19 @@
+# Name: <MCP Server Name>
+# Description: <What this MCP server does>
+# Purpose: Expose an MCP (Model Context Protocol) server tool as an AI-invokable action.
+#          MCP servers run externally and are called via a connection reference.
+# NOTE: Replace all <PLACEHOLDER> values with your content
+kind: TaskDialog
+
+# Display name and description for the AI — be specific so the AI routes correctly
+modelDisplayName: <Short display name shown in Copilot Studio>
+modelDescription: <One sentence: what does this MCP server do and when should the AI use it>
+
+action:
+  kind: InvokeExternalAgentTaskAction
+  connectionReference: <connection-reference-logical-name>   # Logical name of the MCP connection in Power Platform
+  connectionProperties:
+    mode: Invoker                           # Invoker: runs as the signed-in user; Caller: runs as service principal
+  operationDetails:
+    kind: ModelContextProtocolMetadata
+    operationId: <mcp_OperationId>         # The MCP tool's operation ID as registered in the connection

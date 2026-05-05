@@ -1,0 +1,18 @@
+mcs.metadata:
+  componentName: Fallback
+  description: |-
+    Trigger: Fires when no topic matches the user's message (OnUnknownIntent)
+    Purpose: Gracefully handle unmatched inputs — retry up to 3× then escalate to human.
+             High fallback rates indicate gaps in topic coverage, knowledge sources, or trigger phrases.
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+    NOTE: Replace <AGENT_SCHEMA> with your agent's schemaName from settings.mcs.yml
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnknownIntent
+  id: main
+  priority: -1
+  actions:
+    - kind: LogCustomTelemetryEvent
+      id: logFallback_REPLACE1
+      eventName: Agent.FallbackTriggered
+      properties:

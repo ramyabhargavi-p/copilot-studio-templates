@@ -1,0 +1,88 @@
+name: Promote Agent — Dev to UAT
+
+# Triggers when a PR is merged to main.
+# Pushes the agent to the UAT environment for testing.
+# Does NOT auto-publish — UAT testers test from draft; publish manually for channel testing.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'agents/**'
+
+env:
+  AGENT_PATH: agents/${{ vars.AGENT_SCHEMA_NAME }}
+
+jobs:
+  promote-to-uat:
+    name: Push agent to UAT environment
+    runs-on: ubuntu-latest
+    environment: uat    # add a required reviewer in GitHub Settings → Environments → uat
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate — no unreplaced placeholders
+        run: |
+          echo "Checking for unreplaced <PLACEHOLDER> values..."
+          PLACEHOLDERS=$(grep -r "<[A-Z_]*>" "${{ env.AGENT_PATH }}" --include="*.yml" -l 2>/dev/null || true)
+          if [ -n "$PLACEHOLDERS" ]; then
+            echo "ERROR: Unreplaced placeholders found in:"
+            echo "$PLACEHOLDERS"
+            exit 1
+          fi
+
+          echo "Checking for unreplaced _REPLACE node IDs..."
+          REPLACE_IDS=$(grep -r "_REPLACE" "${{ env.AGENT_PATH }}" --include="*.yml" -l 2>/dev/null || true)
+          if [ -n "$REPLACE_IDS" ]; then
+            echo "ERROR: _REPLACE node IDs found in:"
+            echo "$REPLACE_IDS"
+            exit 1
+          fi
+
+          echo "Validation passed."
+
+      - name: Install Power Platform CLI
+        run: |
+          dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Authenticate to Power Platform (UAT)
+        run: |
+          pac auth create \
+            --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
+            --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
+            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
+            --environment "${{ secrets.POWER_PLATFORM_UAT_URL }}"
+
+      - name: Push agent to UAT
+        working-directory: ${{ env.AGENT_PATH }}
+        run: |
+          pac copilot push \
+            --environment "${{ secrets.POWER_PLATFORM_UAT_URL }}"
+
+      - name: UAT promotion summary
+        if: success()
+        run: |
+          echo "### Agent promoted to UAT ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** UAT" >> $GITHUB_STEP_SUMMARY
+          echo "**Merged by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next steps for UAT team:**" >> $GITHUB_STEP_SUMMARY
+          echo "1. Open the agent in Copilot Studio (UAT environment)" >> $GITHUB_STEP_SUMMARY
+          echo "2. The draft agent is ready — test in the test canvas" >> $GITHUB_STEP_SUMMARY
+          echo "3. Publish manually in Copilot Studio UI to test in the Teams / Copilot channel" >> $GITHUB_STEP_SUMMARY
+          echo "4. Complete \`project-delivery/04-uat-test-plan.md\`" >> $GITHUB_STEP_SUMMARY
+          echo "5. When UAT passes, create a GitHub Release to promote to production" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "### ❌ UAT promotion FAILED" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The UAT environment has NOT been updated." >> $GITHUB_STEP_SUMMARY
+          echo "Review the logs above and fix the issue before re-merging." >> $GITHUB_STEP_SUMMARY

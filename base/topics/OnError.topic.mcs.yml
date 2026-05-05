@@ -1,0 +1,49 @@
+mcs.metadata:
+  componentName: On Error
+  description: |-
+    Trigger: Fires on any unhandled system error during a conversation
+    Purpose: Show debug details in test mode; show a safe, user-friendly message in production.
+             Always logs structured telemetry — never swallow errors silently.
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+kind: AdaptiveDialog
+startBehavior: UseLatestPublishedContentAndCancelOtherTopics
+beginDialog:
+  kind: OnError
+  id: main
+  actions:
+    - kind: SetVariable
+      id: setTime_REPLACE1
+      variable: init:Topic.CurrentTime
+      value: =Text(Now(), DateTimeFormat.UTC)
+
+    - kind: ConditionGroup
+      id: conditionGroup_REPLACE2
+      conditions:
+        - id: conditionItem_REPLACE3
+          condition: =System.Conversation.InTestMode = true
+          actions:
+            - kind: SendActivity
+              id: sendMessageTest_REPLACE4
+              activity: |-
+                **[Test Mode — Error Details]**
+                Message:      {System.Error.Message}
+                Code:         {System.Error.Code}
+                Conversation: {System.Conversation.Id}
+                Channel:      {System.Activity.Channel}
+                Time (UTC):   {Topic.CurrentTime}
+
+      elseActions:
+        - kind: SendActivity
+          id: sendMessageProd_REPLACE5
+          activity:
+            text:
+              - |-
+                Something went wrong on my end. Please try again, or contact support if this keeps happening.
+                Reference ID: {System.Conversation.Id}
+            speak:
+              - Something went wrong. Please try again.
+
+    - kind: LogCustomTelemetryEvent
+      id: logError_REPLACE6
+      eventName: Agent.ErrorOccurred
+      properties:

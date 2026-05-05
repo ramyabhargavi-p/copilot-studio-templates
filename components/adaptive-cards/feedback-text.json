@@ -1,0 +1,62 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "What could we improve?",
+      "weight": "Bolder",
+      "size": "Medium",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "Optional — your comments help us make this assistant better.",
+      "size": "Small",
+      "isSubtle": true,
+      "wrap": true
+    },
+    {
+      "type": "Input.Text",
+      "id": "feedbackText",
+      "placeholder": "Tell us what was missing or what went wrong...",
+      "isMultiline": true,
+      "maxLength": 500
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "feedbackCategory",
+      "label": "What best describes the issue?",
+      "style": "compact",
+      "isRequired": false,
+      "choices": [
+        { "title": "Answer was wrong or inaccurate", "value": "wrong_answer" },
+        { "title": "Answer was incomplete", "value": "incomplete" },
+        { "title": "Couldn't understand my question", "value": "not_understood" },
+        { "title": "Topic not covered", "value": "out_of_scope" },
+        { "title": "Took too long / too many steps", "value": "too_slow" },
+        { "title": "Other", "value": "other" }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Submit feedback",
+      "style": "positive",
+      "data": {
+        "feedbackType": "text"
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Skip",
+      "data": {
+        "feedbackType": "text",
+        "feedbackText": "",
+        "skipped": true
+      }
+    }
+  ]
+}

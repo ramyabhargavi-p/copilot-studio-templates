@@ -1,0 +1,45 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "${title}",
+      "weight": "Bolder",
+      "size": "Medium",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "${message}",
+      "wrap": true,
+      "spacing": "Small"
+    },
+    {
+      "type": "FactSet",
+      "facts": "${details}",
+      "spacing": "Medium"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "${confirmLabel}",
+      "data": {
+        "action": "confirm",
+        "context": "${context}"
+      },
+      "style": "positive"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "${cancelLabel}",
+      "data": {
+        "action": "cancel",
+        "context": "${context}"
+      },
+      "style": "destructive"
+    }
+  ]
+}

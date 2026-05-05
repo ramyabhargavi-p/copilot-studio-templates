@@ -1,0 +1,42 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Was this helpful?",
+      "weight": "Bolder",
+      "size": "Medium",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "Your feedback helps us improve this assistant.",
+      "size": "Small",
+      "isSubtle": true,
+      "wrap": true
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "👍  Yes, it helped",
+      "style": "positive",
+      "data": {
+        "feedbackType": "thumbs",
+        "feedbackValue": "positive",
+        "score": 1
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "👎  No, it didn't",
+      "data": {
+        "feedbackType": "thumbs",
+        "feedbackValue": "negative",
+        "score": 0
+      }
+    }
+  ]
+}

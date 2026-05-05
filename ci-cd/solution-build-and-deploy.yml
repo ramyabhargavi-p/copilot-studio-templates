@@ -1,0 +1,241 @@
+name: Solution Build and Deploy (Dev → UAT → Prod)
+
+# Solution-based ALM pipeline — the enterprise-grade alternative to pac copilot push.
+# Exports the solution from dev, stores it as an artifact, then imports to UAT or Prod.
+# Use this when your agent is packaged in a Power Platform Solution (recommended for production).
+#
+# This pipeline has two callable workflows:
+#   - export-from-dev: exports the solution from dev (triggered on push to main)
+#   - import-to-uat:   imports to UAT (requires manual dispatch or follows export)
+#   - import-to-prod:  imports to Prod (requires manual approval via 'production' environment)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'agents/**'
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - uat
+          - production
+      solution_name:
+        description: 'Solution unique name (defaults to SOLUTION_NAME variable)'
+        required: false
+
+env:
+  SOLUTION_NAME: ${{ inputs.solution_name || vars.SOLUTION_NAME }}
+  SOLUTION_OUTPUT_PATH: solutions/
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────
+  # Job 1: Export the managed solution from Dev
+  # ─────────────────────────────────────────────────────────────────
+  export-from-dev:
+    name: Export solution from Dev
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.target_environment != '')
+
+    outputs:
+      solution_version: ${{ steps.get-version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Power Platform CLI
+        run: |
+          dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Authenticate to Dev
+        run: |
+          pac auth create \
+            --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
+            --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
+            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
+            --environment "${{ secrets.POWER_PLATFORM_DEV_URL }}"
+
+      - name: Get solution version
+        id: get-version
+        run: |
+          VERSION=$(pac solution list --environment "${{ secrets.POWER_PLATFORM_DEV_URL }}" \
+            --json | jq -r ".[] | select(.uniqueName == \"${{ env.SOLUTION_NAME }}\") | .version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Solution version: $VERSION"
+
+      - name: Export unmanaged solution (for source control)
+        run: |
+          mkdir -p ${{ env.SOLUTION_OUTPUT_PATH }}
+          pac solution export \
+            --name "${{ env.SOLUTION_NAME }}" \
+            --path "${{ env.SOLUTION_OUTPUT_PATH }}/${{ env.SOLUTION_NAME }}_unmanaged.zip" \
+            --environment "${{ secrets.POWER_PLATFORM_DEV_URL }}" \
+            --managed false \
+            --overwrite
+
+      - name: Export managed solution (for deployment to UAT/Prod)
+        run: |
+          pac solution export \
+            --name "${{ env.SOLUTION_NAME }}" \
+            --path "${{ env.SOLUTION_OUTPUT_PATH }}/${{ env.SOLUTION_NAME }}_managed.zip" \
+            --environment "${{ secrets.POWER_PLATFORM_DEV_URL }}" \
+            --managed true \
+            --overwrite
+
+      - name: Unpack solution to source (for git diff visibility)
+        run: |
+          pac solution unpack \
+            --zipfile "${{ env.SOLUTION_OUTPUT_PATH }}/${{ env.SOLUTION_NAME }}_unmanaged.zip" \
+            --folder "solutions/unpacked/${{ env.SOLUTION_NAME }}" \
+            --processCanvasApps
+
+      - name: Upload managed solution artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: solution-managed-${{ steps.get-version.outputs.version }}
+          path: ${{ env.SOLUTION_OUTPUT_PATH }}/${{ env.SOLUTION_NAME }}_managed.zip
+          retention-days: 30
+
+      - name: Upload unmanaged solution artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: solution-unmanaged-${{ steps.get-version.outputs.version }}
+          path: ${{ env.SOLUTION_OUTPUT_PATH }}/${{ env.SOLUTION_NAME }}_unmanaged.zip
+          retention-days: 30
+
+      - name: Export summary
+        run: |
+          echo "### Solution exported from Dev ✅" >> $GITHUB_STEP_SUMMARY
+          echo "**Solution:** ${{ env.SOLUTION_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.get-version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Artifacts:** solution-managed and solution-unmanaged uploaded" >> $GITHUB_STEP_SUMMARY
+
+  # ─────────────────────────────────────────────────────────────────
+  # Job 2: Import managed solution to UAT
+  # ─────────────────────────────────────────────────────────────────
+  import-to-uat:
+    name: Import solution to UAT
+    runs-on: ubuntu-latest
+    needs: export-from-dev
+    environment: uat
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && inputs.target_environment == 'uat')
+
+    steps:
+      - name: Download managed solution artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: solution-managed-${{ needs.export-from-dev.outputs.solution_version }}
+          path: ${{ env.SOLUTION_OUTPUT_PATH }}
+
+      - name: Install Power Platform CLI
+        run: |
+          dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Authenticate to UAT
+        run: |
+          pac auth create \
+            --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
+            --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
+            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
+            --environment "${{ secrets.POWER_PLATFORM_UAT_URL }}"
+
+      - name: Import managed solution to UAT
+        run: |
+          pac solution import \
+            --path "${{ env.SOLUTION_OUTPUT_PATH }}/${{ env.SOLUTION_NAME }}_managed.zip" \
+            --environment "${{ secrets.POWER_PLATFORM_UAT_URL }}" \
+            --activate-plugins \
+            --skip-dependency-check false \
+            --force-overwrite
+
+      - name: Publish all customizations in UAT
+        run: |
+          pac org publish --environment "${{ secrets.POWER_PLATFORM_UAT_URL }}"
+
+      - name: UAT import summary
+        if: success()
+        run: |
+          echo "### Solution imported to UAT ✅" >> $GITHUB_STEP_SUMMARY
+          echo "**Solution:** ${{ env.SOLUTION_NAME }} v${{ needs.export-from-dev.outputs.solution_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next:** Complete UAT testing using \`project-delivery/04-uat-test-plan.md\`" >> $GITHUB_STEP_SUMMARY
+          echo "Then create a GitHub Release to trigger production deployment." >> $GITHUB_STEP_SUMMARY
+
+  # ─────────────────────────────────────────────────────────────────
+  # Job 3: Import managed solution to Production (manual approval required)
+  # ─────────────────────────────────────────────────────────────────
+  import-to-production:
+    name: Import solution to Production
+    runs-on: ubuntu-latest
+    needs: export-from-dev
+    environment: production    # ← requires manual approval in GitHub Settings → Environments → production
+    if: github.event_name == 'workflow_dispatch' && inputs.target_environment == 'production'
+
+    steps:
+      - name: Download managed solution artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: solution-managed-${{ needs.export-from-dev.outputs.solution_version }}
+          path: ${{ env.SOLUTION_OUTPUT_PATH }}
+
+      - name: Install Power Platform CLI
+        run: |
+          dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Authenticate to Production
+        run: |
+          pac auth create \
+            --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
+            --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
+            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
+            --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}"
+
+      - name: Import managed solution to Production
+        run: |
+          pac solution import \
+            --path "${{ env.SOLUTION_OUTPUT_PATH }}/${{ env.SOLUTION_NAME }}_managed.zip" \
+            --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}" \
+            --activate-plugins \
+            --skip-dependency-check false \
+            --force-overwrite
+
+      - name: Publish all customizations in Production
+        run: |
+          pac org publish --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}"
+
+      - name: Publish the Copilot Studio agent
+        run: |
+          pac copilot publish \
+            --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}" \
+            --schemaName "${{ vars.AGENT_SCHEMA_NAME }}"
+
+      - name: Production deployment summary
+        if: success()
+        run: |
+          echo "### Solution deployed to Production ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Solution | ${{ env.SOLUTION_NAME }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Version | ${{ needs.export-from-dev.outputs.solution_version }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Deployed by | ${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Timestamp | $(date -u '+%Y-%m-%d %H:%M UTC') |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Post-deployment:** Run smoke test and check Application Insights for errors." >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "### ❌ PRODUCTION DEPLOYMENT FAILED" >> $GITHUB_STEP_SUMMARY
+          echo "The production environment has NOT been updated." >> $GITHUB_STEP_SUMMARY
+          echo "See \`operations/runbook.md\` for recovery procedures." >> $GITHUB_STEP_SUMMARY

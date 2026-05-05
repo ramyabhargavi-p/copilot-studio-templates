@@ -1,0 +1,12 @@
+# Name: _REPLACE_DISPLAY_NAME
+# Description: _REPLACE_DESCRIPTION
+# Purpose: Declare a conversation-scoped global variable accessible across all topics.
+#          Use for state that needs to be shared (e.g. UserCountry, AuthToken, Locale).
+# NOTE: Replace all _REPLACE values with your content
+name: _REPLACE_NAME                         # camelCase, no spaces (e.g. userCountry)
+aIVisibility: UseInAIContext                # UseInAIContext: AI can read/use this; Hidden: AI cannot see this variable
+scope: Conversation                         # Conversation is the only valid scope for global variables
+description: _REPLACE_DESCRIPTION          # One sentence: what is this variable and what does it store
+schemaName: _REPLACE_SCHEMA_PREFIX.globalvariable._REPLACE_NAME   # Replace _REPLACE_SCHEMA_PREFIX with your agent's schemaName
+kind: GlobalVariableComponent
+defaultValue: DEFAULT                       # Replace with the appropriate default: "" (empty string) | false | 0 | or a specific value

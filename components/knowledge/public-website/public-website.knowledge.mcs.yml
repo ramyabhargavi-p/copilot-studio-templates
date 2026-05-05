@@ -1,0 +1,14 @@
+# Name: <Knowledge Source Name>
+# Description: <What content this website provides>
+# Purpose: Use a publicly accessible website as a knowledge source via Bing search.
+#          The agent can find and summarise relevant content from pages within this URL scope.
+# NOTE: PublicSiteSearchSource uses Bing to find snippets — it does NOT crawl or cache full pages.
+# NOTE: Replace the site URL with your actual public website URL
+kind: KnowledgeSourceConfiguration
+source:
+  kind: PublicSiteSearchSource
+  site: https://example.com/docs
+  # URL depth rules:
+  #   Good:  https://example.com/docs          (root + 1 level)
+  #   Good:  https://example.com/docs/api       (root + 2 levels)
+  #   Avoid: https://example.com/docs/api/v2    (root + 3 levels — ignored by Bing)
