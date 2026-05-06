@@ -113,8 +113,9 @@ cp components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml agents/<your-age
 Then fill in the SharePoint URL in the knowledge file.
 
 **5. Push to Copilot Studio**
-```
-VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+```bash
+cd agents/<your-agent-name>
+pac copilot push --environment <ENV_URL>
 ```
 
 **6. Test in Copilot Studio**
@@ -129,7 +130,7 @@ Run these three checks — takes 15 minutes:
 | Check | How |
 |-------|-----|
 | Routing accuracy ≥ 85% | `/copilot-studio:run-eval` or follow `project-delivery/05-eval-scenarios.md` |
-| No YAML errors | `/copilot-studio:validate` or VS Code: Apply Changes (errors appear in output panel) |
+| No YAML errors | `/copilot-studio:validate` or `pac copilot push` (errors appear in output) |
 | Responsible AI review | `governance/ai-ethics-checklist.md` — tick every box |
 
 Then: `launch/launch-checklist.md` — complete all items → publish.
@@ -152,7 +153,7 @@ Then: `launch/launch-checklist.md` — complete all items → publish.
 
 | Problem | Fix |
 |---------|-----|
-| Apply Changes fails with schema error | Run `/copilot-studio:validate` or check for any remaining `<PLACEHOLDER>` values |
+| `pac copilot push` fails with schema error | Run `/copilot-studio:validate` or check for any remaining `<PLACEHOLDER>` values |
 | Agent doesn't answer from SharePoint | Confirm the SharePoint URL in the knowledge file is accessible and indexed |
 | `_REPLACE` still in YAML after the script | Run `grep -r '_REPLACE' .` to find remaining ones; replace manually |
 | Agent appears in Copilot Studio but shows error | Check `OnError.topic.mcs.yml` — `<AGENT_SCHEMA>` must match your `schemaName` exactly |

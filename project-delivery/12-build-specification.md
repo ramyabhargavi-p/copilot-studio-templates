@@ -70,7 +70,7 @@ Complete only if the agent uses knowledge sources. Reference `06-content-audit.m
 | 6 | Replace all `_REPLACE` node ID suffixes | | ☐ |
 | 7 | Add `components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml` | | ☐ |
 | 8 | Add `components/topics/remove-citations/RemoveCitations.topic.mcs.yml` | Required for all knowledge agents | ☐ |
-| 9 | Apply changes to dev environment (VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`) | | ☐ |
+| 9 | `pac copilot push` to dev environment | | ☐ |
 | 10 | Test in test canvas: ask 3 questions the knowledge base should answer | | ☐ |
 | 11 | Test in test canvas: ask 2 questions NOT in the knowledge base — confirm Fallback fires | | ☐ |
 
@@ -198,7 +198,7 @@ Complete only if the agent calls connector or MCP actions.
 
 ### 6.1 — Pre-push validation
 
-Run before every apply (VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`):
+Run before every `pac copilot push`:
 
 ```bash
 # Check for unreplaced placeholders

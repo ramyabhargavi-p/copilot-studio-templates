@@ -5,56 +5,42 @@ Every topic has built-in error handling, telemetry, and CSAT — nothing to add 
 
 ---
 
-## New to this repo? Start here — in this order
+## Your path through this repo
 
-| # | File | Why you read it | Time |
-|---|------|----------------|------|
-| **1** | [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Install pac CLI + VS Code extension — nothing works without these | 15 min |
-| **1b** | [`commands/README.md`](commands/README.md) | pac / Git / VS Code / Node.js command references — open during development | Reference |
-| **2** | [`END-TO-END-DEV-GUIDE.md`](END-TO-END-DEV-GUIDE.md) | **Full journey Phase 0–6 with UI and without UI** — setup → build → test → deploy → operate | Master guide |
-| **2b** | [`examples/it-helpdesk/WALKTHROUGH.md`](examples/it-helpdesk/WALKTHROUGH.md) | **Real project example** — Contoso IT Helpdesk, all phases with real values and YAML | Sample project |
-| **3** | [`GETTING-STARTED.md`](GETTING-STARTED.md) | Full walkthrough from zero to a working agent — Discovery → Design → Build → Ship | 30 min read |
-| **4** | [`COPILOT-STUDIO-UI-GUIDE.md`](COPILOT-STUDIO-UI-GUIDE.md) | How to push YAML to the UI, test, and publish — detailed UI steps | 20 min |
-| **5** | [`TEMPLATES.md`](TEMPLATES.md) | See all 49 templates in one list — understand what's available before you build | 10 min |
-| **6** | [`recipes/README.md`](recipes/README.md) | Pick the right recipe for your agent type (6 options) | 5 min |
-| **7** | [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | Look up call signatures while building — keep this open during build | Reference |
-| **8** | [`ACTION-SAFETY-PATTERNS.md`](ACTION-SAFETY-PATTERNS.md) | **Full YAML patterns for Medium + High tier actions** — confirmation card, approval flow, test checklist | Dev reference |
-| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design rules, error handling, Action Safety, naming conventions | 20 min |
+### Building your first agent (30–60 min)
 
-> **In a hurry?** Skip to [`QUICKSTART.md`](QUICKSTART.md) — experienced devs can have a working agent in 30–60 min.
+| Step | File | What you do |
+|------|------|-------------|
+| **1** | [`QUICKSTART.md`](QUICKSTART.md) | Pick recipe, copy files, replace 5 values, push |
+| **2** | [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | Look up any component call signature during build |
+| **3** | [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | Use Claude skills to generate topics, run evals, validate |
 
----
+### Full enterprise delivery (all roles, all phases)
 
-## Full project delivery — all roles, all phases
+| Step | File | What you do |
+|------|------|-------------|
+| **4** | [`START-HERE.md`](START-HERE.md) | 28-step index from decision through operations |
+| **5** | [`project-delivery/`](project-delivery/) | Work through `00-` → `12-` in order |
+| **6** | [`governance/`](governance/) | Ethics checklist + security review before go-live |
 
-| # | File | What you do |
-|---|------|-------------|
-| **8** | [`START-HERE.md`](START-HERE.md) | 28-step master index — decision through operations, all roles |
-| **9** | [`project-delivery/README.md`](project-delivery/README.md) | Phase map for all 14 delivery documents (numbered `00`–`13`) |
-| **10** | [`governance/README.md`](governance/README.md) | Ethics + security checklists — required before go-live |
+### Reference (use at any point)
 
----
+| File | What it covers |
+|------|---------------|
+| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design rules, error handling, telemetry, naming |
+| [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Install `pac` CLI, VS Code extension, Git |
+| [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | Role-based entry points, onboarding for new developers |
+| [`base/README.md`](base/README.md) | How to configure the 5 base files |
+| [`ci-cd/README.md`](ci-cd/README.md) | GitHub Actions pipeline setup |
+| [`troubleshooting/README.md`](troubleshooting/README.md) | Fix YAML errors, auth issues, routing gaps |
 
-## After go-live
+### After go-live
 
-| # | File | What you do |
-|---|------|-------------|
-| **11** | [`launch/launch-checklist.md`](launch/launch-checklist.md) | Tick every box before users see the agent |
-| **12** | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) | Weekly health check KQL queries |
-| **13** | [`operations/runbook.md`](operations/runbook.md) | Step-by-step response to production incidents |
-
----
-
-## Other reference files
-
-| File | Go here when… |
-|------|--------------|
-| [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | You want role-based entry points (PM, QA, DevOps, security) |
-| [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | You want Claude to generate YAML, run evals, or validate |
-| [`base/README.md`](base/README.md) | You need detail on the 5 base files |
-| [`ci-cd/README.md`](ci-cd/README.md) | Setting up GitHub Actions for Dev → UAT → Prod |
-| [`prompts/README.md`](prompts/README.md) | Writing agent personas or generating YAML with Claude |
-| [`troubleshooting/README.md`](troubleshooting/README.md) | Something is broken — YAML errors, auth issues, routing gaps |
+| Step | File | What you do |
+|------|------|-------------|
+| **7** | [`launch/launch-checklist.md`](launch/launch-checklist.md) | Tick every box before going live |
+| **8** | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) | Weekly health check KQL queries |
+| **9** | [`operations/runbook.md`](operations/runbook.md) | Respond to production incidents |
 
 ---
 
@@ -67,7 +53,7 @@ Every topic has built-in error handling, telemetry, and CSAT — nothing to add 
 | [`components/topics/_scaffold/`](components/topics/_scaffold/) | **Master topic template** — copy for every new topic | Creating a new topic |
 | [`recipes/`](recipes/) | Step-by-step guides for 6 common agent types | Picking an agent pattern |
 | [`prompts/`](prompts/) | System prompt templates + AI generation prompts | Writing the agent persona or generating YAML |
-| [`project-delivery/`](project-delivery/) | Discovery → Design → Build → UAT documents (numbered `00`–`13`) | Running a governed delivery |
+| [`project-delivery/`](project-delivery/) | Discovery → Design → Build → UAT documents (numbered `00`–`12`) | Running a governed delivery |
 | [`governance/`](governance/) | Responsible AI + security review checklists | Pre-go-live sign-off |
 | [`launch/`](launch/) | Go-live checklist, user announcement, hypercare guide | Shipping to production |
 | [`operations/`](operations/) | KQL monitoring queries, alerts, runbook | Post-launch operations |
@@ -148,8 +134,6 @@ base/
 
 ## Recipes — pick your agent type
 
-### Copilot Studio (YAML, low-code)
-
 | Recipe | What it builds | Time |
 |--------|---------------|------|
 | [`01-basic-faq`](recipes/01-basic-faq.md) | Generative Q&A over SharePoint | 30 min |
@@ -158,13 +142,6 @@ base/
 | [`04-mcp-action-agent`](recipes/04-mcp-action-agent.md) | Calls an MCP server tool | 60 min |
 | [`05-orchestrator-agent`](recipes/05-orchestrator-agent.md) | Multi-specialist with child agents | 2+ hr |
 | [`06-full-featured-agent`](recipes/06-full-featured-agent.md) | Auth + knowledge + actions + CSAT | 2+ hr |
-
-### Pro-code (when Copilot Studio alone is not enough)
-
-| Recipe | What it builds | Time |
-|--------|---------------|------|
-| [`07-m365-agents-sdk`](recipes/07-m365-agents-sdk.md) | Custom agent in C# / TypeScript / Python — wraps or extends Copilot Studio via SDK | 2+ hr |
-| [`08-azure-ai-foundry`](recipes/08-azure-ai-foundry.md) | Foundry agent — code interpreter, custom models, > 8K RPM, Progressive Enhancement | 3+ hr |
 
 ---
 

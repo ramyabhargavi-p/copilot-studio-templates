@@ -63,7 +63,7 @@ cp -r base/ agents/<your-agent>/
 mkdir -p agents/<your-agent>/actions
 cp components/actions/connector/connector-action.mcs.yml agents/<your-agent>/actions/<ActionName>.mcs.yml
 # repeat the last line for each connector operation
-# then: VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+# then: pac copilot push
 ```
 
 ## Setup Checklist
@@ -72,7 +72,7 @@ cp components/actions/connector/connector-action.mcs.yml agents/<your-agent>/act
 - [ ] Fill in all values in the table above
 - [ ] Run `_REPLACE` script from `QUICKSTART.md`
 - [ ] Add the connector connection in Copilot Studio → Settings → Connections
-- [ ] Apply changes: VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`
+- [ ] `pac copilot push --environment <ENV_URL>`
 - [ ] Test by asking the agent to perform the action in natural language
 
 ## Multiple Actions

@@ -80,7 +80,7 @@ Work through each section in order. Check off each item. If any item fails, fix 
 
 | # | Item | Status |
 |---|------|--------|
-| D1 | Final apply changes to production environment completed (VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`) | ☐ |
+| D1 | Final `pac copilot push` to production environment completed | ☐ |
 | D2 | Published successfully in Copilot Studio (not just pushed) | ☐ |
 | D3 | Published version verified in test canvas post-publish | ☐ |
 | D4 | Correct channel(s) enabled and verified (Teams / website / Copilot) | ☐ |

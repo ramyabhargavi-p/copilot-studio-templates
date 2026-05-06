@@ -78,7 +78,7 @@ cp -r base/ agents/<your-agent>/
 cp components/topics/auth/SignIn.topic.mcs.yml agents/<your-agent>/topics/
 cp components/topics/conversation-init/ConversationInit.topic.mcs.yml agents/<your-agent>/topics/
 cp components/variables/global-variable/global-variable.variable.mcs.yml agents/<your-agent>/
-# then: VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+# then: pac copilot push
 ```
 
 ## Setup Checklist
@@ -87,7 +87,7 @@ cp components/variables/global-variable/global-variable.variable.mcs.yml agents/
 - [ ] Fill in all values in the table above
 - [ ] Run `_REPLACE` script from `QUICKSTART.md`
 - [ ] Add **Office 365 Users** connector in Copilot Studio → Settings → Connections
-- [ ] Apply changes: VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`
+- [ ] `pac copilot push --environment <ENV_URL>`
 - [ ] Test sign-in flow in Copilot Studio test canvas
 
 ## Optional Additions

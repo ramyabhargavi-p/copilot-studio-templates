@@ -140,7 +140,7 @@ If peak RPM > 6,000 (leaving 25% headroom before the 8,000 limit):
 - [ ] Confirmation card wired for all Medium tier actions
 - [ ] Approval flow stub created for all High tier actions
 - [ ] RPM estimate in `02-technical-discovery.md`
-- [ ] Apply Changes succeeds with no errors (VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`)
+- [ ] `pac copilot push` succeeds with no errors
 
 ---
 
@@ -231,8 +231,8 @@ grep -r "InvokeConnectorTaskAction" agents/
 
 ```
 launch/launch-checklist.md           → tick every box
-# Apply changes (VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes")
-pac copilot publish --bot "<AgentName>" --environment <PROD_URL>
+pac copilot push --environment <PROD_URL>
+pac copilot publish --environment <PROD_URL>
 launch/user-communication-template.md → send to users
 ```
 
