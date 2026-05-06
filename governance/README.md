@@ -1,31 +1,39 @@
 # Governance
 
-Governance documents for responsible, secure, and enterprise-ready deployment of Copilot Studio agents.
+Three documents required before every production go-live. Not optional.
 
-## Documents
+---
 
-| File | Purpose | When |
-|------|---------|------|
-| [`enterprise-ai-governance-framework.md`](enterprise-ai-governance-framework.md) | Full enterprise governance model — roles, lifecycle stage gates, naming standards, data classification, DLP, change control, incident response | Before project start; reviewed quarterly |
-| [`ai-ethics-checklist.md`](ai-ethics-checklist.md) | Responsible AI review — fairness, safety, privacy, transparency, accountability, prompt injection | Before UAT sign-off |
-| [`security-review.md`](security-review.md) | Security review — auth, data handling, prompt injection, DLP, connectors | Before UAT sign-off |
+## What to complete and when
 
-## When to use each document
+| File | What it covers | Complete when |
+|------|---------------|--------------|
+| [`ai-ethics-checklist.md`](ai-ethics-checklist.md) | Responsible AI — fairness, safety, privacy, transparency, prompt injection resistance | Before UAT begins |
+| [`security-review.md`](security-review.md) | Security — connector permissions, DLP, action safety tiers, data classification | Before UAT begins |
+| [`enterprise-ai-governance-framework.md`](enterprise-ai-governance-framework.md) | Full org-level governance policy — roles, lifecycle, change control, incident response | Read once at project start; apply throughout |
 
-| Who you are | Document | When |
-|-------------|---------|------|
-| Tech Lead / CTO (pre-project) | `enterprise-ai-governance-framework.md` | Before committing to any agent programme |
-| Security / Compliance reviewer | `security-review.md` + `enterprise-ai-governance-framework.md` Section 4 | Before UAT |
-| Developer + Project Owner | `ai-ethics-checklist.md` + `security-review.md` | Before UAT sign-off |
-| Agent Owner (post-launch) | `enterprise-ai-governance-framework.md` Section 2 + 6 | Ongoing — quarterly review |
+---
 
-## Re-run triggers
+## How these three relate
 
-Re-run `ai-ethics-checklist.md` and `security-review.md` whenever you change:
-- Agent instructions (`agent.mcs.yml`)
-- Knowledge sources
-- Authentication configuration
-- Connector connections
-- Any topic that handles PII
+```
+enterprise-ai-governance-framework.md   ← The policy. Read this first.
+        │
+        ├── ai-ethics-checklist.md      ← Tick-box verification of the Responsible AI rules in the policy
+        └── security-review.md         ← Tick-box verification of the security rules in the policy
+```
 
-For significant changes (new topics, new connectors, new data integrations), re-run the full enterprise governance review.
+The framework is the policy document — it defines the rules.
+The two checklists are how you verify those rules are met before go-live.
+
+---
+
+## Minimum for every agent
+
+Even for a simple internal FAQ bot:
+- [ ] `ai-ethics-checklist.md` — complete all items, get business owner sign-off
+- [ ] `security-review.md` — complete all items, get security reviewer sign-off
+
+The enterprise framework is mandatory for agents that handle sensitive data, are used by external users, or are organisation-wide.
+
+→ Governance pre-check: [`../project-delivery/00-ai-decision-framework.md`](../project-delivery/00-ai-decision-framework.md) Step 10

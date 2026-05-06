@@ -23,10 +23,12 @@ This index is the full project delivery sequence — all roles, all phases, from
 
 | # | Do this | File | Who | Skills |
 |---|---------|------|-----|--------|
-| 1 | Decide whether an AI agent is the right solution | [`project-delivery/00-ai-decision-framework.md`](project-delivery/00-ai-decision-framework.md) | Business Owner + Developer | — |
+| 1 | Decide whether an AI agent is the right solution — run Nine Critical Questions, BXT, Action Safety table | [`project-delivery/00-ai-decision-framework.md`](project-delivery/00-ai-decision-framework.md) | Business Owner + AI Engineer | — |
 | 2 | Confirm the organisation is ready (licences, environments, governance) | [`project-delivery/10-enterprise-readiness-assessment.md`](project-delivery/10-enterprise-readiness-assessment.md) | Tech Lead + Security | — |
 
 **Gate:** Both documents must be completed and signed off before Discovery begins.
+
+> **AI Engineer:** Read [`project-delivery/13-ai-engineer-realtime-guide.md`](project-delivery/13-ai-engineer-realtime-guide.md) — week-by-week guide showing exactly when to apply each framework concept.
 
 ---
 

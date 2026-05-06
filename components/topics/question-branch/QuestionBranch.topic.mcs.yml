@@ -1,9 +1,11 @@
-# Name: <Topic Name>
-# Trigger: Fires when user says something matching the trigger phrases (OnRecognizedIntent)
-# Purpose: Ask the user a question and branch the conversation based on their answer.
-#          Extend the ConditionGroup with as many branches as needed.
-# NOTE: Replace all _REPLACE suffixes with unique random strings before use
-# NOTE: Replace all <PLACEHOLDER> values with your content
+mcs.metadata:
+  componentName: <Topic Name>
+  description: |-
+    Trigger: Fires when user says something matching the trigger phrases (OnRecognizedIntent)
+    Purpose: Ask the user a question and branch the conversation based on their answer.
+             Extend the ConditionGroup with as many branches as needed.
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+    NOTE: Replace all <PLACEHOLDER> values with your content
 kind: AdaptiveDialog
 beginDialog:
   kind: OnRecognizedIntent
@@ -18,24 +20,20 @@ beginDialog:
       - <trigger phrase 5>
 
   actions:
-    # Optional: send an intro message before asking the question
     - kind: SendActivity
       id: sendMessage_REPLACE1
-      activity:
-        text:
-          - <Intro message for this topic — or remove this node if not needed>
+      activity: <Intro message for this topic — or remove this node if not needed>
 
-    # Ask the user a question and store their answer
     - kind: Question
       id: question_REPLACE2
-      variable: init:Topic.UserChoice
-      prompt: <Question prompt text>
-      entity: StringPrebuiltEntity           # Change to: BooleanPrebuiltEntity | NumberPrebuiltEntity | DateTimePrebuiltEntity as needed
-      alwaysPrompt: true
       interruptionPolicy:
         allowInterruption: false
 
-    # Branch on the user's answer — add more conditions as needed
+      alwaysPrompt: true
+      variable: init:Topic.UserChoice
+      prompt: <Question prompt text>
+      entity: StringPrebuiltEntity
+
     - kind: ConditionGroup
       id: conditionGroup_REPLACE3
       conditions:

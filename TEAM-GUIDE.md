@@ -8,9 +8,9 @@ How to use this repository as a team: who uses what, how reuse works in practice
 
 | Role | What to use | Starting point |
 |------|-------------|---------------|
-| Junior / new-to-Copilot Studio dev | Step-by-step guide + base agent + one recipe | [GETTING-STARTED.md](GETTING-STARTED.md) |
-| Experienced dev | `base/` + cherry-pick `components/` + recipe | [README.md](README.md) quick start |
-| Lead / architect | Project delivery docs + industry guidelines | [project-delivery/README.md](project-delivery/README.md) |
+| **New to team / new to Copilot Studio** | Follow steps 1–7 in README.md in order | [README.md](README.md) → numbered table at the top |
+| Experienced dev | `base/` + cherry-pick `components/` + recipe | [QUICKSTART.md](QUICKSTART.md) |
+| Lead / architect | Project delivery docs + AI Decision Framework | [project-delivery/README.md](project-delivery/README.md) |
 | Project manager / delivery lead | Requirements, design, UAT, launch, governance docs | [project-delivery/README.md](project-delivery/README.md) |
 | QA / tester | UAT test plan + eval scenarios | [project-delivery/04-uat-test-plan.md](project-delivery/04-uat-test-plan.md) |
 | DevOps / platform engineer | CI/CD workflows + alert setup | [ci-cd/README.md](ci-cd/README.md) |
@@ -30,7 +30,7 @@ How to use this repository as a team: who uses what, how reuse works in practice
 4. Replace every <PLACEHOLDER> value — VS Code highlights them in the YAML
 5. Replace every _REPLACE node ID suffix — the VS Code extension auto-generates on save
 6. Pick the closest recipe from recipes/ and follow it to add components
-7. pac copilot push → test in Copilot Studio test canvas
+7. VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes" → test in Copilot Studio test canvas
 ```
 
 **Time saved:** A dev who knows Copilot Studio can go from zero to a working agent with Greeting + Fallback + OnError + telemetry + escalation in under 30 minutes. Building from scratch without these templates typically takes 2–3 hours — and commonly misses error handling, logging, and escalation patterns entirely.
@@ -59,7 +59,7 @@ DESIGN
         ↓
 BUILD
   Copy base/ → add components/ → write custom topics
-  pac copilot push → smoke test in test canvas
+  VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes" → smoke test in test canvas
   governance/ai-ethics-checklist.md + governance/security-review.md
         ↓
 EVAL
@@ -109,7 +109,7 @@ Or use the MSI installer (no PowerShell policy issue). See [TOOLS-AND-PLUGINS.md
 
 **Likelihood:** Very high for first-time users.
 
-Even one unreplaced `_REPLACE` suffix causes `pac copilot push` to fail with a schema error. New devs often can't read the error message (it shows a line number, not the ID name).
+Even one unreplaced `_REPLACE` suffix causes the apply operation (VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`) to fail with a schema error. New devs often can't read the error message (it shows a line number, not the ID name).
 
 **Prevention — run before every push:**
 ```bash

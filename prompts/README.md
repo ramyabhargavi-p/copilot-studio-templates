@@ -1,31 +1,49 @@
 # Prompts
 
-Two types of reusable prompts for Copilot Studio agent development.
+Two types of prompts — one for what you paste into your agent, one for what you send to Claude.
 
-## Folders
+---
 
-| Folder | Contains | Use when |
-|--------|----------|---------|
-| [`system-prompts/`](system-prompts/) | Ready-made `instructions` content for `agent.mcs.yml` | Starting a new agent — paste and replace `[BRACKET]` values |
-| [`ai-prompts/`](ai-prompts/) | Prompts to give to Claude/Copilot to generate YAML and review agents | Generating new topics, instructions, or auditing an existing agent |
+## Two subfolders
 
-## Quick Reference
+| Folder | What it is | Use it when… |
+|--------|-----------|-------------|
+| [`system-prompts/`](system-prompts/) | Ready-made agent personas — paste into `agent.mcs.yml` → `instructions` | You need a starting persona for your agent |
+| [`ai-prompts/`](ai-prompts/) | Claude generation prompts — paste into Claude to auto-generate YAML | You want Claude to write topics, eval cases, or cards for you |
 
-### Starting a new agent?
-1. Pick the closest system prompt from `system-prompts/`
-2. Paste it into `agent.mcs.yml` → `instructions`
-3. Replace all `[BRACKET]` values
-4. Use `ai-prompts/generate-agent-instructions.md` if you need to customise further
+---
 
-### Building a new topic?
-1. Use `ai-prompts/generate-topic.md` to describe the scenario
-2. Paste the AI output into a new `.topic.mcs.yml` file
-3. Replace `_REPLACE` IDs with unique strings
+## System prompts — pick your persona
 
-### Ready to test?
-1. Use `ai-prompts/review-agent.md` to audit your files
-2. Run the UAT checklist from `BEST-PRACTICES.md` Section 11
+| File | Persona | Paste into |
+|------|---------|-----------|
+| [`system-prompts/hr-assistant.md`](system-prompts/hr-assistant.md) | HR policies, leave, benefits | `agent.mcs.yml` → `instructions` |
+| [`system-prompts/it-helpdesk.md`](system-prompts/it-helpdesk.md) | IT support, password resets, service desk | `agent.mcs.yml` → `instructions` |
+| [`system-prompts/customer-support.md`](system-prompts/customer-support.md) | External customer-facing service | `agent.mcs.yml` → `instructions` |
+| [`system-prompts/knowledge-base.md`](system-prompts/knowledge-base.md) | Generic internal knowledge base | `agent.mcs.yml` → `instructions` |
 
-### Building an Adaptive Card?
-1. Use `ai-prompts/generate-adaptive-card.md` to generate the card JSON
-2. Use the card templates in `components/adaptive-cards/` as a starting point
+After pasting, replace `<ORG_NAME>`, `<AGENT_NAME>`, and any other `<AngleBracket>` placeholders.
+
+---
+
+## AI generation prompts — send to Claude
+
+| File | Send it when you need… | Output |
+|------|----------------------|--------|
+| [`ai-prompts/generate-topic.md`](ai-prompts/generate-topic.md) | A new `.topic.mcs.yml` from a plain-English scenario | Complete topic YAML |
+| [`ai-prompts/generate-agent-instructions.md`](ai-prompts/generate-agent-instructions.md) | A custom system prompt for your agent | `instructions:` block |
+| [`ai-prompts/generate-adaptive-card.md`](ai-prompts/generate-adaptive-card.md) | An adaptive card JSON from a description | Card JSON + YAML snippet |
+| [`ai-prompts/generate-eval-cases.md`](ai-prompts/generate-eval-cases.md) | Eval test cases for routing accuracy | YAML eval test file |
+| [`ai-prompts/review-agent.md`](ai-prompts/review-agent.md) | A quality review of your agent YAML | Findings + improvement list |
+| [`ai-prompts/prompt-engineering-patterns.md`](ai-prompts/prompt-engineering-patterns.md) | Reference for P1–P10 system prompt patterns | Pattern reference doc |
+
+### How to use a generation prompt
+
+1. Open the file and copy its full contents
+2. Paste into a new Claude conversation
+3. Answer Claude's questions about your specific scenario
+4. Copy the generated YAML back into your agent folder
+5. Replace all `_REPLACE` node IDs with unique 6-char strings (see `../QUICKSTART.md`)
+
+→ Full template inventory: [`../TEMPLATES.md`](../TEMPLATES.md)
+→ How topics fit together: [`../COMPONENT-REGISTRY.md`](../COMPONENT-REGISTRY.md)

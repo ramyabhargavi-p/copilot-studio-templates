@@ -109,8 +109,8 @@ Copilot Studio does not have a one-click rollback. To roll back:
 
 1. Identify the last good commit in the git repository
 2. Check out that commit: `git checkout <commit-hash> -- .`
-3. Push the files: `pac copilot push --environment <env-id>`
-4. Publish in Copilot Studio UI (or via `pac copilot publish`)
+3. Apply the files: VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`
+4. Publish in Copilot Studio UI (or via `pac copilot publish --bot "<AgentName>"`)
 5. Verify in test canvas
 6. Revert the git checkout: `git checkout HEAD -- .`
 7. Create a branch and fix the issue properly before re-deploying

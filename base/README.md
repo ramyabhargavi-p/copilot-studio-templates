@@ -19,7 +19,7 @@ The minimum viable Copilot Studio agent. **Copy this folder to start every new a
 3. **`settings.mcs.yml`** — replace `<agent_schema_name>` and `<Agent Display Name>`; set `authenticationMode`
 4. **All topic files** — replace every `_REPLACE` suffix with a unique random string (e.g. `_a1b2c3`)
 5. **`Fallback.topic.mcs.yml`** — replace `<AGENT_SCHEMA>` with your agent's `schemaName`
-6. Push to Copilot Studio using `pac copilot push` or the VS Code Copilot Studio extension
+6. Push to Copilot Studio using the VS Code Copilot Studio extension: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`
 
 ## Key Decisions
 

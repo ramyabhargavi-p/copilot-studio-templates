@@ -1,0 +1,164 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# TOPIC SCAFFOLD — Copy this for EVERY new topic
+#
+# Built-in (always present):
+#   ✓ Start telemetry          (Topic.Started)
+#   ✓ Error handling           (ConditionGroup with elseActions)
+#   ✓ Error telemetry          (Topic.ErrorOccurred)
+#   ✓ Safe error message       (user-friendly, hides internals)
+#   ✓ CSAT guard               (once per conversation, Global.FeedbackShown)
+#   ✓ End telemetry            (Topic.Completed)
+#
+# HOW TO USE:
+#   1. cp this file to topics/<TopicName>.topic.mcs.yml
+#   2. Replace <SCHEMA> with your agent's schemaName (from settings.mcs.yml)
+#   3. Replace <TOPIC_NAME> with the topic display name
+#   4. Add trigger phrases under triggerQueries
+#   5. Replace the MAIN LOGIC section with your content (Options A or B below)
+#   6. If no action call: remove the ConditionGroup in section 3 entirely
+#   7. Run the _REPLACE script from QUICKSTART.md to generate unique IDs
+#   8. For sub-topics / utility dialogs: remove section 4 (CSAT)
+# ══════════════════════════════════════════════════════════════════════════════
+
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: <TOPIC_NAME>
+    triggerQueries:
+      - <trigger phrase 1 — natural language, full sentence>
+      - <trigger phrase 2 — formal variation>
+      - <trigger phrase 3 — casual / abbreviated>
+      - <trigger phrase 4 — question phrasing>
+      - <trigger phrase 5 — action-word phrasing>
+      - <trigger phrase 6 — synonym variation>
+
+  actions:
+
+    # ── 1. TELEMETRY: TOPIC START ─────────────────────────────────────────────
+    - kind: LogCustomTelemetryEvent
+      id: logTopicStarted_REPLACE1
+      eventName: Topic.Started
+      properties: >-
+        ={
+          TopicName: "<TOPIC_NAME>",
+          UserQuery: System.Activity.Text,
+          ConversationId: System.Conversation.Id,
+          Channel: System.Activity.Channel,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }
+
+    # ── 2. MAIN LOGIC ─────────────────────────────────────────────────────────
+    # Choose ONE option below. Delete the other.
+    #
+    # OPTION A — Informational response (no connector call needed)
+    # Use for: FAQ, policy info, how-to guides, status messages
+    # ─────────────────────────────────────────────────────────────────────────
+    - kind: SendActivity
+      id: sendResponse_REPLACE2
+      activity: <Your answer here. Use {Global.UserDisplayName} if auth is enabled.>
+
+    # OPTION B — Collect input then call an action (connector or child dialog)
+    # Use for: submit a request, look up data, update a record
+    # Uncomment this block and delete Option A if you need an action call.
+    # ─────────────────────────────────────────────────────────────────────────
+    # - kind: Question
+    #   id: collectInput_REPLACE3
+    #   variable: init:Topic.UserInput
+    #   prompt: <What do you need to know from the user before calling the action?>
+    #   entity: StringPrebuiltEntity
+    #   alwaysPrompt: false
+    #   interruptionPolicy:
+    #     allowInterruption: true
+    #
+    # - kind: SendActivity
+    #   id: sendProgress_REPLACE4
+    #   activity: Let me look that up for you...
+    #
+    # - kind: BeginDialog
+    #   id: invokeAction_REPLACE5
+    #   dialog: <SCHEMA>.topic.<ActionName>
+    #   input:
+    #     binding:
+    #       InputParam: =Topic.UserInput
+    #   output:
+    #     binding:
+    #       Response: Topic.ActionResponse
+    # ─────────────────────────────────────────────────────────────────────────
+
+    # ── 3. ERROR HANDLING ─────────────────────────────────────────────────────
+    # Required for Option B (action call). Remove entirely for Option A.
+    #
+    # PATTERN: always check the action response before using it.
+    # elseActions: log the error + show a safe message (never expose internals).
+    # ─────────────────────────────────────────────────────────────────────────
+    - kind: ConditionGroup
+      id: handleActionResult_REPLACE6
+      conditions:
+        - id: successBranch_REPLACE7
+          condition: =!IsBlank(Topic.ActionResponse)
+          actions:
+            - kind: SendActivity
+              id: sendSuccessResult_REPLACE8
+              activity: "{Topic.ActionResponse}"
+
+            - kind: LogCustomTelemetryEvent
+              id: logSuccess_REPLACE9
+              eventName: Topic.Completed
+              properties: >-
+                ={
+                  TopicName: "<TOPIC_NAME>",
+                  Status: "Success",
+                  ConversationId: System.Conversation.Id,
+                  TimeUTC: Text(Now(), DateTimeFormat.UTC)
+                }
+
+      elseActions:
+        - kind: LogCustomTelemetryEvent
+          id: logError_REPLACE10
+          eventName: Topic.ErrorOccurred
+          properties: >-
+            ={
+              TopicName: "<TOPIC_NAME>",
+              UserQuery: System.Activity.Text,
+              ConversationId: System.Conversation.Id,
+              Channel: System.Activity.Channel,
+              TimeUTC: Text(Now(), DateTimeFormat.UTC)
+            }
+
+        - kind: SendActivity
+          id: sendErrorMessage_REPLACE11
+          activity:
+            text:
+              - I wasn't able to complete that right now. Please try again in a moment.
+              - Something went wrong on my end. If this continues, contact support (Ref:{System.Conversation.Id}).
+
+        # Escalate to human after error — uncomment if live agent handoff is configured
+        # - kind: BeginDialog
+        #   id: escalateOnError_REPLACE12
+        #   dialog: <SCHEMA>.topic.Escalate
+
+    # ── 4. CSAT FEEDBACK (once per conversation) ──────────────────────────────
+    # Collects thumbs → star rating → optional free text.
+    # The Global.FeedbackShown guard prevents the card showing more than once.
+    #
+    # Remove this section for:
+    #   - Sub-topics called via BeginDialog from another topic
+    #   - Confirmation / clarification steps
+    #   - Utility topics (auth, disambiguation, etc.)
+    # ─────────────────────────────────────────────────────────────────────────
+    - kind: ConditionGroup
+      id: csatGuard_REPLACE13
+      conditions:
+        - id: feedbackNotShown_REPLACE14
+          condition: =IsBlank(Global.FeedbackShown) || Global.FeedbackShown = false
+          actions:
+            - kind: SetVariable
+              id: markFeedbackShown_REPLACE15
+              variable: Global.FeedbackShown
+              value: =true
+
+            - kind: BeginDialog
+              id: collectFeedback_REPLACE16
+              dialog: <SCHEMA>_feedback_REPLACE

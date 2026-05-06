@@ -7,7 +7,7 @@ Practical fixes for the most common issues encountered when building, testing, a
 ## Table of Contents
 
 1. [Agent Not Appearing / Not Working After Publishing to Teams or Copilot](#1--agent-not-appearing--not-working-after-publishing-to-teams-or-copilot)
-2. [pac copilot push Errors](#2--pac-copilot-push-errors)
+2. [Apply Changes Errors](#2--apply-changes-errors)
 3. [Topics Not Triggering Correctly](#3--topics-not-triggering-correctly)
 4. [Knowledge Search Not Returning Answers](#4--knowledge-search-not-returning-answers)
 5. [Connector / Action Failures](#5--connector--action-failures)
@@ -63,7 +63,9 @@ This is the most common post-publish issue. Work through these checks in order.
 
 ---
 
-## 2 — pac copilot push Errors
+## 2 — Apply Changes Errors
+
+> These errors occur when using VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"` to push agent YAML.
 
 ### "Not authenticated" / 401
 
@@ -76,7 +78,7 @@ Fix:
 pac auth clear
 pac auth create --environment <env-url>
 # Complete the browser login that opens
-pac copilot push
+# Then apply changes: VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
 ```
 
 ### "Environment not found" / Wrong environment
@@ -89,7 +91,7 @@ Fix:
 ```bash
 pac env list                          # find your environment
 pac auth switch --index <N>           # switch to the right auth profile
-pac copilot push --environment <env-url>
+# Then apply changes: VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
 ```
 
 ### "Schema validation failed" / YAML parse error
@@ -220,7 +222,7 @@ When moving an agent between environments, connection references need to be re-m
 Fix:
 1. In the target environment → Power Platform admin → **Solutions** → open the agent's solution
 2. Go to **Connection References** → re-authenticate each connection
-3. `pac copilot push` again
+3. Apply changes again: VS Code: `Ctrl+Shift+P → "Copilot Studio: Apply Changes"`
 
 ---
 
@@ -358,7 +360,7 @@ pac auth list
 pac copilot list --environment <env-url>
 
 # Validate YAML without pushing
-pac copilot push --dry-run
+pac copilot push --dry-run  # (validation only — checks YAML schema without uploading)
 
 # Check the published version number
 pac copilot show --name <agent-schema-name>

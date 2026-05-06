@@ -1,170 +1,170 @@
 # Copilot Studio Templates
 
-Reusable YAML templates for building Copilot Studio agents — for teams of all experience levels. Covers every phase: Discovery → Design → Build → Eval → UAT → Deploy → Operate → Govern.
+Reusable YAML templates for building production-quality Copilot Studio agents.
+Every topic has built-in error handling, telemetry, and CSAT — nothing to add manually.
 
 ---
 
-## Build your first agent fast → [QUICKSTART.md](QUICKSTART.md)
+## New to this repo? Start here — in this order
 
-Pick an agent type, copy the files, change 5 values, push. Working agent in under 1 hour.
+| # | File | Why you read it | Time |
+|---|------|----------------|------|
+| **1** | [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Install pac CLI + VS Code extension — nothing works without these | 15 min |
+| **1b** | [`commands/README.md`](commands/README.md) | pac / Git / VS Code / Node.js command references — open during development | Reference |
+| **2** | [`END-TO-END-DEV-GUIDE.md`](END-TO-END-DEV-GUIDE.md) | **Full journey Phase 0–6 with UI and without UI** — setup → build → test → deploy → operate | Master guide |
+| **2b** | [`examples/it-helpdesk/WALKTHROUGH.md`](examples/it-helpdesk/WALKTHROUGH.md) | **Real project example** — Contoso IT Helpdesk, all phases with real values and YAML | Sample project |
+| **3** | [`GETTING-STARTED.md`](GETTING-STARTED.md) | Full walkthrough from zero to a working agent — Discovery → Design → Build → Ship | 30 min read |
+| **4** | [`COPILOT-STUDIO-UI-GUIDE.md`](COPILOT-STUDIO-UI-GUIDE.md) | How to push YAML to the UI, test, and publish — detailed UI steps | 20 min |
+| **5** | [`TEMPLATES.md`](TEMPLATES.md) | See all 49 templates in one list — understand what's available before you build | 10 min |
+| **6** | [`recipes/README.md`](recipes/README.md) | Pick the right recipe for your agent type (6 options) | 5 min |
+| **7** | [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | Look up call signatures while building — keep this open during build | Reference |
+| **8** | [`ACTION-SAFETY-PATTERNS.md`](ACTION-SAFETY-PATTERNS.md) | **Full YAML patterns for Medium + High tier actions** — confirmation card, approval flow, test checklist | Dev reference |
+| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design rules, error handling, Action Safety, naming conventions | 20 min |
+
+> **In a hurry?** Skip to [`QUICKSTART.md`](QUICKSTART.md) — experienced devs can have a working agent in 30–60 min.
 
 ---
 
-## Full project delivery (all roles) → [START-HERE.md](START-HERE.md)
+## Full project delivery — all roles, all phases
 
-Numbered 28-step index from decision through operations. Works for developers, PMs, business owners, and testers.
+| # | File | What you do |
+|---|------|-------------|
+| **8** | [`START-HERE.md`](START-HERE.md) | 28-step master index — decision through operations, all roles |
+| **9** | [`project-delivery/README.md`](project-delivery/README.md) | Phase map for all 14 delivery documents (numbered `00`–`13`) |
+| **10** | [`governance/README.md`](governance/README.md) | Ethics + security checklists — required before go-live |
 
 ---
 
-## Joining mid-project? → [TEAM-GUIDE.md](TEAM-GUIDE.md)
+## After go-live
+
+| # | File | What you do |
+|---|------|-------------|
+| **11** | [`launch/launch-checklist.md`](launch/launch-checklist.md) | Tick every box before users see the agent |
+| **12** | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) | Weekly health check KQL queries |
+| **13** | [`operations/runbook.md`](operations/runbook.md) | Step-by-step response to production incidents |
 
 ---
 
-## Quick Start (experienced developers)
+## Other reference files
+
+| File | Go here when… |
+|------|--------------|
+| [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | You want role-based entry points (PM, QA, DevOps, security) |
+| [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | You want Claude to generate YAML, run evals, or validate |
+| [`base/README.md`](base/README.md) | You need detail on the 5 base files |
+| [`ci-cd/README.md`](ci-cd/README.md) | Setting up GitHub Actions for Dev → UAT → Prod |
+| [`prompts/README.md`](prompts/README.md) | Writing agent personas or generating YAML with Claude |
+| [`troubleshooting/README.md`](troubleshooting/README.md) | Something is broken — YAML errors, auth issues, routing gaps |
+
+---
+
+## Folder structure
+
+| Folder | Contents | Go here when… |
+|--------|----------|---------------|
+| [`base/`](base/) | 5 files every agent needs (agent, settings, Greeting, Fallback, OnError) | Starting a new agent |
+| [`components/`](components/) | Drop-in topics, actions, cards, knowledge sources — all with built-in telemetry | Adding a capability |
+| [`components/topics/_scaffold/`](components/topics/_scaffold/) | **Master topic template** — copy for every new topic | Creating a new topic |
+| [`recipes/`](recipes/) | Step-by-step guides for 6 common agent types | Picking an agent pattern |
+| [`prompts/`](prompts/) | System prompt templates + AI generation prompts | Writing the agent persona or generating YAML |
+| [`project-delivery/`](project-delivery/) | Discovery → Design → Build → UAT documents (numbered `00`–`13`) | Running a governed delivery |
+| [`governance/`](governance/) | Responsible AI + security review checklists | Pre-go-live sign-off |
+| [`launch/`](launch/) | Go-live checklist, user announcement, hypercare guide | Shipping to production |
+| [`operations/`](operations/) | KQL monitoring queries, alerts, runbook | Post-launch operations |
+| [`ci-cd/`](ci-cd/) | GitHub Actions for Dev → UAT → Prod promotion | Setting up CI/CD |
+| [`troubleshooting/`](troubleshooting/) | Common errors and fixes | Something is broken |
+
+---
+
+## Base agent — 5 files, every project starts here
 
 ```
-1. Copy base/ into your new agent project folder
-2. Replace all <PLACEHOLDER> values in the YAML files
-3. Replace all _REPLACE ID suffixes with unique random strings
-4. Cherry-pick components from components/ as needed
-5. See recipes/ for recommended combinations
+base/
+├── agent.mcs.yml               Agent identity, system prompt, conversation starters
+├── settings.mcs.yml            Auth mode, recognizer, language, access policy
+└── topics/
+    ├── Greeting.topic.mcs.yml  Welcome message + Conversation.Started telemetry
+    ├── Fallback.topic.mcs.yml  Unknown intent — retries 3× then escalates
+    └── OnError.topic.mcs.yml   System error handler — safe message + telemetry
 ```
 
----
-
-## Repository Structure
-
-| Folder / File | Contents |
-|--------|----------|
-| [`START-HERE.md`](START-HERE.md) | **Entry point for everyone** — numbered 28-step index across 7 phases with skill at each step |
-| [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | **Reusable function library** — every component, card, action, and prompt with its call signature |
-| [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | **Claude skills guide** — every installed skill mapped to the phase and step where it applies |
-| [`GETTING-STARTED.md`](GETTING-STARTED.md) | Developer step-by-step guide for all phases |
-| [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | **Sharing with your team** — who uses what, blockers, reusable prompts E2E reference |
-| [`INDUSTRY-GUIDELINES.md`](INDUSTRY-GUIDELINES.md) | Industry best practices and Microsoft-specific guidelines for agent development |
-| [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Required tools, VS Code extensions, and setup checklist |
-| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design guidelines: error handling, logging, scope, naming, testing checklist |
-| [`ROADMAP.md`](ROADMAP.md) | Planned additions — what's not built yet |
-| [`base/`](base/) | Minimum viable agent YAML — start every project here |
-| [`components/`](components/) | Optional add-ons — pick what you need |
-| [`recipes/`](recipes/) | Documented combinations for common agent types |
-| [`project-delivery/`](project-delivery/) | Discovery, design, content audit, eval, UAT, and deployment documents |
-| [`prompts/`](prompts/) | Ready-made system prompt templates + AI generation prompts |
-| [`operations/`](operations/) | Monitoring KQL queries, alert setup, and operational runbook |
-| [`governance/`](governance/) | Responsible AI checklist and security review |
-| [`launch/`](launch/) | Go-live checklist, user communication template, hypercare guide |
-| [`ci-cd/`](ci-cd/) | GitHub Actions workflows for automated push and publish |
-| [`troubleshooting/`](troubleshooting/) | Common issues and fixes — Teams/Copilot publishing, YAML errors, auth |
+→ Full setup instructions: [`base/README.md`](base/README.md)
 
 ---
 
-## Base Agent
-
-**Copy `base/` to start every new agent.** It contains the 5 files every agent needs:
-
-| File | Purpose |
-|------|---------|
-| [`base/agent.mcs.yml`](base/agent.mcs.yml) | Agent identity, system prompt (with scope + out-of-scope guidance), conversation starters |
-| [`base/settings.mcs.yml`](base/settings.mcs.yml) | Auth mode, recognizer, language, access policy |
-| [`base/topics/Greeting.topic.mcs.yml`](base/topics/Greeting.topic.mcs.yml) | Welcome message + `Conversation.Started` telemetry |
-| [`base/topics/Fallback.topic.mcs.yml`](base/topics/Fallback.topic.mcs.yml) | Unknown intent — retries 3× with telemetry, then escalates |
-| [`base/topics/OnError.topic.mcs.yml`](base/topics/OnError.topic.mcs.yml) | System error handler — test mode detail, prod safe message, `Agent.ErrorOccurred` telemetry |
-
-→ See [`base/README.md`](base/README.md) for setup steps and key decisions.
-
----
-
-## Components
+## Components — drop-in by type
 
 ### Topics
 
-| Component | Trigger | What it does | README |
-|-----------|---------|-------------|--------|
-| [`auth`](components/topics/auth/) | `OnSignIn` | Sign-in flow with `Auth.SignInStarted` / `Auth.SignInCompleted` telemetry | [→](components/topics/auth/README.md) |
-| [`conversation-init`](components/topics/conversation-init/) | `OnActivity` (first message) | Loads M365 profile with error handling + safe defaults; logs `ConversationInit.Completed` | [→](components/topics/conversation-init/README.md) |
-| [`disambiguation`](components/topics/disambiguation/) | `OnSelectIntent` | Clarifies ambiguous intents; logs `Agent.DisambiguationTriggered` with match count | [→](components/topics/disambiguation/README.md) |
-| [`escalation`](components/topics/escalation/) | `OnRecognizedIntent` / `BeginDialog` | Human handoff via `TransferConversation`; logs `Agent.EscalationTriggered` with reason | [→](components/topics/escalation/README.md) |
-| [`knowledge-search`](components/topics/knowledge-search/) | `OnUnknownIntent` | Generative answers from knowledge sources; logs `Knowledge.SearchInvoked` / `AnswerFound` / `AnswerNotFound` | [→](components/topics/knowledge-search/README.md) |
-| [`out-of-scope`](components/topics/out-of-scope/) | `OnRecognizedIntent` | Redirects clearly out-of-scope queries; logs `Agent.OutOfScope` | [→](components/topics/out-of-scope/README.md) |
-| [`question-branch`](components/topics/question-branch/) | `OnRecognizedIntent` | Collects user input and branches the conversation | [→](components/topics/question-branch/README.md) |
-| [`action-invoke`](components/topics/action-invoke/) | `OnRecognizedIntent` | Calls an action with output validation + `Action.Succeeded` / `Action.Failed` telemetry | [→](components/topics/action-invoke/README.md) |
-| [`remove-citations`](components/topics/remove-citations/) | `OnGeneratedResponse` | Strips `[1][2]` citation markers from AI responses | [→](components/topics/remove-citations/README.md) |
+| Component | Trigger | Purpose |
+|-----------|---------|---------|
+| [`_scaffold`](components/topics/_scaffold/) | `OnRecognizedIntent` | **Start every new topic here** — built-in error handling, telemetry, CSAT |
+| [`auth`](components/topics/auth/) | `OnSignIn` | Sign-in flow with telemetry |
+| [`conversation-init`](components/topics/conversation-init/) | `OnActivity` (first message) | Loads M365 profile into global variables |
+| [`disambiguation`](components/topics/disambiguation/) | `OnSelectIntent` | Clarifies ambiguous intents |
+| [`escalation`](components/topics/escalation/) | `BeginDialog` | Human handoff via TransferConversation |
+| [`knowledge-search`](components/topics/knowledge-search/) | `OnUnknownIntent` | Generative answers from knowledge sources |
+| [`out-of-scope`](components/topics/out-of-scope/) | `OnRecognizedIntent` | Redirects out-of-scope queries |
+| [`question-branch`](components/topics/question-branch/) | `OnRecognizedIntent` | Collects input and branches |
+| [`action-invoke`](components/topics/action-invoke/) | `OnRecognizedIntent` | Calls an action with validation and telemetry |
+| [`feedback`](components/topics/feedback/) | `OnRecognizedIntent` / `BeginDialog` | Thumbs → rating → free text CSAT |
+| [`remove-citations`](components/topics/remove-citations/) | `OnGeneratedResponse` | Strips `[1][2]` citation markers |
+
+→ Call signatures for all topics: [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md)
 
 ### Actions
 
-| Component | Kind | What it does | README |
-|-----------|------|-------------|--------|
-| [`connector`](components/actions/connector/) | `InvokeConnectorTaskAction` | Calls a Power Platform connector operation | [→](components/actions/connector/README.md) |
-| [`mcp`](components/actions/mcp/) | `InvokeExternalAgentTaskAction` | Calls an MCP server tool | [→](components/actions/mcp/README.md) |
+| Component | Kind | Purpose |
+|-----------|------|---------|
+| [`connector`](components/actions/connector/) | `InvokeConnectorTaskAction` | Calls a Power Platform connector |
+| [`mcp`](components/actions/mcp/) | `InvokeExternalAgentTaskAction` | Calls an MCP server tool |
 
 ### Knowledge Sources
 
-| Component | Source type | What it does | README |
-|-----------|-------------|-------------|--------|
-| [`sharepoint`](components/knowledge/sharepoint/) | SharePoint document library | Internal document search | [→](components/knowledge/sharepoint/README.md) |
-| [`public-website`](components/knowledge/public-website/) | Public URL (Bing) | Public website search | [→](components/knowledge/public-website/README.md) |
-
-### Agents
-
-| Component | Kind | What it does | README |
-|-----------|------|-------------|--------|
-| [`child-agent`](components/agents/child-agent/) | `AgentDialog` | Specialist sub-agent for orchestrator pattern | [→](components/agents/child-agent/README.md) |
-
-### Variables
-
-| Component | Scope | What it does | README |
-|-----------|-------|-------------|--------|
-| [`global-variable`](components/variables/global-variable/) | Conversation | Shared state across topics (user profile, locale, flags) | [→](components/variables/global-variable/README.md) |
+| Component | Source | Purpose |
+|-----------|--------|---------|
+| [`sharepoint`](components/knowledge/sharepoint/) | SharePoint library | Internal document search |
+| [`public-website`](components/knowledge/public-website/) | Public URL | Public website search |
 
 ### Adaptive Cards
 
-| Component | Use case | README |
-|-----------|---------|--------|
-| [`confirmation-card`](components/adaptive-cards/confirmation-card.json) | Ask user to confirm or cancel before executing an action | [→](components/adaptive-cards/README.md) |
-| [`status-card`](components/adaptive-cards/status-card.json) | Display action result or data lookup with status colour | [→](components/adaptive-cards/README.md) |
-| [`form-card`](components/adaptive-cards/form-card.json) | Collect structured input (date, dropdown, text) from user | [→](components/adaptive-cards/README.md) |
+| Component | Use case |
+|-----------|---------|
+| [`confirmation-card`](components/adaptive-cards/confirmation-card.json) | Confirm before executing |
+| [`status-card`](components/adaptive-cards/status-card.json) | Show action result |
+| [`form-card`](components/adaptive-cards/form-card.json) | Collect structured input |
+| [`feedback-thumbs`](components/adaptive-cards/feedback-thumbs.json) | Thumbs up/down |
+| [`feedback-rating`](components/adaptive-cards/feedback-rating.json) | 1–5 star rating |
+| [`feedback-text`](components/adaptive-cards/feedback-text.json) | Free text + category |
+
+### Other
+
+| Component | Kind | Purpose |
+|-----------|------|---------|
+| [`child-agent`](components/agents/child-agent/) | `AgentDialog` | Specialist sub-agent |
+| [`global-variable`](components/variables/global-variable/) | Conversation scope | Shared state across topics |
 
 ---
 
-## Recipes
+## Recipes — pick your agent type
 
-Start here if you know what type of agent you're building:
+### Copilot Studio (YAML, low-code)
 
-| Recipe | What it builds | Complexity |
-|--------|---------------|------------|
-| [01 — Basic FAQ](recipes/01-basic-faq.md) | Generative Q&A over SharePoint docs | Low |
-| [02 — Authenticated Agent](recipes/02-authenticated-agent.md) | Sign-in + personalised M365 user context | Low–Medium |
-| [03 — Connector Action Agent](recipes/03-connector-action-agent.md) | Calls a Power Platform connector | Medium |
-| [04 — MCP Action Agent](recipes/04-mcp-action-agent.md) | Calls an MCP server tool | Medium |
-| [05 — Orchestrator Agent](recipes/05-orchestrator-agent.md) | Multi-specialist with child agents | High |
-| [06 — Full-Featured Agent](recipes/06-full-featured-agent.md) | Auth + knowledge + actions + disambiguation | High |
+| Recipe | What it builds | Time |
+|--------|---------------|------|
+| [`01-basic-faq`](recipes/01-basic-faq.md) | Generative Q&A over SharePoint | 30 min |
+| [`02-authenticated-agent`](recipes/02-authenticated-agent.md) | Sign-in + personalised M365 context | 45 min |
+| [`03-connector-action-agent`](recipes/03-connector-action-agent.md) | Calls a Power Platform connector | 60 min |
+| [`04-mcp-action-agent`](recipes/04-mcp-action-agent.md) | Calls an MCP server tool | 60 min |
+| [`05-orchestrator-agent`](recipes/05-orchestrator-agent.md) | Multi-specialist with child agents | 2+ hr |
+| [`06-full-featured-agent`](recipes/06-full-featured-agent.md) | Auth + knowledge + actions + CSAT | 2+ hr |
 
----
+### Pro-code (when Copilot Studio alone is not enough)
 
-## Telemetry Events Reference
-
-All templates use a consistent `{Category}.{Action}` naming convention:
-
-| Event | Fired by | Key properties |
-|-------|----------|----------------|
-| `Conversation.Started` | Greeting | Channel, BotName |
-| `Agent.FallbackTriggered` | Fallback | UserQuery, FallbackCount |
-| `Agent.EscalationTriggered` | Fallback, Escalation | Reason, FallbackCount |
-| `Agent.DisambiguationTriggered` | Disambiguation | UserQuery, MatchCount |
-| `Agent.OutOfScope` | Out of Scope | UserQuery |
-| `Agent.ErrorOccurred` | On Error | ErrorCode, ErrorMessage, IsTestMode |
-| `Auth.SignInStarted` | Sign In | SignInReason |
-| `Auth.SignInCompleted` | Sign In | — |
-| `Knowledge.SearchInvoked` | Knowledge Search | UserQuery |
-| `Knowledge.AnswerFound` | Knowledge Search | — |
-| `Knowledge.AnswerNotFound` | Knowledge Search | UserQuery |
-| `ConversationInit.Completed` | Conversation Init | UserCountry |
-| `ConversationInit.ProfileLoadFailed` | Conversation Init | — |
-| `Topic.Started` | Action Invoke | TopicName, UserQuery |
-| `Action.Succeeded` | Action Invoke | TopicName, ActionName |
-| `Action.Failed` | Action Invoke | TopicName, ActionName |
-
-All events include `ConversationId` and `TimeUTC`.
+| Recipe | What it builds | Time |
+|--------|---------------|------|
+| [`07-m365-agents-sdk`](recipes/07-m365-agents-sdk.md) | Custom agent in C# / TypeScript / Python — wraps or extends Copilot Studio via SDK | 2+ hr |
+| [`08-azure-ai-foundry`](recipes/08-azure-ai-foundry.md) | Foundry agent — code interpreter, custom models, > 8K RPM, Progressive Enhancement | 3+ hr |
 
 ---
 
@@ -172,25 +172,30 @@ All events include `ConversationId` and `TimeUTC`.
 
 | Convention | Rule |
 |------------|------|
-| `<AngleBrackets>` | Required placeholder — you must replace this value |
-| `_REPLACE` suffixes | Node IDs — replace with a unique random string (e.g. `_a1b2c3`) |
-| `schemaName` prefix | Every component ID starts with the agent's `schemaName` from `settings.mcs.yml` |
-| One file per component | Never combine multiple actions, knowledge sources, or child agents into one file |
-| Unique IDs per agent | IDs must be unique across the entire agent, not just within a single topic file |
-
-### Generating Node IDs
-
-Replace `_REPLACE`, `_REPLACE1`, etc. with 6-character random alphanumeric strings:
-- VS Code Copilot Studio extension — auto-generates IDs on save
-- Online: `https://it-tools.tech/token-generator` (length 6)
-- PowerShell: `[System.Web.Security.Membership]::GeneratePassword(6, 0)`
+| `<AngleBrackets>` | Required placeholder — replace before use |
+| `_REPLACE` suffixes | Node IDs — replace with unique 6-char string (see QUICKSTART.md) |
+| `schemaName` prefix | Every component ID starts with the agent's `schemaName` |
+| One file per component | Never combine actions, knowledge, or child agents into one file |
 
 ---
 
-## Contributing
+## Telemetry events
 
-1. Add new YAML template + `README.md` under the appropriate `components/` subfolder
-2. Update the component table in this file
-3. Add the telemetry events to the Telemetry Events Reference table
-4. If it's a common combination, add a recipe under `recipes/`
-5. Keep each template focused on a single purpose — one file per component
+| Event | Fired by |
+|-------|----------|
+| `Conversation.Started` | Greeting |
+| `Topic.Started` | Every topic (scaffold) |
+| `Topic.Completed` | Every action topic on success (scaffold) |
+| `Topic.ErrorOccurred` | Every action topic on failure (scaffold) |
+| `Agent.FallbackTriggered` | Fallback |
+| `Agent.EscalationTriggered` | Fallback, Escalation |
+| `Agent.DisambiguationTriggered` | Disambiguation |
+| `Agent.OutOfScope` | Out of Scope |
+| `Agent.ErrorOccurred` | OnError |
+| `Auth.SignInStarted` / `Auth.SignInCompleted` | Sign In |
+| `Knowledge.SearchInvoked` / `AnswerFound` / `AnswerNotFound` | Knowledge Search |
+| `ConversationInit.Completed` | Conversation Init |
+| `Action.Succeeded` / `Action.Failed` | Action Invoke |
+| `Feedback.Thumbs` / `Feedback.Rating` / `Feedback.Text` | Feedback |
+
+All events include `ConversationId` and `TimeUTC`.

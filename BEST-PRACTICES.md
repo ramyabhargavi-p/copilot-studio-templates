@@ -335,3 +335,98 @@ Before publishing any agent, verify:
 - [ ] Fallback escalates after 3 failed attempts
 - [ ] `Agent.EscalationTriggered` telemetry fires with correct `Reason`
 - [ ] `TransferConversation` handoff works in the target channel
+
+### Action Safety (if connector actions are present)
+- [ ] Every connector action has a `# SAFETY TIER:` comment at the top of its file
+- [ ] All Medium tier actions show a confirmation card before executing — test Cancel path
+- [ ] All High tier actions route through an approval flow — they never execute inline
+- [ ] Safety tier table in `00-ai-decision-framework.md` Step 5 is complete and signed off
+
+---
+
+## 12. Action Safety
+
+Every connector action must be classified into one of three safety tiers before build starts. Assign the tier based on what the action does — not what you intend it for.
+
+### The three tiers
+
+| Tier | What the action does | Guardrail | Copilot Studio implementation |
+|------|---------------------|-----------|-------------------------------|
+| **Low — Read** | Search, look up, summarise, retrieve | Audit log (telemetry only) | Direct `InvokeConnectorTaskAction` — scaffold telemetry already handles the log |
+| **Medium — Write** | Create, submit, update, send | User confirmation before execution | `confirmation-card.json` → ConditionGroup → action only if confirmed |
+| **High — Destructive** | Delete, transfer funds, revoke access, bulk modify | Middleware + separate approval channel | `confirmation-card.json` → Power Automate approval flow → action only on approval |
+
+### Rule: never execute destructive actions inline
+
+High tier actions must never execute in the same turn as the user's request. Always route through an external approval step.
+
+```yaml
+# WRONG — destructive action inline
+- kind: InvokeConnectorTaskAction
+  operationId: DeleteRecord   # fires immediately on user request
+
+# RIGHT — destructive action via approval flow
+- kind: InvokeConnectorTaskAction
+  operationId: RunFlow        # triggers an approval flow; action executes only after approval
+  parameters:
+    flowId: <APPROVAL_FLOW_ID>
+    requestedBy: =Global.UserDisplayName
+```
+
+### Declare the tier in every action file
+
+Add this comment block at the top of every `*-action.mcs.yml` or `*-action.mcs.yml` connector file:
+
+```yaml
+# SAFETY TIER: Low / Medium / High
+# GUARDRAIL:   None / confirmation-card / approval-flow
+# REASON:      <one line — why this tier was assigned>
+```
+
+### Medium tier — confirmation card pattern
+
+```yaml
+# 1. Show the card
+- kind: SendActivity
+  id: sendConfirmCard_REPLACE
+  activity:
+    attachments:
+      - contentType: application/vnd.microsoft.card.adaptive
+        content: ${{confirmation-card content here}}
+
+# 2. Capture the user's choice
+- kind: Question
+  id: waitForChoice_REPLACE
+  variable: Topic.UserChoice
+  prompt: ""
+  entityType: UserEntireResponse
+
+# 3. Branch: execute only if confirmed
+- kind: ConditionGroup
+  id: checkChoice_REPLACE
+  conditions:
+    - id: confirmed_REPLACE
+      condition: =Topic.UserChoice.action = "confirm"
+      actions:
+        - kind: InvokeConnectorTaskAction   # safe — user confirmed
+          id: executeAction_REPLACE
+  elseActions:
+    - kind: SendActivity
+      id: sendCancelled_REPLACE
+      activity: Action cancelled. Nothing was changed.
+```
+
+### Audit command
+
+Before go-live, run this to confirm every connector action has a declared tier:
+
+```bash
+# Find all connector action files
+grep -rl "InvokeConnectorTaskAction" agents/
+# For each file — confirm it contains # SAFETY TIER:
+grep -l "SAFETY TIER" agents/**/*.yml
+```
+
+The two lists should match. Any file in list 1 that is not in list 2 is missing its tier declaration.
+
+→ Full implementation guide: [`project-delivery/13-ai-engineer-realtime-guide.md`](project-delivery/13-ai-engineer-realtime-guide.md)

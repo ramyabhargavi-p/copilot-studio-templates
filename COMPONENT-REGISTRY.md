@@ -332,6 +332,21 @@ Actions are the connector and MCP wrappers. Each lives in `components/actions/` 
 **File:** `components/actions/connector/connector-action.mcs.yml`
 **Purpose:** Generic Power Platform connector call template.
 
+**Action Safety — declare tier before build:**
+
+| Tier | Action type | Guardrail required |
+|------|------------|-------------------|
+| **Low** | Read / lookup / search | None — telemetry only |
+| **Medium** | Create / submit / update | `confirmation-card.json` before calling |
+| **High** | Delete / revoke / bulk modify | Power Automate approval flow — never inline |
+
+Add this comment at the top of every action file:
+```yaml
+# SAFETY TIER: Low / Medium / High
+# GUARDRAIL:   None / confirmation-card / approval-flow
+# REASON:      <one line>
+```
+
 **Reference in your topic:**
 ```yaml
 - kind: InvokeConnectorTaskAction
@@ -349,6 +364,7 @@ Actions are the connector and MCP wrappers. Each lives in `components/actions/` 
 **Output:** `Topic.ActionResponse` — the connector's response object.
 
 **Use at:** Step 14 — copy once per connector operation. Never write `InvokeConnectorTaskAction` from scratch.
+**Safety:** Classify tier first. See `BEST-PRACTICES.md` Section 12 and `project-delivery/00-ai-decision-framework.md` Step 5.
 
 ---
 

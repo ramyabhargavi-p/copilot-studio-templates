@@ -1,22 +1,35 @@
 # Launch
 
-Documents for go-live day and the first two weeks after launch.
+Three documents covering the final step before users see your agent.
 
-## Documents
+---
 
-| File | Purpose | When |
-|------|---------|------|
-| [`launch-checklist.md`](launch-checklist.md) | Pre-go-live gate — every item must pass before publishing | Day before launch |
-| [`user-communication-template.md`](user-communication-template.md) | Announcement email / Teams message / intranet post | Launch day |
-| [`hypercare-guide.md`](hypercare-guide.md) | Heightened monitoring and response for the first two weeks | Launch day → Day 14 |
+## What to complete and in what order
 
-## Recommended Sequence
+| File | What it covers | Complete when |
+|------|---------------|--------------|
+| [`launch-checklist.md`](launch-checklist.md) | Tick-box gate — every item must pass before go-live | Day before launch |
+| [`user-communication-template.md`](user-communication-template.md) | Email/Teams announcement to notify users | Day of launch |
+| [`hypercare-guide.md`](hypercare-guide.md) | First 2 weeks post-launch — who watches what, how to respond | After launch |
+
+---
+
+## Sequence
 
 ```
-Day -1  Complete launch-checklist.md — get sign-off
-Day 0   Publish → send user communication
-Day 0   Start hypercare monitoring (check App Insights every few hours)
-Day 1   Morning check: errors, fallback rate, user feedback
-Day 7   Week 1 review: fix knowledge gaps, tune routing
-Day 14  Hypercare exit review → hand to regular operations cadence
+1. Complete launch-checklist.md  → all boxes ticked, signed off
+2. Send user-communication-template.md  → users know the agent exists
+3. Begin hypercare-guide.md monitoring  → watch for issues in first 14 days
 ```
+
+After hypercare ends, hand off to [`../operations/`](../operations/) for steady-state monitoring.
+
+---
+
+## Minimum before any user touches the agent
+
+- [ ] `launch-checklist.md` — all items checked, business owner signed
+- [ ] Governance docs complete — `../governance/ai-ethics-checklist.md` + `security-review.md`
+- [ ] At least one UAT sign-off round complete — `../project-delivery/04-uat-test-plan.md`
+
+→ Post-launch operations: [`../operations/README.md`](../operations/README.md)

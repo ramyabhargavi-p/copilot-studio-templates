@@ -14,12 +14,17 @@ The command-line tool for pushing YAML to a Power Platform environment and publi
 
 **Install:**
 ```powershell
-# Windows — via dotnet tool
+# Windows — recommended (confirmed working, no admin or execution policy fix needed)
+winget install Microsoft.PowerAppsCLI
+
+# Alternative: dotnet tool (requires .NET SDK 6+)
 dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 
-# Or download the installer
-# https://learn.microsoft.com/power-platform/developer/cli/introduction
+# Alternative: MSI installer (IT-managed machines)
+# Download from https://aka.ms/PowerAppsCLI and run the .msi
 ```
+
+After installing, **close and reopen your terminal**, then verify:
 
 **Verify:**
 ```bash
@@ -29,9 +34,9 @@ pac --version
 **Key commands used in this repo:**
 ```bash
 pac auth create --environment <env-url>   # authenticate
-pac copilot push                          # push YAML to environment
 pac copilot list                          # list agents in environment
 pac env list                              # list environments
+# To push YAML to environment: VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
 ```
 
 ---
