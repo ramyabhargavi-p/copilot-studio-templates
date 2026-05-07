@@ -1,0 +1,15 @@
+mcs.metadata:
+  componentName: Customer Glossary
+  description: |-
+    Customer-specific acronyms in CSV format. Two columns: ACRONYM,Definition with a header row.
+    Purpose: Provides agent-specific terminology so the orchestrator can silently expand acronyms
+             before searching other knowledge sources. NEVER included in automatic searches —
+             only loaded explicitly by the conversation-init topic into Global.Glossary.
+    Prerequisites:
+      - The CSV file must be stored in Dataverse (not directly on SharePoint)
+      - Configure the knowledge source via Copilot Studio UI first, then reference it here
+      - SharePoint knowledge sources CANNOT be used for JIT glossary (semantic search limitation)
+    NOTE: triggerCondition: false prevents this source from appearing in automatic UniversalSearchTool calls
+kind: KnowledgeSourceConfiguration
+source:
+  triggerCondition: false

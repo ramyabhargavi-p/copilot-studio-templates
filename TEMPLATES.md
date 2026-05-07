@@ -47,12 +47,13 @@ Complete list of every buildable template in this repository — 49 templates ac
 ---
 
 ## Knowledge Source Templates
-*2 templates — copy once per knowledge source*
+*3 templates — copy once per knowledge source*
 
 | # | File | Source Type | Purpose |
 |---|------|------------|---------|
 | 19 | `components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml` | SharePoint library | Internal document search and generative answers |
 | 20 | `components/knowledge/public-website/public-website.knowledge.mcs.yml` | Public URL | Public website and documentation search |
+| 21 | `components/knowledge/glossary/glossary.knowledge.mcs.yml` | Dataverse (CSV) | JIT acronym glossary — `triggerCondition: false`, loaded explicitly by `conversation-init` |
 
 ---
 
@@ -71,12 +72,15 @@ Complete list of every buildable template in this repository — 49 templates ac
 ---
 
 ## Agent and Variable Templates
-*2 templates*
+*5 templates*
 
 | # | File | Kind | Purpose |
 |---|------|------|---------|
 | 27 | `components/agents/child-agent/child-agent.mcs.yml` | `AgentDialog` | Specialist sub-agent for orchestrator pattern (recipe 05) |
-| 28 | `components/variables/global-variable/global-variable.variable.mcs.yml` | Conversation scope | Shared state across topics — user profile, locale, flags |
+| 28 | `components/variables/global-variable/global-variable.variable.mcs.yml` | Conversation scope | Generic shared-state variable — user profile, locale, flags |
+| 29 | `components/variables/user-country/UserCountry.variable.mcs.yml` | Conversation scope | User's M365 country — loaded by `conversation-init`, used for country-aware answers |
+| 30 | `components/variables/user-display-name/UserDisplayName.variable.mcs.yml` | Conversation scope | User's M365 display name — loaded by `conversation-init`, used for personalised responses |
+| 31 | `components/variables/glossary-var/Glossary.variable.mcs.yml` | Conversation scope | Customer acronym glossary — loaded by `conversation-init`, injected into orchestrator instructions |
 
 ---
 
@@ -85,11 +89,11 @@ Complete list of every buildable template in this repository — 49 templates ac
 
 | # | File | Trigger | Purpose |
 |---|------|---------|---------|
-| 29 | `ci-cd/push-on-pr.yml` | Pull request | Push agent to Dev environment on every PR |
-| 30 | `ci-cd/promote-dev-to-uat.yml` | Manual / merge to UAT branch | Promote agent from Dev to UAT |
-| 31 | `ci-cd/promote-uat-to-prod.yml` | Manual / merge to Prod branch | Promote agent from UAT to Prod |
-| 32 | `ci-cd/publish-on-release.yml` | Release tag | Publish agent on GitHub release |
-| 33 | `ci-cd/solution-build-and-deploy.yml` | Manual | Solution-based build and deploy for managed environments |
+| 32 | `ci-cd/push-on-pr.yml` | Pull request | Push agent to Dev environment on every PR |
+| 33 | `ci-cd/promote-dev-to-uat.yml` | Manual / merge to UAT branch | Promote agent from Dev to UAT |
+| 34 | `ci-cd/promote-uat-to-prod.yml` | Manual / merge to Prod branch | Promote agent from UAT to Prod |
+| 35 | `ci-cd/publish-on-release.yml` | Release tag | Publish agent on GitHub release |
+| 36 | `ci-cd/solution-build-and-deploy.yml` | Manual | Solution-based build and deploy for managed environments |
 
 ---
 
@@ -98,10 +102,10 @@ Complete list of every buildable template in this repository — 49 templates ac
 
 | # | File | For |
 |---|------|-----|
-| 34 | `prompts/system-prompts/hr-assistant.md` | HR policies, leave management, benefits |
-| 35 | `prompts/system-prompts/it-helpdesk.md` | IT support, service desk, password resets |
-| 36 | `prompts/system-prompts/customer-support.md` | External customer-facing service agent |
-| 37 | `prompts/system-prompts/knowledge-base.md` | Generic internal knowledge base assistant |
+| 37 | `prompts/system-prompts/hr-assistant.md` | HR policies, leave management, benefits |
+| 38 | `prompts/system-prompts/it-helpdesk.md` | IT support, service desk, password resets |
+| 39 | `prompts/system-prompts/customer-support.md` | External customer-facing service agent |
+| 40 | `prompts/system-prompts/knowledge-base.md` | Generic internal knowledge base assistant |
 
 ---
 
@@ -110,12 +114,12 @@ Complete list of every buildable template in this repository — 49 templates ac
 
 | # | File | What it generates |
 |---|------|------------------|
-| 38 | `prompts/ai-prompts/generate-topic.md` | Complete `.topic.mcs.yml` from a plain-English scenario |
-| 39 | `prompts/ai-prompts/generate-agent-instructions.md` | System prompt for `agent.mcs.yml` |
-| 40 | `prompts/ai-prompts/generate-adaptive-card.md` | Adaptive card JSON from a description |
-| 41 | `prompts/ai-prompts/generate-eval-cases.md` | Eval test cases for routing accuracy testing |
-| 42 | `prompts/ai-prompts/review-agent.md` | Agent quality review and improvement checklist |
-| 43 | `prompts/ai-prompts/prompt-engineering-patterns.md` | P1–P10 pattern reference for system prompt design |
+| 41 | `prompts/ai-prompts/generate-topic.md` | Complete `.topic.mcs.yml` from a plain-English scenario |
+| 42 | `prompts/ai-prompts/generate-agent-instructions.md` | System prompt for `agent.mcs.yml` |
+| 43 | `prompts/ai-prompts/generate-adaptive-card.md` | Adaptive card JSON from a description |
+| 44 | `prompts/ai-prompts/generate-eval-cases.md` | Eval test cases for routing accuracy testing |
+| 45 | `prompts/ai-prompts/review-agent.md` | Agent quality review and improvement checklist |
+| 46 | `prompts/ai-prompts/prompt-engineering-patterns.md` | P1–P10 pattern reference for system prompt design |
 
 ---
 
@@ -124,14 +128,14 @@ Complete list of every buildable template in this repository — 49 templates ac
 
 | # | File | What it builds | Complexity | Time |
 |---|------|---------------|-----------|------|
-| 44 | `recipes/01-basic-faq.md` | Generative Q&A from SharePoint documents | Low | 30 min |
-| 45 | `recipes/02-authenticated-agent.md` | Sign-in + personalised M365 user context | Low–Medium | 45 min |
-| 46 | `recipes/03-connector-action-agent.md` | Calls a Power Platform connector (submit, retrieve) | Medium | 60 min |
-| 47 | `recipes/04-mcp-action-agent.md` | Calls an MCP server tool | Medium | 60 min |
-| 48 | `recipes/05-orchestrator-agent.md` | Multi-specialist agent with child agents | High | 2+ hr |
-| 49 | `recipes/06-full-featured-agent.md` | Auth + knowledge + actions + CSAT | High | 2+ hr |
-| 50 | `recipes/07-m365-agents-sdk.md` | Pro-code agent (C# / TypeScript / Python) — wraps or extends Copilot Studio agents | High | 2+ hr |
-| 51 | `recipes/08-azure-ai-foundry.md` | Azure AI Foundry agent — code interpreter, custom models, > 8K RPM scale, Progressive Enhancement from Copilot Studio | High | 3+ hr |
+| 47 | `recipes/01-basic-faq.md` | Generative Q&A from SharePoint documents | Low | 30 min |
+| 48 | `recipes/02-authenticated-agent.md` | Sign-in + personalised M365 user context | Low–Medium | 45 min |
+| 49 | `recipes/03-connector-action-agent.md` | Calls a Power Platform connector (submit, retrieve) | Medium | 60 min |
+| 50 | `recipes/04-mcp-action-agent.md` | Calls an MCP server tool | Medium | 60 min |
+| 51 | `recipes/05-orchestrator-agent.md` | Multi-specialist agent with child agents | High | 2+ hr |
+| 52 | `recipes/06-full-featured-agent.md` | Auth + knowledge + actions + CSAT | High | 2+ hr |
+| 53 | `recipes/07-m365-agents-sdk.md` | Pro-code agent (C# / TypeScript / Python) — wraps or extends Copilot Studio agents | High | 2+ hr |
+| 54 | `recipes/08-azure-ai-foundry.md` | Azure AI Foundry agent — code interpreter, custom models, > 8K RPM scale, Progressive Enhancement from Copilot Studio | High | 3+ hr |
 
 ---
 
@@ -142,15 +146,15 @@ Complete list of every buildable template in this repository — 49 templates ac
 | Base YAML templates | 5 |
 | Topic component templates | 11 |
 | Action templates | 2 |
-| Knowledge source templates | 2 |
+| Knowledge source templates | 3 |
 | Adaptive card templates | 6 |
-| Agent / variable templates | 2 |
+| Agent / variable templates | 5 |
 | CI/CD pipeline templates | 5 |
 | System prompt templates | 4 |
 | AI generation prompts | 6 |
 | Recipe guides — Copilot Studio | 6 |
 | Recipe guides — Pro-code (SDK + Foundry) | 2 |
-| **Total** | **51** |
+| **Total** | **55** |
 
 ---
 

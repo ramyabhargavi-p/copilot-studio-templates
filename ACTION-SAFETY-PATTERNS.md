@@ -706,5 +706,5 @@ Design principles:
   BEST-PRACTICES.md  → Section 12: Action Safety
 
 Real project example (Medium tier in SoftwareRequest topic):
-  examples/it-helpdesk/WALKTHROUGH.md  → Phase 3 section
+  examples/it-helpdesk/walkthrough.md  → Phase 3 section
 ```

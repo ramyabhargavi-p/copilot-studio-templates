@@ -427,6 +427,25 @@ knowledgeSources:
 
 ---
 
+### `glossary`
+**File:** `components/knowledge/glossary/glossary.knowledge.mcs.yml`
+**Purpose:** JIT acronym glossary loaded explicitly by the `conversation-init` topic. Never auto-searched.
+
+**Key points:**
+- `triggerCondition: false` — excluded from all automatic `UniversalSearchTool` searches
+- Requires **Dataverse storage** — direct SharePoint sources cannot return full file content
+- Configure the knowledge source via Copilot Studio UI first; reference it in `conversation-init`
+- The knowledge source reference in `SearchAndSummarizeContent` must match the `.mcs.yml` filename (without the `.knowledge.mcs.yml` suffix, i.e. `glossary`)
+
+**Pair with:**
+- `components/topics/conversation-init/ConversationInit.topic.mcs.yml` — loads it into `Global.Glossary`
+- `components/variables/glossary-var/Glossary.variable.mcs.yml` — declares the global variable
+- Agent instructions glossary block in `base/agent.mcs.yml` — injects `{Global.Glossary}` into the orchestrator
+
+**Use at:** Step 14 — add when the agent needs to understand internal acronyms before searching knowledge.
+
+---
+
 ### `child-agent`
 **File:** `components/agents/child-agent/child-agent.mcs.yml`
 **Purpose:** Wires a specialist sub-agent into an orchestrator topic.
@@ -554,13 +573,14 @@ Intent routing
 
 ## Global Variables Reference
 
-Variables shared across all topics. Declared once in `components/variables/global-variable/`.
+Variables shared across all topics. Ready-made variable files live in `components/variables/`.
 
-| Variable | Set by | Used by | Value |
-|----------|--------|---------|-------|
-| `Global.UserDisplayName` | `conversation-init` | Agent instructions (P5), any topic greeting | User's M365 display name |
-| `Global.UserCountry` | `conversation-init` | Agent instructions (P5), country-specific logic | User's M365 country |
-| `Global.EscalationReason` | Any topic before escalating | `escalation` | Why escalation is happening |
+| Variable | File | Set by | Used by | Value |
+|----------|------|--------|---------|-------|
+| `Global.UserDisplayName` | `components/variables/user-display-name/UserDisplayName.variable.mcs.yml` | `conversation-init` | Agent instructions (P5), any topic greeting | User's M365 display name — falls back to `"there"` |
+| `Global.UserCountry` | `components/variables/user-country/UserCountry.variable.mcs.yml` | `conversation-init` | Agent instructions (P5), country-specific logic | User's M365 country — falls back to `"Unknown"` |
+| `Global.Glossary` | `components/variables/glossary-var/Glossary.variable.mcs.yml` | `conversation-init` | Agent instructions (glossary block) | Customer acronym CSV — injected via `{Global.Glossary}` |
+| `Global.EscalationReason` | `components/variables/global-variable/global-variable.variable.mcs.yml` | Any topic before escalating | `escalation` | Why escalation is happening |
 
 ---
 
