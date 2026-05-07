@@ -1,0 +1,15 @@
+# Name: UserDisplayName
+# The user's display name from their M365 profile, loaded JIT at conversation start.
+# Purpose: Enables personalised greetings and responses without asking the user their name.
+#          Referenced in agent instructions as {Global.UserDisplayName}.
+# Prerequisites:
+#   - conversation-init topic must be included (loads this variable from M365 profile)
+#   - Office 365 Users connector must be added to the agent
+# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName prefix
+name: UserDisplayName
+aIVisibility: UseInAIContext                # Orchestrator uses this for personalised greetings and responses
+scope: Conversation
+description: The user's display name from their M365 profile, loaded JIT at conversation start. Falls back to "there" if the field is blank in Azure AD.
+schemaName: <AGENT-SCHEMA-NAME>.globalvariable.UserDisplayName
+kind: GlobalVariableComponent
+defaultValue: DEFAULT

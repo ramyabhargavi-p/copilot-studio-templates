@@ -8,7 +8,7 @@ Complete real-world project walkthroughs showing every phase end-to-end.
 
 | Example | Scenario | Recipe used | Templates used |
 |---------|---------|-------------|---------------|
-| [`it-helpdesk/`](it-helpdesk/WALKTHROUGH.md) | Contoso IT Helpdesk — Teams bot, M365 auth, SharePoint knowledge, ServiceNow tickets, CSAT | `06-full-featured-agent` | 17 of 49 |
+| [`it-helpdesk/`](it-helpdesk/walkthrough.md) | Contoso IT Helpdesk — Teams bot, M365 auth, SharePoint knowledge, ServiceNow tickets, CSAT | `06-full-featured-agent` | 17 of 49 |
 
 ---
 
