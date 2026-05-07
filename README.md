@@ -39,7 +39,7 @@ flowchart TD
 | Goal | Go to |
 |------|-------|
 | **Build your first agent** (30–60 min) | [`QUICKSTART.md`](QUICKSTART.md) |
-| **Engineering guide — intern to director** | [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) |
+| **Engineering guide** | [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) |
 | **Full enterprise delivery** (all phases) | [`START-HERE.md`](START-HERE.md) |
 | **Something is broken** | [`troubleshooting/README.md`](troubleshooting/README.md) |
 
