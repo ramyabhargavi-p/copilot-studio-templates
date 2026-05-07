@@ -15,4 +15,39 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logFallback_REPLACE1
       eventName: Agent.FallbackTriggered
-      properties:
+      properties: >-
+        ={
+          ConversationId: System.Conversation.Id,
+          UserQuery: System.Activity.Text,
+          FallbackCount: Text(System.FallbackCount),
+          Channel: System.Activity.Channel,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }
+
+    # Retry logic: helpful prompts on first two failures, automatic escalation on third
+    - kind: ConditionGroup
+      id: retryCheck_REPLACE2
+      conditions:
+        - id: retry1_REPLACE3
+          condition: =System.FallbackCount = 1
+          actions:
+            - kind: SendActivity
+              id: sendRetry1_REPLACE4
+              activity: I didn't quite catch that — could you rephrase or ask in a different way?
+
+        - id: retry2_REPLACE5
+          condition: =System.FallbackCount = 2
+          actions:
+            - kind: SendActivity
+              id: sendRetry2_REPLACE6
+              activity: I'm still having trouble understanding. Try asking in a different way, or type "speak to a human" to reach our team.
+
+      elseActions:
+        # After 3 failed attempts escalate automatically — no more retries
+        - kind: SendActivity
+          id: sendEscalating_REPLACE7
+          activity: I wasn't able to help with that after a few tries. Let me connect you with someone who can.
+
+        - kind: BeginDialog
+          id: callEscalation_REPLACE8
+          dialog: <AGENT_SCHEMA>.topic.Escalate

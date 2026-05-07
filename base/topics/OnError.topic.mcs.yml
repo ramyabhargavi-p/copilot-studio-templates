@@ -46,4 +46,11 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logError_REPLACE6
       eventName: Agent.ErrorOccurred
-      properties:
+      # NOTE: Log ErrorCode only — never log System.Error.Message (may contain PII or internal details)
+      properties: >-
+        ={
+          ConversationId: System.Conversation.Id,
+          ErrorCode: System.Error.Code,
+          Channel: System.Activity.Channel,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }

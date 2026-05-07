@@ -2,8 +2,9 @@
 
 All pac commands used in Copilot Studio agent development, in the order you use them.
 
-> **Important:** `pac copilot push`, `pac copilot pull`, and `pac copilot open` do NOT exist.
-> These were incorrect commands. See the correct alternatives in each section below.
+> **Note on `pac copilot push`:** This command is available via the **Copilot Studio Kit** (`pac copilot push`) when the Kit is installed. It is NOT a built-in subcommand of the base `pac copilot` CLI.
+> If you installed pac CLI standalone without the Kit, use the VS Code `Copilot Studio: Apply Changes` command or `pac copilot extract-template` + `pac copilot create` instead.
+> This repo assumes the Copilot Studio Kit is installed — `pac copilot push` is used throughout. See [`TOOLS-AND-PLUGINS.md`](../TOOLS-AND-PLUGINS.md) for installation.
 
 ---
 
@@ -185,7 +186,7 @@ Ctrl+Shift+P → "Copilot Studio: Clone Agent"
 
 ## 6. Edit locally and apply changes back
 
-`pac copilot push` does not exist. Use one of these:
+`pac copilot push` is available when the Copilot Studio Kit is installed (see note at top of this file). If you do not have the Kit, use one of these alternatives:
 
 ### Method A — VS Code extension (recommended)
 

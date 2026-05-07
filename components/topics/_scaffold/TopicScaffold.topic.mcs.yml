@@ -1,3 +1,11 @@
+mcs.metadata:
+  componentName: <TOPIC_NAME>
+  description: |-
+    Trigger: OnRecognizedIntent — fires when user message matches one of the triggerQueries
+    Purpose: <Describe what this topic does in one sentence>
+    Built-in: Topic.Started telemetry, error handling with Topic.ErrorOccurred telemetry, CSAT guard
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+    NOTE: Replace <SCHEMA> with your agent's schemaName, <TOPIC_NAME> with the topic display name
 # ══════════════════════════════════════════════════════════════════════════════
 # TOPIC SCAFFOLD — Copy this for EVERY new topic
 #

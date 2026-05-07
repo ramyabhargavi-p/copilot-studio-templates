@@ -8,7 +8,7 @@ Pick your agent type. Follow the steps. Deploy.
 3. This repo cloned and a feature branch created → `git checkout -b feature/<your-agent>`
 4. VS Code with Power Platform extension active (Copilot Studio icon in status bar)
 
-Not done yet? → [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) Stage 1 walks every step.
+Not done yet? → [`ENGINEERING-PLAYBOOK.md`](../ENGINEERING-PLAYBOOK.md) Stage 1 walks every step.
 
 ---
 
@@ -16,12 +16,12 @@ Not done yet? → [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) Stage 1 w
 
 | I want to build… | Use recipe | Time | Claude skill |
 |---|---|---|---|
-| FAQ / knowledge bot — answers questions from SharePoint | [`01-basic-faq`](recipes/01-basic-faq.md) | 30 min | `/copilot-studio:add-knowledge` |
-| Same, but users must sign in + greeted by name | [`02-authenticated-agent`](recipes/02-authenticated-agent.md) | 45 min | `/copilot-studio:new-topic` |
-| Agent that submits data to a system (tickets, requests) | [`03-connector-action-agent`](recipes/03-connector-action-agent.md) | 60 min | `/copilot-studio:add-action` |
-| Agent that calls an MCP tool | [`04-mcp-action-agent`](recipes/04-mcp-action-agent.md) | 60 min | `/copilot-studio:add-action` |
-| Orchestrator with specialist child agents | [`05-orchestrator-agent`](recipes/05-orchestrator-agent.md) | 2+ hrs | `/copilot-studio:new-topic` |
-| All of the above combined | [`06-full-featured-agent`](recipes/06-full-featured-agent.md) | 2+ hrs | All skills |
+| FAQ / knowledge bot — answers questions from SharePoint | [`01-basic-faq`](../recipes/01-basic-faq.md) | 30 min | `/copilot-studio:add-knowledge` |
+| Same, but users must sign in + greeted by name | [`02-authenticated-agent`](../recipes/02-authenticated-agent.md) | 45 min | `/copilot-studio:new-topic` |
+| Agent that submits data to a system (tickets, requests) | [`03-connector-action-agent`](../recipes/03-connector-action-agent.md) | 60 min | `/copilot-studio:add-action` |
+| Agent that calls an MCP tool | [`04-mcp-action-agent`](../recipes/04-mcp-action-agent.md) | 60 min | `/copilot-studio:add-action` |
+| Orchestrator with specialist child agents | [`05-orchestrator-agent`](../recipes/05-orchestrator-agent.md) | 2+ hrs | `/copilot-studio:new-topic` |
+| All of the above combined | [`06-full-featured-agent`](../recipes/06-full-featured-agent.md) | 2+ hrs | All skills |
 
 ---
 
@@ -94,9 +94,9 @@ Run this from inside your agent folder:
 ```bash
 # macOS / Linux
 for f in $(find . -name "*.yml"); do
-  while grep -q '_REPLACE' "$f"; do
+  while grep -qE '_REPLACE[0-9]*' "$f"; do
     id=$(cat /dev/urandom | tr -dc 'a-z0-9' | head -c6)
-    sed -i "s/_REPLACE/$id/" "$f"
+    sed -i "0,/_REPLACE[0-9]*/s/_REPLACE[0-9]*/_${id}/" "$f"
   done
 done
 
@@ -137,11 +137,11 @@ Run these three checks — takes 15 minutes:
 
 | Check | How |
 |-------|-----|
-| Routing accuracy ≥ 85% | `/copilot-studio:run-eval` or follow `project-delivery/05-eval-scenarios.md` |
+| Routing accuracy ≥ 85% | `/copilot-studio:run-eval` or follow `../project-delivery/05-eval-scenarios.md` |
 | No YAML errors | `/copilot-studio:validate` or `pac copilot push` (errors appear in output) |
-| Responsible AI review | `governance/ai-ethics-checklist.md` — tick every box |
+| Responsible AI review | `../governance/ai-ethics-checklist.md` — tick every box |
 
-Then: `launch/launch-checklist.md` — complete all items → publish.
+Then: `../launch/launch-checklist.md` — complete all items → publish.
 
 ---
 
@@ -167,7 +167,7 @@ Then: `launch/launch-checklist.md` — complete all items → publish.
 | Agent appears in Copilot Studio but shows error | Check `OnError.topic.mcs.yml` — `<AGENT_SCHEMA>` must match your `schemaName` exactly |
 | Teams channel not showing the agent | Agent must be **published** (not just pushed) via Copilot Studio → Publish |
 
-Full troubleshooting: [`troubleshooting/README.md`](troubleshooting/README.md)
+Full troubleshooting: [`troubleshooting/README.md`](../troubleshooting/README.md)
 
 ---
 
@@ -175,9 +175,9 @@ Full troubleshooting: [`troubleshooting/README.md`](troubleshooting/README.md)
 
 | What to add | File |
 |---|---|
-| CSAT feedback collection | Add `components/topics/feedback/` → call via `BeginDialog` at topic end |
+| CSAT feedback collection | Add `../components/topics/feedback/` → call via `BeginDialog` at topic end |
 | User sign-in + personalisation | Follow recipe 02 |
 | Connector action (submit data) | Follow recipe 03 |
-| Better routing accuracy | `project-delivery/05-eval-scenarios.md` |
-| Full governance for enterprise rollout | `project-delivery/00-ai-decision-framework.md` → work through phases |
+| Better routing accuracy | `../project-delivery/05-eval-scenarios.md` |
+| Full governance for enterprise rollout | `../project-delivery/00-ai-decision-framework.md` → work through phases |
 | All reusable components | `COMPONENT-REGISTRY.md` |

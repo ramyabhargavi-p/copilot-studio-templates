@@ -27,7 +27,7 @@ flowchart TD
     CH --> AGENT
 ```
 
-Start with `base/` (5 files). Add components from `components/` as your agent needs them. Never write YAML from scratch.
+Start with `base/` (6 files). Add components from `components/` as your agent needs them. Never write YAML from scratch.
 
 ---
 

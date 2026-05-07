@@ -428,7 +428,7 @@ pac copilot publish --bot "<AgentName>"
 
 ### Publish via CI/CD
 
-See [`ci-cd/publish-on-release.yml`](ci-cd/publish-on-release.yml) — triggers on a GitHub release tag.
+See [`ci-cd/publish-on-release.yml`](../ci-cd/publish-on-release.yml) — triggers on a GitHub release tag.
 
 ---
 
@@ -502,5 +502,5 @@ Top bar:
 | Connector shows "Connection required" | Settings → Connections → sign in to the connector |
 | Topic triggering wrong intent | Check trigger phrases for overlap → use Disambiguation topic |
 
-→ Full error reference: [`troubleshooting/README.md`](troubleshooting/README.md)
+→ Full error reference: [`troubleshooting/README.md`](../troubleshooting/README.md)
 → pac CLI install: [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md)

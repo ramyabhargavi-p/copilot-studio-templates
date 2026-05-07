@@ -1,9 +1,11 @@
-# Name: <Topic Name>
-# Template: Topic that invokes a connector action with error handling and telemetry
-# Use this instead of QuestionBranch when the topic's primary purpose is to call an action.
-# Copy this template once per action-driven topic in your agent.
-# NOTE: Replace all _REPLACE suffixes with unique random strings before use
-# NOTE: Replace all <PLACEHOLDER> values with your content
+mcs.metadata:
+  componentName: <Topic Name>
+  description: |-
+    Template: Topic that invokes a connector action with error handling and telemetry
+    Use this instead of QuestionBranch when the topic's primary purpose is to call an action.
+    Copy this template once per action-driven topic in your agent.
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+    NOTE: Replace all <PLACEHOLDER> values with your content
 kind: AdaptiveDialog
 beginDialog:
   kind: OnRecognizedIntent
@@ -18,7 +20,6 @@ beginDialog:
       - <trigger phrase 5>
 
   actions:
-    # Step 1: Log that this topic was triggered
     - kind: LogCustomTelemetryEvent
       id: logTopicStarted_REPLACE1
       eventName: Topic.Started
@@ -31,75 +32,78 @@ beginDialog:
           TimeUTC: Text(Now(), DateTimeFormat.UTC)
         }
 
-    # Step 2: (Optional) Collect additional input from the user before calling the action
-    # Remove this Question node if the action has no required inputs
+    # Optional: collect input from the user before calling the action
     - kind: Question
-      id: question_REPLACE2
-      variable: init:Topic.UserInput
-      prompt: <What information do you need from the user before calling the action?>
-      entity: StringPrebuiltEntity
-      alwaysPrompt: false                 # false: skip if AI already extracted the value from context
+      id: askInput_REPLACE2
       interruptionPolicy:
         allowInterruption: false
+      alwaysPrompt: false
+      variable: init:Topic.UserInput
+      prompt: <Question to ask the user — or remove this node if no input is needed>
+      entity: StringPrebuiltEntity
 
-    # Step 3: Show a progress message (optional — remove if the action is near-instant)
-    - kind: SendActivity
-      id: sendWorking_REPLACE3
-      activity: Let me look that up for you...
-
-    # Step 4: Invoke the action
-    # Replace <AGENT_SCHEMA>.topic.<ActionName> with the full schema name of your action
-    # e.g. hr_assistant.topic.GetLeaveBalance
-    - kind: BeginDialog
-      id: invokeAction_REPLACE4
-      dialog: <AGENT_SCHEMA>.topic.<ActionName>
-      input:
-        binding:
-          <InputParam>: =Topic.UserInput   # Pass the collected input (or a fixed value)
+    - kind: InvokeConnectorAction
+      id: callAction_REPLACE3
       output:
-        binding:
-          Response: Topic.ActionResponse   # Capture the action's output
+        kind: SingleVariableOutputBinding
+        variable: init:Topic.ActionResult
+      connectionReference: <connector_reference>        # e.g. shared_sharepointonline
+      connectionProperties:
+        mode: Invoker
+      operationId: <OperationId>                        # e.g. GetItem
+      parameters:
+        <param1>: =Topic.UserInput                      # map connector inputs from topic variables
 
-    # Step 5: Handle the response — always validate before sending
+    # Branch on success vs. failure — check if result is populated
     - kind: ConditionGroup
-      id: conditionGroup_REPLACE5
+      id: resultCheck_REPLACE4
       conditions:
-        - id: conditionItem_REPLACE6
-          condition: =!IsBlank(Topic.ActionResponse)
+        - id: successBranch_REPLACE5
+          condition: =!IsBlank(Topic.ActionResult)
           actions:
-            # Success: action returned data — send it to the user
-            - kind: SendActivity
-              id: sendSuccess_REPLACE7
-              activity: "{Topic.ActionResponse}"
-
             - kind: LogCustomTelemetryEvent
-              id: logActionSucceeded_REPLACE8
+              id: logActionSucceeded_REPLACE6
               eventName: Action.Succeeded
               properties: >-
                 ={
-                  TopicName: "<Topic Name>",
-                  ActionName: "<ActionName>",
+                  ActionName: "<ActionName>",   # Replace <ActionName> with your action name (e.g. GetLeaveBalance)
                   ConversationId: System.Conversation.Id,
+                  Channel: System.Activity.Channel,
                   TimeUTC: Text(Now(), DateTimeFormat.UTC)
                 }
 
-      elseActions:
-        # Failure: action returned empty/null — show a safe error and log it
-        - kind: SendActivity
-          id: sendError_REPLACE9
-          activity:
-            text:
-              - I wasn't able to retrieve that right now. Please try again in a moment.
-              - Something went wrong on my end. If this keeps happening, please contact support (Ref: {System.Conversation.Id}).
+            - kind: SendActivity
+              id: sendResult_REPLACE7
+              activity: <Message using the action result — e.g. "Your balance is {Topic.ActionResult.balance}">
 
+            # CSAT wiring — show feedback prompt once per conversation
+            - kind: ConditionGroup
+              id: csatGuard_REPLACE8
+              conditions:
+                - id: csatCheck_REPLACE9
+                  condition: =Not(Global.FeedbackShown)
+                  actions:
+                    - kind: SetVariable
+                      id: markFeedback_REPLACE10
+                      variable: Global.FeedbackShown
+                      value: =true
+                    - kind: BeginDialog
+                      id: invokeFeedback_REPLACE11
+                      dialog: <AGENT_SCHEMA>.topic.Feedback
+
+      elseActions:
         - kind: LogCustomTelemetryEvent
-          id: logActionFailed_REPLACE10
+          id: logActionFailed_REPLACE12
           eventName: Action.Failed
           properties: >-
             ={
-              TopicName: "<Topic Name>",
-              ActionName: "<ActionName>",
+              ActionName: "<ActionName>",   # Replace <ActionName> with your action name (e.g. GetLeaveBalance)
+              ErrorCode: System.Error.Code,
               ConversationId: System.Conversation.Id,
               Channel: System.Activity.Channel,
               TimeUTC: Text(Now(), DateTimeFormat.UTC)
             }
+
+        - kind: SendActivity
+          id: sendErrorMessage_REPLACE13
+          activity: <Apology message — e.g. "Sorry, I wasn't able to retrieve that information right now. Please try again shortly.">

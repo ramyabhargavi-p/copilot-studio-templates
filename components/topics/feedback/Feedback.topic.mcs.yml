@@ -1,12 +1,23 @@
+mcs.metadata:
+  componentName: Feedback
+  description: |-
+    Trigger: OnRecognizedIntent (feedback phrases) or called via BeginDialog from any resolved topic
+    Purpose: Collect CSAT — thumbs up/down → star rating (if negative) → optional free text category (if ≤3 stars).
+             Logs all feedback to Application Insights. Guard with Global.FeedbackShown to fire once per conversation.
+    PII note: feedbackText free-form input is collected in the card but NOT logged to telemetry.
+              Only feedbackCategory (a dropdown value) and ratingScore are sent to Application Insights.
+    Prerequisites: Global.FeedbackShown global variable must be declared
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+    NOTE: Replace <SCHEMA> with your agent's schemaName from settings.mcs.yml
 kind: AdaptiveDialog
 modelDescription: Collects user CSAT feedback at the end of a conversation using a thumbs up/down → star rating → optional free text sequence. Logs all feedback to Application Insights.
-id: <SCHEMA_NAME>_feedback_REPLACE
+id: <SCHEMA>_feedback_REPLACE1
 name: Feedback
 language: 1033
 
 triggers:
   - kind: OnRecognizedIntent
-    id: feedbackTrigger_REPLACE
+    id: feedbackTrigger_REPLACE2
     intent:
       triggerQueries:
         - feedback
@@ -21,16 +32,16 @@ triggers:
         - how did I do
     actions:
       - kind: GotoAction
-        id: gotoCollectFeedback_REPLACE
-        actionId: collectThumbsFeedback_REPLACE
+        id: gotoCollectFeedback_REPLACE3
+        actionId: collectThumbsFeedback_REPLACE4
 
   # ── Thumbs up / down ──────────────────────────────────────────────────────
   - kind: OnActivity
-    id: collectThumbsFeedback_REPLACE
+    id: collectThumbsFeedback_REPLACE4
     activityType: message
     actions:
       - kind: SendActivity
-        id: sendThumbsCard_REPLACE
+        id: sendThumbsCard_REPLACE5
         activity:
           attachments:
             - contentType: application/vnd.microsoft.card.adaptive
@@ -51,59 +62,63 @@ triggers:
                     wrap: true
                 actions:
                   - type: Action.Submit
-                    title: "👍  Yes, it helped"
+                    title: "Yes, it helped"
                     style: positive
                     data:
                       feedbackType: thumbs
                       feedbackValue: positive
                       score: 1
                   - type: Action.Submit
-                    title: "👎  No, it didn't"
+                    title: "No, it didn't"
                     data:
                       feedbackType: thumbs
                       feedbackValue: negative
                       score: 0
 
       - kind: Question
-        id: waitForThumbsResponse_REPLACE
+        id: waitForThumbsResponse_REPLACE6
         variable: Topic.ThumbsResponse
         prompt: ""
         entityType: UserEntireResponse
 
       - kind: SetVariable
-        id: setThumbsScore_REPLACE
+        id: setThumbsScore_REPLACE7
         variable: Topic.ThumbsScore
         value: =Topic.ThumbsResponse.score
 
       - kind: LogCustomTelemetryEvent
-        id: logThumbsFeedback_REPLACE
+        id: logThumbsFeedback_REPLACE8
         eventName: Feedback.Thumbs
-        properties:
-          feedbackValue: =Topic.ThumbsResponse.feedbackValue
-          score: =Text(Topic.ThumbsScore)
-          conversationId: =System.Activity.Conversation.Id
+        properties: >-
+          ={
+            feedbackValue: Topic.ThumbsResponse.feedbackValue,
+            score: Text(Topic.ThumbsScore),
+            conversationId: System.Conversation.Id,
+            channel: System.Activity.Channel,
+            timeUTC: Text(Now(), DateTimeFormat.UTC)
+          }
 
       # ── If positive: thank and close ──────────────────────────────────────
       - kind: ConditionGroup
-        id: checkThumbsResult_REPLACE
+        id: checkThumbsResult_REPLACE9
         conditions:
-          - id: positiveThumbsBranch_REPLACE
+          - id: positiveThumbsBranch_REPLACE10
             condition: =Topic.ThumbsResponse.feedbackValue = "positive"
             actions:
               - kind: SendActivity
-                id: sendPositiveThanks_REPLACE
+                id: sendPositiveThanks_REPLACE11
                 activity:
                   text: >-
-                    Thank you for the positive feedback — glad I could help! 😊
+                    Thank you for the positive feedback — glad I could help!
               - kind: EndDialog
-                id: endOnPositive_REPLACE
+                id: endOnPositive_REPLACE12
 
           # ── If negative: ask for star rating ──────────────────────────────
-          - id: negativeThumbsBranch_REPLACE
+          - id: negativeThumbsBranch_REPLACE13
             condition: =Topic.ThumbsResponse.feedbackValue = "negative"
             actions:
               - kind: SendActivity
-                id: sendRatingCard_REPLACE
+                id: sendRatingCard_REPLACE14
                 activity:
                   attachments:
                     - contentType: application/vnd.microsoft.card.adaptive
@@ -123,31 +138,31 @@ triggers:
                             isSubtle: true
                         actions:
                           - type: Action.Submit
-                            title: "⭐  1"
+                            title: "1 - Very poor"
                             data:
                               feedbackType: rating
                               feedbackValue: "1"
                               score: 1
                           - type: Action.Submit
-                            title: "⭐⭐  2"
+                            title: "2 - Poor"
                             data:
                               feedbackType: rating
                               feedbackValue: "2"
                               score: 2
                           - type: Action.Submit
-                            title: "⭐⭐⭐  3"
+                            title: "3 - Average"
                             data:
                               feedbackType: rating
                               feedbackValue: "3"
                               score: 3
                           - type: Action.Submit
-                            title: "⭐⭐⭐⭐  4"
+                            title: "4 - Good"
                             data:
                               feedbackType: rating
                               feedbackValue: "4"
                               score: 4
                           - type: Action.Submit
-                            title: "⭐⭐⭐⭐⭐  5"
+                            title: "5 - Excellent"
                             style: positive
                             data:
                               feedbackType: rating
@@ -155,32 +170,36 @@ triggers:
                               score: 5
 
               - kind: Question
-                id: waitForRating_REPLACE
+                id: waitForRating_REPLACE15
                 variable: Topic.RatingResponse
                 prompt: ""
                 entityType: UserEntireResponse
 
               - kind: SetVariable
-                id: setRatingScore_REPLACE
+                id: setRatingScore_REPLACE16
                 variable: Topic.RatingScore
                 value: =Topic.RatingResponse.score
 
               - kind: LogCustomTelemetryEvent
-                id: logRatingFeedback_REPLACE
+                id: logRatingFeedback_REPLACE17
                 eventName: Feedback.Rating
-                properties:
-                  score: =Text(Topic.RatingScore)
-                  conversationId: =System.Activity.Conversation.Id
+                properties: >-
+                  ={
+                    score: Text(Topic.RatingScore),
+                    conversationId: System.Conversation.Id,
+                    channel: System.Activity.Channel,
+                    timeUTC: Text(Now(), DateTimeFormat.UTC)
+                  }
 
-              # ── If rating ≤ 3: ask for free text ──────────────────────────
+              # ── If rating ≤ 3: ask for improvement category ────────────────
               - kind: ConditionGroup
-                id: checkRatingScore_REPLACE
+                id: checkRatingScore_REPLACE18
                 conditions:
-                  - id: lowRatingBranch_REPLACE
+                  - id: lowRatingBranch_REPLACE19
                     condition: =Topic.RatingScore <= 3
                     actions:
                       - kind: SendActivity
-                        id: sendTextCard_REPLACE
+                        id: sendTextCard_REPLACE20
                         activity:
                           attachments:
                             - contentType: application/vnd.microsoft.card.adaptive
@@ -199,11 +218,6 @@ triggers:
                                     size: Small
                                     isSubtle: true
                                     wrap: true
-                                  - type: Input.Text
-                                    id: feedbackText
-                                    placeholder: Tell us what was missing or what went wrong...
-                                    isMultiline: true
-                                    maxLength: 500
                                   - type: Input.ChoiceSet
                                     id: feedbackCategory
                                     label: What best describes the issue?
@@ -221,6 +235,8 @@ triggers:
                                         value: too_slow
                                       - title: Other
                                         value: other
+                                  # feedbackText (free-form) removed — PII risk.
+                                  # Category dropdown captures actionable signal without personal data.
                                 actions:
                                   - type: Action.Submit
                                     title: Submit feedback
@@ -234,36 +250,40 @@ triggers:
                                       skipped: true
 
                       - kind: Question
-                        id: waitForTextResponse_REPLACE
+                        id: waitForTextResponse_REPLACE21
                         variable: Topic.TextResponse
                         prompt: ""
                         entityType: UserEntireResponse
 
                       - kind: ConditionGroup
-                        id: checkIfSkipped_REPLACE
+                        id: checkIfSkipped_REPLACE22
                         conditions:
-                          - id: notSkippedBranch_REPLACE
+                          - id: notSkippedBranch_REPLACE23
                             condition: =!Topic.TextResponse.skipped
                             actions:
                               - kind: LogCustomTelemetryEvent
-                                id: logTextFeedback_REPLACE
-                                eventName: Feedback.Text
-                                properties:
-                                  feedbackText: =Topic.TextResponse.feedbackText
-                                  feedbackCategory: =Topic.TextResponse.feedbackCategory
-                                  ratingScore: =Text(Topic.RatingScore)
-                                  conversationId: =System.Activity.Conversation.Id
+                                id: logCategoryFeedback_REPLACE24
+                                eventName: Feedback.Category
+                                properties: >-
+                                  ={
+                                    feedbackCategory: Topic.TextResponse.feedbackCategory,
+                                    ratingScore: Text(Topic.RatingScore),
+                                    conversationId: System.Conversation.Id,
+                                    channel: System.Activity.Channel,
+                                    timeUTC: Text(Now(), DateTimeFormat.UTC)
+                                  }
+                                # feedbackText intentionally excluded — free-form input may contain PII
 
-                  - id: highRatingBranch_REPLACE
+                  - id: highRatingBranch_REPLACE25
                     condition: =Topic.RatingScore > 3
                     actions: []
 
               - kind: SendActivity
-                id: sendFinalThanks_REPLACE
+                id: sendFinalThanks_REPLACE26
                 activity:
                   text: >-
                     Thank you for your feedback — it helps us improve.
                     If you need anything else, I'm here to help.
 
       - kind: EndDialog
-        id: endFeedback_REPLACE
+        id: endFeedback_REPLACE27

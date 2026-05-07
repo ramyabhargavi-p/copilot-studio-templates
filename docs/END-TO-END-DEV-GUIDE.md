@@ -53,7 +53,7 @@ node --version
 ```
 
 → Full options and troubleshooting: [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md)
-→ Full pac command reference: [`commands/pac-commands.md`](commands/pac-commands.md)
+→ Full pac command reference: [`commands/pac-commands.md`](../commands/pac-commands.md)
 
 ### With UI only
 
@@ -140,7 +140,7 @@ code .
 # Ctrl+Shift+X → search "Copilot Studio" → Install (publisher: Microsoft)
 ```
 
-→ Full VS Code shortcuts: [`commands/vscode-commands.md`](commands/vscode-commands.md)
+→ Full VS Code shortcuts: [`commands/vscode-commands.md`](../commands/vscode-commands.md)
 
 ### With UI
 
@@ -156,7 +156,7 @@ Not applicable — the extension is only for local YAML editing.
 
 ## 1.1 — Decide if an AI agent is the right solution
 
-Fill in: [`project-delivery/00-ai-decision-framework.md`](project-delivery/00-ai-decision-framework.md)
+Fill in: [`project-delivery/00-ai-decision-framework.md`](../project-delivery/00-ai-decision-framework.md)
 
 Run the Nine Critical Questions (Q1–Q9) with your project sponsor:
 
@@ -189,7 +189,7 @@ Open the file in VS Code alongside your browser. The framework doc is a decision
 
 ## 1.2 — Capture requirements
 
-Fill in: [`project-delivery/01-requirements-questionnaire.md`](project-delivery/01-requirements-questionnaire.md)
+Fill in: [`project-delivery/01-requirements-questionnaire.md`](../project-delivery/01-requirements-questionnaire.md)
 
 Run with your business stakeholder. The answers that drive the most downstream decisions:
 
@@ -206,7 +206,7 @@ Run with your business stakeholder. The answers that drive the most downstream d
 
 ## 1.3 — Run technical discovery
 
-Fill in: [`project-delivery/02-technical-discovery.md`](project-delivery/02-technical-discovery.md)
+Fill in: [`project-delivery/02-technical-discovery.md`](../project-delivery/02-technical-discovery.md)
 
 Confirm before build starts:
 
@@ -231,7 +231,7 @@ Confirm before build starts:
 
 ## 2.1 — Choose your recipe
 
-Open [`recipes/README.md`](recipes/README.md) and pick:
+Open [`recipes/README.md`](../recipes/README.md) and pick:
 
 | Agent type | Recipe | Time |
 |-----------|--------|------|
@@ -328,7 +328,7 @@ Open each base file and replace all `<AngleBracket>` placeholders:
 | `settings.mcs.yml` | `<agent_schema_name>` | Same as `<AgentName>` |
 | `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | Same as `<AgentName>` |
 
-For the system prompt — use a template from [`prompts/system-prompts/`](prompts/system-prompts/) or generate one:
+For the system prompt — use a template from [`prompts/system-prompts/`](../prompts/system-prompts/) or generate one:
 ```bash
 # Open the generation prompt in VS Code and paste into Claude
 code prompts/ai-prompts/generate-agent-instructions.md
@@ -576,7 +576,7 @@ npm run eval -- --agent-name "<Your Agent Name>" --environment <ENV_URL>
 npm run eval -- --scenarios ./project-delivery/05-eval-scenarios.yml
 ```
 
-→ Prepare eval scenarios: [`project-delivery/05-eval-scenarios.md`](project-delivery/05-eval-scenarios.md)
+→ Prepare eval scenarios: [`project-delivery/05-eval-scenarios.md`](../project-delivery/05-eval-scenarios.md)
 
 ### With UI
 
@@ -618,7 +618,7 @@ Fill in the markdown files in VS Code — there is no UI equivalent for governan
 
 ## 4.4 — UAT with real stakeholders
 
-Follow [`project-delivery/04-uat-test-plan.md`](project-delivery/04-uat-test-plan.md).
+Follow [`project-delivery/04-uat-test-plan.md`](../project-delivery/04-uat-test-plan.md).
 
 UAT is done by real users, not the developer. The business owner signs the sign-off page before go-live.
 
@@ -700,11 +700,11 @@ code launch/user-communication-template.md
 
 ### With UI
 
-1. Complete [`launch/launch-checklist.md`](launch/launch-checklist.md) — every item
+1. Complete [`launch/launch-checklist.md`](../launch/launch-checklist.md) — every item
 2. Switch to Prod environment in top-right picker
 3. Verify agent is present and correct
 4. **Publish**
-5. Send the user announcement: [`launch/user-communication-template.md`](launch/user-communication-template.md)
+5. Send the user announcement: [`launch/user-communication-template.md`](../launch/user-communication-template.md)
 
 ---
 
@@ -720,7 +720,7 @@ ci-cd/promote-uat-to-prod.yml     → promote to Prod on merge to main
 ci-cd/publish-on-release.yml      → publish on GitHub release tag
 ```
 
-→ Setup instructions: [`ci-cd/README.md`](ci-cd/README.md)
+→ Setup instructions: [`ci-cd/README.md`](../ci-cd/README.md)
 
 ---
 
@@ -732,7 +732,7 @@ ci-cd/publish-on-release.yml      → publish on GitHub release tag
 
 ## 6.1 — Hypercare (first 2 weeks post-launch)
 
-Follow [`launch/hypercare-guide.md`](launch/hypercare-guide.md).
+Follow [`launch/hypercare-guide.md`](../launch/hypercare-guide.md).
 
 Daily checks during hypercare:
 ```
@@ -748,7 +748,7 @@ Daily checks during hypercare:
 
 ### Without UI (App Insights KQL)
 
-Run the four queries from [`operations/monitoring-queries.md`](operations/monitoring-queries.md):
+Run the four queries from [`operations/monitoring-queries.md`](../operations/monitoring-queries.md):
 
 ```kql
 -- 1. Conversation volume
@@ -787,7 +787,7 @@ Copilot Studio → **Analytics** tab (left sidebar):
 
 ## 6.3 — Alert thresholds
 
-Set up alerts in [`operations/alert-setup.md`](operations/alert-setup.md):
+Set up alerts in [`operations/alert-setup.md`](../operations/alert-setup.md):
 
 | Metric | Alert threshold | Action |
 |--------|----------------|--------|
@@ -801,7 +801,7 @@ Set up alerts in [`operations/alert-setup.md`](operations/alert-setup.md):
 
 ## 6.4 — Responding to incidents
 
-Follow [`operations/runbook.md`](operations/runbook.md) for every incident type:
+Follow [`operations/runbook.md`](../operations/runbook.md) for every incident type:
 
 ```
 Connector action failing       → runbook: Connector Issues
@@ -861,13 +861,13 @@ pac copilot publish --bot "<AgentName>"
 
 | Phase | Files to open |
 |-------|--------------|
-| 0 — Setup | `TOOLS-AND-PLUGINS.md`, `commands/pac-commands.md`, `commands/vscode-commands.md` |
-| 1 — Discovery | `project-delivery/00-ai-decision-framework.md`, `01-requirements-questionnaire.md`, `02-technical-discovery.md` |
-| 2 — Design | `project-delivery/03-agent-design-worksheet.md`, `06-content-audit.md`, `07-functional-design-document.md`, `08-workflow-logic-design.md`, `recipes/README.md` |
-| 3 — Build | `base/`, `components/topics/_scaffold/`, recipe file, `COMPONENT-REGISTRY.md`, `prompts/system-prompts/` |
-| 4 — Test | `project-delivery/04-uat-test-plan.md`, `05-eval-scenarios.md`, `governance/ai-ethics-checklist.md`, `governance/security-review.md` |
-| 5 — Deploy | `launch/launch-checklist.md`, `launch/user-communication-template.md`, `commands/pac-commands.md` Section 6, `ci-cd/` |
-| 6 — Operate | `operations/monitoring-queries.md`, `operations/alert-setup.md`, `operations/runbook.md`, `launch/hypercare-guide.md` |
+| 0 — Setup | `TOOLS-AND-PLUGINS.md`, `../commands/pac-commands.md`, `../commands/vscode-commands.md` |
+| 1 — Discovery | `../project-delivery/00-ai-decision-framework.md`, `01-requirements-questionnaire.md`, `02-technical-discovery.md` |
+| 2 — Design | `../project-delivery/03-agent-design-worksheet.md`, `06-content-audit.md`, `07-functional-design-document.md`, `08-workflow-logic-design.md`, `../recipes/README.md` |
+| 3 — Build | `../base/`, `../components/topics/_scaffold/`, recipe file, `COMPONENT-REGISTRY.md`, `../prompts/system-prompts/` |
+| 4 — Test | `../project-delivery/04-uat-test-plan.md`, `05-eval-scenarios.md`, `../governance/ai-ethics-checklist.md`, `../governance/security-review.md` |
+| 5 — Deploy | `../launch/launch-checklist.md`, `../launch/user-communication-template.md`, `../commands/pac-commands.md` Section 6, `../ci-cd/` |
+| 6 — Operate | `../operations/monitoring-queries.md`, `../operations/alert-setup.md`, `../operations/runbook.md`, `../launch/hypercare-guide.md` |
 
 ---
 
@@ -923,7 +923,7 @@ git tag v1.0.0 && git push origin v1.0.0
 # Monthly — review Knowledge.AnswerNotFound, add new topics
 ```
 
-→ Full pac commands: [`commands/pac-commands.md`](commands/pac-commands.md)
-→ Full git commands: [`commands/git-commands.md`](commands/git-commands.md)
-→ Full VS Code shortcuts: [`commands/vscode-commands.md`](commands/vscode-commands.md)
+→ Full pac commands: [`commands/pac-commands.md`](../commands/pac-commands.md)
+→ Full git commands: [`commands/git-commands.md`](../commands/git-commands.md)
+→ Full VS Code shortcuts: [`commands/vscode-commands.md`](../commands/vscode-commands.md)
 → UI-only steps in detail: [`COPILOT-STUDIO-UI-GUIDE.md`](COPILOT-STUDIO-UI-GUIDE.md)

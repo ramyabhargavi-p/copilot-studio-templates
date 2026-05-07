@@ -4,20 +4,12 @@ mcs.metadata:
     Trigger: Fires when the user asks about a topic clearly outside the agent's domain (OnRecognizedIntent)
     Purpose: Return a clear, helpful redirect instead of a confusing fallback message.
              Keeps Fallback counts clean — use this for KNOWN gaps, not unknown ones.
+    Strategy:
+      1. Add trigger phrases for known out-of-scope areas specific to this agent
+      2. The agent instructions should ALSO tell the AI to detect and redirect out-of-scope queries
+      3. This topic catches explicit signals; AI instructions handle the long tail
     NOTE: Replace all _REPLACE suffixes with unique random strings before use
     NOTE: Replace <DOMAIN>, <OUT-OF-SCOPE-TOPIC>, and <CONTACT> with your values
-# Name: Out of Scope
-# Trigger: Fires when the user asks about something outside the agent's domain
-# Purpose: Return a clear, helpful redirect instead of a confusing "I don't understand" message.
-#          Provides consistent messaging, dedicated logging, and avoids polluting Fallback counts.
-#
-# Strategy:
-#   1. Add trigger phrases for KNOWN out-of-scope areas specific to your agent
-#   2. The agent instructions should ALSO tell the AI to detect and redirect out-of-scope queries
-#   3. This topic catches the explicit signals; instructions handle the long tail
-#
-# NOTE: Replace all _REPLACE suffixes with unique random strings before use
-# NOTE: Replace <DOMAIN>, <OUT-OF-SCOPE-TOPIC>, and <CONTACT> with your values
 kind: AdaptiveDialog
 beginDialog:
   kind: OnRecognizedIntent
@@ -26,9 +18,9 @@ beginDialog:
     displayName: Out of Scope
     triggerQueries:
       # Add phrases clearly outside YOUR agent's domain — be specific.
-      # HR assistant examples:   "book a flight" | "IT support" | "office supplies"
-      # IT helpdesk examples:    "payroll" | "HR policy" | "annual leave"
-      # Customer support examples: "investor relations" | "press enquiries"
+      # HR assistant examples:      "book a flight" | "IT support" | "office supplies"
+      # IT helpdesk examples:       "payroll" | "HR policy" | "annual leave"
+      # Customer support examples:  "investor relations" | "press enquiries"
       - <out-of-scope phrase 1>
       - <out-of-scope phrase 2>
       - <out-of-scope phrase 3>
@@ -36,7 +28,7 @@ beginDialog:
       - <out-of-scope phrase 5>
 
   actions:
-    # Log every out-of-scope trigger — high rates signal gaps in scope definition or training
+    # Log every out-of-scope trigger — high rates signal gaps in scope definition or trigger coverage
     - kind: LogCustomTelemetryEvent
       id: logOutOfScope_REPLACE1
       eventName: Agent.OutOfScope

@@ -1,3 +1,8 @@
+# SAFETY TIER: Low / Medium / High  ← choose one and delete the others
+# GUARDRAIL:   none (Low) | confirmation-card.json (Medium) | confirmation-card.json + typed approval (High)
+# REASON:      <one sentence — why this tier; e.g. "external read-only query, no side effects">
+# See: ACTION-SAFETY-PATTERNS.md for full tier definitions and required guardrail patterns
+#
 # Name: <MCP Server Name>
 # Description: <What this MCP server does>
 # Purpose: Expose an MCP (Model Context Protocol) server tool as an AI-invokable action.

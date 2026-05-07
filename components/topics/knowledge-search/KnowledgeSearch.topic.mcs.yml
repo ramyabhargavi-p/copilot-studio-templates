@@ -1,72 +1,19 @@
-# Name: Knowledge Search
-# Trigger: Fires when no topic matches the user's message (OnUnknownIntent)
-# Purpose: Generate an answer from the agent's knowledge sources using generative AI.
-#          Includes telemetry for search invocation, answer found, and answer not found.
-#          If no answer is found, exits silently so the Fallback topic can handle it.
-# Prerequisite: At least one knowledge source must be added to the agent
-# NOTE: Replace all _REPLACE suffixes with unique random strings before use
+mcs.metadata:
+  componentName: Knowledge Search
+  description: |-
+    Trigger: Fires when no topic matches the user's message (OnUnknownIntent)
+    Purpose: Generate an answer from the agent's knowledge sources using generative AI.
+             Includes telemetry for search invocation, answer found, and answer not found.
+             If no answer is found, exits silently so the Fallback topic can handle it.
+    Prerequisite: At least one knowledge source must be added to the agent
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
 kind: AdaptiveDialog
 beginDialog:
   kind: OnUnknownIntent
   id: main
-  priority: -1                            # Fires before Fallback when ordered first
-
+  priority: -1
   actions:
-    # Log every knowledge search invocation — track volume and query patterns
     - kind: LogCustomTelemetryEvent
       id: logSearchInvoked_REPLACE1
       eventName: Knowledge.SearchInvoked
-      properties: >-
-        ={
-          UserQuery: System.Activity.Text,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
-
-    # Step 1: Rewrite the user's message into an optimised search query
-    # Preserves context from the conversation history for better multi-turn retrieval
-    - kind: CreateSearchQuery
-      id: createSearchQuery_REPLACE2
-      userInput: =System.Activity.Text
-      result: Topic.SearchQuery
-
-    # Step 2: Search all agent knowledge sources and generate a summarised answer
-    - kind: SearchAndSummarizeContent
-      id: searchContent_REPLACE3
-      variable: Topic.Answer
-      userInput: =Topic.SearchQuery.SearchQuery
-
-    # Step 3: Branch on whether an answer was found
-    - kind: ConditionGroup
-      id: conditionGroup_REPLACE4
-      conditions:
-        - id: conditionItem_REPLACE5
-          condition: =!IsBlank(Topic.Answer)
-          actions:
-            # Answer found — log it and end the dialog (Copilot Studio sends the generated response)
-            - kind: LogCustomTelemetryEvent
-              id: logAnswerFound_REPLACE6
-              eventName: Knowledge.AnswerFound
-              properties: >-
-                ={
-                  ConversationId: System.Conversation.Id,
-                  TimeUTC: Text(Now(), DateTimeFormat.UTC)
-                }
-
-            - kind: EndDialog
-              id: endDialog_REPLACE7
-              clearTopicQueue: true
-
-      elseActions:
-        # No answer found — log it and exit silently so Fallback can handle the message
-        - kind: LogCustomTelemetryEvent
-          id: logAnswerNotFound_REPLACE8
-          eventName: Knowledge.AnswerNotFound
-          properties: >-
-            ={
-              UserQuery: System.Activity.Text,
-              ConversationId: System.Conversation.Id,
-              TimeUTC: Text(Now(), DateTimeFormat.UTC)
-            }
-        # (No SendActivity here — Fallback topic provides the user-facing message)
+      properties:

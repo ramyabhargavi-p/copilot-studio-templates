@@ -1,3 +1,10 @@
+mcs.metadata:
+  componentName: Sign In
+  description: |-
+    Trigger: Fires when authentication is required (OnSignIn)
+    Purpose: Prompt the user to sign in and log authentication events for auditing.
+    Prerequisite: settings.mcs.yml must have authenticationMode: ManualAzureAD
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
 # Name: Sign In
 # Trigger: Fires when authentication is required (OnSignIn)
 # Purpose: Prompt the user to sign in and log authentication events for auditing
