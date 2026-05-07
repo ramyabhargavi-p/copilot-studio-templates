@@ -69,7 +69,7 @@ Subsequent messages
 | `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | same as `<AgentName>` |
 | `ConversationInit.topic.mcs.yml` | `<AGENT-SCHEMA-NAME>` | same as `<AgentName>` |
 
-Then run the `_REPLACE` script from `QUICKSTART.md`.
+Then run the `_REPLACE` script from `docs/QUICKSTART.md`.
 
 ## Copy commands
 
@@ -85,7 +85,7 @@ cp components/variables/global-variable/global-variable.variable.mcs.yml agents/
 
 - [ ] Copy files using commands above
 - [ ] Fill in all values in the table above
-- [ ] Run `_REPLACE` script from `QUICKSTART.md`
+- [ ] Run `_REPLACE` script from `docs/QUICKSTART.md`
 - [ ] Add **Office 365 Users** connector in Copilot Studio → Settings → Connections
 - [ ] `pac copilot push --environment <ENV_URL>`
 - [ ] Test sign-in flow in Copilot Studio test canvas

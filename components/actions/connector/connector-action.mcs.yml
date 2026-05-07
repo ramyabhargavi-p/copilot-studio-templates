@@ -1,3 +1,8 @@
+# SAFETY TIER: Low / Medium / High  ← choose one and delete the others
+# GUARDRAIL:   none (Low) | confirmation-card.json (Medium) | confirmation-card.json + typed approval (High)
+# REASON:      <one sentence — why this tier; e.g. "read-only GET, no data modified">
+# See: ACTION-SAFETY-PATTERNS.md for full tier definitions and required guardrail patterns
+#
 # Name: <Action Name>
 # Description: <What this action does — shown to the AI for routing decisions>
 # Purpose: Call a Power Platform connector operation (SharePoint, Outlook, ServiceNow, etc.)

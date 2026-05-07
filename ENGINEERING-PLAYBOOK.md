@@ -17,7 +17,7 @@ The single reference for every engineer on the team — building, shipping, and 
 |-----------|-----------|
 | **Intern / new to CPS** | Stage 0 → Stage 1 → Stage 2 → Stage 3 (walk every step) |
 | **Developer (1–2 years)** | Stage 0 (decision) → Stage 2 (pick templates) → Stage 3 (build) |
-| **Senior developer** | Stage 4 (innovation) → Stage 6 (CI/CD) → Stage 9 (telemetry) |
+| **Senior developer** | Stage 4 (innovation) → Stage 4.5 (pro-code) → Stage 6 (CI/CD) → Stage 9 (telemetry) |
 | **Tech lead** | Stage 5 (governance) → Stage 6 (CI/CD) → Stage 10 (monitoring) |
 | **Director / business owner** | Stage 0 (decision matrix), Stage 5 (governance), Stage 10 (KPIs) |
 
@@ -46,9 +46,9 @@ flowchart TD
     I -->|Yes| J[M365 Agents SDK]
     I -->|Scale only| K[Azure AI Foundry hosted agents]
 
-    style G fill:#d4edda,stroke:#28a745
-    style J fill:#cce5ff,stroke:#004085
-    style K fill:#fff3cd,stroke:#856404
+    style G fill:#d4edda,stroke:#28a745,color:#155724
+    style J fill:#cce5ff,stroke:#004085,color:#003366
+    style K fill:#fff3cd,stroke:#856404,color:#5a3e00
 ```
 
 ### When to choose Copilot Studio
@@ -218,7 +218,11 @@ Run this checklist before moving to Stage 2:
 [ ] Opening base/agent.mcs.yml in VS Code shows IntelliSense (autocomplete on kind:)
 [ ] You have noted your Application Insights connection string (needed in Stage 9)
 [ ] You have access to your org's SharePoint site with the knowledge documents
+[ ] You have read docs/ENV-VARIABLES.md — know the difference between env vars and global vars
+[ ] No hard-coded URLs or queue names in any YAML file (use Power Platform env vars instead)
 ```
+
+→ Environment variable strategy (CPS + pro-code): [`docs/ENV-VARIABLES.md`](docs/ENV-VARIABLES.md)
 
 ### Claude Code skills (accelerate every build step)
 
@@ -232,7 +236,7 @@ If you use Claude Code, these skills generate valid YAML and run tools automatic
 | `/copilot-studio:run-eval` | Runs routing accuracy evals via Copilot Studio Kit | 15–30 min |
 | `/copilot-studio:manage-agent` | Push / pull / publish agent to/from environment | 5 min |
 
-→ Full skill reference: [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md)
+→ Full skill reference: [`docs/SKILLS-REFERENCE.md`](docs/SKILLS-REFERENCE.md)
 
 ---
 
@@ -243,8 +247,8 @@ If you use Claude Code, these skills generate valid YAML and run tools automatic
 ### The 3-minute orientation
 
 Open these two files before anything else:
-- [`QUICKSTART.md`](QUICKSTART.md) — 5 steps to a running agent, pick a recipe
-- [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) — exact call signatures for every component
+- [`docs/QUICKSTART.md`](docs/QUICKSTART.md) — 5 steps to a running agent, pick a recipe
+- [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md) — exact call signatures for every component
 
 ### How components assemble into an agent
 
@@ -438,7 +442,7 @@ grep -rn "_REPLACE" agents/<your-agent> --include="*.yml"
 # Both commands must return zero output
 ```
 
-→ Full call signatures for every template: [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md)
+→ Full call signatures for every template: [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md)
 
 ---
 
@@ -598,7 +602,7 @@ pac copilot push --dry-run
 | Error message | What it means | Fix |
 |--------------|--------------|-----|
 | `Required field 'id' is missing` | A node is missing its ID | Add `id: <nodeType>_REPLACE` — extension will fill it |
-| `Unknown kind: <value>` | You mistyped a `kind:` value | Check spelling against `COMPONENT-REGISTRY.md` |
+| `Unknown kind: <value>` | You mistyped a `kind:` value | Check spelling against `docs/COMPONENT-REGISTRY.md` |
 | `Duplicate id: <value>` | Two nodes share an ID | Rename one ID to be unique |
 | `<SCHEMA>` found in output | Unreplaced placeholder | Run the `sed` command from Step 7 again |
 
@@ -741,7 +745,7 @@ Open the file and replace:
 - `<DESCRIPTION>` → one-sentence description of what the tool does
 
 → Full walkthrough: [`recipes/04-mcp-action-agent.md`](recipes/04-mcp-action-agent.md)
-→ Safety patterns: [`ACTION-SAFETY-PATTERNS.md`](ACTION-SAFETY-PATTERNS.md)
+→ Safety patterns: [`docs/ACTION-SAFETY-PATTERNS.md`](docs/ACTION-SAFETY-PATTERNS.md)
 
 ### Azure AI Foundry integration
 
@@ -804,6 +808,473 @@ The M365 Agents SDK gives you full pro-code control to build or extend agents in
 | Code interpreter / data analysis | Azure AI Foundry with code interpreter tool | Medium |
 | Full pro-code control | M365 Agents SDK | High |
 | Enterprise-scale (> 8K RPM) | Azure AI Foundry standard deployment | High |
+
+---
+
+## Stage 4.5 — Pro-Code Agent Development
+
+**Goal:** Build agents that go beyond what YAML-as-code can express — custom orchestration logic, fine-tuned models, stateful workflows, and full Azure integration — using M365 Agents SDK, Azure AI Foundry, Teams AI Library, and Semantic Kernel.
+
+> Skip this stage if your requirements fit the Copilot Studio YAML patterns. Use it when you need custom AI logic, private networking, enterprise scale, or full code control.
+
+### When pro-code is the right choice
+
+```mermaid
+flowchart TD
+    A[New requirement] --> B{Fits a CPS template?}
+    B -->|Yes| C[Use YAML template — Stage 3]
+    B -->|Maybe with MCP| D{External API needed?}
+    D -->|Standard REST| E[Add MCP action — Stage 4]
+    D -->|Custom auth or complex logic| F{Team has C#/TS/Python?}
+    F -->|No| G[Azure AI Foundry via MCP]
+    F -->|Yes| H{Scale or model requirement?}
+    H -->|Custom model or fine-tune| I[Azure AI Foundry agent]
+    H -->|Full orchestration control| J[M365 Agents SDK]
+    H -->|Teams-native with planner| K[Teams AI Library]
+    H -->|Multi-model orchestration| L[Semantic Kernel]
+
+    style C fill:#d4edda,stroke:#28a745,color:#155724
+    style E fill:#d4edda,stroke:#28a745,color:#155724
+    style I fill:#cce5ff,stroke:#004085,color:#003366
+    style J fill:#cce5ff,stroke:#004085,color:#003366
+    style K fill:#fff3cd,stroke:#856404,color:#5a3e00
+    style L fill:#fff3cd,stroke:#856404,color:#5a3e00
+```
+
+---
+
+### M365 Agents SDK
+
+The M365 Agents SDK (formerly Bot Framework SDK v5) is the pro-code layer under Copilot Studio. CPS YAML compiles to ActivityHandler logic — when you need to write that logic directly, use the SDK.
+
+**Languages:** C# · TypeScript · Python
+
+**Scaffold a new agent:**
+
+```bash
+# C#
+dotnet new --install Microsoft.Agents.Templates
+dotnet new m365agent --language csharp --name MyAgent
+
+# TypeScript
+npm install -g @microsoft/agents-cli
+agents new --language typescript --name MyAgent
+
+# Python
+pip install microsoft-agents-botbuilder
+agents new --language python --name MyAgent
+```
+
+**CPS YAML → SDK equivalents:**
+
+| CPS YAML kind | SDK equivalent |
+|--------------|----------------|
+| `OnRecognizedIntent` | `ActivityHandler.OnMessageActivityAsync` + LUIS/CLU intent routing |
+| `SendActivity` | `turnContext.SendActivityAsync(MessageFactory.Text(...))` |
+| `Question` | `await DialogContext.BeginDialogAsync(new TextPrompt(...))` |
+| `ConditionGroup` | `if / switch` on intent or entity values |
+| `BeginDialog` | `await DialogContext.BeginDialogAsync(new ComponentDialog(...))` |
+| `LogCustomTelemetryEvent` | `telemetryClient.TrackEvent(name, properties)` |
+| `InvokeConnectorAction` | `HttpClient` call or Graph SDK method |
+| `TransferConversation` | `await turnContext.SendActivityAsync(Activity.CreateHandoffActivity(...))` |
+| Global variable | `ConversationState` / `UserState` |
+
+**Activity handler pattern (C#):**
+
+```csharp
+public class MyAgentHandler : ActivityHandler
+{
+    private readonly IBotTelemetryClient _telemetry;
+    private readonly ConversationState _convState;
+
+    public MyAgentHandler(IBotTelemetryClient telemetry, ConversationState convState)
+    {
+        _telemetry = telemetry;
+        _convState = convState;
+    }
+
+    protected override async Task OnMessageActivityAsync(
+        ITurnContext<IMessageActivity> turnContext,
+        CancellationToken cancellationToken)
+    {
+        // Equivalent to LogCustomTelemetryEvent Topic.Started
+        _telemetry.TrackEvent("Topic.Started", new Dictionary<string, string>
+        {
+            ["ConversationId"] = turnContext.Activity.Conversation.Id,
+            ["Channel"] = turnContext.Activity.ChannelId,
+            ["TimeUTC"] = DateTime.UtcNow.ToString("o")
+            // Never log DisplayName, Email, or UserInput as PII
+        });
+
+        var text = turnContext.Activity.Text?.Trim().ToLower();
+
+        // Equivalent to OnRecognizedIntent routing
+        if (text.Contains("leave balance"))
+            await HandleLeaveBalanceAsync(turnContext, cancellationToken);
+        else if (text.Contains("out of scope phrase"))
+            await HandleOutOfScopeAsync(turnContext, cancellationToken);
+        else
+            await HandleFallbackAsync(turnContext, cancellationToken);
+    }
+}
+```
+
+**Pro-code telemetry — PII rules apply exactly as in YAML:**
+
+```csharp
+// SAFE — these are the same properties as CPS LogCustomTelemetryEvent
+_telemetry.TrackEvent("Action.Succeeded", new Dictionary<string, string>
+{
+    ["ActionName"] = "GetLeaveBalance",           // hard-coded string
+    ["ConversationId"] = activity.Conversation.Id, // hashed session ID
+    ["Channel"] = activity.ChannelId,
+    ["TimeUTC"] = DateTime.UtcNow.ToString("o")
+    // Never add: UserDisplayName, Email, UserInput, Error.Message
+});
+
+// SAFE — error code only, not message
+_telemetry.TrackEvent("Action.Failed", new Dictionary<string, string>
+{
+    ["ActionName"] = "GetLeaveBalance",
+    ["ErrorCode"] = ex.HResult.ToString(),        // code only
+    ["ConversationId"] = activity.Conversation.Id
+});
+```
+
+**Wire Application Insights (Startup.cs):**
+
+```csharp
+builder.Services.AddApplicationInsightsTelemetry(
+    builder.Configuration["ApplicationInsights:InstrumentationKey"]);
+builder.Services.AddSingleton<IBotTelemetryClient, BotTelemetryClient>();
+```
+
+→ Full SDK reference: https://learn.microsoft.com/azure/bot-service/bot-builder-basics
+
+---
+
+### Azure AI Foundry — Hosted Agents
+
+Azure AI Foundry gives you a hosted agent runtime: custom models, fine-tunes, code interpreter, file search, and private networking — without writing an ActivityHandler.
+
+**When to use Foundry over the SDK:**
+
+| Need | Foundry | SDK |
+|------|---------|-----|
+| Custom/fine-tuned model | Yes | Yes (bring your own client) |
+| Code interpreter | Built-in | Write your own sandbox |
+| File search / RAG over large files | Built-in | Write your own retrieval |
+| Private VNet | Yes | Yes (App Service in VNet) |
+| Fully managed runtime | Yes | No (you manage App Service) |
+| Full custom dialogue logic | No | Yes |
+
+**Quick start — Foundry agent + CPS integration:**
+
+```bash
+# 1. Create Foundry project in Azure Portal
+az cognitiveservices account create \
+  --name my-foundry \
+  --resource-group my-rg \
+  --kind AIServices \
+  --sku S0 \
+  --location eastus
+
+# 2. Create an agent via Azure AI Foundry SDK (Python)
+pip install azure-ai-projects
+
+from azure.ai.projects import AIProjectClient
+from azure.identity import DefaultAzureCredential
+
+client = AIProjectClient.from_connection_string(
+    credential=DefaultAzureCredential(),
+    conn_str="<FOUNDRY_PROJECT_CONNECTION_STRING>"
+)
+
+agent = client.agents.create_agent(
+    model="gpt-4o",
+    name="LeaveBalanceAgent",
+    instructions="You are an HR assistant. Only answer leave-related queries.",
+    tools=[{"type": "file_search"}]
+)
+
+# 3. Expose via MCP endpoint (use Foundry's built-in MCP server)
+# 4. Add mcp-action.mcs.yml in CPS pointing to the MCP endpoint
+```
+
+**Foundry telemetry — Application Insights auto-wired:**
+
+```python
+# Foundry SDK auto-sends telemetry to your Application Insights workspace
+# Override to add custom dimensions:
+from azure.monitor.opentelemetry import configure_azure_monitor
+configure_azure_monitor(connection_string="InstrumentationKey=<key>")
+
+# Add span attributes (equivalent to LogCustomTelemetryEvent properties)
+from opentelemetry import trace
+tracer = trace.get_tracer(__name__)
+with tracer.start_as_current_span("Action.LeaveBalance") as span:
+    span.set_attribute("ActionName", "GetLeaveBalance")
+    span.set_attribute("ConversationId", conversation_id)
+    span.set_attribute("Channel", channel_id)
+    # Never set: user_email, display_name, user_input (PII)
+```
+
+→ Full guide: [`recipes/08-azure-ai-foundry.md`](recipes/08-azure-ai-foundry.md)
+
+---
+
+### Teams AI Library
+
+Teams AI Library is the right choice when you are building **Teams-native** experiences with complex multi-turn dialogue, proactive messaging, or Action Planner orchestration.
+
+**When to choose Teams AI Library:**
+- You need an Action Planner that dynamically selects actions from a list
+- You need proactive messaging (push notifications to users without a prior message)
+- You need access to Teams-specific APIs (roster, tabs, meetings) inside the bot
+- Your team already uses TypeScript for Teams tab development
+
+**Scaffold:**
+
+```bash
+npm install -g @microsoft/teamsfx-cli
+teamsfx new --capability bot --bot-host-type function --programming-language typescript
+cd MyBot && npm install @microsoft/teams-ai
+```
+
+**Action Planner pattern (TypeScript):**
+
+```typescript
+import { Application, ActionPlanner, OpenAIModel, PromptManager } from '@microsoft/teams-ai';
+
+const planner = new ActionPlanner({
+  model: new OpenAIModel({ azureApiKey: process.env.AZURE_OPENAI_KEY }),
+  prompts: new PromptManager({ promptsFolder: path.join(__dirname, '../prompts') }),
+  defaultPrompt: 'chat'
+});
+
+const app = new Application({ storage, ai: { planner } });
+
+// Register actions — equivalent to CPS Topics
+app.ai.action('GetLeaveBalance', async (context, state, parameters) => {
+  const balance = await leaveService.getBalance(state.userId);
+  await context.sendActivity(`Your leave balance is ${balance} days.`);
+  return 'Leave balance retrieved successfully.';
+});
+
+// CPS Fallback equivalent
+app.message('/.*/', async (context, state) => {
+  await context.sendActivity("I didn't catch that. Try asking about leave, payroll, or IT support.");
+});
+```
+
+**Telemetry (same PII rules):**
+
+```typescript
+import { TelemetryClient } from 'applicationinsights';
+const telemetry = new TelemetryClient(process.env.APPINSIGHTS_KEY);
+
+telemetry.trackEvent({
+  name: 'Action.Succeeded',
+  properties: {
+    ActionName: 'GetLeaveBalance',
+    ConversationId: context.activity.conversation.id,
+    Channel: context.activity.channelId,
+    TimeUTC: new Date().toISOString()
+    // Never add: user email, display name, raw user input
+  }
+});
+```
+
+→ Reference: https://learn.microsoft.com/microsoftteams/platform/bots/how-to/teams-conversational-ai/teams-conversation-ai-overview
+
+---
+
+### Semantic Kernel — Multi-Model Orchestration
+
+Semantic Kernel is the right choice when you need to **orchestrate multiple AI models** — e.g. GPT-4o for reasoning, a fine-tuned model for classification, and a retrieval model for search — within a single agent pipeline.
+
+**When to use Semantic Kernel:**
+- You need to chain multiple AI calls with shared memory
+- You need to switch models per step (e.g. small model for triage, large model for synthesis)
+- You are building a planner that decomposes a user goal into multi-step tasks
+- You need plugin-based extensibility with function calling
+
+**Scaffold (C#):**
+
+```bash
+dotnet new console -n MySkAgent
+cd MySkAgent
+dotnet add package Microsoft.SemanticKernel
+dotnet add package Microsoft.SemanticKernel.Plugins.Core
+```
+
+**Kernel + plugin pattern (C#):**
+
+```csharp
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
+
+var kernel = Kernel.CreateBuilder()
+    .AddAzureOpenAIChatCompletion(
+        deploymentName: "gpt-4o",
+        endpoint: Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT"),
+        apiKey: Environment.GetEnvironmentVariable("AZURE_OPENAI_KEY"))
+    .Build();
+
+// Register a plugin — equivalent to a CPS topic with InvokeConnectorAction
+kernel.ImportPluginFromObject(new LeavePlugin(leaveService), "Leave");
+
+// Equivalent to CPS GenerativeActionsEnabled: true with auto-invocation
+var settings = new AzureOpenAIPromptExecutionSettings
+{
+    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+};
+
+var chat = kernel.GetRequiredService<IChatCompletionService>();
+var history = new ChatHistory("You are an HR assistant. Help with leave and HR queries.");
+history.AddUserMessage(userMessage);
+
+var response = await chat.GetChatMessageContentAsync(history, settings, kernel);
+await turnContext.SendActivityAsync(response.Content);
+```
+
+**Native function plugin — equivalent to InvokeConnectorAction:**
+
+```csharp
+public class LeavePlugin
+{
+    private readonly ILeaveService _service;
+
+    [KernelFunction("GetLeaveBalance")]
+    [Description("Get the leave balance for the current user. Returns remaining days.")]
+    public async Task<string> GetLeaveBalance(
+        [Description("Employee ID")] string employeeId)
+    {
+        var balance = await _service.GetBalance(employeeId);
+        return $"{balance} days remaining";
+    }
+
+    [KernelFunction("SubmitLeaveRequest")]
+    [Description("Submit a leave request. Requires startDate, endDate, and leaveType.")]
+    public async Task<string> SubmitLeaveRequest(string employeeId, string startDate, string endDate, string leaveType)
+    {
+        // SAFETY TIER: Medium — write action, log before executing
+        var result = await _service.Submit(employeeId, startDate, endDate, leaveType);
+        return result.Success ? "Leave request submitted." : "Submission failed.";
+    }
+}
+```
+
+**Memory — equivalent to CPS global variables:**
+
+```csharp
+// Semantic Kernel volatile memory (in-process)
+var memory = new VolatileMemoryStore();
+
+// Store — equivalent to SetVariable Global.UserCountry
+await kernel.Memory.SaveInformationAsync(
+    collection: "user_context",
+    id: conversationId,
+    text: JsonSerializer.Serialize(new { Channel = channelId, Locale = "en-GB" })
+);
+
+// Retrieve — equivalent to reading Global.UserCountry
+var ctx = await kernel.Memory.GetAsync("user_context", conversationId);
+```
+
+→ Reference: https://learn.microsoft.com/semantic-kernel/overview/
+
+---
+
+### Pro-Code Checklist
+
+Apply these checks to every pro-code agent before deployment — the same governance applies as YAML agents:
+
+```
+[ ] PII rules enforced in telemetry (no display name, email, raw user input in TrackEvent)
+[ ] System.Error.Code (not .Message) pattern applied — log error codes only
+[ ] Conversation ID (hashed) used for all telemetry correlation
+[ ] Safety tier declared on every write/delete action (comment in code)
+[ ] CSAT trigger wired — call feedback at end of successful flows
+[ ] Fallback + retry handled (3 retries → human escalation)
+[ ] OutOfScope handler registered for known out-of-domain phrases
+[ ] Application Insights wired with telemetry processor for PII scrubbing
+[ ] No secrets in code, .env, or App Settings — Key Vault references or Managed Identity used
+[ ] .env file is git-ignored; .env.example is committed with empty values
+[ ] All config values (endpoints, queue names) read from environment (App Settings or App Config)
+[ ] Managed Identity assigned and granted correct RBAC roles on each Azure service
+[ ] Governance checklist signed before UAT (same as YAML agent)
+[ ] Eval suite run against the pro-code endpoint (Copilot Studio Kit supports HTTP endpoints)
+```
+
+### Hybrid architecture — CPS front-end + pro-code back-end
+
+The most common enterprise pattern: Copilot Studio handles channel integration, user identity, and simple topics; pro-code handles the heavy AI processing.
+
+```mermaid
+flowchart LR
+    subgraph "CPS (YAML)"
+        A[Greeting / Fallback / OutOfScope / CSAT] --> B[ActionInvoke topic]
+    end
+    subgraph "Pro-Code Back-End"
+        C[MCP Server - Azure Function or Container App] --> D[Semantic Kernel or Foundry Agent]
+        D --> E[Custom Model - Fine-tuned GPT-4o]
+        D --> F[Graph API / Dataverse / External APIs]
+    end
+    B -->|MCP tool call| C
+
+    style A fill:#d4edda,stroke:#28a745,color:#155724
+    style C fill:#cce5ff,stroke:#004085,color:#003366
+    style D fill:#cce5ff,stroke:#004085,color:#003366
+```
+
+**How to build the MCP server (TypeScript):**
+
+```typescript
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
+
+const server = new McpServer({ name: 'leave-backend', version: '1.0.0' });
+
+// Each tool here maps to one mcp-action.mcs.yml in CPS
+server.tool(
+  'get_leave_balance',
+  { employeeId: z.string() },
+  async ({ employeeId }) => {
+    const balance = await leaveService.getBalance(employeeId);
+    return { content: [{ type: 'text', text: `${balance} days remaining` }] };
+  }
+);
+
+server.tool(
+  'submit_leave_request',
+  { employeeId: z.string(), startDate: z.string(), endDate: z.string(), leaveType: z.string() },
+  async (params) => {
+    // Safety tier: Medium — log before executing
+    telemetry.trackEvent('Action.LeaveSubmit.Started', { ConversationId: params.employeeId });
+    const result = await leaveService.submit(params);
+    return { content: [{ type: 'text', text: result.success ? 'Submitted.' : 'Failed.' }] };
+  }
+);
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+```
+
+→ Deploy as Azure Container App or Azure Function, then point `mcp-action.mcs.yml` → `serverEndpoint` at the deployed URL.
+
+### Environment variables in pro-code agents
+
+Both the CPS layer and the pro-code layer must never hard-code secrets, endpoints, or queue names:
+
+| Layer | What to configure | Mechanism |
+|-------|------------------|-----------|
+| CPS topics | SharePoint URL, queue name, feature flags | Power Platform environment variables (see Part 1 of `docs/ENV-VARIABLES.md`) |
+| MCP server / Foundry | API keys, Azure OpenAI endpoint | Key Vault references in App Service settings |
+| Both layers | Azure service auth | Managed Identity — no key needed in config |
+
+→ Full guide with code examples: [`docs/ENV-VARIABLES.md`](docs/ENV-VARIABLES.md)
 
 ---
 
@@ -935,7 +1406,7 @@ grep -r "UserDisplayName\|UserEmail\|EmployeeId" \
 # Any match inside a LogCustomTelemetryEvent value block = violation → remove it
 
 # Test 3 — Write action confirmation: every write action must have a confirmation card
-# Open ACTION-SAFETY-PATTERNS.md, apply the tier to each action in your agent
+# Open docs/ACTION-SAFETY-PATTERNS.md, apply the tier to each action in your agent
 # Medium tier: must have confirmation-card.json before executing
 # High tier: must have confirmation-card.json + typed confirmation phrase
 
@@ -952,7 +1423,7 @@ grep -r "UserDisplayName\|UserEmail\|EmployeeId" \
 | **Medium** | Submit a ticket, update a record | `confirmation-card.json` shown first |
 | **High** | Delete data, send an email on user's behalf | `confirmation-card.json` + user types "confirm" |
 
-→ Full tier rules: [`ACTION-SAFETY-PATTERNS.md`](ACTION-SAFETY-PATTERNS.md)
+→ Full tier rules: [`docs/ACTION-SAFETY-PATTERNS.md`](docs/ACTION-SAFETY-PATTERNS.md)
 → Governance docs: [`governance/README.md`](governance/README.md)
 
 ---
@@ -972,11 +1443,11 @@ flowchart LR
     E -->|release tag + approval| F[publish-on-release.yml]
     F -->|push + publish| G[Prod Environment]
 
-    style C fill:#d4edda,stroke:#28a745
-    style E fill:#fff3cd,stroke:#856404
-    style G fill:#cce5ff,stroke:#004085
-    style D fill:#f8d7da,stroke:#721c24
-    style F fill:#f8d7da,stroke:#721c24
+    style C fill:#d4edda,stroke:#28a745,color:#155724
+    style E fill:#fff3cd,stroke:#856404,color:#5a3e00
+    style G fill:#cce5ff,stroke:#004085,color:#003366
+    style D fill:#f8d7da,stroke:#721c24,color:#5c0a10
+    style F fill:#f8d7da,stroke:#721c24,color:#5c0a10
 ```
 
 ```
@@ -1518,15 +1989,17 @@ pac copilot push --dry-run
 
 | Document | What it covers |
 |----------|---------------|
-| [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | Call signatures, inputs, and outputs for every template |
-| [`TEMPLATES.md`](TEMPLATES.md) | Full inventory of all 55 templates |
-| [`QUICKSTART.md`](QUICKSTART.md) | 5 steps to a running agent |
-| [`START-HERE.md`](START-HERE.md) | Which template to use at each project step |
-| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design rules, error handling, telemetry, naming |
-| [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Install pac CLI, VS Code extensions, Copilot Studio Kit |
-| [`ACTION-SAFETY-PATTERNS.md`](ACTION-SAFETY-PATTERNS.md) | Safety tiers and confirmation patterns for write actions |
-| [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | Claude skills for generating topics, running evals, validating YAML |
-| [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | Role-based entry points, team onboarding |
+| [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md) | Call signatures, inputs, and outputs for every template |
+| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 55 templates |
+| [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | 5 steps to a running agent |
+| [`docs/START-HERE.md`](docs/START-HERE.md) | Which template to use at each project step |
+| [`docs/BEST-PRACTICES.md`](docs/BEST-PRACTICES.md) | Design rules, error handling, telemetry, naming |
+| [`docs/TOOLS-AND-PLUGINS.md`](docs/TOOLS-AND-PLUGINS.md) | Install pac CLI, VS Code extensions, Copilot Studio Kit |
+| [`docs/ACTION-SAFETY-PATTERNS.md`](docs/ACTION-SAFETY-PATTERNS.md) | Safety tiers and confirmation patterns for write actions |
+| [`docs/SKILLS-REFERENCE.md`](docs/SKILLS-REFERENCE.md) | Claude skills for generating topics, running evals, validating YAML |
+| [`docs/PII-SCRUBBING.md`](docs/PII-SCRUBBING.md) | PII prevention: telemetry rules, Power Fx masking, App Insights config, DLP, audit commands |
+| [`docs/ENV-VARIABLES.md`](docs/ENV-VARIABLES.md) | Environment variables: Power Platform env vars (CPS), .env / Key Vault / App Config / Managed Identity (pro-code) |
+| [`docs/TEAM-GUIDE.md`](docs/TEAM-GUIDE.md) | Role-based entry points, team onboarding |
 | [`governance/README.md`](governance/README.md) | Responsible AI and security review framework |
 | [`operations/runbook.md`](operations/runbook.md) | Full incident response procedures |
 | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) | KQL query library |

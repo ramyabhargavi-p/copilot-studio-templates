@@ -95,7 +95,7 @@ If any of tests I1–I5 reveals system prompt content or changes agent behaviour
 |---|-------|-----------------|--------|
 | Ac1 | A named agent owner has been identified and documented | | ☐ |
 | Ac2 | Application Insights monitoring is configured and alerts are set up | | ☐ |
-| Ac3 | A quarterly review cadence has been agreed (see BEST-PRACTICES.md Section 11) | | ☐ |
+| Ac3 | A quarterly review cadence has been agreed (see docs/BEST-PRACTICES.md Section 11) | | ☐ |
 | Ac4 | There is a documented process for users to report incorrect or harmful agent responses | | ☐ |
 | Ac5 | This checklist has been completed and signed off by the Project Owner | | ☐ |
 

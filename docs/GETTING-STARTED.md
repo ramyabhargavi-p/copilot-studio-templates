@@ -1,6 +1,6 @@
 # Getting Started — Complete Guide for New Developers
 
-> **Where you are:** Step 2 of 13 in [`README.md`](README.md). Step 1 (tools setup) should already be done. Step 3 (UI guide) follows this document.
+> **Where you are:** After reading [`README.md`](../README.md) and completing the setup in [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md). Next: follow a recipe in [`recipes/`](../recipes/) or build your first agent from scratch using this guide.
 
 This guide walks you through building and deploying a Copilot Studio agent from scratch using this template library. It covers every phase: Discovery → Design → Build → Test → Deploy → Operate.
 
@@ -42,7 +42,7 @@ Each phase has a gate. Don't skip a gate — open questions mid-build become blo
 
 ### Step 1.1 — Decide if an agent is even the right solution
 
-Fill in [`project-delivery/00-ai-decision-framework.md`](project-delivery/00-ai-decision-framework.md) with your project sponsor.
+Fill in [`project-delivery/00-ai-decision-framework.md`](../project-delivery/00-ai-decision-framework.md) with your project sponsor.
 
 The key questions:
 - Does the problem require natural language understanding, or would a form or search page do?
@@ -57,7 +57,7 @@ If all three pass → proceed. If not → the document tells you what alternativ
 
 ### Step 1.2 — Capture requirements
 
-Fill in [`project-delivery/01-requirements-questionnaire.md`](project-delivery/01-requirements-questionnaire.md) with your business stakeholder.
+Fill in [`project-delivery/01-requirements-questionnaire.md`](../project-delivery/01-requirements-questionnaire.md) with your business stakeholder.
 
 The answers that drive the most downstream decisions:
 
@@ -74,7 +74,7 @@ The answers that drive the most downstream decisions:
 
 ### Step 1.3 — Run technical discovery
 
-Fill in [`project-delivery/02-technical-discovery.md`](project-delivery/02-technical-discovery.md) with your environment admin.
+Fill in [`project-delivery/02-technical-discovery.md`](../project-delivery/02-technical-discovery.md) with your environment admin.
 
 Must be confirmed before build:
 - Environment name and ID (Dev, UAT, Prod)
@@ -94,7 +94,7 @@ Must be confirmed before build:
 
 ### Step 2.1 — Complete the agent design worksheet
 
-Fill in [`project-delivery/03-agent-design-worksheet.md`](project-delivery/03-agent-design-worksheet.md).
+Fill in [`project-delivery/03-agent-design-worksheet.md`](../project-delivery/03-agent-design-worksheet.md).
 
 This translates your requirements into:
 - Which recipe to start from (01–06)
@@ -106,7 +106,7 @@ This translates your requirements into:
 
 ### Step 2.2 — Audit your content
 
-Fill in [`project-delivery/06-content-audit.md`](project-delivery/06-content-audit.md) with the content owner.
+Fill in [`project-delivery/06-content-audit.md`](../project-delivery/06-content-audit.md) with the content owner.
 
 Before pointing the agent at SharePoint:
 - Is the content up to date?
@@ -119,7 +119,7 @@ An agent is only as good as the content it searches. Bad content = bad answers.
 
 ### Step 2.3 — Write the functional design
 
-Fill in [`project-delivery/07-functional-design-document.md`](project-delivery/07-functional-design-document.md).
+Fill in [`project-delivery/07-functional-design-document.md`](../project-delivery/07-functional-design-document.md).
 
 This defines every use case, its expected input, expected output, and any business rules. It becomes the baseline for UAT — if it's not here, testers won't know what to verify.
 
@@ -127,7 +127,7 @@ This defines every use case, its expected input, expected output, and any busine
 
 ### Step 2.4 — Design conversation flows
 
-Fill in [`project-delivery/08-workflow-logic-design.md`](project-delivery/08-workflow-logic-design.md).
+Fill in [`project-delivery/08-workflow-logic-design.md`](../project-delivery/08-workflow-logic-design.md).
 
 Map each topic's conversation flow before writing YAML:
 - What triggers it?
@@ -141,7 +141,7 @@ Map each topic's conversation flow before writing YAML:
 ### Step 2.5 — Classify every action's safety tier
 
 For every connector action the agent will call, assign a safety tier before build starts.
-See [`project-delivery/00-ai-decision-framework.md`](project-delivery/00-ai-decision-framework.md) Step 5.
+See [`project-delivery/00-ai-decision-framework.md`](../project-delivery/00-ai-decision-framework.md) Step 5.
 
 | Tier | Action type | Guardrail |
 |------|------------|-----------|
@@ -159,7 +159,7 @@ See [`project-delivery/00-ai-decision-framework.md`](project-delivery/00-ai-deci
 
 ### Step 3.1 — Pick your recipe
 
-Choose the recipe that matches your agent type from [`QUICKSTART.md`](QUICKSTART.md) or [`recipes/`](recipes/).
+Choose the recipe that matches your agent type from [`QUICKSTART.md`](QUICKSTART.md) or [`recipes/`](../recipes/).
 
 | If you're building… | Use recipe |
 |--------------------|-----------|
@@ -178,7 +178,7 @@ Choose the recipe that matches your agent type from [`QUICKSTART.md`](QUICKSTART
 cp -r base/ agents/<your-agent-name>/
 ```
 
-The base gives you 5 files every agent needs:
+The base gives you 6 files every agent needs:
 
 | File | What it does |
 |------|-------------|
@@ -187,6 +187,7 @@ The base gives you 5 files every agent needs:
 | `Greeting.topic.mcs.yml` | First message + `Conversation.Started` telemetry |
 | `Fallback.topic.mcs.yml` | Unknown intent — retries 3× then escalates |
 | `OnError.topic.mcs.yml` | System error handler — safe message + telemetry |
+| `OutOfScope.topic.mcs.yml` | Known out-of-domain phrases — clear redirect instead of fallback |
 
 ---
 
@@ -202,7 +203,7 @@ Open each file and replace:
 | `settings.mcs.yml` | `<agent_schema_name>` | Same as `<AgentName>` |
 | `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | Same as `<AgentName>` |
 
-For the system prompt, use the structure in [`prompts/ai-prompts/generate-agent-instructions.md`](prompts/ai-prompts/generate-agent-instructions.md) or copy from [`prompts/system-prompts/`](prompts/system-prompts/).
+For the system prompt, use the structure in [`prompts/ai-prompts/generate-agent-instructions.md`](../prompts/ai-prompts/generate-agent-instructions.md) or copy from [`prompts/system-prompts/`](../prompts/system-prompts/).
 
 ---
 
@@ -278,7 +279,7 @@ Open Copilot Studio → find your agent → click **Test** (right-hand pane).
 - Check Variables tab — confirm `Global.FeedbackShown` is set after CSAT fires
 
 Full UI testing steps: [`COPILOT-STUDIO-UI-GUIDE.md`](COPILOT-STUDIO-UI-GUIDE.md) → Testing section
-Full build checklist: [`project-delivery/12-build-specification.md`](project-delivery/12-build-specification.md)
+Full build checklist: [`project-delivery/12-build-specification.md`](../project-delivery/12-build-specification.md)
 
 ---
 
@@ -296,13 +297,13 @@ Target: **≥ 85% topic routing accuracy**.
 /copilot-studio:analyze-evals   Identify and fix routing gaps
 ```
 
-Or follow [`project-delivery/05-eval-scenarios.md`](project-delivery/05-eval-scenarios.md) manually.
+Or follow [`project-delivery/05-eval-scenarios.md`](../project-delivery/05-eval-scenarios.md) manually.
 
 ---
 
 ### Step 4.2 — Complete the Responsible AI review
 
-Fill in [`governance/ai-ethics-checklist.md`](governance/ai-ethics-checklist.md).
+Fill in [`governance/ai-ethics-checklist.md`](../governance/ai-ethics-checklist.md).
 
 Key checks:
 - Prompt injection resistance (tests I1–I5)
@@ -314,7 +315,7 @@ Key checks:
 
 ### Step 4.3 — Complete the security review
 
-Fill in [`governance/security-review.md`](governance/security-review.md).
+Fill in [`governance/security-review.md`](../governance/security-review.md).
 
 Key checks:
 - Connector permissions use least-privilege
@@ -325,7 +326,7 @@ Key checks:
 
 ### Step 4.4 — Run UAT with real stakeholders
 
-Follow [`project-delivery/04-uat-test-plan.md`](project-delivery/04-uat-test-plan.md).
+Follow [`project-delivery/04-uat-test-plan.md`](../project-delivery/04-uat-test-plan.md).
 
 UAT is done by real users — not the developer. The business owner signs off before go-live.
 
@@ -333,16 +334,16 @@ UAT is done by real users — not the developer. The business owner signs off be
 
 ### Step 4.5 — Go live
 
-Complete [`launch/launch-checklist.md`](launch/launch-checklist.md) — every item.
+Complete [`launch/launch-checklist.md`](../launch/launch-checklist.md) — every item.
 
 Then:
 ```bash
 pac copilot publish --bot "<AgentName>" --environment <PROD_ENV_URL>
 ```
 
-Send the user announcement: [`launch/user-communication-template.md`](launch/user-communication-template.md)
+Send the user announcement: [`launch/user-communication-template.md`](../launch/user-communication-template.md)
 
-Set up monitoring: [`operations/alert-setup.md`](operations/alert-setup.md)
+Set up monitoring: [`operations/alert-setup.md`](../operations/alert-setup.md)
 
 ---
 
@@ -352,10 +353,10 @@ Once the agent is live, operational responsibility passes to the **Agent Owner**
 
 | Task | File | Frequency |
 |------|------|-----------|
-| Health check queries | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) | Weekly |
-| Review unanswered questions | [`operations/monitoring-queries.md`](operations/monitoring-queries.md) — Unanswered section | Monthly |
-| Respond to incidents | [`operations/runbook.md`](operations/runbook.md) | When needed |
-| First two weeks hypercare | [`launch/hypercare-guide.md`](launch/hypercare-guide.md) | Daily — weeks 1–2 |
+| Health check queries | [`operations/monitoring-queries.md`](../operations/monitoring-queries.md) | Weekly |
+| Review unanswered questions | [`operations/monitoring-queries.md`](../operations/monitoring-queries.md) — Unanswered section | Monthly |
+| Respond to incidents | [`operations/runbook.md`](../operations/runbook.md) | When needed |
+| First two weeks hypercare | [`launch/hypercare-guide.md`](../launch/hypercare-guide.md) | Daily — weeks 1–2 |
 
 ---
 
@@ -369,7 +370,7 @@ Once the agent is live, operational responsibility passes to the **Agent Owner**
 | Agent shows error in Copilot Studio | Check `OnError.topic.mcs.yml` — `<AGENT_SCHEMA>` must match `schemaName` exactly |
 | Teams channel not showing the agent | Agent must be **published** (not just pushed) |
 
-Full troubleshooting: [`troubleshooting/README.md`](troubleshooting/README.md)
+Full troubleshooting: [`troubleshooting/README.md`](../troubleshooting/README.md)
 
 ---
 
@@ -377,10 +378,10 @@ Full troubleshooting: [`troubleshooting/README.md`](troubleshooting/README.md)
 
 | What you want to do | Where to go |
 |--------------------|------------|
-| Add CSAT feedback | `components/topics/feedback/` → call via `BeginDialog` at topic end |
+| Add CSAT feedback | `../components/topics/feedback/` → call via `BeginDialog` at topic end |
 | Add user sign-in | Recipe `02-authenticated-agent` |
 | Add connector actions | Recipe `03-connector-action-agent` + `COMPONENT-REGISTRY.md` |
-| Set up CI/CD pipeline | `ci-cd/README.md` |
-| Full governance for enterprise rollout | `project-delivery/00-ai-decision-framework.md` → work all phases |
+| Set up CI/CD pipeline | `../ci-cd/README.md` |
+| Full governance for enterprise rollout | `../project-delivery/00-ai-decision-framework.md` → work all phases |
 | All reusable components and call signatures | `COMPONENT-REGISTRY.md` |
-| Week-by-week AI engineer guide | `project-delivery/13-ai-engineer-realtime-guide.md` |
+| Week-by-week AI engineer guide | `../project-delivery/13-ai-engineer-realtime-guide.md` |

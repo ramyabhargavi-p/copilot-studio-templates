@@ -20,4 +20,10 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logStart_REPLACE2
       eventName: Conversation.Started
-      properties:
+      properties: >-
+        ={
+          BotName: System.Bot.Name,
+          Channel: System.Activity.Channel,
+          ConversationId: System.Conversation.Id,
+          TimeUTC: Text(Now(), DateTimeFormat.UTC)
+        }

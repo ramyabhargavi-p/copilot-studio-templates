@@ -23,5 +23,5 @@ Complete real-world project walkthroughs showing every phase end-to-end.
 - Dev → UAT → Prod promotion commands
 - Week 2 monitoring results and first improvement cycle
 
-→ Full end-to-end dev guide (both UI and CLI): [`../END-TO-END-DEV-GUIDE.md`](../END-TO-END-DEV-GUIDE.md)
-→ All 49 templates: [`../TEMPLATES.md`](../TEMPLATES.md)
+→ Full end-to-end dev guide (both UI and CLI): [`../docs/END-TO-END-DEV-GUIDE.md`](../docs/END-TO-END-DEV-GUIDE.md)
+→ All 49 templates: [`../docs/TEMPLATES.md`](../docs/TEMPLATES.md)

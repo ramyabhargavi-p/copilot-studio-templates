@@ -1,3 +1,11 @@
+mcs.metadata:
+  componentName: Multiple Topics Matched
+  description: |-
+    Trigger: Fires when the recognizer matches multiple topics with similar scores (OnSelectIntent)
+    Purpose: Ask the user to clarify which topic they meant — prevents the agent from guessing.
+             Includes telemetry to track disambiguation frequency and identify overlapping triggers.
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+    NOTE: Replace <AGENT_SCHEMA> with your agent's schemaName from settings.mcs.yml
 # Name: Multiple Topics Matched
 # Trigger: Fires when the recognizer matches multiple topics with similar scores (OnSelectIntent)
 # Purpose: Ask the user to clarify which topic they meant — prevents the agent from guessing.

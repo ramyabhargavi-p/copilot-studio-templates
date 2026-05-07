@@ -1,3 +1,11 @@
+mcs.metadata:
+  componentName: Escalate
+  description: |-
+    Trigger: OnRecognizedIntent (user requests a human) or BeginDialog from Fallback / OutOfScope topics
+    Purpose: Hand the conversation to a human agent with consistent messaging and telemetry.
+             Called as <AGENT_SCHEMA>.topic.Escalate from Fallback and OutOfScope.
+    NOTE: Replace all _REPLACE suffixes with unique random strings before use
+    NOTE: Replace <EscalationQueueName> with your live-agent handoff queue name
 # Name: Escalate
 # Trigger: Can be triggered two ways:
 #   1. Directly — user asks to speak to a human (OnRecognizedIntent phrases below)

@@ -429,4 +429,4 @@ grep -l "SAFETY TIER" agents/**/*.yml
 
 The two lists should match. Any file in list 1 that is not in list 2 is missing its tier declaration.
 
-→ Full implementation guide: [`project-delivery/13-ai-engineer-realtime-guide.md`](project-delivery/13-ai-engineer-realtime-guide.md)
+→ Full implementation guide: [`project-delivery/13-ai-engineer-realtime-guide.md`](../project-delivery/13-ai-engineer-realtime-guide.md)

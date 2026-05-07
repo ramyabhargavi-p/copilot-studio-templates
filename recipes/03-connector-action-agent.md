@@ -54,7 +54,7 @@ User: "I want to submit a leave request"
 | `connector-action.mcs.yml` | `<modelDescription>` | plain-English description of what the action does |
 | `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | same as `<AgentName>` |
 
-Then run the `_REPLACE` script from `QUICKSTART.md`.
+Then run the `_REPLACE` script from `docs/QUICKSTART.md`.
 
 ## Copy commands
 
@@ -70,7 +70,7 @@ cp components/actions/connector/connector-action.mcs.yml agents/<your-agent>/act
 
 - [ ] Copy files using commands above
 - [ ] Fill in all values in the table above
-- [ ] Run `_REPLACE` script from `QUICKSTART.md`
+- [ ] Run `_REPLACE` script from `docs/QUICKSTART.md`
 - [ ] Add the connector connection in Copilot Studio → Settings → Connections
 - [ ] `pac copilot push --environment <ENV_URL>`
 - [ ] Test by asking the agent to perform the action in natural language

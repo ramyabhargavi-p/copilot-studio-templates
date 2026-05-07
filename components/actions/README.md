@@ -24,4 +24,4 @@ cp components/actions/connector/connector-action.mcs.yml \
 
 Actions are called from topics using `BeginDialog`. See `components/topics/action-invoke/` for the topic template that pairs with these action files.
 
-→ Safety tiers and confirmation patterns: [`../../ACTION-SAFETY-PATTERNS.md`](../../ACTION-SAFETY-PATTERNS.md)
+→ Safety tiers and confirmation patterns: [`../../docs/ACTION-SAFETY-PATTERNS.md`](../../docs/ACTION-SAFETY-PATTERNS.md)

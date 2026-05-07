@@ -83,6 +83,6 @@ Pro-code recipes (07–08):
 4. **Integration with Copilot Studio templates** — how they connect
 5. **Setup checklist** — tick-box before deploying
 
-→ All component call signatures: [`../COMPONENT-REGISTRY.md`](../COMPONENT-REGISTRY.md)
-→ Full end-to-end guide: [`../END-TO-END-DEV-GUIDE.md`](../END-TO-END-DEV-GUIDE.md)
-→ If you're new: start with [`../GETTING-STARTED.md`](../GETTING-STARTED.md) first
+→ All component call signatures: [`../docs/COMPONENT-REGISTRY.md`](../docs/COMPONENT-REGISTRY.md)
+→ Full end-to-end guide: [`../docs/END-TO-END-DEV-GUIDE.md`](../docs/END-TO-END-DEV-GUIDE.md)
+→ If you're new: start with [`../docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md) first

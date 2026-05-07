@@ -100,7 +100,7 @@ Hypercare ends when ALL of the following are true:
 - [ ] Stakeholder has confirmed they are satisfied with launch quality
 - [ ] Agent owner is onboarded and comfortable with monitoring and operations
 
-After hypercare: switch to the regular cadence in BEST-PRACTICES.md Section 11.
+After hypercare: switch to the regular cadence in docs/BEST-PRACTICES.md Section 11.
 
 ---
 

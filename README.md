@@ -38,9 +38,9 @@ flowchart TD
 
 | Goal | Go to |
 |------|-------|
-| **Build your first agent** (30–60 min) | [`QUICKSTART.md`](QUICKSTART.md) |
+| **Build your first agent** (30–60 min) | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) |
 | **Engineering guide** | [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) |
-| **Full enterprise delivery** (all phases) | [`START-HERE.md`](START-HERE.md) |
+| **Full enterprise delivery** (all phases) | [`docs/START-HERE.md`](docs/START-HERE.md) |
 | **Something is broken** | [`troubleshooting/README.md`](troubleshooting/README.md) |
 
 ---
@@ -49,7 +49,7 @@ flowchart TD
 
 | Folder | What's inside | Go here when… |
 |--------|--------------|---------------|
-| [`base/`](base/) | 5 files every agent needs — agent, settings, Greeting, Fallback, OnError | Starting a new agent |
+| [`base/`](base/) | 6 files every agent needs — agent, settings, Greeting, Fallback, OnError, OutOfScope | Starting a new agent |
 | [`components/`](components/) | Drop-in topics, actions, knowledge sources, cards, variables | Adding a capability |
 | [`recipes/`](recipes/) | Step-by-step guides for 8 common agent patterns | Choosing an agent architecture |
 | [`prompts/`](prompts/) | System prompt templates + AI generation prompts | Writing the agent persona |
@@ -68,14 +68,16 @@ flowchart TD
 
 | File | What it covers |
 |------|---------------|
-| [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | Call signatures, inputs, and outputs for every component |
-| [`TEMPLATES.md`](TEMPLATES.md) | Full inventory of all 55 templates |
+| [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md) | Call signatures, inputs, and outputs for every component |
+| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 55 templates |
 | [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) | Platform decision, setup, build, governance, CI/CD, telemetry, monitoring |
-| [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design rules, error handling, telemetry, naming |
-| [`TOOLS-AND-PLUGINS.md`](TOOLS-AND-PLUGINS.md) | Install `pac` CLI, VS Code extensions, Copilot Studio Kit |
-| [`ACTION-SAFETY-PATTERNS.md`](ACTION-SAFETY-PATTERNS.md) | Safety tiers and confirmation patterns for write actions |
-| [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | Claude skills for generating topics, running evals, validating YAML |
-| [`TEAM-GUIDE.md`](TEAM-GUIDE.md) | Role-based entry points, onboarding for new developers |
+| [`docs/BEST-PRACTICES.md`](docs/BEST-PRACTICES.md) | Design rules, error handling, telemetry, naming |
+| [`docs/TOOLS-AND-PLUGINS.md`](docs/TOOLS-AND-PLUGINS.md) | Install `pac` CLI, VS Code extensions, Copilot Studio Kit |
+| [`docs/ACTION-SAFETY-PATTERNS.md`](docs/ACTION-SAFETY-PATTERNS.md) | Safety tiers and confirmation patterns for write actions |
+| [`docs/ENV-VARIABLES.md`](docs/ENV-VARIABLES.md) | Environment variables: Power Platform env vars (CPS low-code) and Key Vault / App Config / Managed Identity (Azure pro-code) |
+| [`docs/PII-SCRUBBING.md`](docs/PII-SCRUBBING.md) | PII prevention in telemetry, Power Fx masking, App Insights config, DLP policies |
+| [`docs/SKILLS-REFERENCE.md`](docs/SKILLS-REFERENCE.md) | Claude skills for generating topics, running evals, validating YAML |
+| [`docs/TEAM-GUIDE.md`](docs/TEAM-GUIDE.md) | Role-based entry points, onboarding for new developers |
 
 ---
 

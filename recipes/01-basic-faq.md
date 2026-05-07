@@ -56,7 +56,7 @@ User message
 | `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | same as `<AgentName>` above |
 | `sharepoint.knowledge.mcs.yml` | `<SHAREPOINT_SITE_URL>` | your SharePoint library URL |
 
-Then run the `_REPLACE` script from `QUICKSTART.md` to generate unique node IDs.
+Then run the `_REPLACE` script from `docs/QUICKSTART.md` to generate unique node IDs.
 
 ## Copy commands
 
@@ -71,7 +71,7 @@ cp components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml agents/<your-age
 
 - [ ] Copy files using commands above
 - [ ] Fill in all values in the table above
-- [ ] Run `_REPLACE` script from `QUICKSTART.md`
+- [ ] Run `_REPLACE` script from `docs/QUICKSTART.md`
 - [ ] `pac copilot push --environment <ENV_URL>`
 - [ ] Test in Copilot Studio test canvas
 

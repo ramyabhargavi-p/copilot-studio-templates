@@ -30,26 +30,26 @@ flowchart LR
     G --> L[Launch]
     L --> O[Operate]
 
-    D -->|"01-requirements\n02-technical-discovery"| D
-    DS -->|"03-design-worksheet\nprompts/system-prompts/"| DS
-    B -->|"base/ + components/\nrecipes/"| B
-    T -->|"generate-eval-cases\ncopilot-studio-kit"| T
-    G -->|"governance/ai-ethics\ngovernance/security"| G
-    L -->|"launch/launch-checklist\nci-cd/publish"| L
-    O -->|"operations/\nrunbook.md"| O
+    D -->|"01-requirements, 02-technical-discovery"| D
+    DS -->|"03-design-worksheet, system-prompts"| DS
+    B -->|"base/ + components/ + recipes/"| B
+    T -->|"generate-eval-cases, copilot-studio-kit"| T
+    G -->|"ai-ethics-checklist, security-review"| G
+    L -->|"launch-checklist, ci-cd/publish"| L
+    O -->|"operations/, runbook.md"| O
 ```
 
 ### Phase map (which files each role touches)
 
 | Phase | Files | Who | Gate |
 |-------|-------|-----|------|
-| Discovery | `project-delivery/01-requirements-questionnaire.md`, `02-technical-discovery.md` | Dev + Business Owner | Both complete before design starts |
-| Design | `project-delivery/03-agent-design-worksheet.md`, `prompts/system-prompts/` | Tech Lead + Dev | FDD + TDD signed off |
-| Build | `base/`, `components/`, `recipes/` | Dev | All placeholders replaced, `pac copilot push --dry-run` passes |
-| Test | `project-delivery/05-eval-scenarios.md`, `prompts/ai-prompts/generate-eval-cases.md` | Dev + QA | Eval ≥ 85% routing accuracy |
-| Governance | `governance/ai-ethics-checklist.md`, `governance/security-review.md` | Tech Lead + Security | Both signed — CI/CD will not promote without this |
-| Launch | `launch/launch-checklist.md`, `ci-cd/publish-on-release.yml` | Dev + PM | All checklist items pass, manual approval in GitHub |
-| Operate | `operations/monitoring-queries.md`, `operations/runbook.md` | Agent Owner | Alerts configured, weekly health check on cadence |
+| Discovery | `../project-delivery/01-requirements-questionnaire.md`, `02-technical-discovery.md` | Dev + Business Owner | Both complete before design starts |
+| Design | `../project-delivery/03-agent-design-worksheet.md`, `../prompts/system-prompts/` | Tech Lead + Dev | FDD + TDD signed off |
+| Build | `../base/`, `../components/`, `../recipes/` | Dev | All placeholders replaced, `pac copilot push --dry-run` passes |
+| Test | `../project-delivery/05-eval-scenarios.md`, `../prompts/ai-prompts/generate-eval-cases.md` | Dev + QA | Eval ≥ 85% routing accuracy |
+| Governance | `../governance/ai-ethics-checklist.md`, `../governance/security-review.md` | Tech Lead + Security | Both signed — CI/CD will not promote without this |
+| Launch | `../launch/launch-checklist.md`, `../ci-cd/publish-on-release.yml` | Dev + PM | All checklist items pass, manual approval in GitHub |
+| Operate | `../operations/monitoring-queries.md`, `../operations/runbook.md` | Agent Owner | Alerts configured, weekly health check on cadence |
 
 ---
 
@@ -60,12 +60,12 @@ flowchart LR
 | Role | Responsibilities in a build sprint | Files they own |
 |------|-----------------------------------|---------------|
 | **Junior dev** | Copy templates, replace placeholders, run smoke tests, write eval test cases | Individual topic files in `agents/<name>/topics/` |
-| **Mid-level dev** | Add actions + knowledge sources, wire variables, set up CI/CD, write eval CSV | `components/`, `ci-cd/`, `agents/<name>/evals/` |
-| **Senior dev / tech lead** | Architecture decisions, recipe selection, governance review, eval threshold, PR reviews | `recipes/`, `governance/`, `ci-cd/promote-*.yml` |
-| **Business owner / domain SME** | Requirements input, UAT sign-off, governance sign-off | `project-delivery/01-requirements.md`, `governance/ai-ethics-checklist.md` |
-| **DevOps / platform engineer** | Environment setup, service principal, GitHub secrets, connection references per env | `.github/workflows/`, `project-delivery/02-technical-discovery.md` |
-| **Security reviewer** | Security review checklist, PII check, action safety tier validation | `governance/security-review.md`, `ACTION-SAFETY-PATTERNS.md` |
-| **QA / tester** | UAT test plan execution, eval CSV review, adversarial prompt testing | `project-delivery/04-uat-test-plan.md`, `agents/<name>/evals/` |
+| **Mid-level dev** | Add actions + knowledge sources, wire variables, set up CI/CD, write eval CSV | `../components/`, `../ci-cd/`, `agents/<name>/evals/` |
+| **Senior dev / tech lead** | Architecture decisions, recipe selection, governance review, eval threshold, PR reviews | `../recipes/`, `../governance/`, `../ci-cd/promote-*.yml` |
+| **Business owner / domain SME** | Requirements input, UAT sign-off, governance sign-off | `../project-delivery/01-requirements.md`, `../governance/ai-ethics-checklist.md` |
+| **DevOps / platform engineer** | Environment setup, service principal, GitHub secrets, connection references per env | `.github/workflows/`, `../project-delivery/02-technical-discovery.md` |
+| **Security reviewer** | Security review checklist, PII check, action safety tier validation | `../governance/security-review.md`, `ACTION-SAFETY-PATTERNS.md` |
+| **QA / tester** | UAT test plan execution, eval CSV review, adversarial prompt testing | `../project-delivery/04-uat-test-plan.md`, `agents/<name>/evals/` |
 
 ### One-time project setup (tech lead + DevOps, Sprint 0)
 
@@ -305,7 +305,7 @@ grep -n "UserDisplayName\|UserEmail\|EmployeeId" <changed-topics> --include="*.y
 # If not: this was not built from _scaffold — send back for rework
 
 # 4. Write actions have confirmation cards
-# Check ACTION-SAFETY-PATTERNS.md tier for any new connector action
+# Check ACTION-SAFETY-PATTERNS.md tier for any new connector action (docs/ACTION-SAFETY-PATTERNS.md)
 # Medium tier: must have confirmation-card step before executing
 ```
 
@@ -400,7 +400,7 @@ DESIGN phase:
   This shapes decisions about: scope, out-of-scope redirect, confirmation cards for write actions
 
 BUILD phase:
-  Every developer applies: ACTION-SAFETY-PATTERNS.md (safety tier for every action)
+  Every developer applies: ACTION-SAFETY-PATTERNS.md in docs/ (safety tier for every action)
   Every developer follows: PII rule (never log displayName/email in telemetry)
 
 PRE-UAT:
@@ -435,7 +435,7 @@ Share this with every new team member:
 ### Day 1 (2 hours)
 
 ```
-[ ] Read ENGINEERING-PLAYBOOK.md — Stage 0, 1, and 2 (platform decision, setup, templates)
+[ ] Read ENGINEERING-PLAYBOOK.md — Stage 0, 1, and 2 (platform decision, setup, templates) (root)
 [ ] Complete Stage 1 setup: pac CLI installed, VS Code extensions active, authenticated to Dev env
 [ ] Verify setup: pac auth list shows Dev, opening agent.mcs.yml shows IntelliSense in VS Code
 [ ] Read governance/enterprise-ai-governance-framework.md Section 1–3 (the rules that matter)
@@ -444,7 +444,7 @@ Share this with every new team member:
 ### Day 1–2 (3 hours)
 
 ```
-[ ] Follow Stage 3 of ENGINEERING-PLAYBOOK.md — build the IT Helpdesk agent end-to-end
+[ ] Follow Stage 3 of ENGINEERING-PLAYBOOK.md (root) — build the IT Helpdesk agent end-to-end
     (even if you won't work on IT Helpdesk — the walkthrough teaches the patterns)
 [ ] Run all 7 smoke test cases from Stage 5
 [ ] Open Application Insights and run the KQL conversation trace query (Stage 9)
@@ -453,7 +453,7 @@ Share this with every new team member:
 ### Day 2–3
 
 ```
-[ ] Read ACTION-SAFETY-PATTERNS.md — understand the safety tiers before touching actions
+[ ] Read ACTION-SAFETY-PATTERNS.md (docs/) — understand the safety tiers before touching actions
 [ ] Pick up your first story from the sprint backlog
 [ ] Follow the 9-step developer workflow in this document exactly
 [ ] Open a PR and use the reviewer checklist yourself before requesting review
@@ -591,11 +591,11 @@ This creates a feedback loop: telemetry → stories → templates → improved a
 
 | Document | What it covers |
 |----------|---------------|
-| [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) | Complete platform-to-operations guide, step-by-step for all roles |
+| [`ENGINEERING-PLAYBOOK.md`](../ENGINEERING-PLAYBOOK.md) | Complete platform-to-operations guide, step-by-step for all roles |
 | [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md) | Every template's call signature, inputs, outputs |
 | [`ACTION-SAFETY-PATTERNS.md`](ACTION-SAFETY-PATTERNS.md) | Safety tiers for actions — mandatory reading for devs |
 | [`SKILLS-REFERENCE.md`](SKILLS-REFERENCE.md) | All Claude skills and when to use each |
 | [`BEST-PRACTICES.md`](BEST-PRACTICES.md) | Design rules, naming, error handling, testing |
-| [`governance/enterprise-ai-governance-framework.md`](governance/enterprise-ai-governance-framework.md) | Full governance framework |
-| [`troubleshooting/README.md`](troubleshooting/README.md) | Common errors and fixes |
-| [`operations/runbook.md`](operations/runbook.md) | Incident response procedures |
+| [`governance/enterprise-ai-governance-framework.md`](../governance/enterprise-ai-governance-framework.md) | Full governance framework |
+| [`troubleshooting/README.md`](../troubleshooting/README.md) | Common errors and fixes |
+| [`operations/runbook.md`](../operations/runbook.md) | Incident response procedures |

@@ -11,6 +11,7 @@ The minimum viable Copilot Studio agent. **Copy this folder to start every new a
 | `topics/Greeting.topic.mcs.yml` | Fires on conversation start; sends a welcome message |
 | `topics/Fallback.topic.mcs.yml` | Fires on unmatched intent; retries 3× then escalates to human |
 | `topics/OnError.topic.mcs.yml` | Fires on system errors; debug-friendly in test mode, safe in production |
+| `topics/OutOfScope.topic.mcs.yml` | Fires on explicit out-of-domain phrases; returns a clear redirect instead of a fallback |
 
 ## Setup Steps
 
@@ -19,7 +20,8 @@ The minimum viable Copilot Studio agent. **Copy this folder to start every new a
 3. **`settings.mcs.yml`** — replace `<agent_schema_name>` and `<Agent Display Name>`; set `authenticationMode`
 4. **All topic files** — replace every `_REPLACE` suffix with a unique random string (e.g. `_a1b2c3`)
 5. **`Fallback.topic.mcs.yml`** — replace `<AGENT_SCHEMA>` with your agent's `schemaName`
-6. Push to Copilot Studio using `pac copilot push` or the VS Code Copilot Studio extension
+6. **`OutOfScope.topic.mcs.yml`** — replace `<DOMAIN>`, `<OUT-OF-SCOPE-TOPIC>`, `<CONTACT>` and add domain-specific trigger phrases
+7. Push to Copilot Studio using `pac copilot push` or the VS Code Copilot Studio extension
 
 ## Key Decisions
 
