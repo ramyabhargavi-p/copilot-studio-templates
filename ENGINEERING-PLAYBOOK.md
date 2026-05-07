@@ -1,6 +1,6 @@
 # Copilot Studio Engineering Playbook
 
-The single reference for every engineer on the team — from intern to director — building, shipping, and operating Copilot Studio agents.
+The single reference for every engineer on the team — building, shipping, and operating Copilot Studio agents.
 
 **What this document gives you:**
 - A complete decision framework before you write a single line of YAML
