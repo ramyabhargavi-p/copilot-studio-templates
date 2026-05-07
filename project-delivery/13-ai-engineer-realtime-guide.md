@@ -92,7 +92,7 @@ The scaffold already has error handling, telemetry, and CSAT built in. You fill 
 |----------|--------------|-----------------|
 | Foundry IQ (Memory/Grounding) | Answers from internal documents | `components/knowledge/sharepoint/` |
 | Foundry IQ (public content) | Answers from public web pages | `components/knowledge/public-website/` |
-| Work IQ (Live org context) | What was discussed in recent meetings, emails | SKILLS-REFERENCE.md → WorkIQ queries |
+| Work IQ (Live org context) | What was discussed in recent meetings, emails | docs/SKILLS-REFERENCE.md → WorkIQ queries |
 | Fabric IQ (Structured data) | Agent reasoning over Dataverse/SQL | Outside scope — use Fabric Data Agents |
 
 **3. Implement Action Safety guardrails — tier by tier**

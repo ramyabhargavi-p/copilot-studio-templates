@@ -305,7 +305,7 @@ grep -n "UserDisplayName\|UserEmail\|EmployeeId" <changed-topics> --include="*.y
 # If not: this was not built from _scaffold — send back for rework
 
 # 4. Write actions have confirmation cards
-# Check ACTION-SAFETY-PATTERNS.md tier for any new connector action
+# Check ACTION-SAFETY-PATTERNS.md tier for any new connector action (docs/ACTION-SAFETY-PATTERNS.md)
 # Medium tier: must have confirmation-card step before executing
 ```
 
@@ -400,7 +400,7 @@ DESIGN phase:
   This shapes decisions about: scope, out-of-scope redirect, confirmation cards for write actions
 
 BUILD phase:
-  Every developer applies: ACTION-SAFETY-PATTERNS.md (safety tier for every action)
+  Every developer applies: ACTION-SAFETY-PATTERNS.md in docs/ (safety tier for every action)
   Every developer follows: PII rule (never log displayName/email in telemetry)
 
 PRE-UAT:
@@ -435,7 +435,7 @@ Share this with every new team member:
 ### Day 1 (2 hours)
 
 ```
-[ ] Read ENGINEERING-PLAYBOOK.md — Stage 0, 1, and 2 (platform decision, setup, templates)
+[ ] Read ENGINEERING-PLAYBOOK.md — Stage 0, 1, and 2 (platform decision, setup, templates) (root)
 [ ] Complete Stage 1 setup: pac CLI installed, VS Code extensions active, authenticated to Dev env
 [ ] Verify setup: pac auth list shows Dev, opening agent.mcs.yml shows IntelliSense in VS Code
 [ ] Read governance/enterprise-ai-governance-framework.md Section 1–3 (the rules that matter)
@@ -444,7 +444,7 @@ Share this with every new team member:
 ### Day 1–2 (3 hours)
 
 ```
-[ ] Follow Stage 3 of ENGINEERING-PLAYBOOK.md — build the IT Helpdesk agent end-to-end
+[ ] Follow Stage 3 of ENGINEERING-PLAYBOOK.md (root) — build the IT Helpdesk agent end-to-end
     (even if you won't work on IT Helpdesk — the walkthrough teaches the patterns)
 [ ] Run all 7 smoke test cases from Stage 5
 [ ] Open Application Insights and run the KQL conversation trace query (Stage 9)
@@ -453,7 +453,7 @@ Share this with every new team member:
 ### Day 2–3
 
 ```
-[ ] Read ACTION-SAFETY-PATTERNS.md — understand the safety tiers before touching actions
+[ ] Read ACTION-SAFETY-PATTERNS.md (docs/) — understand the safety tiers before touching actions
 [ ] Pick up your first story from the sprint backlog
 [ ] Follow the 9-step developer workflow in this document exactly
 [ ] Open a PR and use the reviewer checklist yourself before requesting review

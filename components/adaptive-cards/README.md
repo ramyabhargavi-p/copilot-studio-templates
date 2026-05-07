@@ -23,4 +23,4 @@ Cards are embedded in topic YAML as an `activity.attachments` value. Copy the JS
 
 The Feedback topic (`components/topics/feedback/`) already wires up the three feedback cards — you do not need to add them manually if you use that component.
 
-→ Action safety tiers and when confirmation is required: [`../../ACTION-SAFETY-PATTERNS.md`](../../ACTION-SAFETY-PATTERNS.md)
+→ Action safety tiers and when confirmation is required: [`../../docs/ACTION-SAFETY-PATTERNS.md`](../../docs/ACTION-SAFETY-PATTERNS.md)

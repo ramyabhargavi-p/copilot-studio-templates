@@ -129,4 +129,4 @@ pac copilot push --environment <ENV_URL>
 # pac copilot publish (not available in all pac CLI versions)
 ```
 
-See `TOOLS-AND-PLUGINS.md` for `pac` installation instructions.
+See [`docs/TOOLS-AND-PLUGINS.md`](../docs/TOOLS-AND-PLUGINS.md) for `pac` installation instructions.

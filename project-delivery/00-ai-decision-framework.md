@@ -315,7 +315,7 @@ Map your data sources to the three intelligence layers before selecting knowledg
 | Layer | What it provides | In this repo | Use when |
 |-------|-----------------|-------------|---------|
 | **Foundry IQ (Memory)** | Grounding — retrieve relevant content per question from static sources | `components/knowledge/sharepoint/` and `public-website/` | Agent answers from documents |
-| **Work IQ (Awareness)** | Live org context — emails, meetings, Teams chats, calendar | WorkIQ via `ask_work_iq` in SKILLS-REFERENCE.md | Dev needs real M365 context to fill in discovery docs; agent needs live user context |
+| **Work IQ (Awareness)** | Live org context — emails, meetings, Teams chats, calendar | WorkIQ via `ask_work_iq` in docs/SKILLS-REFERENCE.md | Dev needs real M365 context to fill in discovery docs; agent needs live user context |
 | **Fabric IQ (Understanding)** | Business logic and semantic reasoning over structured operational data | Outside scope — requires Fabric Data Agents (Preview) | Agent needs to reason over Dataverse/SQL/OneLake data |
 
 ---

@@ -88,4 +88,4 @@ grep -rn "_REPLACE" agents/<your-agent> --include="*.yml"
 | Add an adaptive card to a topic | `/copilot-studio:add-adaptive-card` |
 | Validate all component YAML | `/copilot-studio:validate` |
 
-→ Full call signatures and input/output specs: [`../COMPONENT-REGISTRY.md`](../COMPONENT-REGISTRY.md)
+→ Full call signatures and input/output specs: [`../docs/COMPONENT-REGISTRY.md`](../docs/COMPONENT-REGISTRY.md)

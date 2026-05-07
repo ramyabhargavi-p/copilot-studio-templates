@@ -65,5 +65,5 @@ sed -i 's/<SCHEMA>/<your-schema-name>/g' agents/<your-agent>/topics/<TopicName>.
 ```
 
 → Detailed scaffold guide: [`_scaffold/README.md`](_scaffold/README.md)
-→ Call signatures and inputs/outputs for each topic: [`../../COMPONENT-REGISTRY.md`](../../COMPONENT-REGISTRY.md)
+→ Call signatures and inputs/outputs for each topic: [`../../docs/COMPONENT-REGISTRY.md`](../../docs/COMPONENT-REGISTRY.md)
 → Claude skills: `/copilot-studio:new-topic` generates a complete topic from plain English

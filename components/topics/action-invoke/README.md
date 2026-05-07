@@ -26,5 +26,5 @@ Then:
 
 **Guardrail:** For Medium or High safety tier actions (write/delete operations), add a `confirmation-card` before the `BeginDialog` call.
 
-→ Safety tiers: [`../../../ACTION-SAFETY-PATTERNS.md`](../../../ACTION-SAFETY-PATTERNS.md)
+→ Safety tiers: [`../../../docs/ACTION-SAFETY-PATTERNS.md`](../../../docs/ACTION-SAFETY-PATTERNS.md)
 → Confirmation card: [`../../adaptive-cards/README.md`](../../adaptive-cards/README.md)

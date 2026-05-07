@@ -20,4 +20,4 @@ cp components/actions/connector/connector-action.mcs.yml \
 Replace: `<SCHEMA>`, `<CONNECTION_REFERENCE>`, `<OPERATION_ID>`, and any input parameter placeholders.
 
 → Lookup available connectors and operations: run `node scripts/connector-lookup.bundle.js list`
-→ Safety tiers (when confirmation is required): [`../../../ACTION-SAFETY-PATTERNS.md`](../../../ACTION-SAFETY-PATTERNS.md)
+→ Safety tiers (when confirmation is required): [`../../../docs/ACTION-SAFETY-PATTERNS.md`](../../../docs/ACTION-SAFETY-PATTERNS.md)

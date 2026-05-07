@@ -917,6 +917,6 @@ agents/it-helpdesk/
 
 **17 of 49 templates used** for a full-featured internal IT agent.
 
-→ All 49 templates: [`../../TEMPLATES.md`](../../TEMPLATES.md)
-→ Component call signatures: [`../../COMPONENT-REGISTRY.md`](../../COMPONENT-REGISTRY.md)
+→ All 49 templates: [`../../docs/TEMPLATES.md`](../../docs/TEMPLATES.md)
+→ Component call signatures: [`../../docs/COMPONENT-REGISTRY.md`](../../docs/COMPONENT-REGISTRY.md)
 → Full command reference: [`../../commands/pac-commands.md`](../../commands/pac-commands.md)

@@ -4,7 +4,7 @@ All pac commands used in Copilot Studio agent development, in the order you use 
 
 > **Note on `pac copilot push`:** This command is available via the **Copilot Studio Kit** (`pac copilot push`) when the Kit is installed. It is NOT a built-in subcommand of the base `pac copilot` CLI.
 > If you installed pac CLI standalone without the Kit, use the VS Code `Copilot Studio: Apply Changes` command or `pac copilot extract-template` + `pac copilot create` instead.
-> This repo assumes the Copilot Studio Kit is installed — `pac copilot push` is used throughout. See [`TOOLS-AND-PLUGINS.md`](../TOOLS-AND-PLUGINS.md) for installation.
+> This repo assumes the Copilot Studio Kit is installed — `pac copilot push` is used throughout. See [`docs/TOOLS-AND-PLUGINS.md`](../docs/TOOLS-AND-PLUGINS.md) for installation.
 
 ---
 

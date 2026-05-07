@@ -35,7 +35,7 @@ The implementation guide that translates approved discovery, design, and governa
 | 5 | Set `GenerativeActionsEnabled` in `settings.mcs.yml` | `09-TDD` Section 1.1 | ☐ |
 | 6 | Write the system prompt in `agent.mcs.yml` → `instructions` | `09-TDD` Section 1.2 pattern; `07-FDD` Sections 1–4 | ☐ |
 | 7 | Add conversation starters (3–5) in `agent.mcs.yml` | `07-FDD` Section 2 — user personas | ☐ |
-| 8 | Verify date context injection: `Date: {Text(Today(),DateTimeFormat.LongDate)}` is in instructions | `BEST-PRACTICES.md` Section 1 | ☐ |
+| 8 | Verify date context injection: `Date: {Text(Today(),DateTimeFormat.LongDate)}` is in instructions | `docs/BEST-PRACTICES.md` Section 1 | ☐ |
 
 ### 1.2 — System prompt verification checklist
 
