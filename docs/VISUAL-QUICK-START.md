@@ -80,8 +80,11 @@ Press Ctrl+S (Save)
 Expected output:
 ✓ Validating YAML...
 ✓ Connecting to environment...
-✓ Creating agent in cloud...
+✓ Creating agent in cloud...        ← Agent AUTOMATICALLY CREATED
 ✓ Complete
+
+YES! On your first run, "Apply Changes" automatically creates the agent.
+On subsequent runs, it updates the existing agent.
 ```
 
 ---

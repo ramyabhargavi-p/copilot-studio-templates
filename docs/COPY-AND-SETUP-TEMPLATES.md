@@ -137,9 +137,9 @@ If any of these are missing, go back to prerequisites (docs/DEVELOPER-SETUP-GUID
 
 ## Step 6: Deploy to Cloud via VS Code
 
-This is the key part. You'll deploy your agent to the cloud **without using the web UI**.
+This is the key part. You'll deploy your agent to the cloud **without using the web UI**. On the first run, VS Code will **automatically create the agent**.
 
-### 6.1 — Deploy
+### 6.1 — Deploy (First Time = Automatic Creation)
 
 1. In VS Code, press **Ctrl+Shift+P** (or Cmd+Shift+P on macOS)
 2. Type: `Copilot Studio: Apply Changes`
@@ -150,11 +150,22 @@ You should see a progress bar. After 10–30 seconds:
 ```
 ✓ Validating YAML...
 ✓ Connecting to environment...
-✓ Creating agent in cloud...
+✓ Creating agent in cloud...        ← Agent AUTOMATICALLY created
 ✓ Complete
 
 Agent deployed successfully!
 ```
+
+**Yes! On the FIRST run, "Apply Changes" automatically creates a new agent in the cloud.**
+
+| When | Action |
+|------|--------|
+| **First time** | ✅ Automatically **creates** new agent |
+| **Subsequent times** | ✅ Updates existing agent |
+
+The agent name comes from your `agent.mcs.yml`:
+- **Schema name** (internal ID): `my_first_agent`
+- **Display name** (what users see): `My First Agent`
 
 ### 6.2 — Verify Deployment
 

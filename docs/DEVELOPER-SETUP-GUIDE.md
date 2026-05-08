@@ -249,31 +249,43 @@ This is the key part: **using VS Code to push directly to your Power Platform en
 
 ### Step 3.1 — Deploy via VS Code Extension
 
-The Copilot Studio VS Code extension has a command to apply your changes directly to the cloud.
+The Copilot Studio VS Code extension has a command to apply your changes directly to the cloud. On the **first run**, it will automatically create a new agent.
 
-**Deploy your agent:**
+**Deploy your agent (First Time):**
 1. In VS Code, press **Ctrl+Shift+P** (or Cmd+Shift+P on macOS)
 2. Type: `Copilot Studio: Apply Changes`
 3. Select the command from the dropdown
 4. VS Code will show a progress bar
 
-**Expected output:**
+**Expected output (First Time):**
 ```
 Copilot Studio: Apply Changes
 
 ✓ Validating YAML...
 ✓ Connecting to environment...
-✓ Creating agent in cloud...
+✓ Creating agent in cloud...        ← NEW agent created automatically
 ✓ Complete
 
 Your agent has been created as a draft. It's not yet live to users.
 ```
 
 **What "Apply Changes" does:**
+
+| Scenario | Action |
+|----------|--------|
+| **First time** (no agent in cloud yet) | ✅ **Automatically creates** a new agent with your schema name |
+| **Already deployed** | ✅ Updates the existing agent with your changes |
+
 - Validates your YAML syntax
 - Connects to your authenticated Power Platform environment
-- Creates or updates your agent in the cloud
+- **Creates a new agent automatically if one doesn't exist** ← Key point
 - Deploys as a **draft** (not published yet)
+
+**Important:** The agent is created using:
+- **Schema name** from `agent.mcs.yml` (e.g., `my_first_agent`)
+- **Display name** from `agent.mcs.yml` (e.g., `My First Agent`)
+- **System prompt** from `agent.mcs.yml`
+- All other configuration from your YAML files
 
 ---
 
