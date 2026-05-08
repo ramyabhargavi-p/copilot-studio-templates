@@ -96,6 +96,62 @@ cp -r base/ agents/leave_request_bot/
 
 ---
 
+## 🚀 Deployment Methods
+
+### Q: Can I create an agent entirely in VS Code and push it directly to Copilot Studio without any cloud setup?
+
+**A: YES, absolutely!** You have **3 deployment options**:
+
+| Method | How | Best For | Time |
+|--------|-----|----------|------|
+| **Option 1: VS Code Apply Changes** | Click button in VS Code | Learning, rapid iteration | 5–10 min |
+| **Option 2: CLI Push** | Run `pac copilot push` | Scripting, automation | 5–10 min |
+| **Option 3: CI/CD Pipeline** | Git push → GitHub Actions | Teams, governance, multi-env | 2–5 min |
+
+**See:** [`docs/DEPLOYMENT-OPTIONS.md`](DEPLOYMENT-OPTIONS.md) for complete guide to all 3 approaches.
+
+---
+
+### Q: What's the simplest way to deploy for the first time?
+
+**A: Option 1 — VS Code Apply Changes.**
+
+```
+1. Copy template locally
+2. Edit YAML in VS Code (replace 5 placeholders)
+3. Press Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+4. Agent auto-created in cloud ✓
+5. Test in browser
+6. Click "Publish" ✓
+```
+
+**Total time:** 10–15 minutes from zero to live agent.
+
+---
+
+### Q: Should I use CI/CD pipeline even for testing locally?
+
+**A: NO.** Use Option 1 (VS Code Apply Changes) for local testing.
+
+Use CI/CD (Option 3) only when:
+- Working in a team
+- Need approval gates for production
+- Managing multiple environments (Dev→UAT→Prod)
+- Want fully automated deployments
+
+---
+
+### Q: Can I switch between deployment methods?
+
+**A: YES.** All methods deploy to the same cloud. You can:
+- Test with Option 1 locally
+- Use Option 2 for scripting
+- Use Option 3 for team deployments
+
+The agent in cloud doesn't care which method deployed it.
+
+---
+
 ## 📋 Templates & Configuration
 
 ### Q: Do I have to replace all the `<PLACEHOLDER>` values?

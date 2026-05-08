@@ -42,11 +42,12 @@ flowchart TD
 
 ---
 
-### 📚 Complete Guide Suite (5 Components)
+### 📚 Complete Guide Suite (6 Components)
 
 | Component | Purpose | Time |
 |-----------|---------|------|
 | 📖 **Master Tutorial** | [`AGENT-DEVELOPER-JOURNEY.md`](docs/AGENT-DEVELOPER-JOURNEY.md) | 90–120 min |
+| 🚀 **Deployment Options** | [`DEPLOYMENT-OPTIONS.md`](docs/DEPLOYMENT-OPTIONS.md) — Compare 3 ways to deploy | 15 min read |
 | 🤖 **Setup Automation** | [`scripts/setup-agent-dev.ps1`](scripts/setup-agent-dev.ps1) (Windows) or [`setup-agent-dev.sh`](scripts/setup-agent-dev.sh) (macOS/Linux) | 5–10 min |
 | ✅ **Printable Checklist** | [`AGENT-DEVELOPER-CHECKLIST.md`](docs/AGENT-DEVELOPER-CHECKLIST.md) | Follow along |
 | 📊 **Visual Flowcharts** | [`VISUAL-FLOWCHARTS.md`](docs/VISUAL-FLOWCHARTS.md) | Print & reference |
