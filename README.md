@@ -36,13 +36,33 @@ flowchart TD
 
 ## Where to start
 
+### 🎯 **MASTER TUTORIAL — Start here!**
+
+**→ [`docs/AGENT-DEVELOPER-JOURNEY.md`](docs/AGENT-DEVELOPER-JOURNEY.md)** (90–120 min) — Complete end-to-end walkthrough from setup to live agent deployment. 6 phases with troubleshooting, expected outputs, and next steps.
+
+---
+
+### 📚 Complete Guide Suite (5 Components)
+
+| Component | Purpose | Time |
+|-----------|---------|------|
+| 📖 **Master Tutorial** | [`AGENT-DEVELOPER-JOURNEY.md`](docs/AGENT-DEVELOPER-JOURNEY.md) | 90–120 min |
+| 🤖 **Setup Automation** | [`scripts/setup-agent-dev.ps1`](scripts/setup-agent-dev.ps1) (Windows) or [`setup-agent-dev.sh`](scripts/setup-agent-dev.sh) (macOS/Linux) | 5–10 min |
+| ✅ **Printable Checklist** | [`AGENT-DEVELOPER-CHECKLIST.md`](docs/AGENT-DEVELOPER-CHECKLIST.md) | Follow along |
+| 📊 **Visual Flowcharts** | [`VISUAL-FLOWCHARTS.md`](docs/VISUAL-FLOWCHARTS.md) | Print & reference |
+| 📌 **Quick Reference Cards** | [`QUICK-REFERENCE-CARDS.md`](docs/QUICK-REFERENCE-CARDS.md) | Print & desk |
+
+---
+
+### Other Quick Entry Points
+
 | Goal | Go to | Time |
 |------|-------|------|
-| **New to this? Start here** | [`docs/DEVELOPER-SETUP-GUIDE.md`](docs/DEVELOPER-SETUP-GUIDE.md) | 45–90 min |
 | **Copy templates step-by-step** | [`docs/COPY-AND-SETUP-TEMPLATES.md`](docs/COPY-AND-SETUP-TEMPLATES.md) | 30 min |
 | **How to use Claude skills** | [`docs/SKILLS-QUICK-REFERENCE.md`](docs/SKILLS-QUICK-REFERENCE.md) | 10 min |
 | **Find what you need** | [`docs/DOCUMENTATION-MAP.md`](docs/DOCUMENTATION-MAP.md) | — |
 | **Quick overview** | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | 20 min |
+| **Common Q&A** | [`docs/FAQ.md`](docs/FAQ.md) | 15 min |
 | **Full enterprise delivery** | [`docs/START-HERE.md`](docs/START-HERE.md) & [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) | Varies |
 | **Something is broken** | [`troubleshooting/README.md`](troubleshooting/README.md) | — |
 
