@@ -31,14 +31,49 @@ Choose how you're working:
 
 ---
 
-### Path A — Using Claude skills (fastest)
+### Path A — Using VS Code + Claude skills (fastest + easiest)
+
+**Prerequisites:** VS Code with Copilot Studio extension, `pac` CLI installed and authenticated.
+
+**Quick workflow:**
+
+```
+1. Copy the base template
+   → cp -r base/ agents/<your-agent-name>/
+
+2. Replace placeholders (5 values in 3 files)
+   → Open each file and replace <PLACEHOLDER> values
+
+3. Open in VS Code
+   → code agents/<your-agent-name>/
+
+4. Deploy directly to cloud (no web UI needed!)
+   → Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+
+5. Test in Copilot Studio
+   → https://make.microsoft.com → find your agent → Test pane
+
+6. Publish to live
+   → Click "Publish" in Copilot Studio UI
+
+7. (Optional) Add knowledge with Claude skills
+   → /copilot-studio:add-knowledge "Add HR policies"
+```
+
+**Time:** 30–45 minutes for a working FAQ agent  
+**Detailed guide:** See [`DEVELOPER-SETUP-GUIDE.md`](DEVELOPER-SETUP-GUIDE.md)
+
+---
+
+### Path B — Using Claude skills only (hands-off)
+
+If you prefer Copilot to handle all steps:
 
 ```
 1. Load context from meetings / emails
    → /workiq  "What was discussed about the [agent] requirements?"
 
 2. Start a new agent
-   → /copilot-studio:detect-mode
    → /copilot-studio:clone-agent
 
 3. Add knowledge or actions
@@ -51,24 +86,18 @@ Choose how you're working:
 5. Deploy
    → /copilot-studio:manage-agent
 
-6. Test immediately — no publishing needed
+6. Test immediately
    → /copilot-studio:chat-with-agent
 ```
 
+**Time:** 20–30 minutes  
+**Note:** Copilot handles all the copying and replacing for you.
+
 ---
 
-### Path B — Manual (copy and replace)
+### Path C — Manual (copy and replace via CLI)
 
-**Prerequisites:** `pac` CLI installed, authenticated to your environment.
-
-```bash
-# Authenticate first (run once)
-pac auth create \
-  --applicationId <CLIENT_ID> \
-  --clientSecret <CLIENT_SECRET> \
-  --tenant <TENANT_ID> \
-  --environment <ENV_URL>
-```
+**Prerequisites:** `pac` CLI installed and authenticated to your environment.
 
 **1. Copy the base**
 ```bash

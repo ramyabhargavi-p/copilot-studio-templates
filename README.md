@@ -36,12 +36,15 @@ flowchart TD
 
 ## Where to start
 
-| Goal | Go to |
-|------|-------|
-| **Build your first agent** (30–60 min) | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) |
-| **Engineering guide** | [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) |
-| **Full enterprise delivery** (all phases) | [`docs/START-HERE.md`](docs/START-HERE.md) |
-| **Something is broken** | [`troubleshooting/README.md`](troubleshooting/README.md) |
+| Goal | Go to | Time |
+|------|-------|------|
+| **New to this? Start here** | [`docs/DEVELOPER-SETUP-GUIDE.md`](docs/DEVELOPER-SETUP-GUIDE.md) | 45–90 min |
+| **Copy templates step-by-step** | [`docs/COPY-AND-SETUP-TEMPLATES.md`](docs/COPY-AND-SETUP-TEMPLATES.md) | 30 min |
+| **How to use Claude skills** | [`docs/SKILLS-QUICK-REFERENCE.md`](docs/SKILLS-QUICK-REFERENCE.md) | 10 min |
+| **Find what you need** | [`docs/DOCUMENTATION-MAP.md`](docs/DOCUMENTATION-MAP.md) | — |
+| **Quick overview** | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | 20 min |
+| **Full enterprise delivery** | [`docs/START-HERE.md`](docs/START-HERE.md) & [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) | Varies |
+| **Something is broken** | [`troubleshooting/README.md`](troubleshooting/README.md) | — |
 
 ---
 
