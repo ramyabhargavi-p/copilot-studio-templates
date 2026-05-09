@@ -42,7 +42,7 @@ flowchart TD
 
 ---
 
-### 📚 Complete Guide Suite (6 Components)
+### 📚 Complete Guide Suite (9 Components)
 
 | Component | Purpose | Time |
 |-----------|---------|------|
@@ -52,16 +52,9 @@ flowchart TD
 | ✅ **Printable Checklist** | [`AGENT-DEVELOPER-CHECKLIST.md`](docs/AGENT-DEVELOPER-CHECKLIST.md) | Follow along |
 | 📊 **Visual Flowcharts** | [`VISUAL-FLOWCHARTS.md`](docs/VISUAL-FLOWCHARTS.md) | Print & reference |
 | 📌 **Quick Reference Cards** | [`QUICK-REFERENCE-CARDS.md`](docs/QUICK-REFERENCE-CARDS.md) | Print & desk |
-
----
-
-### Component Deep Dives
-
-| Component | Go to | Time |
-|-----------|-------|------|
-| 📇 **Adaptive Cards** | [`docs/ADAPTIVE-CARDS-GUIDE.md`](docs/ADAPTIVE-CARDS-GUIDE.md) — All 6 card types with examples & use cases | 30 min |
-| 💬 **AI & System Prompts** | [`docs/PROMPTS-GUIDE.md`](docs/PROMPTS-GUIDE.md) — Generation prompts + 4 ready-made personas | 45 min |
-| 🔧 **Setup Scripts** | [`docs/SETUP-SCRIPTS-GUIDE.md`](docs/SETUP-SCRIPTS-GUIDE.md) — Complete reference for .ps1 & .sh | 20 min |
+| 📇 **Adaptive Cards** | [`ADAPTIVE-CARDS-GUIDE.md`](docs/ADAPTIVE-CARDS-GUIDE.md) | 30 min |
+| 💬 **Prompts** | [`PROMPTS-GUIDE.md`](docs/PROMPTS-GUIDE.md) | 45 min |
+| 🔧 **Setup Scripts** | [`SETUP-SCRIPTS-GUIDE.md`](docs/SETUP-SCRIPTS-GUIDE.md) | 20 min |
 
 ---
 
@@ -72,10 +65,15 @@ flowchart TD
 | **Copy templates step-by-step** | [`docs/COPY-AND-SETUP-TEMPLATES.md`](docs/COPY-AND-SETUP-TEMPLATES.md) | 30 min |
 | **How to use Claude skills** | [`docs/SKILLS-QUICK-REFERENCE.md`](docs/SKILLS-QUICK-REFERENCE.md) | 10 min |
 | **Find what you need** | [`docs/DOCUMENTATION-MAP.md`](docs/DOCUMENTATION-MAP.md) | — |
+| **What changed in this project** | [`docs/FINAL-SUMMARY.md`](docs/FINAL-SUMMARY.md) — Complete transformation summary | 10 min |
 | **Quick overview** | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | 20 min |
 | **Common Q&A** | [`docs/FAQ.md`](docs/FAQ.md) | 15 min |
 | **Full enterprise delivery** | [`docs/START-HERE.md`](docs/START-HERE.md) & [`ENGINEERING-PLAYBOOK.md`](ENGINEERING-PLAYBOOK.md) | Varies |
 | **Something is broken** | [`troubleshooting/README.md`](troubleshooting/README.md) | — |
+
+---
+
+### Component Deep Dives
 
 ---
 
