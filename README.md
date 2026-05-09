@@ -55,6 +55,16 @@ flowchart TD
 
 ---
 
+### Component Deep Dives
+
+| Component | Go to | Time |
+|-----------|-------|------|
+| 📇 **Adaptive Cards** | [`docs/ADAPTIVE-CARDS-GUIDE.md`](docs/ADAPTIVE-CARDS-GUIDE.md) — All 6 card types with examples & use cases | 30 min |
+| 💬 **AI & System Prompts** | [`docs/PROMPTS-GUIDE.md`](docs/PROMPTS-GUIDE.md) — Generation prompts + 4 ready-made personas | 45 min |
+| 🔧 **Setup Scripts** | [`docs/SETUP-SCRIPTS-GUIDE.md`](docs/SETUP-SCRIPTS-GUIDE.md) — Complete reference for .ps1 & .sh | 20 min |
+
+---
+
 ### Other Quick Entry Points
 
 | Goal | Go to | Time |
