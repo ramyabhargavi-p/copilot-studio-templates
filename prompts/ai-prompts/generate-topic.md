@@ -70,13 +70,7 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logTopicStarted_REPLACE1
       eventName: Topic.Started
-      properties: >-
-        ={
-          TopicName: "Get Leave Balance",
-          UserQuery: System.Activity.Text,
-          ConversationId: System.Conversation.Id,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={TopicName: \"Get Leave Balance\", UserQuery: System.Activity.Text, ConversationId: System.Conversation.Id, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     - kind: SendActivity
       id: sendWorking_REPLACE2
@@ -102,12 +96,7 @@ beginDialog:
             - kind: LogCustomTelemetryEvent
               id: logSuccess_REPLACE7
               eventName: Action.Succeeded
-              properties: >-
-                ={
-                  TopicName: "Get Leave Balance",
-                  ConversationId: System.Conversation.Id,
-                  TimeUTC: Text(Now(), DateTimeFormat.UTC)
-                }
+              properties: "={TopicName: \"Get Leave Balance\", ConversationId: System.Conversation.Id, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
       elseActions:
         - kind: SendActivity
@@ -117,12 +106,7 @@ beginDialog:
         - kind: LogCustomTelemetryEvent
           id: logFailed_REPLACE9
           eventName: Action.Failed
-          properties: >-
-            ={
-              TopicName: "Get Leave Balance",
-              ConversationId: System.Conversation.Id,
-              TimeUTC: Text(Now(), DateTimeFormat.UTC)
-            }
+          properties: "={TopicName: \"Get Leave Balance\", ConversationId: System.Conversation.Id, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 ```
 
 ---

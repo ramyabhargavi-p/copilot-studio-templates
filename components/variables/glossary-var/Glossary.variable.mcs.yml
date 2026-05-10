@@ -1,18 +1,24 @@
 # Name: Glossary
-# Customer-specific acronyms and terminology, loaded JIT at conversation start.
-# Purpose: Enables the orchestrator to silently expand internal acronyms before searching
+# Purpose: Customer-specific acronyms and terminology, loaded JIT at conversation start.
+#          Enables the orchestrator to silently expand internal acronyms before searching
 #          knowledge sources — improving retrieval quality without asking users to explain jargon.
+#          Injected into the agent instructions as {Global.Glossary}, NOT via AI context.
 # Prerequisites:
 #   - conversation-init topic must be included (loads this variable from a Dataverse knowledge source)
 #   - A glossary knowledge source must exist: components/knowledge/glossary/glossary.knowledge.mcs.yml
 #   - The CSV file must be stored in Dataverse (directly uploaded or synced from SharePoint via UI)
-# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName prefix
-# NOTE: aIVisibility is intentionally NOT set to UseInAIContext — the glossary is injected via
-#       agent instructions ({Global.Glossary}), not via the variable AI context, to control placement
-name: Glossary
-aIVisibility: Hidden                        # Injected into the orchestrator via agent instructions, not via AI context
-scope: Conversation
-description: Customer-specific acronyms loaded JIT at conversation start (format: ACRONYM,Definition, one per line). Used by the orchestrator to silently expand acronyms before searching knowledge sources.
-schemaName: <AGENT-SCHEMA-NAME>.globalvariable.Glossary
+# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName (from settings.mcs.yml)
+# NOTE: aIVisibility is intentionally Hidden — the glossary is injected via agent instructions
+#       ({Global.Glossary}), not via the variable AI context, to control placement precisely
+# NOTE: If Apply Changes fails with [0x800608ad:ExportKeyAttributeInvalidPrefix],
+#       delete this file from your agent folder, push topics/settings first, then
+#       re-add this file once the agent exists in the cloud. See troubleshooting/README.md.
 kind: GlobalVariableComponent
-defaultValue: DEFAULT
+schemaName: <AGENT-SCHEMA-NAME>.globalvariable.Glossary
+displayName: Glossary
+description: Customer-specific acronyms loaded JIT at conversation start (format: ACRONYM,Definition, one per line). Used by the orchestrator to silently expand acronyms before searching knowledge sources.
+variable:
+  name: Glossary
+  aIVisibility: Hidden
+  scope: Conversation
+  defaultValue: DEFAULT

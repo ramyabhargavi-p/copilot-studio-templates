@@ -15,17 +15,10 @@ beginDialog:
   kind: OnSignIn
   id: main
   actions:
-    # Log the sign-in trigger — distinguish first-time sign-in from token refreshes
     - kind: LogCustomTelemetryEvent
       id: logSignInStarted_REPLACE1
       eventName: Auth.SignInStarted
-      properties: >-
-        ={
-          SignInReason: System.SignInReason,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={SignInReason: System.SignInReason, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     - kind: ConditionGroup
       id: conditionGroup_REPLACE2
@@ -43,13 +36,7 @@ beginDialog:
       title: Sign In
       text: Please sign in to continue
 
-    # Log successful sign-in completion
     - kind: LogCustomTelemetryEvent
       id: logSignInCompleted_REPLACE6
       eventName: Auth.SignInCompleted
-      properties: >-
-        ={
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"

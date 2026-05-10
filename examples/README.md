@@ -1,5 +1,11 @@
 # Real-World Examples
 
+> **Two complete worked examples:**
+> - `team-demo/` — 30-minute demo agent (IT Support) — use to show the team how templates work
+> - `it-helpdesk/` — Full Contoso IT Helpdesk (15 topics, Recipe 06) — reference implementation
+>
+> Both examples follow the VS Code Way (YAML editing). For the Cloud-First path, follow `../docs/QUICKSTART.md`.
+
 Complete end-to-end walkthroughs with real project values filled in (no `<PLACEHOLDER>` style).
 
 ---
@@ -87,7 +93,7 @@ Complete end-to-end walkthroughs with real project values filled in (no `<PLACEH
 
 ## Learning Path
 
-1. **Read:** [`../docs/AGENT-DEVELOPER-JOURNEY.md`](../docs/AGENT-DEVELOPER-JOURNEY.md) (full tutorial)
+1. **Read:** [`../docs/QUICKSTART.md`](../docs/QUICKSTART.md) (full tutorial)
 2. **Pick recipe:** [`../recipes/`](../recipes/) matching your type
 3. **Compare to:** This example (IT Helpdesk)
 4. **Copy & customize:** Use example files as templates

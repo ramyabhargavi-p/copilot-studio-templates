@@ -101,15 +101,7 @@ Each includes:
 
 ## Need More Help?
 
-- **Full tutorial?** See [`../docs/AGENT-DEVELOPER-JOURNEY.md`](../docs/AGENT-DEVELOPER-JOURNEY.md)
+- **Full tutorial?** See [`../docs/QUICKSTART.md`](../docs/QUICKSTART.md)
 - **Real example?** See [`../examples/it-helpdesk/`](../examples/)
 - **Component details?** See [`../components/`](../components/)
 - **Something broken?** See [`../troubleshooting/README.md`](../troubleshooting/README.md)
-2. **Project structure** — folder layout
-3. **Step-by-step setup** — scaffold → code → test → deploy
-4. **Integration with Copilot Studio templates** — how they connect
-5. **Setup checklist** — tick-box before deploying
-
-→ All component call signatures: [`../docs/COMPONENT-REGISTRY.md`](../docs/COMPONENT-REGISTRY.md)
-→ Full end-to-end guide: [`../docs/END-TO-END-DEV-GUIDE.md`](../docs/END-TO-END-DEV-GUIDE.md)
-→ If you're new: start with [`../docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md) first

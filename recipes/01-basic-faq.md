@@ -64,7 +64,6 @@ Then run the `_REPLACE` script from `docs/QUICKSTART.md` to generate unique node
 cp -r base/ agents/<your-agent>/
 cp components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml agents/<your-agent>/topics/
 cp components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml agents/<your-agent>/knowledge/
-# then: pac copilot push
 ```
 
 ## Setup Checklist
@@ -72,7 +71,7 @@ cp components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml agents/<your-age
 - [ ] Copy files using commands above
 - [ ] Fill in all values in the table above
 - [ ] Run `_REPLACE` script from `docs/QUICKSTART.md`
-- [ ] `pac copilot push --environment <ENV_URL>`
+- [ ] VS Code → "Copilot Studio: Apply Changes"
 - [ ] Test in Copilot Studio test canvas
 
 ## Optional Additions

@@ -60,8 +60,8 @@ cp components/topics/_scaffold/TopicScaffold.topic.mcs.yml \
 # Step 2 — replace schema placeholder
 sed -i 's/<SCHEMA>/<your-schema-name>/g' agents/<your-agent>/topics/<TopicName>.topic.mcs.yml
 
-# Step 3 — open in VS Code, add your logic in the MAIN LOGIC section
-# VS Code extension replaces _REPLACE node IDs on save automatically
+# Step 3 — add your logic in the MAIN LOGIC section
+# Step 4 — run the _REPLACE ID script (see docs/QUICKSTART.md → Replace node IDs)
 ```
 
 → Detailed scaffold guide: [`_scaffold/README.md`](_scaffold/README.md)

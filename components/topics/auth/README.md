@@ -1,24 +1,46 @@
-# Auth Topic
+# auth — Sign-In Topic
 
-**Trigger:** `OnSignIn`
-**Telemetry:** `Auth.SignInStarted`, `Auth.SignInCompleted`
+Handles the user sign-in flow for agents that require authentication before accessing personalised or restricted data.
 
-Handles the sign-in flow. Fires when the user needs to authenticate before accessing a personalised or restricted capability.
+## When to use
 
-## Files
-
-| File | Purpose |
-|------|---------|
-| `SignIn.topic.mcs.yml` | Sign-in topic with OAuthInput node and telemetry |
+| Add this topic | Don't add it |
+|---|---|
+| `authenticationMode: ManualAzureAD` in `settings.mcs.yml` | `authenticationMode: IntegratedAzureAD` — sign-in is automatic; this topic is redundant |
+| Agent calls connectors that need a signed-in user identity | Anonymous agents with no personalisation |
+| You need `Auth.SignInStarted` / `Auth.SignInCompleted` telemetry | — |
 
 ## Quick start
 
 ```bash
 cp components/topics/auth/SignIn.topic.mcs.yml \
-   agents/<your-agent>/topics/SignIn.topic.mcs.yml
+   agents/hr_assistant/topics/SignIn.topic.mcs.yml
 ```
 
-**Requires:** `authenticationMode: ManualAzureAD` or `IntegratedAzureAD` in `settings.mcs.yml`.
+Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+
+## Placeholders
+
+Only `_REPLACE1–6` — all replaced automatically by VS Code on save. No manual placeholders.
+
+## Prerequisites checklist
+
+- [ ] `authenticationMode: ManualAzureAD` is set in `settings.mcs.yml`
+- [ ] Azure AD app registration exists with the required scopes (e.g. `User.Read`, `Files.Read`)
+- [ ] App registration client ID and tenant ID are configured in the Copilot Studio authentication settings
+
+## How it works
+
+1. Agent detects an unauthenticated user (system fires `OnSignIn`)
+2. `SignIn.topic.mcs.yml` sends an `OAuthInput` card prompting the user to sign in
+3. On success: logs `Auth.SignInCompleted`; conversation continues
+4. On failure: logs `Auth.SignInStarted` (no completion); user sees an error message
+
+## Common mistakes
+
+- **Adding to an IntegratedAzureAD agent** — Azure AD SSO happens automatically; this topic causes a double sign-in prompt
+- **Forgetting to configure the authentication connection** in Copilot Studio settings — the `OAuthInput` node will have no connection to reference
+- **Manually triggering this topic** — it should only fire via the `OnSignIn` system event, never called via `BeginDialog` from another topic
 
 → Full authentication recipe: [`../../../recipes/02-authenticated-agent.md`](../../../recipes/02-authenticated-agent.md)
 → Sign-in troubleshooting: [`../../../troubleshooting/README.md`](../../../troubleshooting/README.md)

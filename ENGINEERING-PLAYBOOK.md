@@ -155,7 +155,7 @@ These extensions give you YAML schema validation, IntelliSense for `.mcs.yml` fi
 
 ```bash
 # Paste this entire block into a terminal — installs all 5 at once
-code --install-extension ms-powerplatform.powerplatform-vscode-extension
+code --install-extension ms-CopilotStudio.vscode-copilotstudio
 code --install-extension redhat.vscode-yaml
 code --install-extension eamodio.gitlens
 code --install-extension oderwat.indent-rainbow
@@ -167,19 +167,27 @@ code --install-extension aaron-bond.better-comments
 2. Open any `.mcs.yml` file from this repo
 3. Look at the bottom status bar — you must see the Copilot Studio icon
 4. If you don't see it: press `Ctrl+Shift+P` → "Developer: Reload Window" → check again
-5. If still missing: uninstall and reinstall `ms-powerplatform.powerplatform-vscode-extension`
+5. If still missing: uninstall and reinstall `ms-CopilotStudio.vscode-copilotstudio`
 
-### Step 3 — Install Copilot Studio Kit (for batch evals)
+### Step 3 — Understand your push options
 
-The Copilot Studio Kit runs automated routing accuracy tests. You need it before running evals in Stage 5.
+`pac copilot push` does not exist in the standard pac CLI. Use one of these two approaches:
 
+**Option A — VS Code Apply Changes (recommended for local development):**
+- Create agent in browser → VS Code "Copilot Studio: Clone Agent" → edit YAML → "Copilot Studio: Apply Changes"
+- No extra tools required beyond the VS Code Copilot Studio extension
+
+**Option B — `pac copilot create` (CLI-only for new agents):**
 ```bash
-git clone https://github.com/microsoft/Copilot-Studio-Kit
-cd Copilot-Studio-Kit
-npm install
-npm run build
-# Takes 2–5 minutes
+# Extract a template from an existing agent as a starting point
+pac copilot extract-template --bot "<existing-schema>" --templateFileName template.yaml
+
+# Create a new agent from the template
+pac copilot create --displayName "HR Assistant" --schemaName "hr_assistant" --solution "Default" --templateFileName template.yaml
 ```
+
+**For CI/CD pipelines:** Use the solution-based approach (`ci-cd/solution-build-and-deploy.yml`).
+Direct YAML pipeline workflows (`push-on-pr.yml` etc.) in this repo require adaptation — see `ci-cd/README.md`.
 
 ### Step 4 — Clone this repo
 
@@ -206,7 +214,7 @@ pac auth list
 pac env list
 ```
 
-**Critical rule:** Never run `pac copilot push` while authenticated to UAT or Prod from your local machine. Those are pipeline-only environments.
+**Critical rule:** Never apply changes (VS Code "Apply Changes") or run `pac copilot create` while authenticated to UAT or Prod from your local machine. Those are pipeline-only environments.
 
 ### Step 6 — Confirm your setup
 
@@ -435,11 +443,16 @@ Every template ships with two types of placeholder — replace both before your 
 | `<ANGLE_BRACKETS>` | `<SCHEMA>`, `<SHAREPOINT_URL>` | Find-and-replace in your editor, or `sed` command |
 | `_REPLACE` node ID suffixes | `sendMessage_REPLACE` | VS Code extension replaces automatically on save |
 
+```powershell
+# Windows PowerShell
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\<your-agent>" | Select-String "<[A-Za-z]" | Select-Object Filename, LineNumber, Line
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\<your-agent>" | Select-String "_REPLACE" | Select-Object Filename, LineNumber, Line
+```
 ```bash
-# Before every push: verify no unreplaced placeholders remain
-grep -rn "<" agents/<your-agent> --include="*.yml"
-grep -rn "_REPLACE" agents/<your-agent> --include="*.yml"
-# Both commands must return zero output
+# Mac / Linux
+grep -rn "<[A-Za-z]" agents/<your-agent> --include="*.mcs.yml"
+grep -rn "_REPLACE" agents/<your-agent> --include="*.mcs.yml"
+# Both must return zero output
 ```
 
 → Full call signatures for every template: [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md)
@@ -580,24 +593,25 @@ Also replace:
   - Example: `HR Self-Service Portal at https://hr.contoso.com`
 
 **Verify nothing was missed:**
+```powershell
+# Windows PowerShell
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\it-helpdesk" | Select-String "<[A-Za-z]" | Select-Object Filename, LineNumber, Line
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\it-helpdesk" | Select-String "_REPLACE" | Select-Object Filename, LineNumber, Line
+```
 ```bash
-grep -rn "<" agents/it-helpdesk --include="*.yml"
-grep -rn "_REPLACE" agents/it-helpdesk --include="*.yml"
+# Mac / Linux
+grep -rn "<[A-Za-z]" agents/it-helpdesk --include="*.mcs.yml"
+grep -rn "_REPLACE" agents/it-helpdesk --include="*.mcs.yml"
 # Both must return zero output before you push
 ```
 
 ### Step 8 — Validate YAML without pushing
 
-```bash
-# Dry-run checks for YAML schema errors, missing required fields, and bad IDs
-# Does NOT touch the Copilot Studio environment
-pac copilot push --dry-run
+The VS Code Copilot Studio extension validates YAML in real time — no dry-run command needed.
 
-# Expected output: "Dry-run completed. 0 errors."
-# If you see errors: read the error message carefully — it will tell you which file and line
-```
+Open the Problems panel (**View → Problems**) in VS Code. Any schema errors, missing required fields, or bad IDs are highlighted immediately as you edit. Fix all errors shown there before proceeding to Step 9.
 
-**Common dry-run errors and fixes:**
+**Common validation errors and fixes:**
 
 | Error message | What it means | Fix |
 |--------------|--------------|-----|
@@ -612,12 +626,14 @@ pac copilot push --dry-run
 # Final check: confirm you are on Dev, not UAT or Prod
 pac auth list
 # The entry marked (*) must show your Dev org URL
-
-# Push all files in agents/it-helpdesk/ to the Dev environment
-pac copilot push
-
-# Expected output: "Push completed successfully."
 ```
+
+Apply your YAML changes to the Dev environment via VS Code:
+1. Open the Command Palette (`Ctrl+Shift+P`)
+2. Run **"Copilot Studio: Apply Changes"**
+3. Confirm the target environment shown matches your Dev org URL
+
+The extension pushes all files in your agent folder to the authenticated environment.
 
 ### Step 10 — Test in Copilot Studio test canvas
 
@@ -1455,18 +1471,18 @@ Developer pushes to feature/<name>
     │
     ▼  (pull request opened)
 push-on-pr.yml
-    ├─ pac copilot push --dry-run   → validates YAML schema
-    └─ pac copilot push             → pushes to Dev environment
+    ├─ VS Code Problems panel       → validates YAML schema (real-time, no dry-run needed)
+    └─ VS Code: Apply Changes       → pushes to Dev environment
     │
     ▼  (PR merged to main)
 promote-dev-to-uat.yml
-    ├─ pac copilot push             → pushes to UAT environment
+    ├─ VS Code: Apply Changes       → pushes to UAT environment
     ├─ run eval suite               → routing accuracy gate (≥ 85%)
     └─ FAILS if accuracy < 85%     → PR cannot be merged until evals pass
     │
     ▼  (GitHub release tag created OR manual trigger)
 publish-on-release.yml
-    ├─ pac copilot push             → pushes to Prod environment
+    ├─ VS Code: Apply Changes       → pushes to Prod environment
     ├─ pac copilot publish          → makes draft live (users can see it)
     └─ Requires: manual approval gate in GitHub
 ```
@@ -1517,7 +1533,7 @@ env:
 
 | Environment | Branch pattern | Who pushes | How |
 |-------------|---------------|-----------|-----|
-| **Dev** | `feature/*` | Developer (manual or PR pipeline) | `pac copilot push` or pipeline |
+| **Dev** | `feature/*` | Developer (manual or PR pipeline) | VS Code "Copilot Studio: Apply Changes" or pipeline |
 | **UAT** | `main` | CI/CD pipeline only | Triggered by merge to main |
 | **Prod** | `release/*` | CI/CD pipeline + manual approval gate | Triggered by release tag |
 
@@ -1529,13 +1545,13 @@ Use this ONLY when CI/CD is not yet set up. Once CI/CD is active, never push man
 # Promote Dev → UAT manually
 pac auth create --environment <uat-env-url>   # switch to UAT auth profile
 pac auth list                                  # verify UAT is active
-pac copilot push                               # push to UAT
+# Then in VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (targets the authenticated environment)
 pac copilot publish --name contoso_ithelpdesk  # make draft live in UAT
 
 # Rollback to previous version (if UAT push introduces a regression)
 git log --oneline -10                          # find last known-good commit hash
 git checkout <good-commit-hash> -- agents/     # restore agent files to that state
-pac copilot push                               # push restored version to environment
+# Then in VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (push restored version)
 pac copilot publish --name contoso_ithelpdesk  # republish
 ```
 
@@ -1565,7 +1581,7 @@ Step 2  Reproduce the issue → read Activity log: which topic fired? which node
 Step 3  Note the ConversationId from the Activity log (format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
 Step 4  Open Application Insights → Logs → paste ConversationId KQL query (below)
 Step 5  Identify the failing event name and error message
-Step 6  If YAML is suspected: run pac copilot push --dry-run
+Step 6  If YAML is suspected: open VS Code → View → Problems (shows YAML errors in real time)
 Step 7  If connection suspected: Power Platform admin → Connections → check for error state (red dot)
 Step 8  Fix the issue → push → re-test → verify in Activity log that the fix took effect
 ```
@@ -1577,7 +1593,7 @@ Step 8  Fix the issue → push → re-test → verify in Activity log that the f
 | Wrong topic fires | Activity log → `triggeredBy` | Narrow trigger phrases on the topic that fires incorrectly; broaden the correct topic |
 | Topic fires but no response | Activity log → trace each node | Look for a `ConditionGroup` where no branch matches; add an `else` action |
 | Action returns null or error | App Insights → `Action.Failed` event | Re-authenticate the connection in Power Platform admin → Connections |
-| YAML push fails | Terminal output | Run `grep -rn "_REPLACE\|<" agents/<name> --include="*.yml"` |
+| YAML push fails | Terminal output | Windows: `Get-ChildItem -Recurse -Filter "*.yml" -Path "agents\<name>" \| Select-String "<\|_REPLACE"` / Mac: `grep -rn "_REPLACE\|<" agents/<name> --include="*.yml"` |
 | `[1][2]` citation markers in responses | Topics list | Verify `remove-citations` topic is added AND enabled |
 | Telemetry events missing in App Insights | App Insights → customEvents (empty) | Verify Application Insights connection string in CPS → Settings → Telemetry |
 | Test canvas works, Teams channel does not | Teams channel in CPS | Publish the agent — test canvas uses the draft; Teams uses published version |
@@ -1604,12 +1620,18 @@ This shows every event in that conversation in chronological order — the exact
 
 ### Common YAML fix commands
 
+```powershell
+# Windows PowerShell — find unreplaced placeholders (must return 0 results before push)
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\it-helpdesk" | Select-String "<[A-Za-z]" | Select-Object Filename, LineNumber, Line
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\it-helpdesk" | Select-String "_REPLACE" | Select-Object Filename, LineNumber, Line
+```
 ```bash
-# Find unreplaced placeholders (must return 0 results before push)
-grep -rn "<\|_REPLACE" agents/it-helpdesk --include="*.yml"
+# Mac / Linux — find unreplaced placeholders
+grep -rn "<\|_REPLACE" agents/it-helpdesk --include="*.mcs.yml"
 
 # Validate schema without pushing
-pac copilot push --dry-run
+# VS Code Copilot Studio extension (Problems panel shows YAML errors in real time — no dry-run command needed)
+# View → Problems — highlights every schema error, missing required field, and bad ID
 
 # Find duplicate node IDs (causes silent push failures)
 grep -h "^  id: " agents/it-helpdesk/topics/*.mcs.yml | sort | uniq -d
@@ -1840,7 +1862,7 @@ git log --oneline -10                          # find last known-good commit has
 git checkout <good-commit-hash> -- agents/     # restore agent YAML files only
 pac auth create --environment <prod-url>       # switch to Prod auth profile
 pac auth list                                  # confirm Prod is active (*)
-pac copilot push                               # push restored version
+# In VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (push restored version to authenticated environment)
 pac copilot publish --name <schema-name>       # make draft live
 
 # Step 4 — Verify recovery
@@ -1936,7 +1958,7 @@ find agents/<new-agent> -name "*.mcs.yml" \
   -exec sed -i 's/<old-schema>/<new-schema>/g' {} \;
 
 # 4. Validate immediately
-pac copilot push --dry-run
+# Open VS Code → View → Problems (VS Code Copilot Studio extension shows YAML errors in real time — no dry-run command needed)
 
 # 5. You should have a working base in 15 minutes, not 90
 ```
@@ -1955,14 +1977,14 @@ pac copilot push --dry-run
 | Add a knowledge source (SharePoint) | `cp components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml agents/<name>/knowledge/<Name>.knowledge.mcs.yml` |
 | Add an MCP tool | `cp components/actions/mcp/mcp-action.mcs.yml agents/<name>/actions/<Name>.mcs.yml` |
 | Replace all schema placeholders | `find agents/<name> -name "*.mcs.yml" -exec sed -i 's/<SCHEMA>/<schemaname>/g' {} \;` |
-| Find unreplaced placeholders | `grep -rn "<\|_REPLACE" agents/<name> --include="*.yml"` |
-| Validate YAML | `pac copilot push --dry-run` |
-| Push to active environment | `pac copilot push` |
+| Find unreplaced placeholders | Windows: `Get-ChildItem -Recurse -Filter "*.yml" -Path "agents\<name>" \| Select-String "<\|_REPLACE"` / Mac: `grep -rn "<\|_REPLACE" agents/<name> --include="*.yml"` |
+| Validate YAML | VS Code → View → Problems (Problems panel shows YAML errors in real time) |
+| Push to active environment | VS Code → `Ctrl+Shift+P` → "Copilot Studio: Apply Changes" |
 | Check which environment is active | `pac auth list` |
 | Switch environments | `pac auth create --environment <env-url>` |
 | Publish (make draft live) | `pac copilot publish --name <schema-name>` |
 | Check deployed version | `pac copilot list --environment <env-url>` |
-| Roll back | `git checkout <commit> -- agents/ && pac copilot push` |
+| Roll back | `git checkout <commit> -- agents/` then VS Code → "Copilot Studio: Apply Changes" |
 | Trace a conversation | App Insights KQL: `customEvents \| where customDimensions.ConversationId == "<id>"` |
 | Run eval suite | `cd Copilot-Studio-Kit && npm run eval -- --eval-file ../agents/<name>/evals/<name>.csv` |
 

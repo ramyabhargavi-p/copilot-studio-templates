@@ -2,6 +2,11 @@
 
 How to manage configuration, secrets, and environment-specific values across **Copilot Studio low-code** agents and **Azure pro-code** agents — covering dev, UAT, and production.
 
+> **When to use this doc:** When you need to store a value (API URL, threshold, flag) that differs
+> between Dev/UAT/Prod environments but should not be hardcoded in YAML.
+> Low-code (Copilot Studio portal): use Environment Variables in Power Platform.
+> Pro-code (Azure): use Azure App Configuration or Key Vault references.
+
 ---
 
 ## Why this matters
@@ -468,8 +473,8 @@ Both layers are updated via their respective CI/CD pipelines, never manually.
 
 | Check | How to verify |
 |-------|--------------|
-| No hard-coded URLs in any `.mcs.yml` file | `grep -rn "https://" --include="*.mcs.yml" .` — review each hit |
-| No hard-coded queue/email values in YAML | `grep -rn "Queue\|@" --include="*.mcs.yml" .` |
+| No hard-coded URLs in any `.mcs.yml` file | Windows: `Get-ChildItem -Recurse -Filter "*.mcs.yml" \| Select-String "https://"` / Mac: `grep -rn "https://" --include="*.mcs.yml" .` — review each hit |
+| No hard-coded queue/email values in YAML | Windows: `Get-ChildItem -Recurse -Filter "*.mcs.yml" \| Select-String "Queue\|@"` / Mac: `grep -rn "Queue\|@" --include="*.mcs.yml" .` |
 | No secrets in environment variables (CPS) | Review all env vars in Power Platform Admin Center — none should be API keys |
 | `.env` is git-ignored | `git check-ignore .env` — should return `.env` |
 | `.env.example` is committed | `git ls-files .env.example` — should return the path |

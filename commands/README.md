@@ -29,6 +29,22 @@ Four dedicated command references for the full end-to-end Copilot Studio develop
 
 ---
 
+## pac copilot Commands (built into standard pac CLI)
+
+> No extra tools required — these are part of the standard `pac` CLI.
+
+| Command | What it does |
+|---------|-------------|
+| `pac copilot list` | List agents in the current environment |
+| `pac copilot extract-template --bot "<schema>" --templateFileName out.yaml` | Download existing agent as a single template YAML |
+| `pac copilot create --displayName "X" --schemaName "x" --solution "Default" --templateFileName t.yaml` | Create a new agent from a template YAML file |
+| `pac copilot publish --bot "<schema>"` | Publish the current draft to live |
+
+> **Note:** `pac copilot push` does not exist. To push multi-file YAML edits (topics, actions, knowledge),
+> use **VS Code → Ctrl+Shift+P → "Copilot Studio: Apply Changes"** (requires Copilot Studio extension).
+
+---
+
 ## Confirmed working on Windows 11
 
 ```powershell

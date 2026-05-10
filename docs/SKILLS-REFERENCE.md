@@ -3,6 +3,19 @@
 This document maps every installed Claude skill to its use in the Copilot Studio agent build process.
 Invoke any skill by typing its slash command in your Claude session.
 
+> **When to use this doc:** When you want Claude Code (the AI assistant) to generate or validate
+> Copilot Studio YAML for you. Skills are invoked with `/copilot-studio:<skill-name>` in the terminal.
+> Use skills instead of writing YAML by hand — they include schema validation and correct patterns.
+>
+> **Quick reference:**
+> | What you want to do | Skill to invoke |
+> |---------------------|----------------|
+> | Create a new topic from description | `/copilot-studio:new-topic` |
+> | Add a connector or MCP action | `/copilot-studio:add-action` |
+> | Add a knowledge source | `/copilot-studio:add-knowledge` |
+> | Add an adaptive card to a topic | `/copilot-studio:add-adaptive-card` |
+> | Validate all YAML in the agent folder | `/copilot-studio:validate` |
+
 **Quick navigation:** [WorkIQ — M365 Context](#workiq--m365-context) · [Copilot Studio Skills](#copilot-studio-skills) · [Superpowers Skills](#superpowers-skills) · [Other Plugins](#other-plugins) · [By Phase](#skills-by-phase) · [Developer Cheat Sheet](#developer-cheat-sheet)
 
 ---

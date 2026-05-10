@@ -1,5 +1,9 @@
 # Security Review Checklist
 
+> **Complete before Production deployment.** Requires sign-off from the security team.
+> Focus especially on authentication mode, connector permissions, and DLP policy coverage.
+> The CI/CD promote-to-production workflow checks for this file's completion.
+
 Complete before go-live and after any change to authentication, connectors, or system prompt.
 
 ---

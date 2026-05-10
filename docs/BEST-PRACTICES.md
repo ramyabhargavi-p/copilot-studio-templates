@@ -2,6 +2,10 @@
 
 Guidelines for building production-quality agents with these templates. Each section answers a specific category of design question.
 
+> **When to use this doc:** Reference when designing a new agent or reviewing an existing one.
+> These rules apply to both Cloud-First (browser + VS Code Apply Changes) and CLI-only (`pac copilot create`) paths.
+> Read before building — most mistakes happen at design time, not deployment time.
+
 ---
 
 ## 1. Agent Instructions (System Prompt)
@@ -94,11 +98,7 @@ Use `{Category}.{Action}` format:
 ### Standard properties
 Include these in every telemetry event:
 ```yaml
-properties: >-
-  ={
-    ConversationId: System.Conversation.Id,
-    TimeUTC: Text(Now(), DateTimeFormat.UTC)
-  }
+properties: "={ConversationId: System.Conversation.Id, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 ```
 
 Add context-specific properties as needed:

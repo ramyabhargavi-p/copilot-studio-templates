@@ -4,10 +4,7 @@ Guides, references, and standards for building Copilot Studio agents with this r
 
 | File | What it covers |
 |------|---------------|
-| [QUICKSTART.md](QUICKSTART.md) | 5 steps to a running agent |
-| [GETTING-STARTED.md](GETTING-STARTED.md) | Detailed first-agent walkthrough |
-| [START-HERE.md](START-HERE.md) | Which template to use at each project step |
-| [TEAM-GUIDE.md](TEAM-GUIDE.md) | Role-based onboarding, story-to-template map, PR checklist |
+| [QUICKSTART.md](QUICKSTART.md) | Create, configure, and push your first agent — two paths (Cloud-First / CLI-only) |
 | [TEMPLATES.md](TEMPLATES.md) | Full inventory of all 56 templates |
 | [COMPONENT-REGISTRY.md](COMPONENT-REGISTRY.md) | Call signatures and inputs/outputs for every component |
 | [BEST-PRACTICES.md](BEST-PRACTICES.md) | Design rules, naming conventions, error handling, telemetry |
@@ -16,8 +13,6 @@ Guides, references, and standards for building Copilot Studio agents with this r
 | [ACTION-SAFETY-PATTERNS.md](ACTION-SAFETY-PATTERNS.md) | Safety tiers and confirmation patterns for write/destructive actions |
 | [ENV-VARIABLES.md](ENV-VARIABLES.md) | Environment variables: Power Platform (CPS) and Azure pro-code patterns |
 | [PII-SCRUBBING.md](PII-SCRUBBING.md) | PII prevention in telemetry, App Insights config, DLP policies |
-| [COPILOT-STUDIO-UI-GUIDE.md](COPILOT-STUDIO-UI-GUIDE.md) | Copilot Studio portal walkthrough |
-| [END-TO-END-DEV-GUIDE.md](END-TO-END-DEV-GUIDE.md) | Full end-to-end development guide |
 
 ---
 

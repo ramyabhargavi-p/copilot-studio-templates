@@ -1,0 +1,40 @@
+mcs.metadata:
+  componentName: Fallback
+  description: Fires on OnUnknownIntent. Retries up to 3× then escalates to hr_assistant.topic.Escalate.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnknownIntent
+  id: main
+  priority: -1
+  actions:
+    - kind: LogCustomTelemetryEvent
+      id: logFallback_t9eqxm
+      eventName: Agent.FallbackTriggered
+      properties: "={ConversationId: System.Conversation.Id, UserQuery: System.Activity.Text, FallbackCount: Text(System.FallbackCount), Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
+
+    - kind: ConditionGroup
+      id: retryCheck_t9eqxm
+      conditions:
+        - id: retry1_t9eqxm
+          condition: =System.FallbackCount = 1
+          actions:
+            - kind: SendActivity
+              id: sendRetry1_t9eqxm
+              activity: I didn't quite catch that — could you rephrase or ask in a different way?
+
+        - id: retry2_t9eqxm
+          condition: =System.FallbackCount = 2
+          actions:
+            - kind: SendActivity
+              id: sendRetry2_t9eqxm
+              activity: I'm still having trouble understanding. Try asking in a different way, or type "speak to a human" to reach our team.
+
+      elseActions:
+        - kind: SendActivity
+          id: sendEscalating_t9eqxm
+          activity: I wasn't able to help with that after a few tries. Let me connect you with someone who can.
+
+        - kind: BeginDialog
+          id: callEscalation_t9eqxm
+          dialog: hr_assistant.topic.Escalate
+

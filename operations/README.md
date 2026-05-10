@@ -1,5 +1,16 @@
 # Operations
 
+> **When to use:** After hypercare ends (Day 14+). These queries run in Application Insights
+> connected to your Copilot Studio agent. Required setup: Application Insights workspace linked
+> in Copilot Studio → Settings → Telemetry.
+>
+> | File | Use for |
+> |------|---------|
+> | `monitoring-queries.md` | Weekly health checks — run every Monday |
+> | `alert-setup.md` | One-time setup — create Azure Monitor alerts |
+> | `runbook.md` | On-call reference — what to do when an alert fires |
+> | `user-feedback.md` | Monthly CSAT analysis |
+
 Three documents for keeping a live agent healthy after launch.
 
 ---

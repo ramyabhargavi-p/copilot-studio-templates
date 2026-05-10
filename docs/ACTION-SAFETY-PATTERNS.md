@@ -2,6 +2,15 @@
 
 Complete copy-paste YAML patterns for both tiers. Understand when to use each, then follow the step-by-step implementation guide.
 
+> **When to use this doc:** Anytime your agent calls a connector or MCP action that writes, modifies, or deletes data.
+> Apply the tier that matches the impact of the action — add confirmation cards for Tier 2 and above.
+>
+> | Tier | Impact | Confirmation required? |
+> |------|--------|----------------------|
+> | 1 — Read | Read-only (GET) | No |
+> | 2 — Write | Creates or modifies data | Yes — confirmation card |
+> | 3 — Destructive | Deletes, cancels, irreversible | Yes — explicit typed confirmation |
+
 ---
 
 ## Quick Decision: Which tier does my action need?

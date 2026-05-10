@@ -18,17 +18,10 @@ beginDialog:
   id: main
   triggerBehavior: Always
   actions:
-    # Log disambiguation trigger — high rates indicate overlapping topic triggers that need tuning
     - kind: LogCustomTelemetryEvent
       id: logDisambiguation_REPLACE1
       eventName: Agent.DisambiguationTriggered
-      properties: >-
-        ={
-          UserQuery: System.Activity.Text,
-          MatchCount: CountRows(System.Recognizer.IntentOptions),
-          ConversationId: System.Conversation.Id,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={UserQuery: System.Activity.Text, MatchCount: CountRows(System.Recognizer.IntentOptions), ConversationId: System.Conversation.Id, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     - kind: SetVariable
       id: setVariable_REPLACE2

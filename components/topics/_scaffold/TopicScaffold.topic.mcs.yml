@@ -48,14 +48,7 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logTopicStarted_REPLACE1
       eventName: Topic.Started
-      properties: >-
-        ={
-          TopicName: "<TOPIC_NAME>",
-          UserQuery: System.Activity.Text,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={TopicName: \"<TOPIC_NAME>\", UserQuery: System.Activity.Text, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     # ── 2. MAIN LOGIC ─────────────────────────────────────────────────────────
     # Choose ONE option below. Delete the other.
@@ -114,26 +107,13 @@ beginDialog:
             - kind: LogCustomTelemetryEvent
               id: logSuccess_REPLACE9
               eventName: Topic.Completed
-              properties: >-
-                ={
-                  TopicName: "<TOPIC_NAME>",
-                  Status: "Success",
-                  ConversationId: System.Conversation.Id,
-                  TimeUTC: Text(Now(), DateTimeFormat.UTC)
-                }
+              properties: "={TopicName: \"<TOPIC_NAME>\", Status: \"Success\", ConversationId: System.Conversation.Id, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
       elseActions:
         - kind: LogCustomTelemetryEvent
           id: logError_REPLACE10
           eventName: Topic.ErrorOccurred
-          properties: >-
-            ={
-              TopicName: "<TOPIC_NAME>",
-              UserQuery: System.Activity.Text,
-              ConversationId: System.Conversation.Id,
-              Channel: System.Activity.Channel,
-              TimeUTC: Text(Now(), DateTimeFormat.UTC)
-            }
+          properties: "={TopicName: \"<TOPIC_NAME>\", UserQuery: System.Activity.Text, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
         - kind: SendActivity
           id: sendErrorMessage_REPLACE11

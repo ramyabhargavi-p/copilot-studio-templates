@@ -2,6 +2,17 @@
 
 Three documents required before every production go-live. Not optional.
 
+## When to complete these checklists
+
+| Checklist | Complete by | Who |
+|-----------|-------------|-----|
+| `ai-ethics-checklist.md` | Before UAT — before any real users interact with the agent | Agent Owner + Developer |
+| `security-review.md` | Before moving to Production — after UAT sign-off | Security team + Developer |
+| `enterprise-ai-governance-framework.md` | Before project kickoff — for new agent types | AI Governance team |
+
+> These are blocking gates — the CI/CD pipeline's UAT and Production promote steps require sign-off evidence.
+> Store completed checklists in your project delivery folder or SharePoint alongside the agent artifacts.
+
 ---
 
 ## What to complete and when

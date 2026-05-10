@@ -1,5 +1,10 @@
 # Troubleshooting Guide
 
+> **How to use this guide:** Find the symptom in the section headers below.
+> Each section has the most common cause first, with a fix command or step.
+> If your issue isn't listed, check Application Insights → Traces for the exact error message,
+> then search this file for keywords from that message.
+
 Practical fixes for the most common issues encountered when building, testing, and deploying Copilot Studio agents.
 
 ---
@@ -7,15 +12,17 @@ Practical fixes for the most common issues encountered when building, testing, a
 ## Table of Contents
 
 1. [Agent Not Appearing / Not Working After Publishing to Teams or Copilot](#1--agent-not-appearing--not-working-after-publishing-to-teams-or-copilot)
-2. [pac copilot push Errors](#2--pac-copilot-push-errors)
+2. [Apply Changes / YAML Push Errors](#2--apply-changes--yaml-push-errors)
 3. [Topics Not Triggering Correctly](#3--topics-not-triggering-correctly)
 4. [Knowledge Search Not Returning Answers](#4--knowledge-search-not-returning-answers)
 5. [Connector / Action Failures](#5--connector--action-failures)
 6. [Authentication and Sign-in Issues](#6--authentication-and-sign-in-issues)
 7. [Telemetry Not Appearing in Application Insights](#7--telemetry-not-appearing-in-application-insights)
 8. [YAML Validation Errors](#8--yaml-validation-errors)
-9. [Test Canvas vs Published Behaviour Differs](#9--test-canvas-vs-published-behaviour-differs)
-10. [General Tips and Diagnostics](#10--general-tips-and-diagnostics)
+9. [Portal Canvas Rendering Issues](#9--portal-canvas-rendering-issues)
+10. [Test Canvas vs Published Behaviour Differs](#10--test-canvas-vs-published-behaviour-differs)
+11. [General Tips and Diagnostics](#11--general-tips-and-diagnostics)
+12. [pac CLI Common Errors](#pac-cli-common-errors)
 
 ---
 
@@ -63,69 +70,70 @@ This is the most common post-publish issue. Work through these checks in order.
 
 ---
 
-## 2 — pac copilot push Errors
+## 2 — Apply Changes / YAML Push Errors
 
-### "Not authenticated" / 401
+**Applies to:** VS Code → "Copilot Studio: Apply Changes"
 
-```
-Error: Authentication failed
-```
-
-Fix:
-```bash
-pac auth clear
-pac auth create --environment <env-url>
-# Complete the browser login that opens
-pac copilot push
-```
-
-### "Environment not found" / Wrong environment
-
-```
-Error: The specified environment could not be found
-```
-
-Fix:
-```bash
-pac env list                          # find your environment
-pac auth switch --index <N>           # switch to the right auth profile
-pac copilot push --environment <env-url>
-```
-
-### "Schema validation failed" / YAML parse error
-
-```
-Error: Invalid YAML — unexpected token at line X
-```
-
-Common causes and fixes:
+> `pac copilot push` does not exist in the standard pac CLI. To push multi-file YAML, use the VS Code Copilot Studio extension "Apply Changes" command.
 
 | Symptom | Likely cause | Fix |
 |---------|-------------|-----|
-| Error on a line with `<PLACEHOLDER>` | Forgot to replace a placeholder | Search for `<` in all YAML files |
-| `_REPLACE` in node ID | Forgot to replace ID suffix | Search for `_REPLACE` across all files |
-| Unexpected indent | Tab character mixed with spaces | Use the VS Code YAML extension to show whitespace |
-| Duplicate `id:` value | Copy-pasted a node without changing the ID | Make every node ID unique within the agent |
-
-### "Conflict" / File already exists
-
-```
-Error: A component with this name already exists
-```
-
-Fix: The `schemaName` already exists in the environment with different content.
-- Check with `pac copilot list` if another agent has the same schemaName
-- Change the `schemaName` in `settings.mcs.yml` and all component files, then push again
-
-### Push succeeds but changes don't appear in Copilot Studio
-
-- Hard-refresh Copilot Studio (Ctrl+Shift+R)
-- Wait 30–60 seconds — the sync can be slightly delayed
-- Check `pac copilot list` to confirm the push registered the new version
+| "Apply Changes" shows no environments | Not signed in to the extension | Click the Copilot Studio icon in the VS Code activity bar → Sign In |
+| "Apply Changes" fails with auth error | Token expired | Sign out and sign back in via the Copilot Studio extension pane |
+| "Apply Changes" hangs | Large YAML file / slow connection | Wait up to 2 minutes; if still hanging, check VS Code Output panel → "Copilot Studio" channel |
+| YAML validation error on apply | Schema error in one of the `.mcs.yml` files | Check the VS Code Problems panel for red underlines; fix the flagged file first |
+| "Agent not found" on Apply Changes | Schema name mismatch between local files and the agent in cloud | Verify `schemaName` in `settings.mcs.yml` matches exactly what's in the Copilot Studio portal |
+| Changes applied but not visible in portal | Draft vs published | Changes go to the draft — test in the Test pane; click Publish to go live |
+| Published but changes not reflected in UI | Apply Changes was skipped — published the old draft | Run VS Code → Apply Changes first, THEN publish. Publish only makes the current draft live — it does not push local YAML |
+| Apply Changes reports success but topic canvas still shows old content | Portal has cached the previous version of the topic | Hard-refresh the portal tab (`Ctrl+Shift+R`), or navigate away from the topic and back. If still stale, open the topic in an incognito window to bypass all portal cache. The data is in the cloud — this is a portal rendering cache issue only. |
+| **"Error cloning agent: Server was requested to shut down"** | VS Code Copilot Studio extension language server crashed | 1. `Ctrl+Shift+P` → **Developer: Reload Window** — wait 10 seconds for extension to reconnect, then retry Clone Agent. 2. If still failing: `Ctrl+Shift+P` → **Copilot Studio: Sign Out** → **Sign In** → retry. 3. If still failing: close and reopen VS Code |
+| **"Missing conn.json, please clone again"** | `conn.json` (extension connection metadata) is missing — files were copied/moved manually instead of cloned, OR Apply Changes is being run from the wrong folder | Re-clone: `Ctrl+Shift+P` → **Copilot Studio: Clone Agent** → select agent → output folder: `agents\`. The extension creates `agents\<display name>\` containing `.mcs\conn.json` — **this subfolder is your working folder**, not the parent. After cloning, copy your edited YAML files into `agents\<display name>\`, then run Apply Changes from there. Never manually copy files into the folder or move it — `conn.json` uses absolute paths and breaks if moved. |
+| **`[0x800608ad:ExportKeyAttributeInvalidPrefix]` — "schemaname for component botcomponent must start with a valid customization prefix"** | A `.variable.mcs.yml` file in `variables/` is being pushed as a new cloud component for the first time. The schema name must start with your environment's publisher customization prefix (e.g. `hr_`), which the VS Code extension validates on first creation. | **Workaround**: Delete the `.variable.mcs.yml` file(s) from your agent's `variables/` folder → run Apply Changes to push topics and settings → then re-add the variable file(s) and run Apply Changes again. Global variables work at runtime without the declaration file — `SetVariable` actions create them dynamically. The `.variable.mcs.yml` file is needed only for VS Code IntelliSense. |
 
 ---
 
 ## 3 — Topics Not Triggering Correctly
+
+### Unexpected card or prompt appears at the start of every conversation
+
+**Cause:** An `AdaptiveCardPrompt` or `Question` node was left in the `ConversationStart.mcs.yml` topic — usually added during testing and not removed. Because `ConversationStart` fires `OnConversationStart` (every new conversation), any prompt node inside it fires every single time.
+
+**Fix:** Open `topics/ConversationStart.mcs.yml` and remove everything after the `SendActivity` greeting node. The topic should contain only the welcome message:
+
+```yaml
+beginDialog:
+  kind: OnConversationStart
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendMessage_xxxxxx
+      activity:
+        text:
+          - Hello, I'm {System.Bot.Name}. How can I help?
+```
+
+Remove any `AdaptiveCardPrompt`, `Question`, or other nodes below it. Run Apply Changes.
+
+---
+
+### Greeting does not appear automatically when chat opens
+
+**Cause:** The Greeting topic uses `kind: OnRecognizedIntent` (fires when user types "Hello") instead of `kind: OnConversationStart` (fires automatically when the conversation begins).
+
+Check your `Greeting.topic.mcs.yml` line 6. If it says `OnRecognizedIntent`, change it to `OnConversationStart` and remove the `intent:` and `triggerQueries:` blocks — they are not needed for a conversation-start trigger. Example:
+
+```yaml
+beginDialog:
+  kind: OnConversationStart   # ← was OnRecognizedIntent
+  id: main
+  actions:
+    - kind: SendActivity
+      ...
+```
+
+Then run VS Code → Apply Changes.
+
+---
 
 ### Wrong topic fires
 
@@ -220,7 +228,7 @@ When moving an agent between environments, connection references need to be re-m
 Fix:
 1. In the target environment → Power Platform admin → **Solutions** → open the agent's solution
 2. Go to **Connection References** → re-authenticate each connection
-3. `pac copilot push` again
+3. Apply changes via VS Code → "Copilot Studio: Apply Changes"
 
 ---
 
@@ -322,7 +330,85 @@ Fix every match before pushing.
 
 ---
 
-## 9 — Test Canvas vs Published Behaviour Differs
+## 9 — Portal Canvas Rendering Issues
+
+These are cases where the YAML is valid and the data is correctly stored in the cloud, but the Copilot Studio portal visual canvas does not render nodes correctly.
+
+---
+
+### Topic actions stop rendering after a `LogCustomTelemetryEvent` node — subsequent nodes (ConditionGroup, SendActivity, etc.) are invisible on the canvas
+
+**Cause:** The `properties` field on `LogCustomTelemetryEvent` uses a YAML folded block scalar (`>-`). The Copilot Studio portal canvas renderer cannot determine where the scalar ends and silently drops all subsequent action nodes from the visual canvas. The data IS correctly stored in the cloud — `botdefinition.json` will show the full content — but the canvas shows only the telemetry node and nothing after it.
+
+This affects any topic where `LogCustomTelemetryEvent` is **not** the last action node.
+
+**Symptom:** Canvas shows: `Trigger → Log telemetry → ○ (end)` — everything after the telemetry node is invisible.
+
+**Diagnosis:** Check your topic YAML for this pattern:
+
+```yaml
+- kind: LogCustomTelemetryEvent
+  id: logXxx_xxxxxx
+  eventName: Agent.SomeEvent
+  properties: >-        ← THIS causes the rendering bug
+    ={
+      Key: Value,
+      ...
+    }
+
+- kind: ConditionGroup  ← this and everything below won't render
+```
+
+**Fix:** Convert `properties: >-` to a single-line double-quoted string:
+
+```yaml
+- kind: LogCustomTelemetryEvent
+  id: logXxx_xxxxxx
+  eventName: Agent.SomeEvent
+  properties: "={Key: Value, Key2: Value2, Key3: Value3}"   ← single line, double-quoted
+```
+
+Then run Apply Changes. The canvas will render all nodes correctly after the push.
+
+> **Note:** The base/ templates have been updated to use the single-line format. If you copied a topic from an older version of the templates, check for `properties: >-` in any `LogCustomTelemetryEvent` node.
+
+---
+
+### `agent.mcs.yml` — instructions, conversation starters, or AI model not appearing in the Copilot Studio UI
+
+**Cause:** The `instructions:`, `conversationStarters:`, and `aISettings:` fields in `agent.mcs.yml` are indented (e.g. 2 spaces) instead of being at the root level (0 spaces). The Copilot Studio parser reads `kind: GptComponentMetadata` and looks for `instructions` at the root mapping level. If it is indented, the parser silently ignores it — no error is raised, and the UI shows blank instructions.
+
+**Symptom:** The Overview tab in the portal shows no instructions text. Conversation starters are missing. AI model setting appears to be default regardless of what's in the file.
+
+**Diagnosis:** Open `agent.mcs.yml` and check indentation:
+
+```yaml
+# BROKEN — instructions is at 2-space indent, parser ignores it
+kind: GptComponentMetadata
+
+  instructions: |       ← 2 spaces — WRONG
+    Your prompt...
+
+  conversationStarters: ← 2 spaces — WRONG
+    - title: ...
+
+# CORRECT — all fields at column 0
+kind: GptComponentMetadata
+
+instructions: |         ← 0 spaces — correct
+  Your prompt...
+
+conversationStarters:   ← 0 spaces — correct
+  - title: ...
+```
+
+**Fix:** Ensure `instructions:`, `conversationStarters:`, and `aISettings:` are all at column 0 (no leading spaces). The block content under `instructions: |` should be indented 2 spaces relative to the key. Run Apply Changes after fixing.
+
+Also check for line-wrap bugs inside the `instructions` block — if a sentence wraps to a line with less indentation than the block content level, YAML terminates the block early and the rest of the instructions are truncated.
+
+---
+
+## 10 — Test Canvas vs Published Behaviour Differs
 
 This is a frequent source of confusion. Key differences:
 
@@ -339,7 +425,7 @@ This is a frequent source of confusion. Key differences:
 
 ---
 
-## 10 — General Tips and Diagnostics
+## 11 — General Tips and Diagnostics
 
 ### Before raising a support ticket
 
@@ -356,9 +442,6 @@ pac auth list
 
 # List agents in the environment
 pac copilot list --environment <env-url>
-
-# Validate YAML without pushing
-pac copilot push --dry-run
 
 # Check the published version number
 pac copilot show --name <agent-schema-name>
@@ -380,3 +463,93 @@ pac copilot show --name <agent-schema-name>
 | Power Platform Service Health | https://admin.powerplatform.microsoft.com/servicestatus |
 | Microsoft 365 Service Health | https://admin.microsoft.com/servicestatus |
 | GitHub Issues (this repo) | *(your repo URL)* |
+
+---
+
+## pac CLI Common Errors
+
+### `pac copilot publish` — "Copilot with ID 'x' not found"
+
+**Cause:** `--bot` does not accept the schema name (e.g. `hr_assistant`). It requires the **display name** or **Copilot ID**.
+
+```powershell
+pac copilot list                          # find the display name and Copilot ID
+pac copilot publish --bot "HR Assistant"  # use display name (quote if it has spaces)
+# or
+pac copilot publish --bot "39cf38ed-3416-456d-be4e-b2cc9d426bbb"  # use Copilot ID
+```
+
+---
+
+### `pac copilot extract-template` — "No bots were found using search pattern 'TestGIA'"
+
+**Cause:** `--bot` on `extract-template` also does NOT accept the display name. It requires the **schema name** or **Copilot ID**.
+
+```powershell
+pac copilot list                          # find the Copilot ID column
+pac copilot extract-template --bot "f1714949-c144-f111-88b5-00224809a00b" --templateFileName "agents\hr_assistant\template.yaml"
+```
+
+---
+
+### `pac copilot create` — template file not found
+
+**Cause 1 — Wrong working directory.** The command resolves the path relative to where you run it.
+```powershell
+# Run from repo root:
+cd C:\projects\templates\copilot-studio-templates
+pac copilot create --displayName "HR Assistant" --schemaName "hr_assistant" --solution "Default" --templateFileName "agents\hr_assistant\template.yaml"
+```
+
+**Cause 2 — Output folder doesn't exist yet.** Create it before extracting:
+```powershell
+New-Item -ItemType Directory -Force -Path "agents\hr_assistant"
+pac copilot extract-template --bot "<copilot-id>" --templateFileName "agents\hr_assistant\template.yaml"
+```
+
+**Cause 3 — No existing agent to extract from.** `pac copilot create` requires a template extracted from an existing agent. If you have no agents yet, create the first one via browser: make.preview.microsoft.com → Create → New blank agent.
+
+---
+
+### `pac copilot create` — backslash line continuation fails
+
+**Cause:** PowerShell uses backtick (`` ` ``) for line continuation, not backslash (`\`). Keep the command on one line:
+```powershell
+pac copilot create --displayName "HR Assistant" --schemaName "hr_assistant" --solution "Default" --templateFileName "agents\hr_assistant\template.yaml"
+```
+
+---
+
+### PowerShell node ID script — infinite loop / `-replace` error
+
+**Cause:** PowerShell's `-replace` operator only takes 2 arguments, not 3. Using `-replace pattern, replacement, count` causes an error or infinite loop.
+
+**Fix:** Use `[regex]::Replace()` for count-limited replacement:
+```powershell
+$content = [regex]::Replace($content, '_REPLACE\d*', "_$id", 1)   # replaces ONE match at a time
+```
+Not:
+```powershell
+$content = $content -replace '_REPLACE\d*', "_$id", 1   # ERROR — 3 args not supported
+```
+
+---
+
+### `grep` not found on Windows
+
+**Cause:** `grep` is a Linux/Mac command. Use `Select-String` in PowerShell instead:
+```powershell
+# Windows equivalent of: grep -rn "_REPLACE" agents/hr_assistant --include="*.mcs.yml"
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\hr_assistant" | Select-String "_REPLACE" | Select-Object Filename, LineNumber, Line
+```
+
+---
+
+## `pac copilot push` Does Not Exist
+
+**Cause:** `pac copilot push` is not a pac CLI command. There is no npm package that adds it.
+
+**What to use instead:**
+- To push YAML edits to an existing agent: **VS Code → Ctrl+Shift+P → "Copilot Studio: Apply Changes"**
+- To create a new agent from a template YAML: `pac copilot create --displayName "X" --schemaName "x" --solution "Default" --templateFileName file.yaml`
+- To publish a draft to live: `pac copilot publish --bot "<display name or Copilot ID>"`

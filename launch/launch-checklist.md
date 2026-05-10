@@ -1,5 +1,9 @@
 # Pre-Go-Live Launch Checklist
 
+> **When to use:** The week before go-live. Work through phases with the project team.
+> All items must be checked before enabling the agent for real users.
+> Owner: Project Lead. Reviewer: Agent Owner.
+
 Complete every item before publishing to your production channel. No item is optional.
 
 ---
@@ -80,7 +84,7 @@ Work through each section in order. Check off each item. If any item fails, fix 
 
 | # | Item | Status |
 |---|------|--------|
-| D1 | Final `pac copilot push` to production environment completed | ☐ |
+| D1 | Final agent changes applied via VS Code "Apply Changes" + published via Copilot Studio portal or `pac copilot publish --bot "<schema>"` | ☐ |
 | D2 | Published successfully in Copilot Studio (not just pushed) | ☐ |
 | D3 | Published version verified in test canvas post-publish | ☐ |
 | D4 | Correct channel(s) enabled and verified (Teams / website / Copilot) | ☐ |

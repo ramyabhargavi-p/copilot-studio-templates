@@ -36,17 +36,10 @@ beginDialog:
       - <out-of-scope phrase 5>
 
   actions:
-    # Log every out-of-scope trigger — high rates signal gaps in scope definition or training
     - kind: LogCustomTelemetryEvent
       id: logOutOfScope_REPLACE1
       eventName: Agent.OutOfScope
-      properties: >-
-        ={
-          UserQuery: System.Activity.Text,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={UserQuery: System.Activity.Text, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     # Acknowledge the request, name the gap, and redirect to the right resource
     - kind: SendActivity

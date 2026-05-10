@@ -2,6 +2,10 @@
 
 Complete list of every buildable template in this repository — 56 templates across 11 categories.
 
+> **When to use this doc:** When you want a complete inventory of all YAML templates before starting a build.
+> Use this as a checklist to confirm which templates you've customized and which still have `<PLACEHOLDER>` values.
+> Cross-reference with `components/README.md` for per-template placeholder guides.
+
 ---
 
 ## Base Templates

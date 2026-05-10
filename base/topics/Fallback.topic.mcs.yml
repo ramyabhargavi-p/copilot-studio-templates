@@ -15,16 +15,8 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logFallback_REPLACE1
       eventName: Agent.FallbackTriggered
-      properties: >-
-        ={
-          ConversationId: System.Conversation.Id,
-          UserQuery: System.Activity.Text,
-          FallbackCount: Text(System.FallbackCount),
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={ConversationId: System.Conversation.Id, UserQuery: System.Activity.Text, FallbackCount: Text(System.FallbackCount), Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
-    # Retry logic: helpful prompts on first two failures, automatic escalation on third
     - kind: ConditionGroup
       id: retryCheck_REPLACE2
       conditions:
@@ -43,7 +35,6 @@ beginDialog:
               activity: I'm still having trouble understanding. Try asking in a different way, or type "speak to a human" to reach our team.
 
       elseActions:
-        # After 3 failed attempts escalate automatically — no more retries
         - kind: SendActivity
           id: sendEscalating_REPLACE7
           activity: I wasn't able to help with that after a few tries. Let me connect you with someone who can.

@@ -20,18 +20,10 @@ beginDialog:
       - <trigger phrase 5>
 
   actions:
-    # Step 1: Log that this topic was triggered
     - kind: LogCustomTelemetryEvent
       id: logTopicStarted_REPLACE0
       eventName: Topic.Started
-      properties: >-
-        ={
-          TopicName: "<Topic Name>",
-          UserQuery: System.Activity.Text,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={TopicName: \"<Topic Name>\", UserQuery: System.Activity.Text, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     - kind: SendActivity
       id: sendMessage_REPLACE1

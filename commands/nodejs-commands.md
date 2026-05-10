@@ -32,8 +32,8 @@ The Kit runs automated routing accuracy tests against your agent. Target: ≥ 85
 
 ```bash
 # Clone the Kit (one-time)
-git clone https://github.com/microsoft/Copilot-Studio-Kit.git
-cd Copilot-Studio-Kit
+git clone https://github.com/ramyabhargavi-p/copilot-studio-templates/
+cd copilot-studio-templates
 
 # Install dependencies
 npm install

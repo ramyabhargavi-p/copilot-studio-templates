@@ -2,6 +2,10 @@
 
 How to prevent personally identifiable information from entering telemetry, logs, and storage in Copilot Studio agents.
 
+> **When to use this doc:** Before connecting telemetry (Application Insights) to an agent that
+> handles any user-identifiable information. Required checkpoint in the governance checklist.
+> Also review when adding new topic inputs that collect names, emails, IDs, or account numbers.
+
 ---
 
 ## What Counts as PII
@@ -44,13 +48,7 @@ ActionName: "<MyAction>"                           # Hard-coded string literal
 `System.User.Id` is a hashed identifier, not a raw UPN. It is safe to log for correlation:
 
 ```yaml
-properties: >-
-  ={
-    UserId: System.User.Id,           # Hashed — safe for correlation
-    ConversationId: System.Conversation.Id,
-    Channel: System.Activity.Channel,
-    TimeUTC: Text(Now(), DateTimeFormat.UTC)
-  }
+properties: "={UserId: System.User.Id, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 ```
 
 ---
@@ -215,22 +213,21 @@ This prevents the Office 365 Users connector from sharing profile data with non-
 
 Run these to find PII risks before every release:
 
+```powershell
+# Windows PowerShell
+Get-ChildItem -Recurse -Filter "*.mcs.yml" | Select-String "UserDisplayName|UserEmail|UserCountry|\.country|\.mail|\.displayName" | Select-Object Filename, LineNumber, Line
+Get-ChildItem -Recurse -Filter "*.mcs.yml" | Select-String "System\.Activity\.Text|Topic\.\w*[Ii]nput|Topic\.\w*[Aa]nswer" | Where-Object { $_ -notmatch "TopicName|ActionName" } | Select-Object Filename, LineNumber, Line
+Get-ChildItem -Recurse -Filter "*.mcs.yml" | Select-String "System\.Error\.Message|Error\.Message" | Select-Object Filename, LineNumber, Line
+Get-ChildItem -Recurse -Filter "*.mcs.yml" | Select-String "aIVisibility: UseInAIContext" | Select-Object Filename, LineNumber, Line
+Get-ChildItem -Recurse -Filter "*.mcs.yml" | Select-String "feedbackText|TextResponse" | Where-Object { $_ -notmatch "feedbackCategory" } | Select-Object Filename, LineNumber, Line
+```
+
 ```bash
-# Find any telemetry property that references user profile fields
-grep -rn "UserDisplayName\|UserEmail\|UserCountry\|\.country\|\.mail\|\.displayName" \
-  --include="*.mcs.yml" .
-
-# Find any telemetry logging raw user input
-grep -rn "System.Activity.Text\|Topic\.\w*[Ii]nput\|Topic\.\w*[Aa]nswer" \
-  --include="*.mcs.yml" . | grep -v "TopicName\|ActionName"
-
-# Find any telemetry logging error messages (not just codes)
+# Mac / Linux
+grep -rn "UserDisplayName\|UserEmail\|UserCountry\|\.country\|\.mail\|\.displayName" --include="*.mcs.yml" .
+grep -rn "System.Activity.Text\|Topic\.\w*[Ii]nput\|Topic\.\w*[Aa]nswer" --include="*.mcs.yml" . | grep -v "TopicName\|ActionName"
 grep -rn "System.Error.Message\|Error\.Message" --include="*.mcs.yml" .
-
-# Find global variables with UseInAIContext (review each one)
 grep -rn "aIVisibility: UseInAIContext" --include="*.mcs.yml" .
-
-# Find free-text question variables that might flow into telemetry
 grep -rn "feedbackText\|TextResponse" --include="*.mcs.yml" . | grep -v "feedbackCategory"
 ```
 

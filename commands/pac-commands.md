@@ -8,13 +8,13 @@
 
 ```bash
 pac copilot list                # List agents in your environment
-pac copilot publish --bot ""    # Publish a draft agent to live
+pac copilot publish --bot "<display name or Copilot ID>"   # Publish a draft agent to live — NOT schema name
 pac copilot status --bot ""     # Check deployment status
 pac copilot extract-template    # Download an existing agent as YAML
 pac copilot create              # Create a new agent from a template file
 ```
 
-**Why not `pac copilot push`?** This command is available only via the Copilot Studio Kit (a separate optional tool). For most developers, **use VS Code's "Copilot Studio: Apply Changes"** command instead — it's simpler and built-in.
+**`pac copilot push` does not exist** in the standard pac CLI. To push YAML changes to an existing agent, **use VS Code's "Copilot Studio: Apply Changes"** command (Ctrl+Shift+P).
 
 ---
 
@@ -179,7 +179,7 @@ Ctrl+Shift+P → "Copilot Studio: Clone Agent"
 
 ## 6. Edit locally and apply changes back
 
-`pac copilot push` is available when the Copilot Studio Kit is installed (see note at top of this file). If you do not have the Kit, use one of these alternatives:
+`pac copilot push` does not exist in the standard pac CLI. Use one of these methods:
 
 ### Method A — VS Code extension (recommended)
 
