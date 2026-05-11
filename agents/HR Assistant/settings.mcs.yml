@@ -1,0 +1,15 @@
+﻿displayName: HR Assistant
+schemaName: hr_assistant
+accessControlPolicy: GroupMembership
+authenticationMode: Integrated
+authenticationTrigger: Always
+configuration:
+  settings:
+    GenerativeActionsEnabled: true
+
+  recognizer:
+    kind: GenerativeAIRecognizer
+
+publishedOn: 2026-05-10T02:11:53.0000000Z
+template: kickStartTemplate-1.0.0
+language: 1033

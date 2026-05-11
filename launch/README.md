@@ -26,6 +26,18 @@ After hypercare ends, hand off to [`../operations/`](../operations/) for steady-
 
 ---
 
+## Sequence
+
+Use these files in this order:
+
+1. **`launch-checklist.md`** — Gate: all items checked before go-live
+2. **`user-communication-template.md`** — Send to users 5–7 days before launch, then on launch day
+3. **`hypercare-guide.md`** — Follow for the first 14 days after launch
+
+> After hypercare, hand off to operations: see [`../operations/README.md`](../operations/README.md).
+
+---
+
 ## Minimum before any user touches the agent
 
 - [ ] `launch-checklist.md` — all items checked, business owner signed

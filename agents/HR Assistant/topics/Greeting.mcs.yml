@@ -1,0 +1,30 @@
+mcs.metadata:
+  componentName: Greeting
+  description: Fires when the user greets the agent mid-conversation. Responds warmly without re-sending the full welcome message.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Greeting
+    includeInOnSelectIntent: false
+    triggerQueries:
+      - Good afternoon
+      - Good morning
+      - Hello
+      - Hey
+      - Hi
+      - Hi there
+      - Hello again
+
+  actions:
+    - kind: SendActivity
+      id: sendMessage_abmysR
+      activity:
+        text:
+          - Hello! I'm {System.Bot.Name}. How can I help you today?
+          - Hi there! What can I help you with?
+          - Hello again! What would you like to know?
+
+    - kind: CancelAllDialogs
+      id: cancelAllDialogs_01At22

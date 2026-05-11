@@ -1,5 +1,9 @@
 # Responsible AI Checklist
 
+> **Complete before UAT.** Work through each section with the agent owner present.
+> For unclear items, default to the more restrictive interpretation.
+> Attach completed checklist to the UAT sign-off document.
+
 Complete this checklist before deploying any agent to production. Sign off each item. This is not optional — it is a pre-requisite for go-live.
 
 Aligned to Microsoft's [Responsible AI Principles](https://www.microsoft.com/ai/responsible-ai): Fairness, Reliability & Safety, Privacy & Security, Inclusiveness, Transparency, Accountability.

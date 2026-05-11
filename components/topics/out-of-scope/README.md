@@ -1,23 +1,73 @@
-# Out of Scope Topic
+# out-of-scope — Out of Scope Topic
 
-**Trigger:** `OnRecognizedIntent` (triggered by out-of-scope intent phrases)
-**Telemetry:** `Agent.OutOfScope`
+Returns a helpful redirect message when users ask questions outside the agent's domain, and logs every attempt for monitoring.
 
-Redirects users asking questions outside the agent's configured domain. Logs every out-of-scope attempt so you can identify gaps in scope definition.
+## Relationship to `base/topics/OutOfScope.topic.mcs.yml`
 
-## Files
+The `base/topics/` folder already includes an identical `OutOfScope.topic.mcs.yml` — it ships with every agent. You don't need to copy this component if you started from `base/`.
 
-| File | Purpose |
-|------|---------|
-| `OutOfScope.topic.mcs.yml` | Redirect message + `Agent.OutOfScope` telemetry |
+**Use this component folder when:**
+- You built an agent **without** starting from `base/` and need to add out-of-scope handling
+- You need a second reference copy while filling in placeholders
 
-## Quick start
+## When to configure
 
-```bash
-cp components/topics/out-of-scope/OutOfScope.topic.mcs.yml \
-   agents/<your-agent>/topics/OutOfScope.topic.mcs.yml
+Every agent needs out-of-scope handling. Configure the file already in your agent at `topics/OutOfScope.topic.mcs.yml`:
+
+1. Add 3–5 specific trigger phrases for your agent's known out-of-scope areas
+2. Replace `<DOMAIN>`, `<OUT-OF-SCOPE-TOPIC>`, and `<CONTACT>` in the message
+
+## Placeholders
+
+| Placeholder | Line | Example (HR Assistant) |
+|---|---|---|
+| `<out-of-scope phrase 1–5>` | 24–28 | `payroll`, `expense reimbursement`, `IT support`, `office supplies` |
+| `<DOMAIN>` | 48 | `HR policies` |
+| `<OUT-OF-SCOPE-TOPIC>` | 48 | `IT support` |
+| `<CONTACT>` | 49 | `it@contoso.com` |
+| `_REPLACE1–2` | — | Run ID script |
+
+## Before → after
+
+```yaml
+# Before
+triggerQueries:
+  - <out-of-scope phrase 1>
+  - <out-of-scope phrase 2>
+  - <out-of-scope phrase 3>
+
+# After (HR Assistant example)
+triggerQueries:
+  - payroll query
+  - expense reimbursement
+  - IT support
+  - office supplies
+  - facilities request
 ```
 
-Replace `<REDIRECT_RESOURCE>` with the correct resource to direct users to (e.g., "contact HR directly at hr@contoso.com").
+```yaml
+# Before — response text
+- "I'm only able to help with <DOMAIN>. For <OUT-OF-SCOPE-TOPIC>, <CONTACT> would be your best bet."
 
-**When to monitor:** High `Agent.OutOfScope` rates suggest either missing topics or users trying to use the agent for unintended purposes — review the logged queries and decide whether to expand scope or reinforce the system prompt.
+# After
+- "I'm only able to help with HR policies. For IT support, it@contoso.com would be your best bet."
+```
+
+## Two-layer out-of-scope strategy
+
+This topic catches **known** out-of-scope areas via explicit trigger phrases. For the long tail of unexpected queries, reinforce in the system prompt:
+
+```yaml
+# In agent.mcs.yml instructions:
+## Handling out-of-scope questions
+If a user asks about something outside HR policies and leave management,
+respond: "I'm only set up to help with HR queries. For [topic], please contact [resource]."
+Never attempt to answer out-of-scope questions.
+```
+
+## Monitoring
+
+High `Agent.OutOfScope` rates in App Insights indicate either users are trying to use the agent for unintended purposes, or scope is too narrow. Review the logged `UserQuery` values and decide whether to expand scope or reinforce the system prompt.
+
+→ KQL queries for out-of-scope events: [`../../../operations/monitoring-queries.md`](../../../operations/monitoring-queries.md)
+→ Base topics (no copy needed if using base/): [`../../../base/topics/`](../../../base/topics/)

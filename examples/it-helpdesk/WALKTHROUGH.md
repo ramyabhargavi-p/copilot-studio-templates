@@ -533,13 +533,13 @@ Get-ChildItem -Recurse -Filter "*.yml" | ForEach-Object {
   $content = Get-Content $_.FullName -Raw
   while ($content -match '_REPLACE\d*') {
     $id = -join ((97..122) + (48..57) | Get-Random -Count 6 | ForEach-Object {[char]$_})
-    $content = $content -replace '_REPLACE\d*', $id, 1
+    $content = [regex]::Replace($content, '_REPLACE\d*', $id, 1)
   }
   Set-Content $_.FullName $content
 }
 
-# Verify none left
-grep -r "_REPLACE" agents/it-helpdesk/
+# Verify none left (Windows PowerShell)
+Get-ChildItem -Recurse -Filter "*.yml" -Path "agents\it-helpdesk" | Select-String "_REPLACE" | Select-Object Filename, LineNumber, Line
 # Should return no output
 ```
 

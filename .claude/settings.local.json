@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "mcp__plugin_microsoft-docs_microsoft-learn__microsoft_docs_search",
+      "Bash(Get-ChildItem -Recurse -Filter \"*.mcs.yml\" -Path \"C:\\\\projects\\\\templates\\\\copilot-studio-templates\\\\agents\\\\HR Assistant\")",
+      "Bash(Select-String \"<[A-Za-z]\")",
+      "Bash(Select-Object Filename, LineNumber, Line)",
+      "Bash(node *)"
+    ]
+  }
+}

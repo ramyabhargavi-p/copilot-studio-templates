@@ -1,5 +1,8 @@
 # Hypercare Guide — First Two Weeks After Launch
 
+> **When to use:** Days 1–14 after go-live. Assign a named owner for each monitoring shift.
+> After Day 14, transition to standard operations: see [`../operations/README.md`](../operations/README.md).
+
 Heightened monitoring and response in the period immediately after go-live, when usage ramps up and unexpected issues surface.
 
 ---

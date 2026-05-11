@@ -3,10 +3,16 @@
 # Purpose: Declare a conversation-scoped global variable accessible across all topics.
 #          Use for state that needs to be shared (e.g. UserCountry, AuthToken, Locale).
 # NOTE: Replace all _REPLACE values with your content
-name: _REPLACE_NAME                         # camelCase, no spaces (e.g. userCountry)
-aIVisibility: Hidden                        # Hidden (secure default) — change to UseInAIContext only if the AI must read this variable directly
-scope: Conversation                         # Conversation is the only valid scope for global variables
-description: _REPLACE_DESCRIPTION          # One sentence: what is this variable and what does it store
-schemaName: _REPLACE_SCHEMA_PREFIX.globalvariable._REPLACE_NAME   # Replace _REPLACE_SCHEMA_PREFIX with your agent's schemaName
+# NOTE: Replace _REPLACE_SCHEMA_PREFIX with your agent's schemaName (from settings.mcs.yml)
+# NOTE: If Apply Changes fails with [0x800608ad:ExportKeyAttributeInvalidPrefix],
+#       delete this file from your agent folder, push topics/settings first, then
+#       re-add this file once the agent exists in the cloud. See troubleshooting/README.md.
 kind: GlobalVariableComponent
-defaultValue: DEFAULT                       # Replace with the appropriate default: "" (empty string) | false | 0 | or a specific value
+schemaName: _REPLACE_SCHEMA_PREFIX.globalvariable._REPLACE_NAME
+displayName: _REPLACE_NAME
+description: _REPLACE_DESCRIPTION
+variable:
+  name: _REPLACE_NAME                  # camelCase, no spaces (e.g. userCountry)
+  aIVisibility: Hidden                 # Hidden (secure default) — change to UseInAIContext only if the AI must read this variable directly
+  scope: Conversation                  # Conversation is the only valid scope for global variables
+  defaultValue: DEFAULT                # Replace with: "" (empty string) | false | 0 | or a specific value

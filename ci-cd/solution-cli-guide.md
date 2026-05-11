@@ -8,10 +8,12 @@ Yes — you can build, export, unpack, pack, import, and publish Power Platform 
 
 | Approach | When to use | Command |
 |----------|------------|---------|
-| **Direct YAML push** (`pac copilot push`) | Development, rapid iteration, single agent | `pac copilot push` |
+| **VS Code Apply Changes** | Development, rapid iteration, single agent | VS Code → Ctrl+Shift+P → "Copilot Studio: Apply Changes" |
 | **Solution-based deployment** (`pac solution import`) | UAT → Prod promotion, enterprise ALM, multi-component solutions | `pac solution export` / `pac solution import` |
 
-**Recommendation:** Use direct YAML push during development. Use solution-based deployment for UAT → Production promotion. Solutions carry connection references, environment variables, and managed layers — making them the correct approach for production ALM.
+**Recommendation:** Use VS Code Apply Changes during development to push YAML edits to your agent draft. Use solution-based deployment for UAT → Production promotion. Solutions carry connection references, environment variables, and managed layers — making them the correct approach for production ALM.
+
+> **Note:** `pac copilot push` does not exist in the pac CLI. The only way to push multi-file YAML edits is VS Code → "Copilot Studio: Apply Changes".
 
 ---
 
@@ -147,7 +149,9 @@ For Copilot Studio agents in most enterprise scenarios, `--force-overwrite` is c
 # ─── DEV: Build and push agent YAML ───────────────────────────────
 pac auth create --environment <DEV_ENV_URL> ...
 cd agents/<AGENT_SCHEMA_NAME>
-pac copilot push --environment <DEV_ENV_URL>
+# Push YAML edits to the agent draft:
+# VS Code → Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+# (pac copilot push does not exist — Apply Changes is the only way to push multi-file YAML)
 
 # ─── DEV: Package into a solution ─────────────────────────────────
 # (first time only — create the solution)

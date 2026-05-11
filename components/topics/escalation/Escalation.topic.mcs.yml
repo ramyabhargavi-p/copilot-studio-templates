@@ -35,19 +35,10 @@ beginDialog:
       - I want to raise a complaint
 
   actions:
-    # Log the escalation — include reason and context for triage
     - kind: LogCustomTelemetryEvent
       id: logEscalation_REPLACE1
       eventName: Agent.EscalationTriggered
-      properties: >-
-        ={
-          Reason: "UserRequested",
-          UserQuery: System.Activity.Text,
-          FallbackCount: System.FallbackCount,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={Reason: \"UserRequested\", UserQuery: System.Activity.Text, FallbackCount: System.FallbackCount, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     - kind: SendActivity
       id: sendMessage_REPLACE2

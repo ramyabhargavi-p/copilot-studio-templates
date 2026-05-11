@@ -1,15 +1,20 @@
 # Name: UserCountry
-# The user's country from their M365 profile, loaded JIT at conversation start.
 # Purpose: Enables country-aware responses without asking the user where they are.
 #          Used by the orchestrator to select the correct country-specific policy, holiday, or procedure.
+#          The M365 country field is loaded JIT at conversation start by the conversation-init topic.
 # Prerequisites:
 #   - conversation-init topic must be included (loads this variable from M365 profile)
 #   - Office 365 Users connector must be added to the agent
-# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName prefix
-name: UserCountry
-aIVisibility: UseInAIContext                # Orchestrator needs country to route knowledge searches correctly
-scope: Conversation
-description: The user's country from their M365 profile, loaded JIT at conversation start. Falls back to "Unknown" if the field is blank in Azure AD.
-schemaName: <AGENT-SCHEMA-NAME>.globalvariable.UserCountry
+# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName (from settings.mcs.yml)
+# NOTE: If Apply Changes fails with [0x800608ad:ExportKeyAttributeInvalidPrefix],
+#       delete this file from your agent folder, push topics/settings first, then
+#       re-add this file once the agent exists in the cloud. See troubleshooting/README.md.
 kind: GlobalVariableComponent
-defaultValue: DEFAULT
+schemaName: <AGENT-SCHEMA-NAME>.globalvariable.UserCountry
+displayName: UserCountry
+description: The user's country from their M365 profile, loaded JIT at conversation start. Falls back to "Unknown" if the field is blank in Azure AD.
+variable:
+  name: UserCountry
+  aIVisibility: UseInAIContext
+  scope: Conversation
+  defaultValue: DEFAULT

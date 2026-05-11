@@ -4,9 +4,9 @@ Pick your agent type. Follow the steps. Deploy.
 
 **Prerequisites before you start:**
 1. `pac` CLI installed → `dotnet tool install --global Microsoft.PowerApps.CLI.Tool`
-2. Authenticated to your Dev environment → `pac auth create --environment https://<dev>.crm.dynamics.com`
+2. Authenticated to your Dev environment → `pac auth create`
 3. This repo cloned and a feature branch created → `git checkout -b feature/<your-agent>`
-4. VS Code with Power Platform extension active (Copilot Studio icon in status bar)
+4. VS Code with Copilot Studio extension active (Copilot Studio icon in status bar)
 
 Not done yet? → [`ENGINEERING-PLAYBOOK.md`](../ENGINEERING-PLAYBOOK.md) Stage 1 walks every step.
 
@@ -14,170 +14,316 @@ Not done yet? → [`ENGINEERING-PLAYBOOK.md`](../ENGINEERING-PLAYBOOK.md) Stage 
 
 ## Step 1 — Pick your agent type
 
-| I want to build… | Use recipe | Time | Claude skill |
-|---|---|---|---|
-| FAQ / knowledge bot — answers questions from SharePoint | [`01-basic-faq`](../recipes/01-basic-faq.md) | 30 min | `/copilot-studio:add-knowledge` |
-| Same, but users must sign in + greeted by name | [`02-authenticated-agent`](../recipes/02-authenticated-agent.md) | 45 min | `/copilot-studio:new-topic` |
-| Agent that submits data to a system (tickets, requests) | [`03-connector-action-agent`](../recipes/03-connector-action-agent.md) | 60 min | `/copilot-studio:add-action` |
-| Agent that calls an MCP tool | [`04-mcp-action-agent`](../recipes/04-mcp-action-agent.md) | 60 min | `/copilot-studio:add-action` |
-| Orchestrator with specialist child agents | [`05-orchestrator-agent`](../recipes/05-orchestrator-agent.md) | 2+ hrs | `/copilot-studio:new-topic` |
-| All of the above combined | [`06-full-featured-agent`](../recipes/06-full-featured-agent.md) | 2+ hrs | All skills |
+| I want to build… | Use recipe | Time |
+|---|---|---|
+| FAQ / knowledge bot — answers questions from SharePoint | [`01-basic-faq`](../recipes/01-basic-faq.md) | 30 min |
+| Same, but users must sign in + greeted by name | [`02-authenticated-agent`](../recipes/02-authenticated-agent.md) | 45 min |
+| Agent that submits data to a system (tickets, requests) | [`03-connector-action-agent`](../recipes/03-connector-action-agent.md) | 60 min |
+| Agent that calls an MCP tool | [`04-mcp-action-agent`](../recipes/04-mcp-action-agent.md) | 60 min |
+| Orchestrator with specialist child agents | [`05-orchestrator-agent`](../recipes/05-orchestrator-agent.md) | 2+ hrs |
 
 ---
 
-## Step 2 — Build it
+## Step 2 — Create your agent
 
-Choose how you're working:
-
----
-
-### Path A — Using Claude skills (fastest)
-
-```
-1. Load context from meetings / emails
-   → /workiq  "What was discussed about the [agent] requirements?"
-
-2. Start a new agent
-   → /copilot-studio:detect-mode
-   → /copilot-studio:clone-agent
-
-3. Add knowledge or actions
-   → /copilot-studio:add-knowledge     (for FAQ agents)
-   → /copilot-studio:add-action        (for action agents)
-
-4. Validate before pushing
-   → /copilot-studio:validate
-
-5. Deploy
-   → /copilot-studio:manage-agent
-
-6. Test immediately — no publishing needed
-   → /copilot-studio:chat-with-agent
-```
+**For most developers: use Path 1.** Path 2 is only for automation and CI/CD pipelines.
 
 ---
 
-### Path B — Manual (copy and replace)
+### Path 1 — Cloud-First (use this by default)
 
-**Prerequisites:** `pac` CLI installed, authenticated to your environment.
+> **How it works:** The VS Code "Apply Changes" command updates an *existing* agent draft.
+> It cannot create a new agent. Create it in the browser first, then work locally.
 
-```bash
-# Authenticate first (run once)
-pac auth create \
-  --applicationId <CLIENT_ID> \
-  --clientSecret <CLIENT_SECRET> \
-  --tenant <TENANT_ID> \
-  --environment <ENV_URL>
+```
+1. Browser: make.preview.microsoft.com → Create → New blank agent → name it → Create
+
+2. VS Code: Ctrl+Shift+P → "Copilot Studio: Clone Agent"
+   → sign in → select your environment → select the agent → choose output folder
+
+   ⚠ IMPORTANT — the extension always creates a subfolder named after the agent display name
+   inside the folder you select. Example:
+     You select:    agents\
+     Extension creates: agents\HR Assistant\    ← this is your working folder
+   If you select agents\hr_assistant\ as output, result is agents\hr_assistant\HR Assistant\
+
+   Recommended: select agents\ as output → rename the created folder to hr_assistant\ if needed.
+   Never manually copy files into the output folder — conn.json (needed for Apply Changes) is only
+   created by the Clone Agent command and must stay in place.
+
+   Result: agents\<display name>\ with Greeting, Fallback, OnError (minimal — no telemetry or retry logic).
+   OutOfScope is NOT created by a blank agent — it comes from base/topics.
+
+3. Copy all 4 base/ topic files into your agent (replace the 3 minimal ones, add the missing OutOfScope):
+   copy base/topics/Greeting.topic.mcs.yml   → agents/<name>/topics/   (replaces minimal version)
+   copy base/topics/Fallback.topic.mcs.yml   → agents/<name>/topics/   (replaces minimal version)
+   copy base/topics/OnError.topic.mcs.yml    → agents/<name>/topics/   (replaces minimal version)
+   copy base/topics/OutOfScope.topic.mcs.yml → agents/<name>/topics/   (new — not in blank agent)
+
+4. Write the system prompt for agent.mcs.yml — two options:
+
+   OPTION A — Use a ready-made persona (fastest, 5 min):
+   → Open prompts/system-prompts/<type>.md  (hr-assistant, it-helpdesk, customer-support, knowledge-base)
+   → Copy everything inside the triple backticks
+   → Paste it into agent.mcs.yml replacing the entire instructions: | block
+   → Replace all [BRACKET] values: [Company Name], [company].com contacts, etc.
+
+   OPTION B — Generate a custom prompt with Claude (recommended for real projects, 10 min):
+   → Open prompts/ai-prompts/generate-agent-instructions.md
+   → Copy the prompt template (the block starting "You are a Copilot Studio specialist...")
+   → Paste it into a Claude conversation (or this Claude Code session)
+   → Fill in the [PASTE SOW SECTION OR PROJECT BRIEF HERE] with 3-5 sentences describing:
+        - what the agent does, who uses it, what it must NOT handle, where out-of-scope topics redirect
+   → Fill in: Agent name, Primary users, Authentication, Tone
+   → Claude returns a ready-to-paste instructions: | block — copy it into agent.mcs.yml
+
+   Both options produce content for the same field:
+   agent.mcs.yml → instructions: | block (lines 6 onwards)
+
+5. Fill in OutOfScope.topic.mcs.yml placeholders:
+   <DOMAIN>              → what your agent handles (e.g. HR policies)
+   <OUT-OF-SCOPE-TOPIC>  → what it does NOT handle (e.g. IT support)
+   <CONTACT>             → where to redirect (e.g. it@company.com)
+
+6. Run the node ID replacement script (base/ topics have _REPLACE IDs — see Step 4 below)
+
+7. Add capabilities from components/ as needed:
+   knowledge/sharepoint, topics/escalation, topics/feedback (CSAT), actions/connector, etc.
+
+8. VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+
+9. Test: make.preview.microsoft.com → your agent → Test pane → Publish
 ```
 
-**1. Copy the base**
-```bash
-cp -r base/ agents/<your-agent-name>/
+**What base/ topics add over the blank agent's defaults:**
+
+| Topic | Blank agent | base/ version |
+|-------|------------|--------------|
+| Greeting | Welcome message | Welcome message + `Conversation.Started` telemetry |
+| Fallback | Generic "I don't understand" | Telemetry + 3-retry logic + auto-escalate |
+| OnError | Silent failure | Debug details in test mode, safe message in production + `Agent.ErrorOccurred` telemetry |
+| OutOfScope | Not present | Telemetry + redirect message with domain-specific placeholders |
+
+**CSAT is not in base/** — add it from `components/topics/feedback/` when needed.
+
+**Time:** 30–45 minutes for a working FAQ agent
+**Concrete example:** → [`examples/team-demo/DEMO-WALKTHROUGH.md`](../examples/team-demo/DEMO-WALKTHROUGH.md)
+
+---
+
+### Path 2 — CLI-only (`pac copilot create`) — automation and CI/CD only
+
+> **Use this only when scripting agent creation (pipelines, cloning, multi-environment promotion).**
+> It is NOT simpler than Path 1 for a developer building a single agent.
+>
+> **Prerequisite: at least one agent must already exist in your environment.**
+> `pac copilot create` requires a template YAML extracted from an existing agent — it cannot create from scratch.
+
+```
+1. Authenticate (one-time)
+   pac auth create
+   pac env select --environment "Dev - My Project"
+
+2. Extract a template from your existing agent:
+   pac copilot list                          ← find your agent's schema name or Copilot ID
+   pac copilot extract-template --bot "<schema-name-or-copilot-id>" --templateFileName "agents\hr_assistant\template.yaml"
+
+3. Create the new agent from that template:
+   pac copilot create --displayName "HR Assistant" --schemaName "hr_assistant" --solution "Default" --templateFileName "agents\hr_assistant\template.yaml"
+
+4. Clone the created agent locally for multi-file YAML editing:
+   VS Code: Ctrl+Shift+P → "Copilot Studio: Clone Agent" → select hr_assistant
+
+5. Edit topics, actions, knowledge in the cloned folder
+
+6. Push changes back:
+   VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+
+7. Publish — use the display name or Copilot ID from pac copilot list, NOT the schema name
+   pac copilot publish --bot "HR Assistant"
 ```
 
-**2. Replace the 5 required values**
+**When to use this path:** Second agent onwards. Creating a copy or variant of an existing agent without touching the browser.
 
-Open each file and replace:
+**Time:** 45–60 minutes first time
 
-| File | Find | Replace with |
-|------|------|-------------|
-| `agent.mcs.yml` | `<AgentName>` | your schema name, e.g. `hr_assistant` |
-| `agent.mcs.yml` | `<Agent Display Name>` | your display name, e.g. `HR Assistant` |
-| `agent.mcs.yml` | `<SYSTEM_PROMPT>` | your agent's purpose (2–3 sentences) |
-| `settings.mcs.yml` | `<agent_schema_name>` | same schema name as above |
-| `Fallback.topic.mcs.yml` | `<AGENT_SCHEMA>` | same schema name as above |
+---
 
-**3. Replace all `_REPLACE` node IDs with unique strings**
+## Step 3 — Fill in the 5 values (Path 1 only)
 
-Run this from inside your agent folder:
+> **Path 2 users: skip this step.** Your cloned files already have real values set by `pac copilot create`.
+> Focus on updating the system prompt and replacing topics with ones from `base/` or `components/`.
+
+> `<AGENT_SCHEMA>`, `<SCHEMA>`, `<agent_schema_name>`, `<AGENT-SCHEMA-NAME>` all mean the same
+> thing — your agent's **schemaName**. Set it once; it goes everywhere.
+>
+> Rules: lowercase, underscores instead of spaces, ≤ 30 characters. Example: `hr_assistant`
+
+| # | Placeholder | File | Line | Example value |
+|---|-------------|------|------|--------------|
+| 1 | `<AgentName>` | `agent.mcs.yml` | 2 | `hr_assistant` |
+| 2 | `<Agent Display Name>` | `agent.mcs.yml` line 4 and `settings.mcs.yml` line 1 | 4 / 1 | `HR Assistant` |
+| 3 | `<agent_schema_name>` | `settings.mcs.yml` | 2 | `hr_assistant` (same as #1) |
+| 4 | `<AGENT_SCHEMA>` | `topics/Fallback.topic.mcs.yml` | 53 | `hr_assistant` (same as #1) |
+| 5 | System prompt | `agent.mcs.yml` | 32–48 | Your domain, scope, out-of-scope |
+
+### `agent.mcs.yml` — change lines 2 and 4
+
+```yaml
+# Before                              # After (example)
+componentName: <AgentName>            componentName: hr_assistant
+displayName: <Agent Display Name>     displayName: HR Assistant
+```
+
+### `settings.mcs.yml` — change lines 1 and 2
+
+```yaml
+# Before                              # After (example)
+displayName: <Agent Display Name>     displayName: HR Assistant
+schemaName: <agent_schema_name>       schemaName: hr_assistant
+```
+
+### `topics/Fallback.topic.mcs.yml` — change line 53
+
+```yaml
+# Before                                        # After (example)
+dialog: <AGENT_SCHEMA>.topic.Escalate           dialog: hr_assistant.topic.Escalate
+```
+
+---
+
+## Step 4 — Replace node IDs
+
+Every YAML node needs a unique ID. The VS Code extension auto-generates these on save.
+Or run this script once:
+
+### Windows (PowerShell)
+
+```powershell
+$schema      = "hr_assistant"        # ← your schemaName (used in YAML values)
+$displayName = "HR Assistant"        # ← your display name
+$folder      = "agents\$displayName" # ← folder on disk — VS Code Clone Agent names it after the display name
+
+# Step 1 — replace _REPLACE node IDs
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path $folder | ForEach-Object {
+    $content = Get-Content $_.FullName -Raw
+    while ($content -match '_REPLACE\d*') {
+        $id = -join ((97..122) + (48..57) | Get-Random -Count 6 | ForEach-Object {[char]$_})
+        $content = [regex]::Replace($content, '_REPLACE\d*', "_$id", 1)
+    }
+    Set-Content $_.FullName $content
+}
+
+# Step 2 — replace all name/schema placeholders
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path $folder |
+    ForEach-Object {
+        (Get-Content $_.FullName) `
+            -replace '<AgentName>',          $schema `
+            -replace '<Agent Display Name>', $displayName `
+            -replace '<agent_schema_name>',  $schema `
+            -replace '<AGENT_SCHEMA>',       $schema `
+            -replace '<AGENT-SCHEMA-NAME>',  $schema `
+            -replace '<SCHEMA>',             $schema |
+        Set-Content $_.FullName
+    }
+```
+
+### Mac / Linux (bash)
 
 ```bash
-# macOS / Linux
-for f in $(find . -name "*.yml"); do
+SCHEMA="hr_assistant"        # ← your schemaName (used in YAML values)
+DISPLAY_NAME="HR Assistant"  # ← your display name
+FOLDER="agents/$DISPLAY_NAME" # ← folder on disk — VS Code Clone Agent names it after the display name
+find "$FOLDER" -name "*.mcs.yml" | while read f; do
   while grep -qE '_REPLACE[0-9]*' "$f"; do
-    id=$(cat /dev/urandom | tr -dc 'a-z0-9' | head -c6)
+    id=$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c6)
     sed -i "0,/_REPLACE[0-9]*/s/_REPLACE[0-9]*/_${id}/" "$f"
   done
+  sed -i "s/<AgentName>/$SCHEMA/g" "$f"
+  sed -i "s/<Agent Display Name>/$DISPLAY_NAME/g" "$f"
+  sed -i "s/<agent_schema_name>/$SCHEMA/g" "$f"
+  sed -i "s/<AGENT_SCHEMA>/$SCHEMA/g" "$f"
+  sed -i "s/<AGENT-SCHEMA-NAME>/$SCHEMA/g" "$f"
+  sed -i "s/<SCHEMA>/$SCHEMA/g" "$f"
 done
-
-# Windows PowerShell
-Get-ChildItem -Recurse -Filter "*.yml" | ForEach-Object {
-  $content = Get-Content $_.FullName -Raw
-  while ($content -match '_REPLACE\d*') {
-    $id = -join ((97..122) + (48..57) | Get-Random -Count 6 | ForEach-Object {[char]$_})
-    $content = $content -replace '_REPLACE\d*', "_$id", 1
-  }
-  Set-Content $_.FullName $content
-}
 ```
 
-**4. Add your recipe components**
+### Verify — must return zero lines before pushing
 
-Each recipe's README has a one-line copy command per component. Example for FAQ:
+> **Note:** `<[A-Za-z]` matches placeholder-style angle brackets only — it ignores Power Fx
+> operators like `< 3` or `> 0` which are valid code, not placeholders.
+
+```powershell
+# Windows PowerShell — use display name (folder is named by display name, not schema)
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\HR Assistant" | Select-String "<[A-Za-z]" | Select-Object Filename, LineNumber, Line
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\HR Assistant" | Select-String "_REPLACE" | Select-Object Filename, LineNumber, Line
+```
 ```bash
-cp components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml agents/<your-agent>/topics/
-cp components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml agents/<your-agent>/knowledge/
+# Mac / Linux
+grep -rn "<[A-Za-z]" "agents/HR Assistant" --include="*.mcs.yml"
+grep -rn "_REPLACE" agents/hr_assistant --include="*.mcs.yml"
 ```
-Then fill in the SharePoint URL in the knowledge file.
-
-**5. Push to Copilot Studio**
-```bash
-cd agents/<your-agent-name>
-pac copilot push --environment <ENV_URL>
-```
-
-**6. Test in Copilot Studio**
-Open Copilot Studio → find your agent → click **Test** → ask questions.
 
 ---
 
-## Step 3 — Before you go live
+## Step 5 — Add components
 
-Run these three checks — takes 15 minutes:
+Copy components from `components/` into your agent folder and fill in their placeholders.
+
+→ **Full per-component guide** (what to copy, exact placeholders, examples):
+[`components/README.md`](../components/README.md#component-quick-reference)
+
+Quick reference — what each component folder provides:
+
+| Folder | What you get |
+|--------|-------------|
+| `topics/action-invoke/` | Call a connector from a topic — question + action + CSAT |
+| `topics/escalation/` | Hand off to a live agent queue |
+| `topics/feedback/` | CSAT thumbs/rating/category at end of conversation |
+| `topics/out-of-scope/` | Redirect questions outside agent scope |
+| `topics/conversation-init/` | Load M365 user profile + glossary on first turn |
+| `topics/question-branch/` | Ask a question, branch on the answer |
+| `actions/connector/` | Power Platform connector action template |
+| `actions/mcp/` | MCP tool action template |
+| `knowledge/sharepoint/` | SharePoint knowledge source |
+| `knowledge/public-website/` | Bing-backed public website knowledge |
+| `knowledge/glossary/` | Acronym expansion via Dataverse |
+| `adaptive-cards/` | Confirmation, form, status, feedback cards |
+| `agents/child-agent/` | Child agent for orchestrator pattern |
+| `variables/` | UserDisplayName, UserCountry, Glossary, custom |
+
+---
+
+## Step 6 — Before you go live
 
 | Check | How |
 |-------|-----|
-| Routing accuracy ≥ 85% | `/copilot-studio:run-eval` or follow `../project-delivery/05-eval-scenarios.md` |
-| No YAML errors | `/copilot-studio:validate` or `pac copilot push` (errors appear in output) |
-| Responsible AI review | `../governance/ai-ethics-checklist.md` — tick every box |
-
-Then: `../launch/launch-checklist.md` — complete all items → publish.
+| Routing accuracy ≥ 85% | `/copilot-studio:run-eval` or `project-delivery/05-eval-scenarios.md` |
+| No YAML errors | `/copilot-studio:validate` — zero red errors in VS Code Problems panel |
+| Responsible AI review | `governance/ai-ethics-checklist.md` — tick every box |
 
 ---
 
-## What's in each file you just edited
+## What's in each base file
 
 | File | What it controls |
 |------|----------------|
-| `agent.mcs.yml` | Agent name, instructions (system prompt), conversation starters, AI model, knowledge sources |
+| `agent.mcs.yml` | Agent name, system prompt, conversation starters, AI model |
 | `settings.mcs.yml` | Auth mode, language, recognizer, who can access the agent |
-| `Greeting.topic.mcs.yml` | First message users see |
-| `Fallback.topic.mcs.yml` | What happens when the agent doesn't understand — retries then escalates |
-| `OnError.topic.mcs.yml` | What happens when the agent crashes — shows a safe message |
+| `topics/Greeting.topic.mcs.yml` | First message users see |
+| `topics/Fallback.topic.mcs.yml` | When agent doesn't understand — retries, then escalates |
+| `topics/OnError.topic.mcs.yml` | When agent crashes — shows a safe message |
+| `topics/OutOfScope.topic.mcs.yml` | Redirects questions outside agent scope |
 
 ---
 
-## Common issues in the first 30 minutes
+## Common issues
 
 | Problem | Fix |
 |---------|-----|
-| `pac copilot push` fails with schema error | Run `/copilot-studio:validate` or check for any remaining `<PLACEHOLDER>` values |
-| Agent doesn't answer from SharePoint | Confirm the SharePoint URL in the knowledge file is accessible and indexed |
-| `_REPLACE` still in YAML after the script | Run `grep -r '_REPLACE' .` to find remaining ones; replace manually |
-| Agent appears in Copilot Studio but shows error | Check `OnError.topic.mcs.yml` — `<AGENT_SCHEMA>` must match your `schemaName` exactly |
-| Teams channel not showing the agent | Agent must be **published** (not just pushed) via Copilot Studio → Publish |
-
-Full troubleshooting: [`troubleshooting/README.md`](../troubleshooting/README.md)
-
----
-
-## Next steps after your first working agent
-
-| What to add | File |
-|---|---|
-| CSAT feedback collection | Add `../components/topics/feedback/` → call via `BeginDialog` at topic end |
-| User sign-in + personalisation | Follow recipe 02 |
-| Connector action (submit data) | Follow recipe 03 |
-| Better routing accuracy | `../project-delivery/05-eval-scenarios.md` |
-| Full governance for enterprise rollout | `../project-delivery/00-ai-decision-framework.md` → work through phases |
-| All reusable components | `COMPONENT-REGISTRY.md` |
+| Apply Changes fails | Confirm the agent exists in the cloud — Apply Changes cannot create a new agent |
+| Push not working via CLI | `pac copilot push` does not exist — use VS Code → "Copilot Studio: Apply Changes" to push multi-file YAML |
+| Agent doesn't answer from SharePoint | Confirm the SharePoint URL is accessible and the service principal has Read access |
+| `_REPLACE` still in YAML | Windows: `Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\<name>" \| Select-String "_REPLACE"` / Mac: `grep -rn "_REPLACE" agents/<name> --include="*.mcs.yml"` |
+| Agent in Copilot Studio shows error | Check `topics/Fallback.topic.mcs.yml` line 53 — `<AGENT_SCHEMA>` must match your `schemaName` |
+| Teams channel not showing agent | Agent must be **published** (not just pushed) via Copilot Studio → Publish |

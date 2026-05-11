@@ -28,11 +28,14 @@ pac --version
 
 **Key commands used in this repo:**
 ```bash
-pac auth create --environment <env-url>   # authenticate
-pac copilot push                          # push YAML to environment
+pac auth create                           # authenticate (browser sign-in)
 pac copilot list                          # list agents in environment
+pac copilot extract-template              # download an existing agent as a single YAML file
+pac copilot publish --bot "<display name or Copilot ID>"   # publish a draft to live — NOT schema name
 pac env list                              # list environments
+pac env select --environment "Dev - ..."  # switch active environment
 ```
+
 
 ---
 
@@ -68,7 +71,8 @@ git config --global user.email "your.email@company.com"
 
 ### 4 — Node.js (for Copilot Studio Kit)
 
-Required only if you plan to run batch evaluations via the Copilot Studio Kit CLI.
+Required if you use the Copilot Studio Kit for:
+- Batch routing accuracy evaluations
 
 **Install:** https://nodejs.org (LTS version)
 
@@ -90,10 +94,10 @@ Install these alongside the Copilot Studio extension for a complete development 
 
 **Install all at once (paste in terminal):**
 ```bash
-code --install-extension ms-powerplatform.powerplatform-vscode-extension
+code --install-extension ms-CopilotStudio.vscode-copilotstudio
 code --install-extension redhat.vscode-yaml
 code --install-extension eamodio.gitlens
-code --install-extension ms-powerplatform.vscode-powerplatform
+code --install-extension microsoft-IsvExpTools.powerplatform-vscode
 code --install-extension yzhang.markdown-all-in-one
 code --install-extension aaron-bond.better-comments
 code --install-extension oderwat.indent-rainbow
@@ -112,28 +116,30 @@ No browser extension is strictly required. The tools above are desktop-only.
 
 ---
 
-## Copilot Studio Kit
+## Copilot Studio Kit (Power CAT)
 
-The official Microsoft open-source toolkit for Copilot Studio — provides batch evaluation, test automation, and additional CLI commands beyond what `pac` offers.
+A Microsoft Power Platform **managed solution** for testing, evaluating, and governing Copilot Studio agents. Installed into your Power Platform environment — not an npm package.
 
-**Repository:** https://github.com/microsoft/Copilot-Studio-Kit
+**What it provides:**
+- Agent inventory and compliance dashboard
+- Batch evaluation of agent responses against test cases
+- SharePoint content synchronization for knowledge sources
+- Conversation KPI reporting in Power BI
 
-**What it adds:**
-- Batch eval CSV runner (`copilot-studio-kit eval run`)
-- Test report generation
-- Additional diagnostic commands
+**Install:** Download and import the managed solution from the [Power CAT Copilot Studio Kit releases](https://github.com/microsoft/Power-CAT-Copilot-Studio-Kit/releases/) or install via [AppSource](https://aka.ms/DownloadCopilotStudioKit).
 
-**Install:**
-```bash
-git clone https://github.com/microsoft/Copilot-Studio-Kit
-cd Copilot-Studio-Kit
-npm install
-npm run build
-```
+> **Note:** This is not a CLI tool. It does not add `pac copilot push` or any terminal command.
+> For pushing agent YAML from local files, use the VS Code extension **Apply Changes** (Cloud-First path)
+> or `pac copilot create` to create an agent from a template YAML file.
 
-**Use with this repo:**
-- Run eval: `copilot-studio-kit eval run --eval-file evals/<agent>-eval.csv --environment <env-id>`
-- See `project-delivery/05-eval-scenarios.md` for how to build the eval CSV
+**Relevant pac CLI commands (built into standard pac CLI — no extra install):**
+
+| Command | What it does |
+|---------|-------------|
+| `pac copilot create --displayName "X" --schemaName "x" --solution "Default" --templateFileName t.yaml` | Create a new agent from a template YAML |
+| `pac copilot extract-template --bot "<display name or Copilot ID>" --templateFileName output.yaml` | Download existing agent as a template YAML file. Use display name or Copilot ID from `pac copilot list` — not schema name |
+| `pac copilot publish --bot "<display name or Copilot ID>"` | Publish the current agent draft to live. Use display name or Copilot ID — not schema name |
+| `pac copilot list` | List agents in the current environment |
 
 ---
 

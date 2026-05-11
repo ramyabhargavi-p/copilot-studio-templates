@@ -23,14 +23,7 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logTopicStarted_REPLACE1
       eventName: Topic.Started
-      properties: >-
-        ={
-          TopicName: "<Topic Name>",
-          UserQuery: System.Activity.Text,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={TopicName: \"<Topic Name>\", UserQuery: System.Activity.Text, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     # Optional: collect input from the user before calling the action
     - kind: Question
@@ -64,13 +57,7 @@ beginDialog:
             - kind: LogCustomTelemetryEvent
               id: logActionSucceeded_REPLACE6
               eventName: Action.Succeeded
-              properties: >-
-                ={
-                  ActionName: "<ActionName>",   # Replace <ActionName> with your action name (e.g. GetLeaveBalance)
-                  ConversationId: System.Conversation.Id,
-                  Channel: System.Activity.Channel,
-                  TimeUTC: Text(Now(), DateTimeFormat.UTC)
-                }
+              properties: "={ActionName: \"<ActionName>\", ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
             - kind: SendActivity
               id: sendResult_REPLACE7
@@ -95,14 +82,7 @@ beginDialog:
         - kind: LogCustomTelemetryEvent
           id: logActionFailed_REPLACE12
           eventName: Action.Failed
-          properties: >-
-            ={
-              ActionName: "<ActionName>",   # Replace <ActionName> with your action name (e.g. GetLeaveBalance)
-              ErrorCode: System.Error.Code,
-              ConversationId: System.Conversation.Id,
-              Channel: System.Activity.Channel,
-              TimeUTC: Text(Now(), DateTimeFormat.UTC)
-            }
+          properties: "={ActionName: \"<ActionName>\", ErrorCode: System.Error.Code, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
         - kind: SendActivity
           id: sendErrorMessage_REPLACE13

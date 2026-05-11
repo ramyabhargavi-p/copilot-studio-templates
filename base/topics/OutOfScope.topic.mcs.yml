@@ -32,15 +32,8 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logOutOfScope_REPLACE1
       eventName: Agent.OutOfScope
-      properties: >-
-        ={
-          UserQuery: System.Activity.Text,
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
+      properties: "={UserQuery: System.Activity.Text, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
-    # Acknowledge the request, name the gap, and redirect to the right resource
     - kind: SendActivity
       id: sendMessage_REPLACE2
       activity:

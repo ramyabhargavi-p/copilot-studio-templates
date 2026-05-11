@@ -1,5 +1,59 @@
 # Prompts
 
+> **Two types of prompts — pick based on how much customisation you need:**
+>
+> | Folder | What it is | When to use |
+> |--------|-----------|------------|
+> | `system-prompts/` | Ready-made personas — copy and paste directly into `agent.mcs.yml` | Starting from a known agent type (HR, IT, customer support, knowledge base) — fastest option |
+> | `ai-prompts/` | Prompts you send to Claude to generate custom YAML | Agent doesn't fit a template, or you want instructions tailored to your exact SOW/brief |
+
+---
+
+## How to use system-prompts (5 minutes)
+
+1. Open the matching file — e.g. `system-prompts/hr-assistant.md`
+2. Copy everything inside the triple backticks (the full prompt text)
+3. In your cloned agent folder, open `agent.mcs.yml`
+4. Replace the entire `instructions: |` block with what you copied
+5. Replace every `[BRACKET]` value with your real values:
+   - `[Company Name]` → e.g. Graybar
+   - `payroll@[company].com` → real contact email
+   - `[IT helpdesk link or email]` → real helpdesk link
+6. Save — then VS Code → Apply Changes
+
+**UI alternative:** Copilot Studio portal → your agent → Settings → Instructions → paste the text → Save
+
+---
+
+## How to use ai-prompts to generate custom instructions (10 minutes)
+
+Use `ai-prompts/generate-agent-instructions.md` when the ready-made personas don't fit your project.
+
+**Step 1** — Open `ai-prompts/generate-agent-instructions.md` and copy the prompt template block.
+
+**Step 2** — Paste it into Claude (this Claude Code session, or claude.ai) and fill in the blanks:
+
+```
+Project brief:
+---
+[3–5 sentences: what the agent does, who uses it, what it must NOT handle,
+where out-of-scope topics should redirect, any compliance or tone requirements]
+---
+
+Agent name: HR Assistant
+Primary users: internal employees
+Authentication: ManualAzureAD
+Tone: Empathetic
+```
+
+**Step 3** — Claude returns a ready-to-paste `instructions: |` block. Copy the output.
+
+**Step 4** — Paste it into `agent.mcs.yml` replacing the `instructions: |` block. Save.
+
+**Step 5** — VS Code → Apply Changes.
+
+> **Tip:** You can also ask Claude to refine an existing instructions block. Open the "Variations" section in `generate-agent-instructions.md` for the refine and add-date-context prompts.
+
 Two types of prompts — one for what you paste into your agent, one for what you send to Claude.
 
 ---

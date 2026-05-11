@@ -1,27 +1,60 @@
-# Base Agent
+# Base Agent Template — Start Here
 
-The minimum viable Copilot Studio agent. **Copy this folder to start every new agent project.**
+The **minimum viable Copilot Studio agent**. Copy this entire folder to create a new agent project.
 
-## What's Included
+## Why Start With base/?
 
-| File | Purpose |
-|------|---------|
-| `agent.mcs.yml` | Agent identity — display name, system prompt, conversation starters, AI model |
-| `settings.mcs.yml` | Runtime config — auth mode, recognizer, language, access policy |
-| `topics/Greeting.topic.mcs.yml` | Fires on conversation start; sends a welcome message |
-| `topics/Fallback.topic.mcs.yml` | Fires on unmatched intent; retries 3× then escalates to human |
-| `topics/OnError.topic.mcs.yml` | Fires on system errors; debug-friendly in test mode, safe in production |
-| `topics/OutOfScope.topic.mcs.yml` | Fires on explicit out-of-domain phrases; returns a clear redirect instead of a fallback |
+- ✅ Has all 6 files every agent needs
+- ✅ Includes error handling (Fallback, OnError, OutOfScope)
+- ✅ Follows Copilot Studio best practices
+- ✅ Ready to customize and deploy in 15 minutes
+- ✅ Used by all recipes (01–06) as foundation
 
-## Setup Steps
+## What's Inside (6 Files)
 
-1. Copy this entire `base/` folder into your new agent project directory
-2. **`agent.mcs.yml`** — replace `<AgentName>`, `<Agent Display Name>`, and update `instructions`
-3. **`settings.mcs.yml`** — replace `<agent_schema_name>` and `<Agent Display Name>`; set `authenticationMode`
-4. **All topic files** — replace every `_REPLACE` suffix with a unique random string (e.g. `_a1b2c3`)
-5. **`Fallback.topic.mcs.yml`** — replace `<AGENT_SCHEMA>` with your agent's `schemaName`
-6. **`OutOfScope.topic.mcs.yml`** — replace `<DOMAIN>`, `<OUT-OF-SCOPE-TOPIC>`, `<CONTACT>` and add domain-specific trigger phrases
-7. Push to Copilot Studio using `pac copilot push` or the VS Code Copilot Studio extension
+| File | Purpose | You'll Edit |
+|------|---------|-----------|
+| `agent.mcs.yml` | Agent identity & system prompt | ✅ Yes — your prompt |
+| `settings.mcs.yml` | Runtime config (auth, language) | ✅ Yes — auth mode |
+| `topics/Greeting.topic.mcs.yml` | Welcome message (fires first) | ⚪ Usually not |
+| `topics/Fallback.topic.mcs.yml` | "I don't understand" (built-in) | ⚪ Usually not |
+| `topics/OnError.topic.mcs.yml` | Error handling (safety) | ⚪ Usually not |
+| `topics/OutOfScope.topic.mcs.yml` | "Not my area" + redirect | ✅ Yes — add domain |
+
+## Setup (6 Steps)
+
+### Step 1: Copy to Your Project
+```bash
+cp -r base/ agents/my_agent/
+cd agents/my_agent/
+code .
+```
+
+### Step 2: Edit agent.mcs.yml
+Replace these **3 values**:
+- `<AgentName>` → lowercase schema name (e.g., `my_agent`)
+- `<Agent Display Name>` → friendly name (e.g., `My First Agent`)
+- `<SYSTEM_PROMPT>` → what your agent does (2–3 sentences)
+
+### Step 3: Edit settings.mcs.yml
+Replace this **1 value**:
+- `<agent_schema_name>` → same as AgentName above
+
+### Step 4: Edit Fallback.topic.mcs.yml
+Replace this **1 value**:
+- `<AGENT_SCHEMA>` → same as AgentName above
+
+### Step 5: Verify (VS Code)
+- Save (Ctrl+S)
+- View → Problems → Should see 0 red errors
+- Expected: green checkmarks or no problems
+
+### Step 6: Deploy to Cloud
+```
+Ctrl+Shift+P → Copilot Studio: Apply Changes
+```
+
+✅ **Agent is now in cloud (Draft status)**
 
 ## Key Decisions
 

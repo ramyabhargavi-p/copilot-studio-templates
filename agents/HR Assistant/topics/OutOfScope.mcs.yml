@@ -1,0 +1,32 @@
+mcs.metadata:
+  componentName: Out of Scope
+  description: Fires on OnRecognizedIntent for known out-of-scope phrases. Redirects to the appropriate contact instead of falling through to Fallback.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Out of Scope
+    triggerQueries:
+      - IT support
+      - raise an IT ticket
+      - computer not working
+      - expense claim
+      - book a meeting room
+      - office supplies
+      - payroll query
+      - salary question
+
+  actions:
+    - kind: LogCustomTelemetryEvent
+      id: logOutOfScope_a4k9mz
+      eventName: Agent.OutOfScope
+      properties: "={UserQuery: System.Activity.Text, ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
+
+    - kind: SendActivity
+      id: sendMessage_b7r2nx
+      activity:
+        text:
+          - That falls outside what I'm set up for. I specialise in HR policies and employee queries. For IT support, please reach out to it@company.com.
+          - I'm only able to help with HR policies and employee queries. For IT support, it@company.com would be your best bet. Is there something about HR I can assist with?
+

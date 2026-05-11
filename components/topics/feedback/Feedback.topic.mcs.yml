@@ -89,14 +89,7 @@ triggers:
       - kind: LogCustomTelemetryEvent
         id: logThumbsFeedback_REPLACE8
         eventName: Feedback.Thumbs
-        properties: >-
-          ={
-            feedbackValue: Topic.ThumbsResponse.feedbackValue,
-            score: Text(Topic.ThumbsScore),
-            conversationId: System.Conversation.Id,
-            channel: System.Activity.Channel,
-            timeUTC: Text(Now(), DateTimeFormat.UTC)
-          }
+        properties: "={feedbackValue: Topic.ThumbsResponse.feedbackValue, score: Text(Topic.ThumbsScore), conversationId: System.Conversation.Id, channel: System.Activity.Channel, timeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
       # ── If positive: thank and close ──────────────────────────────────────
       - kind: ConditionGroup
@@ -108,8 +101,7 @@ triggers:
               - kind: SendActivity
                 id: sendPositiveThanks_REPLACE11
                 activity:
-                  text: >-
-                    Thank you for the positive feedback — glad I could help!
+                  text: Thank you for the positive feedback — glad I could help!
               - kind: EndDialog
                 id: endOnPositive_REPLACE12
 
@@ -183,13 +175,7 @@ triggers:
               - kind: LogCustomTelemetryEvent
                 id: logRatingFeedback_REPLACE17
                 eventName: Feedback.Rating
-                properties: >-
-                  ={
-                    score: Text(Topic.RatingScore),
-                    conversationId: System.Conversation.Id,
-                    channel: System.Activity.Channel,
-                    timeUTC: Text(Now(), DateTimeFormat.UTC)
-                  }
+                properties: "={score: Text(Topic.RatingScore), conversationId: System.Conversation.Id, channel: System.Activity.Channel, timeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
               # ── If rating ≤ 3: ask for improvement category ────────────────
               - kind: ConditionGroup
@@ -264,15 +250,7 @@ triggers:
                               - kind: LogCustomTelemetryEvent
                                 id: logCategoryFeedback_REPLACE24
                                 eventName: Feedback.Category
-                                properties: >-
-                                  ={
-                                    feedbackCategory: Topic.TextResponse.feedbackCategory,
-                                    ratingScore: Text(Topic.RatingScore),
-                                    conversationId: System.Conversation.Id,
-                                    channel: System.Activity.Channel,
-                                    timeUTC: Text(Now(), DateTimeFormat.UTC)
-                                  }
-                                # feedbackText intentionally excluded — free-form input may contain PII
+                                properties: "={feedbackCategory: Topic.TextResponse.feedbackCategory, ratingScore: Text(Topic.RatingScore), conversationId: System.Conversation.Id, channel: System.Activity.Channel, timeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
                   - id: highRatingBranch_REPLACE25
                     condition: =Topic.RatingScore > 3
@@ -281,9 +259,7 @@ triggers:
               - kind: SendActivity
                 id: sendFinalThanks_REPLACE26
                 activity:
-                  text: >-
-                    Thank you for your feedback — it helps us improve.
-                    If you need anything else, I'm here to help.
+                  text: Thank you for your feedback — it helps us improve. If you need anything else, I'm here to help.
 
       - kind: EndDialog
         id: endFeedback_REPLACE27

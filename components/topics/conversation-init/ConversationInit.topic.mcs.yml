@@ -62,13 +62,7 @@ beginDialog:
         - kind: LogCustomTelemetryEvent
           id: logProfileFailed_REPLACE8
           eventName: ConversationInit.ProfileLoadFailed
-          properties: >-
-            ={
-              ConversationId: System.Conversation.Id,
-              Channel: System.Activity.Channel,
-              TimeUTC: Text(Now(), DateTimeFormat.UTC)
-            }
-          # Do not log UserDisplayName, UserCountry, or other profile fields here — PII rule
+          properties: "={ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
 
     # ── Glossary load (remove this block if not needed) ──────────────────────
     - kind: SearchAndSummarizeContent
@@ -90,12 +84,4 @@ beginDialog:
     - kind: LogCustomTelemetryEvent
       id: logConvInitCompleted_REPLACE13
       eventName: ConversationInit.Completed
-      properties: >-
-        ={
-          ProfileLoaded: !IsBlank(Topic.M365Profile),
-          GlossaryLoaded: !IsBlank(Global.Glossary),
-          ConversationId: System.Conversation.Id,
-          Channel: System.Activity.Channel,
-          TimeUTC: Text(Now(), DateTimeFormat.UTC)
-        }
-      # Do not log UserDisplayName, UserCountry or other profile fields here — PII rule
+      properties: "={ProfileLoaded: !IsBlank(Topic.M365Profile), GlossaryLoaded: !IsBlank(Global.Glossary), ConversationId: System.Conversation.Id, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"

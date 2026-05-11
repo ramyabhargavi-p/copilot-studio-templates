@@ -1,0 +1,48 @@
+mcs.metadata:
+  componentName: On Error
+  description: Fires on any unhandled system error. Shows debug details in test mode, safe message in production. Always logs telemetry.
+kind: AdaptiveDialog
+startBehavior: UseLatestPublishedContentAndCancelOtherTopics
+beginDialog:
+  kind: OnError
+  id: main
+  actions:
+    - kind: SetVariable
+      id: setTime_decpkz
+      variable: init:Topic.CurrentTime
+      value: =Text(Now(), DateTimeFormat.UTC)
+
+    - kind: ConditionGroup
+      id: conditionGroup_decpkz
+      conditions:
+        - id: conditionItem_decpkz
+          condition: =System.Conversation.InTestMode = true
+          actions:
+            - kind: SendActivity
+              id: sendMessageTest_decpkz
+              activity: |-
+                **[Test Mode — Error Details]**
+                Message:      {System.Error.Message}
+                Code:         {System.Error.Code}
+                Conversation: {System.Conversation.Id}
+                Channel:      {System.Activity.Channel}
+                Time (UTC):   {Topic.CurrentTime}
+
+      elseActions:
+        - kind: SendActivity
+          id: sendMessageProd_decpkz
+          activity:
+            text:
+              - |-
+                Something went wrong on my end. Please try again, or contact support if this keeps happening.
+                Reference ID: {System.Conversation.Id}
+            speak:
+              - Something went wrong. Please try again.
+
+    - kind: LogCustomTelemetryEvent
+      id: logError_decpkz
+      eventName: Agent.ErrorOccurred
+      properties: "={ConversationId: System.Conversation.Id, ErrorCode: System.Error.Code, Channel: System.Activity.Channel, TimeUTC: Text(Now(), DateTimeFormat.UTC)}"
+
+    - kind: CancelAllDialogs
+      id: cancelAll_decpkz

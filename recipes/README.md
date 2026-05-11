@@ -1,88 +1,107 @@
-# Recipes
+# Recipes: Step-by-Step Agent Builds
 
-Eight step-by-step guides for the most common agent types. Recipes 01–06 are Copilot Studio YAML. Recipes 07–08 are pro-code (M365 Agents SDK and Azure AI Foundry) — use these when Copilot Studio alone is not enough.
-
----
-
-## Pick your recipe
-
-### Copilot Studio recipes (YAML, low-code)
-
-| Recipe | Build this when… | Complexity | Time |
-|--------|-----------------|-----------|------|
-| [`01-basic-faq.md`](01-basic-faq.md) | Users ask questions answered in SharePoint docs. No sign-in. | Low | 30 min |
-| [`02-authenticated-agent.md`](02-authenticated-agent.md) | Users must sign in. Agent greets them by name. | Low–Medium | 45 min |
-| [`03-connector-action-agent.md`](03-connector-action-agent.md) | Agent submits or retrieves data from a business system (Dataverse, ServiceNow, SharePoint lists). | Medium | 60 min |
-| [`04-mcp-action-agent.md`](04-mcp-action-agent.md) | Agent calls an external tool via MCP protocol. | Medium | 60 min |
-| [`05-orchestrator-agent.md`](05-orchestrator-agent.md) | Agent routes across multiple specialist sub-agents. | High | 2+ hr |
-| [`06-full-featured-agent.md`](06-full-featured-agent.md) | Auth + knowledge + connector actions + disambiguation + CSAT. | High | 2+ hr |
-
-### Pro-code recipes (SDK + Azure)
-
-| Recipe | Build this when… | Complexity | Time |
-|--------|-----------------|-----------|------|
-| [`07-m365-agents-sdk.md`](07-m365-agents-sdk.md) | You need custom orchestration, fine-grained model control, or multi-channel beyond Teams. Pro-code (C# / TypeScript / Python). | High | 2+ hr |
-| [`08-azure-ai-foundry.md`](08-azure-ai-foundry.md) | You need code interpreter, custom models, > 8,000 RPM scale, or multi-agent workflows. Migrating from Copilot Studio ("Progressive Enhancement"). | High | 3+ hr |
+Eight complete guides for the most common agent types. Pick one, follow it, done.
 
 ---
 
-## Not sure which to pick?
+## 🎯 Which Recipe for You?
 
-**Step 1 — Are you a maker or a pro-dev?**
-- Maker / no code preferred → recipes `01`–`06` (Copilot Studio YAML)
-- Pro-dev, need full control → recipes `07`–`08`
+**Step 1:** Does the agent need to sign in users?
+- **No** → Go to Step 2
+- **Yes** → Use **Recipe 02** (Authenticated Agent)
 
-**Step 2 — Does the agent need to read or write data in a business system?**
-- No → `01` or `02`
-- Yes, via Power Platform connector → `03`
-- Yes, via MCP tool → `04`
+**Step 2:** Does the agent need to read/write business data?
+- **No** → Use **Recipe 01** (Basic FAQ)
+- **Yes** → Go to Step 3
 
-**Step 3 — Does the agent need to handle many topics across multiple domains?**
-- No → use whichever of `01–04` fits
-- Yes, hub-and-spoke → `05` or `06`
-- Yes, with custom logic → `07` (SDK) calling `05`/`06`
+**Step 3:** Where is the data stored?
+- **SharePoint, Dataverse, ServiceNow** → Use **Recipe 03** (Connector Actions)
+- **Custom API** → Use **Recipe 04** (MCP Actions)
 
-**Step 4 — Do you need anything Copilot Studio can't provide?**
-- Code interpreter (run Python in-agent) → `08` (Foundry)
-- > 8,000 RPM / multi-region scale → `08` (Foundry)
-- Custom model from Foundry catalog → `08` (Foundry)
-- Multi-channel beyond Teams + Copilot → `07` (M365 Agents SDK)
-- Fine-grained pre/post processing → `07` (M365 Agents SDK)
+**Step 4:** Does the agent need to route across multiple sub-agents?
+- **No** → Use recipe from above
+- **Yes** → Use **Recipe 05** (Orchestrator)
+
+**Step 5:** Do you need everything (Auth + Knowledge + Actions + Feedback)?
+- **Yes** → Use **Recipe 06** (Full Featured)
+
+**Need custom pro-code logic?**
+- **Yes** → Use **Recipe 07** (M365 Agents SDK) or **Recipe 08** (Azure AI Foundry)
 
 ---
 
-## How recipes 07 and 08 relate to recipes 01–06
+## 📖 All 8 Recipes at a Glance
+
+### Copilot Studio (Low-Code YAML)
+
+| Recipe | For | Complexity | Time | Files |
+|--------|-----|-----------|------|-------|
+| **01-basic-faq** | Questions answered in docs | ⭐ Easy | 30 min | 3 |
+| **02-authenticated** | Users sign in first | ⭐⭐ Medium | 45 min | 5 |
+| **03-connector-actions** | Read/write business systems | ⭐⭐ Medium | 60 min | 6 |
+| **04-mcp-actions** | Call external APIs | ⭐⭐ Medium | 60 min | 5 |
+| **05-orchestrator** | Route across sub-agents | ⭐⭐⭐ Hard | 2+ hr | 8 |
+| **06-full-featured** | Everything combined | ⭐⭐⭐ Hard | 2+ hr | 10 |
+
+### Pro-Code (SDK)
+
+| Recipe | For | Complexity | Time | Language |
+|--------|-----|-----------|------|----------|
+| **07-m365-sdk** | Custom orchestration, fine-grained control | ⭐⭐⭐ Hard | 2+ hr | C#/TS/Python |
+| **08-foundry** | Code execution, scaling, custom models | ⭐⭐⭐ Hard | 3+ hr | Python |
+
+---
+
+## 📋 How to Use Each Recipe
+
+### For Recipes 01–06 (Copilot Studio YAML)
+
+Each recipe includes:
+1. **Decision matrix** — When to use this vs others
+2. **Files checklist** — Exactly what to copy
+3. **Find & Replace table** — What values to change where
+4. **Setup commands** — Copy-paste ready
+5. **Test checklist** — Verify before deploying
+6. **Expected results** — What success looks like
+
+### For Recipes 07–08 (Pro-Code)
+
+Each includes:
+1. **When to use** — Decision vs Copilot Studio
+2. **Dev setup** — Environment requirements
+3. **Code template** — Start here
+4. **Deploy** — Integration with Copilot Studio
+5. **Test** — Verification steps
+
+---
+
+## ✅ Typical Workflow
 
 ```
-Recipes 01–06 (Copilot Studio)
-    │
-    ├── Recipe 07 (M365 Agents SDK)
-    │   └── Wraps or orchestrates Copilot Studio agents
-    │       Uses @microsoft/agents-copilotstudio-client
-    │
-    └── Recipe 08 (Azure AI Foundry)
-        ├── Receives calls FROM Copilot Studio (via connector action)
-        ├── OR replaces specific Copilot Studio topics/agents
-        └── Progressive Enhancement: Copilot Studio → Foundry over time
+1. Pick your recipe (01–08) ← You are here
+2. Open recipe file
+3. Copy component files (use provided bash commands)
+4. Replace find/replace values (use provided table)
+5. Deploy to cloud
+6. Test in Copilot Studio
+7. Iterate & enhance
 ```
 
 ---
 
-## What each recipe contains
+## 💡 Pro Tips
 
-Copilot Studio recipes (01–06):
-1. **Component list** — exactly which YAML files to copy
-2. **Values to change** — find/replace table
-3. **Copy commands** — one bash command per file
-4. **Setup checklist** — tick-box before pushing
+- **Start with 01 or 02** if you're new — simplest, fastest
+- **Use 03/04** when you have business data — reading/writing systems
+- **Use 05/06** when handling multiple domains — specialized agents
+- **Use 07/08** when Copilot Studio can't do what you need — custom logic
+- **Combine recipes** — Start with 01, add auth from 02, add actions from 03
 
-Pro-code recipes (07–08):
-1. **When to use vs Copilot Studio** — decision table
-2. **Project structure** — folder layout
-3. **Step-by-step setup** — scaffold → code → test → deploy
-4. **Integration with Copilot Studio templates** — how they connect
-5. **Setup checklist** — tick-box before deploying
+---
 
-→ All component call signatures: [`../docs/COMPONENT-REGISTRY.md`](../docs/COMPONENT-REGISTRY.md)
-→ Full end-to-end guide: [`../docs/END-TO-END-DEV-GUIDE.md`](../docs/END-TO-END-DEV-GUIDE.md)
-→ If you're new: start with [`../docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md) first
+## Need More Help?
+
+- **Full tutorial?** See [`../docs/QUICKSTART.md`](../docs/QUICKSTART.md)
+- **Real example?** See [`../examples/it-helpdesk/`](../examples/)
+- **Component details?** See [`../components/`](../components/)
+- **Something broken?** See [`../troubleshooting/README.md`](../troubleshooting/README.md)

@@ -1,5 +1,20 @@
 # CI/CD Pipelines
 
+> **Prerequisites before using these pipelines:**
+> - Service principal with Contributor role on the Power Platform environment
+> - GitHub secrets set: `POWER_PLATFORM_URL`, `CLIENT_ID`, `CLIENT_SECRET`, `TENANT_ID`
+> - Note: `pac copilot push` does not exist in pac CLI. The pipeline YAML files in this folder
+>   use it as a placeholder — replace with your deployment approach (solution import or VS Code Apply Changes via agent).
+>   The `solution-build-and-deploy.yml` workflow is the recommended enterprise-grade approach.
+> - Three environments: Dev, UAT, Production (separate Power Platform environments)
+>
+> **Which workflow file to use:**
+> | Workflow | Trigger | What it does |
+> |----------|---------|-------------|
+> | `push-on-pr.yml` | PR to main | Validates YAML (no `<PLACEHOLDER>` or `_REPLACE` strings), runs dry-run |
+> | `promote-dev-to-uat.yml` | Manual dispatch | Pushes agent to UAT environment with approval gate |
+> | `promote-uat-to-prod.yml` | Manual dispatch after UAT sign-off | Promotes to Production |
+
 Automated push and publish workflows for Copilot Studio agents using GitHub Actions and the Power Platform CLI (`pac`).
 
 ---

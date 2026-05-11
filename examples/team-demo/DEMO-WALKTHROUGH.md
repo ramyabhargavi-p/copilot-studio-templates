@@ -249,28 +249,59 @@ siteUrl: https://contoso.sharepoint.com/sites/IT-KB    # your SharePoint site
 
 ## Step 6 — Replace all placeholders and push (5 min)
 
+### Demo agent placeholder values
+
+| Placeholder | Value for this demo |
+|-------------|-------------------|
+| `componentName` / `schemaName` | `it_support_demo` |
+| `displayName` | `IT Support Assistant` |
+| `<AGENT_SCHEMA>` in `Fallback.topic.mcs.yml` line 53 | `it_support_demo` |
+| `_REPLACE` node IDs | Run script below |
+
+### Replace IDs (PowerShell)
+
 ```powershell
-# Windows PowerShell — replace all _REPLACE IDs with unique strings
-Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents/it_support_demo" | ForEach-Object {
-  $content = Get-Content $_.FullName -Raw
-  while ($content -match '_REPLACE\d*') {
-    $id = -join ((97..122) + (48..57) | Get-Random -Count 6 | ForEach-Object {[char]$_})
-    $content = $content -replace '_REPLACE\d*', "_$id", 1
-  }
-  Set-Content $_.FullName $content
+$schema = "it_support_demo"
+$folder = "agents\$schema"
+
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path $folder | ForEach-Object {
+    $content = Get-Content $_.FullName -Raw
+    while ($content -match '_REPLACE\d*') {
+        $id = -join ((97..122) + (48..57) | Get-Random -Count 6 | ForEach-Object {[char]$_})
+        $content = [regex]::Replace($content, '_REPLACE\d*', "_$id", 1)
+    }
+    Set-Content $_.FullName $content
 }
-
-# Replace schema placeholder
-Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents/it_support_demo" |
-  ForEach-Object { (Get-Content $_.FullName) -replace '<SCHEMA>', 'it_support_demo' |
-  Set-Content $_.FullName }
-
-# Validate — dry run first
-pac copilot push --dry-run
-
-# Push to Dev environment
-pac copilot push
+Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path $folder |
+    ForEach-Object { (Get-Content $_.FullName) -replace '<AGENT_SCHEMA>', $schema |
+    Set-Content $_.FullName }
 ```
+
+### Push to cloud — choose your path before the demo
+
+**Path A — Cloud-First (recommended for demos — zero extra tools)**
+
+> Use this path — it requires no extra tools beyond VS Code and the Copilot Studio extension.
+
+```
+1. Browser: make.preview.microsoft.com → Create → New blank agent "IT Support Assistant Demo" → Create
+
+2. VS Code: Ctrl+Shift+P → "Copilot Studio: Clone Agent"
+   → sign in → select Demo environment → select "IT Support Assistant Demo"
+   → output folder: agents/it_support_demo_cloud/
+
+3. Copy your edited YAML files from agents/it_support_demo/ into the cloned folder
+   (overwrite agent.mcs.yml, settings.mcs.yml, and all topic files)
+
+4. VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+   → uploads all YAML as a draft
+```
+
+**Path B — CLI-only (no VS Code extension required for push):**
+
+> Not available via `pac copilot push` — that command does not exist.
+> To create the agent without the browser UI, use `pac copilot create` with a template YAML file.
+> For the demo, use Path A — it is simpler and requires no extra tools.
 
 ---
 
@@ -310,7 +341,8 @@ agents/
 | PasswordReset | "Copy scaffold, add 6 trigger phrases, write one response. That's it. Error handling and telemetry are already there." |
 | SubmitTicket | "The action template wires the connector call, the success/failure branches, and the CSAT prompt in one file. You only fill in the connector and the messages." |
 | OutOfScope | "This is your guardrail. When a user asks something outside IT, they get a clear redirect — not 'I don't understand'." |
-| Push + deploy | "`pac copilot push --dry-run` catches YAML errors before they reach users. `pac copilot push` deploys in seconds." |
+| Push (Path A) | "We created the agent in the browser, cloned it locally with VS Code, edited the YAML, then hit Apply Changes. The draft is live in seconds — no extra tools needed." |
+| Push (Path B) | "We edit YAML locally in VS Code, then hit 'Apply Changes'. The extension syncs the draft to Copilot Studio in seconds — no CLI tool needed." |
 | Telemetry | "Every topic fires `Topic.Started`. Every action fires `Action.Succeeded` or `Action.Failed`. On day one, Application Insights is already populated." |
 
 ---
@@ -335,4 +367,4 @@ These are great follow-up topics once the team has built their first agent.
 
 → Full build guide: [ENGINEERING-PLAYBOOK.md](../../ENGINEERING-PLAYBOOK.md)
 → Template library: [docs/TEMPLATES.md](../../docs/TEMPLATES.md)
-→ First-agent walkthrough: [docs/GETTING-STARTED.md](../../docs/GETTING-STARTED.md)
+→ Quickstart (creation paths + placeholder guide): [docs/QUICKSTART.md](../../docs/QUICKSTART.md)

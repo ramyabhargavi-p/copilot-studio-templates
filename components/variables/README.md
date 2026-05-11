@@ -2,6 +2,13 @@
 
 5 global variable templates. Variables declared here are available across all topics in the agent.
 
+> **Apply Changes limitation** — If pushing a variable file causes `[0x800608ad:ExportKeyAttributeInvalidPrefix]`:
+> 1. Delete the `.variable.mcs.yml` file(s) from your agent's `variables/` folder
+> 2. Run Apply Changes to push topics and settings first
+> 3. Re-add the variable file(s) and run Apply Changes again once the agent is in the cloud
+>
+> Global variables are created dynamically at runtime by `SetVariable` actions — the declaration file exists for VS Code IntelliSense only. Your agent works correctly without it.
+
 ---
 
 ## Variables

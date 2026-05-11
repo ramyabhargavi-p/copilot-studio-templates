@@ -135,7 +135,7 @@ For each SharePoint path that will be a knowledge source:
 > Name(s):
 
 **Is there a CI/CD pipeline?**
-- [ ] No — manual `pac copilot push` from local
+- [ ] No — apply changes via VS Code "Copilot Studio: Apply Changes"
 - [ ] Yes — pipeline tool: _______________
 
 **Deployment environments:**
