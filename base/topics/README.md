@@ -10,4 +10,6 @@
 
 These topics are pre-configured in `base/`. Replace `<AGENT_NAME>` and `<SCHEMA>` placeholders with your agent's values.
 
+> **CMD scripts** — all `<PLACEHOLDER>` and `_REPLACE` node IDs in these files are handled by the PowerShell/bash scripts in [QUICKSTART.md → Step 4 — Replace node IDs](../../docs/QUICKSTART.md#step-4--replace-node-ids). Run the script once after copying files into your agent folder.
+
 → Full base setup: [`../README.md`](../README.md)

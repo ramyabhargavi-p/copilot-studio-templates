@@ -481,7 +481,7 @@ pac copilot publish --bot "39cf38ed-3416-456d-be4e-b2cc9d426bbb"  # use Copilot 
 
 ---
 
-### `pac copilot extract-template` — "No bots were found using search pattern 'TestGIA'"
+### `pac copilot extract-template` — "No bots were found using search pattern 'HR Assistant'"
 
 **Cause:** `--bot` on `extract-template` also does NOT accept the display name. It requires the **schema name** or **Copilot ID**.
 
