@@ -103,7 +103,7 @@ Actual output format (pac 2.7.4):
 
 ```
 Name     Copilot ID                           Component State  Is Managed  Solution ID                          Status Code  State Code
-TestGIA  f1714949-c144-f111-88b5-00224809a00b Published        False       fd140aae-4df4-11dd-bd17-0019b9312238 Active       Provisioned
+HR Assistant  f1714949-c144-f111-88b5-00224809a00b Published        False       fd140aae-4df4-11dd-bd17-0019b9312238 Active       Provisioned
 ```
 
 > **Important:** The `Name` column is the display name — it is NOT what `--bot` accepts.
@@ -126,29 +126,30 @@ Downloads the agent as a single YAML template file.
 pac copilot list
 
 # Step 2 — create the output directory first (command fails with DirectoryNotFoundException if missing)
-mkdir agents\TestGIA
+mkdir agents\hr_assistant
 
 # Step 3 — extract using the GUID and explicit --templateVersion
 pac copilot extract-template \
   --bot "f1714949-c144-f111-88b5-00224809a00b" \
-  --templateFileName ./agents/TestGIA/TestGIA.yaml \
+  --templateFileName ./agents/hr_assistant/hr_assistant.yaml \
   --templateVersion 1.0.0
 ```
 
 **Why GUID, not display name?**
 `--bot` accepts a Copilot ID (GUID) or schema name — not the display name shown in the UI.
-Using the display name causes: `No bots were found using search pattern 'TestGIA'`
+Using the display name causes: `No bots were found using search pattern 'HR Assistant'`
 
 **Why `--templateVersion 1.0.0`?**
 In pac 2.7.4, omitting `--templateVersion` causes `Argument --templateVersion is invalid` even
 though the help says it defaults to `1.0.0`. Pass it explicitly to avoid the error.
+Once you upgrade past pac 2.7.4, remove this flag from your scripts.
 
 **With an explicit environment:**
 
 ```bash
 pac copilot extract-template \
   --bot "f1714949-c144-f111-88b5-00224809a00b" \
-  --templateFileName ./agents/TestGIA/TestGIA.yaml \
+  --templateFileName ./agents/hr_assistant/hr_assistant.yaml \
   --templateVersion 1.0.0 \
   --environment "Dev - My Project"
 ```
@@ -158,7 +159,7 @@ pac copilot extract-template \
 ```bash
 pac copilot extract-template \
   --bot "f1714949-c144-f111-88b5-00224809a00b" \
-  --templateFileName ./agents/TestGIA/TestGIA.yaml \
+  --templateFileName ./agents/hr_assistant/hr_assistant.yaml \
   --templateVersion 1.0.0 \
   --overwrite
 ```
@@ -400,6 +401,6 @@ pac copilot --help
 
 | Bug | Symptom | Workaround |
 |-----|---------|------------|
-| `--templateVersion` required | `Argument --templateVersion is invalid` even when not passed | Always pass `--templateVersion 1.0.0` |
+| `--templateVersion` required | `Argument --templateVersion is invalid` even when not passed | Always pass `--templateVersion 1.0.0`; remove this flag after upgrading past pac 2.7.4 |
 | `--bot` rejects display names | `No bots were found using search pattern 'AgentName'` | Use the GUID from `pac copilot list` |
 | `DirectoryNotFoundException` | Command exits with non-recoverable error | Create output directory before running extract-template |

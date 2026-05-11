@@ -21,7 +21,7 @@ Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTA
 
 ## Placeholders
 
-Only `_REPLACE1–6` — all replaced automatically by VS Code on save. No manual placeholders.
+Only `_REPLACE1–6` — run the ID script, no manual placeholders. See [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
 
 ## Prerequisites checklist
 
