@@ -11,8 +11,8 @@ Practical fixes for the most common issues encountered when building, testing, a
 
 ## Table of Contents
 
-1. [Agent Not Appearing / Not Working After Publishing to Teams or Copilot](#1--agent-not-appearing--not-working-after-publishing-to-teams-or-copilot)
-2. [Apply Changes / YAML Push Errors](#2--apply-changes--yaml-push-errors)
+1. [Agent Not Appearing / Not Working After Publishing to Teams or Copilot](#1--agent-not-appearing--not-working-after-publishing-to-teams-or-copilot) — includes [1e: "You don't have access to talk to this bot"](#1e--intermittent-you-dont-have-access-to-talk-to-this-bot-in-teams)
+2. [Apply Changes / YAML Push Errors](#2--apply-changes--yaml-push-errors) — includes [2a: Duplicate component after copying templates](#2a--duplicate-component-error-after-copying-template-files-into-a-cloned-folder)
 3. [Topics Not Triggering Correctly](#3--topics-not-triggering-correctly)
 4. [Knowledge Search Not Returning Answers](#4--knowledge-search-not-returning-answers)
 5. [Connector / Action Failures](#5--connector--action-failures)
@@ -68,6 +68,51 @@ This is the most common post-publish issue. Work through these checks in order.
 | Conversation not stuck in a broken topic | Try clearing the conversation (`/start` or starting a new chat) | Start a fresh conversation |
 | Bot framework app ID mismatch | Copilot Studio → **Settings** → App ID matches Azure app registration | Re-register or correct the App ID |
 
+### 1e — Intermittent "You don't have access to talk to this bot" in Teams
+
+**Symptoms:** Agent worked fine for months with no config changes. Error is intermittent — not all users, not every time. No conversation transcript generated in Copilot Studio when it fails. Failures often coincide with inactivity timeout messages being sent.
+
+**Why this happens:** Three separate root causes produce identical symptoms. Work through them in order.
+
+#### Root cause 1 — Azure AD app registration client secret expired (most common)
+
+When the secret expires, auth token refresh fails for some users before others depending on cached token state — which explains the intermittent pattern.
+
+| How to verify | Fix |
+|---|---|
+| Azure portal → **App registrations** → your bot app → **Certificates & secrets** → check expiry date | Rotate the secret; update it in Copilot Studio → **Settings** → **Security** → **Authentication** |
+
+#### Root cause 2 — Inactivity message sent to an expired user session
+
+When the agent sends a proactive inactivity message and the user's Teams session has expired (or the bot lacks proactive messaging Graph permissions), Teams rejects the message with this error. No transcript is generated because the session was never re-established.
+
+| How to verify | Fix |
+|---|---|
+| Failures only happen after a period of user inactivity | Check the Azure AD app registration has `TeamsAppInstallation.ReadWriteSelfForUser.All` Graph permission granted (required for proactive messaging in Teams) |
+| Check Azure AD → Enterprise applications → your bot → Permissions — look for proactive messaging scopes | Add the permission and grant admin consent; re-publish the agent |
+
+#### Root cause 3 — Teams app assignment caching / propagation delay
+
+App assignments in Teams Admin Center can take up to 24 hours to propagate. Users added to the assignment group recently may see this error until propagation completes.
+
+| How to verify | Fix |
+|---|---|
+| Affected users were recently added to the assignment group | Wait up to 24 hours; ask affected users to sign out of Teams and back in to force a policy refresh |
+| Check if affected users share a common attribute (new joiners, specific AAD group, geography) | If a specific group is consistently affected, re-check the app permission policy applied to that group in Teams Admin Center |
+
+#### Root cause 4 — Teams channel connection needs re-authorisation
+
+After prolonged inactivity or a service-side token rotation, the Teams channel OAuth connection in Copilot Studio can silently expire.
+
+| How to verify | Fix |
+|---|---|
+| Go to Copilot Studio → **Channels** → **Microsoft Teams** → edit the channel | Re-authorise the connection; re-publish |
+
+#### If none of the above resolve it
+
+- Check **Microsoft 365 Service Health** (admin.microsoft.com → Health → Service health) for any Teams or Power Platform advisories at the time failures occur
+- Raise a Microsoft Support ticket with: the bot's App ID (from Azure), affected user UPNs, and approximate timestamps of failures — intermittent auth errors at this level often require Microsoft to inspect their token service logs
+
 ---
 
 ## 2 — Apply Changes / YAML Push Errors
@@ -89,6 +134,58 @@ This is the most common post-publish issue. Work through these checks in order.
 | **"Error cloning agent: Server was requested to shut down"** | VS Code Copilot Studio extension language server crashed | 1. `Ctrl+Shift+P` → **Developer: Reload Window** — wait 10 seconds for extension to reconnect, then retry Clone Agent. 2. If still failing: `Ctrl+Shift+P` → **Copilot Studio: Sign Out** → **Sign In** → retry. 3. If still failing: close and reopen VS Code |
 | **"Missing conn.json, please clone again"** | `conn.json` (extension connection metadata) is missing — files were copied/moved manually instead of cloned, OR Apply Changes is being run from the wrong folder | Re-clone: `Ctrl+Shift+P` → **Copilot Studio: Clone Agent** → select agent → output folder: `agents\`. The extension creates `agents\<display name>\` containing `.mcs\conn.json` — **this subfolder is your working folder**, not the parent. After cloning, copy your edited YAML files into `agents\<display name>\`, then run Apply Changes from there. Never manually copy files into the folder or move it — `conn.json` uses absolute paths and breaks if moved. |
 | **`[0x800608ad:ExportKeyAttributeInvalidPrefix]` — "schemaname for component botcomponent must start with a valid customization prefix"** | A `.variable.mcs.yml` file in `variables/` is being pushed as a new cloud component for the first time. The schema name must start with your environment's publisher customization prefix (e.g. `hr_`), which the VS Code extension validates on first creation. | **Workaround**: Delete the `.variable.mcs.yml` file(s) from your agent's `variables/` folder → run Apply Changes to push topics and settings → then re-add the variable file(s) and run Apply Changes again. Global variables work at runtime without the declaration file — `SetVariable` actions create them dynamically. The `.variable.mcs.yml` file is needed only for VS Code IntelliSense. |
+
+### 2a — Duplicate component error after copying template files into a cloned folder
+
+**Symptom:** Apply Changes fails with a duplicate component error, or extra unexpected topics appear after copying files from `base/` or `components/` into a cloned agent folder.
+
+**Root cause — naming mismatch between Clone Agent output and templates:**
+
+Clone Agent downloads topics without the `.topic.` prefix:
+
+```
+agents/HR Assistant/topics/Greeting.mcs.yml       ← what Clone Agent creates
+base/topics/Greeting.topic.mcs.yml                ← what the templates use
+```
+
+A plain `cp base/topics/Greeting.topic.mcs.yml agents/HR Assistant/topics/` creates a NEW file alongside the existing `Greeting.mcs.yml`. Both files contain `mcs.metadata.componentName: Greeting`. Apply Changes sees two local definitions for the same cloud topic and errors.
+
+**What conn.json has to do with it:** `conn.json` lives at `.mcs/conn.json` and is NOT overwritten by `cp` commands that only copy `.mcs.yml` files. The issue is the YAML component naming. The one scenario that DOES break `conn.json` is renaming or moving the entire clone folder — `conn.json` stores absolute paths and becomes invalid if the path changes. Fix: re-clone to get a fresh `conn.json` at the new path.
+
+**Fix — copy topic files with rename (.topic.mcs.yml → .mcs.yml):**
+
+```powershell
+# PowerShell — replace "HR Assistant" with your agent's display name
+$src   = "base\topics"
+$clone = "agents\HR Assistant\topics"
+Get-ChildItem "$src\*.topic.mcs.yml" | ForEach-Object {
+    $dest = Join-Path $clone ($_.Name -replace '\.topic\.mcs\.yml', '.mcs.yml')
+    Copy-Item $_.FullName $dest -Force
+}
+```
+
+```bash
+# Mac / Linux
+src="base/topics"
+clone="agents/HR Assistant/topics"
+for f in "$src"/*.topic.mcs.yml; do
+    base=$(basename "$f" .topic.mcs.yml)
+    cp "$f" "$clone/$base.mcs.yml"
+done
+```
+
+**Alternative — delete cloned topic files first, then copy:**
+```powershell
+Remove-Item "agents\HR Assistant\topics\*.mcs.yml" -Force
+Copy-Item "base\topics\*.topic.mcs.yml" "agents\HR Assistant\topics\" -Force
+```
+
+**Files NOT affected by this issue:**
+- `agent.mcs.yml` and `settings.mcs.yml` — same filenames in clone and templates, plain `cp` overwrites correctly
+- Knowledge sources, actions, variables, new custom topics — Clone Agent does not download these, so there is no existing file to conflict with; plain `cp` works
+
+**pac copilot create and conn.json:**
+`pac copilot create` creates the agent in the cloud but does NOT create the local `.mcs/conn.json`. You must run Clone Agent afterward to establish the local connection. If `pac copilot create` succeeded but you skipped Clone Agent: `Ctrl+Shift+P` → "Copilot Studio: Clone Agent" → select the newly created agent.
 
 ---
 

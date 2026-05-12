@@ -11,3 +11,9 @@ configuration:
     kind: GenerativeAIRecognizer          # Generative AI topic matching (recommended)
 
 language: 1033                            # 1033 = English (US)
+
+# template: <value>
+# This field is added automatically by Copilot Studio when an agent is first created via a template
+# (e.g. "kickStartTemplate-1.0.0" or "default-2.1.0"). It appears in settings.mcs.yml after cloning.
+# Action: leave it as-is in your agent folder. Do not add it manually from this base file.
+# Removing it is safe (no functional impact) but the extension may re-add it on the next Get Changes.
