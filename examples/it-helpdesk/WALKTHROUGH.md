@@ -211,9 +211,15 @@ No High-tier actions in this project.
 
 ## 3.1 — Copy base and components
 
+> **YAML indentation:** Always use **2 spaces** — never tabs. When pasting YAML blocks between files (e.g. filling in topic actions or the instructions block), match the surrounding indentation level exactly. A single wrong indent silently breaks the file. VS Code highlights errors as red underlines in the Problems panel (`Ctrl+Shift+M`). Check the Problems panel after every paste.
+
 ```bash
-# From repo root
-cp -r base/ agents/it-helpdesk/
+# From repo root — create folder structure first
+mkdir -p agents/it-helpdesk/topics agents/it-helpdesk/knowledge \
+          agents/it-helpdesk/actions agents/it-helpdesk/variables
+
+cp base/agent.mcs.yml                       agents/it-helpdesk/
+cp base/settings.mcs.yml                    agents/it-helpdesk/
 
 cp components/topics/auth/SignIn.topic.mcs.yml              agents/it-helpdesk/topics/
 cp components/topics/conversation-init/ConversationInit.topic.mcs.yml  agents/it-helpdesk/topics/
@@ -249,6 +255,34 @@ code agents/it-helpdesk/
 ---
 
 ## 3.2 — Fill in agent.mcs.yml
+
+**Write the instructions block — two options:**
+
+**Option A — Use a ready-made persona (5 min):**
+```
+1. Open prompts/system-prompts/it-helpdesk.md
+2. Copy everything inside the triple backticks
+3. Paste into agent.mcs.yml replacing the entire instructions: | block
+4. Replace every [BRACKET] value:
+     [Company Name]  →  Contoso
+     [company].com   →  contoso.com
+```
+
+**Option B — Generate with Claude (recommended for production):**
+```
+1. Open prompts/ai-prompts/generate-agent-instructions.md
+2. Copy the prompt and paste into a Claude conversation
+3. Fill in:
+     Project brief:  "IT helpdesk for Contoso employees. Answers IT questions from SharePoint,
+                      handles password resets, VPN issues, software and hardware requests via
+                      ServiceNow. Must NOT handle HR, payroll, finance. Authenticated (M365 SSO)."
+     Agent name:     IT Helpdesk Assistant
+     Auth:           ManualAzureAD
+     Tone:           Professional
+4. Paste Claude's output into agent.mcs.yml as the instructions: | block
+```
+
+→ All system prompt templates: [`../../prompts/README.md`](../../prompts/README.md)
 
 ```yaml
 # agents/it-helpdesk/agent.mcs.yml

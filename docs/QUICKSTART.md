@@ -54,11 +54,27 @@ Not done yet? → [`ENGINEERING-PLAYBOOK.md`](../ENGINEERING-PLAYBOOK.md) Stage 
    Result: agents\<display name>\ with Greeting, Fallback, OnError (minimal — no telemetry or retry logic).
    OutOfScope is NOT created by a blank agent — it comes from base/topics.
 
-3. Copy all 4 base/ topic files into your agent (replace the 3 minimal ones, add the missing OutOfScope):
-   copy base/topics/Greeting.topic.mcs.yml   → agents/<name>/topics/   (replaces minimal version)
-   copy base/topics/Fallback.topic.mcs.yml   → agents/<name>/topics/   (replaces minimal version)
-   copy base/topics/OnError.topic.mcs.yml    → agents/<name>/topics/   (replaces minimal version)
-   copy base/topics/OutOfScope.topic.mcs.yml → agents/<name>/topics/   (new — not in blank agent)
+3. Copy the 4 base/ topic files into your cloned folder. Run the ID script (Step 4) before or after — either order works.
+
+   ⚠ NAMING DIFFERENCE — Clone Agent downloads topics as `Greeting.mcs.yml` (no `.topic.` prefix).
+   Templates in base/ are named `Greeting.topic.mcs.yml` (with `.topic.`). A plain `cp` creates a
+   NEW file alongside the existing one — both declare `componentName: Greeting` — Apply Changes
+   fails with a duplicate component error. Copy WITH RENAME:
+
+   # Windows PowerShell — replace "HR Assistant" with your agent's display name
+   $clone = "agents\HR Assistant"
+   @("Greeting","Fallback","OnError","OutOfScope") | ForEach-Object {
+       Copy-Item "base\topics\$_.topic.mcs.yml" "$clone\topics\$_.mcs.yml" -Force
+   }
+
+   # Mac / Linux
+   CLONE="agents/HR Assistant"
+   for t in Greeting Fallback OnError OutOfScope; do
+       cp "base/topics/$t.topic.mcs.yml" "$CLONE/topics/$t.mcs.yml"
+   done
+
+   ✓ agent.mcs.yml and settings.mcs.yml have the same names in both base/ and the clone — plain cp works for those.
+   ✓ New files you add from components/ (knowledge, actions, variables, extra topics) don't conflict — the clone doesn't have them yet.
 
 4. Write the system prompt for agent.mcs.yml — two options:
 

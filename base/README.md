@@ -34,7 +34,28 @@ code .
 Replace these **3 values**:
 - `<AgentName>` → lowercase schema name (e.g., `my_agent`)
 - `<Agent Display Name>` → friendly name (e.g., `My First Agent`)
-- `<SYSTEM_PROMPT>` → what your agent does (2–3 sentences)
+- `<SYSTEM_PROMPT>` → the agent's instructions block — choose one path:
+
+**Option A — Use a ready-made persona (5 min, fastest):**
+```
+1. Open prompts/system-prompts/<type>.md
+   (hr-assistant, it-helpdesk, customer-support, or knowledge-base)
+2. Copy the full text inside the triple backticks
+3. Paste it into agent.mcs.yml, replacing the entire instructions: | block
+4. Replace every [BRACKET] value (e.g. [Company Name], [company].com) with real values
+```
+
+**Option B — Generate a custom prompt with Claude (10 min, recommended for real projects):**
+```
+1. Open prompts/ai-prompts/generate-agent-instructions.md
+2. Copy the prompt template block
+3. Paste into Claude (this session or claude.ai); fill in:
+   - Project brief: what the agent does, who uses it, what it must NOT handle
+   - Agent name, primary users, authentication mode, tone
+4. Claude returns a ready-to-paste instructions: | block — copy it into agent.mcs.yml
+```
+
+→ Full prompt guide: [`prompts/README.md`](../prompts/README.md)
 
 ### Step 3: Edit settings.mcs.yml
 Replace this **1 value**:
@@ -84,7 +105,11 @@ Every component in the agent uses this as its prefix. If `schemaName` is `hr_ass
 
 Every YAML node has an `id` field. IDs must be **unique within the entire agent**. Replace `_REPLACE` (and numbered variants like `_REPLACE1`) with a short random alphanumeric string. A 6-character string is sufficient (e.g. `_a1b2c3`).
 
-The VS Code Copilot Studio extension can auto-generate IDs for you.
+Run the PowerShell/bash script in [QUICKSTART.md → Step 4 — Replace node IDs](../docs/QUICKSTART.md#step-4--replace-node-ids) to replace all `_REPLACE` IDs and `<PLACEHOLDER>` values in one pass.
+
+### `template:` field
+
+After you clone an agent, Copilot Studio adds a `template:` line to `settings.mcs.yml` (e.g. `template: kickStartTemplate-1.0.0`). This is auto-generated metadata — leave it in place. The `base/settings.mcs.yml` intentionally omits it; it is not a value you set manually.
 
 ## What to Add Next
 

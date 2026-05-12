@@ -49,13 +49,31 @@ flowchart TD
 
 ## Step 1 — Scaffold the agent (5 min)
 
+> **YAML indentation:** Always use **2 spaces** — never tabs. When pasting YAML blocks between files, match the indentation level of the surrounding context exactly. A single wrong indent silently breaks the file. VS Code shows errors as red underlines in the Problems panel (`Ctrl+Shift+M`).
+
 ```bash
 # From repo root
-cp -r base/ agents/it_support_demo/
+mkdir -p agents/it_support_demo/topics agents/it_support_demo/knowledge agents/it_support_demo/variables
 
-# Rename topics to match the schema
-cd agents/it_support_demo
+cp base/agent.mcs.yml                       agents/it_support_demo/
+cp base/settings.mcs.yml                    agents/it_support_demo/
+cp base/topics/Greeting.topic.mcs.yml       agents/it_support_demo/topics/
+cp base/topics/Fallback.topic.mcs.yml       agents/it_support_demo/topics/
+cp base/topics/OnError.topic.mcs.yml        agents/it_support_demo/topics/
+cp base/topics/OutOfScope.topic.mcs.yml     agents/it_support_demo/topics/
 ```
+
+**Write the agent instructions — two options:**
+
+**Option A — Use a ready-made persona (5 min, good for demos):**
+```
+1. Open prompts/system-prompts/it-helpdesk.md
+2. Copy everything inside the triple backticks
+3. Paste into agent.mcs.yml replacing the instructions: | block
+4. Replace [Company Name] → Contoso, [company].com → contoso.com
+```
+
+**Option B — Write inline (for demo speed):**
 
 Open `agent.mcs.yml` and set:
 ```yaml
@@ -71,6 +89,8 @@ conversationStarters:
   - My laptop won't connect to WiFi
   - I need help with my VPN
 ```
+
+→ More prompt templates: [`prompts/README.md`](../../prompts/README.md)
 
 Open `settings.mcs.yml` and set:
 ```yaml
@@ -290,8 +310,46 @@ Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path $folder |
    → sign in → select Demo environment → select "IT Support Assistant Demo"
    → output folder: agents/it_support_demo_cloud/
 
-3. Copy your edited YAML files from agents/it_support_demo/ into the cloned folder
-   (overwrite agent.mcs.yml, settings.mcs.yml, and all topic files)
+3. Copy your edited YAML files from agents/it_support_demo/ into the cloned folder.
+
+   ⚠ NAMING DIFFERENCE — Clone Agent downloads topics as `Greeting.mcs.yml` (no `.topic.` prefix).
+   Template files are named `Greeting.topic.mcs.yml` (with `.topic.`). A plain `cp` creates a NEW
+   file alongside the existing one — both declare the same componentName — Apply Changes fails.
+
+   agent.mcs.yml and settings.mcs.yml have matching names → plain copy works:
+
+   ```powershell
+   # PowerShell
+   $src   = "agents\it_support_demo"
+   $clone = "agents\it_support_demo_cloud\IT Support Assistant Demo"   # subfolder Clone Agent created
+   Copy-Item "$src\agent.mcs.yml"   "$clone\agent.mcs.yml"   -Force
+   Copy-Item "$src\settings.mcs.yml" "$clone\settings.mcs.yml" -Force
+   ```
+
+   Topic files must be copied with rename (.topic.mcs.yml → .mcs.yml):
+
+   ```powershell
+   # PowerShell
+   Get-ChildItem "$src\topics\*.topic.mcs.yml" | ForEach-Object {
+       $dest = "$clone\topics\" + ($_.Name -replace '\.topic\.mcs\.yml', '.mcs.yml')
+       Copy-Item $_.FullName $dest -Force
+   }
+   ```
+
+   ```bash
+   # Mac / Linux
+   src="agents/it_support_demo"
+   clone="agents/it_support_demo_cloud/IT Support Assistant Demo"
+   cp "$src/agent.mcs.yml" "$clone/agent.mcs.yml"
+   cp "$src/settings.mcs.yml" "$clone/settings.mcs.yml"
+   for f in "$src"/topics/*.topic.mcs.yml; do
+       base=$(basename "$f" .topic.mcs.yml)
+       cp "$f" "$clone/topics/$base.mcs.yml"
+   done
+   ```
+
+   Knowledge, action, and variable files: plain `cp` is fine — Clone Agent doesn't include those,
+   so there is no existing file to conflict with.
 
 4. VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
    → uploads all YAML as a draft

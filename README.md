@@ -51,14 +51,26 @@ Full tool setup guide: [`docs/TOOLS-AND-PLUGINS.md`](docs/TOOLS-AND-PLUGINS.md)
 2. VS Code: Ctrl+Shift+P → "Copilot Studio: Clone Agent" → sign in → pick agent → pick folder
    ⚠ The extension creates a subfolder named after the agent display name inside your chosen folder.
    Select agents\ as output → extension creates agents\HR Assistant\ (your working folder).
-   Never manually copy files in — conn.json (needed for Apply Changes) is only created by Clone Agent.
+   conn.json (needed for Apply Changes) lives in .mcs/conn.json and is created only by Clone Agent.
+   Never rename or move the cloned folder — conn.json uses absolute paths and breaks if the path changes.
    Result: agents\<display name>\ with Greeting, Fallback, OnError (minimal). OutOfScope NOT included — comes from base/topics.
-3. Update the cloned files — use base/ as reference for what to put in each file:
-   - agent.mcs.yml         → replace system prompt with your domain (copy structure from base/agent.mcs.yml)
-   - settings.mcs.yml      → set auth mode if needed
-   - topics/Greeting       → update welcome message text
-   - topics/Fallback       → usually fine as cloned
-   Then add capabilities from components/ (knowledge, actions, additional topics)
+3. Update the cloned files. Two approaches:
+
+   APPROACH A — Edit in place (cleanest, no file conflicts):
+   Open each cloned file and edit the content directly, using base/ files as reference.
+   - agent.mcs.yml → replace system prompt with your domain (use base/agent.mcs.yml as reference)
+   - settings.mcs.yml → set auth mode if needed
+   - topics/Greeting, Fallback, OnError → replace with base/ versions using copy-with-rename (see note below)
+
+   APPROACH B — Copy template files in:
+   ⚠ Topic files need rename on copy. Clone Agent creates `Greeting.mcs.yml`; templates use
+   `Greeting.topic.mcs.yml`. A plain cp creates duplicates. Use copy-with-rename:
+     PowerShell: @("Greeting","Fallback","OnError","OutOfScope") | % { Copy-Item "base\topics\$_.topic.mcs.yml" "agents\HR Assistant\topics\$_.mcs.yml" -Force }
+     Bash: for t in Greeting Fallback OnError OutOfScope; do cp "base/topics/$t.topic.mcs.yml" "agents/HR Assistant/topics/$t.mcs.yml"; done
+   agent.mcs.yml and settings.mcs.yml: same filename in clone and base/ → plain cp works.
+   New components (knowledge, actions, variables): Clone Agent doesn't include them → plain cp works.
+
+   Then add capabilities from components/ (knowledge, actions, additional topics).
 4. VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
 5. Test in the Copilot Studio test pane → Publish
 ```
