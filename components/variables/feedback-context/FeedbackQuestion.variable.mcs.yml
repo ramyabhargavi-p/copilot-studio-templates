@@ -1,0 +1,14 @@
+# Name: FeedbackQuestion
+# Description: The user's original question that triggered the current agent response.
+#              Set by KnowledgeSearch (OnUnknownIntent) for knowledge answers, or set manually
+#              in structured topics before calling BeginDialog: FeedbackPersisted.
+# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName from settings.mcs.yml
+kind: GlobalVariableComponent
+schemaName: <AGENT-SCHEMA-NAME>.globalvariable.FeedbackQuestion
+displayName: FeedbackQuestion
+description: The user's question that triggered the current agent response. Used by FeedbackPersisted to persist the question alongside the feedback rating.
+variable:
+  name: FeedbackQuestion
+  aIVisibility: Hidden
+  scope: Conversation
+  defaultValue: ""

@@ -17,3 +17,16 @@ beginDialog:
       id: logSearchInvoked_REPLACE1
       eventName: Knowledge.SearchInvoked
       properties:
+
+    # feedback-persisted hook — captures the user's question before generative answering starts.
+    # System.Activity.Text is the user's message here; in OnGeneratedResponse it becomes the AI response.
+    # Remove these two nodes if you are not using components/topics/feedback-persisted.
+    - kind: SetVariable
+      id: setFeedbackQuestion_REPLACE2
+      variable: Global.FeedbackQuestion
+      value: =System.Activity.Text
+
+    - kind: SetVariable
+      id: setFeedbackContext_REPLACE3
+      variable: Global.FeedbackContext
+      value: "Knowledge"

@@ -54,3 +54,17 @@ beginDialog:
     - kind: SendActivity
       id: sendActivity_REPLACE3
       activity: "{Topic.CleanedText}"
+
+    # feedback-persisted hook — captures the raw response (with [1][2] citation markers) as the
+    # "cited sources" context, then shows the feedback card.
+    # Left() trims to 3800 chars — SharePoint multiline columns cap at 4000.
+    # Remove these two nodes if you are not using components/topics/feedback-persisted.
+    - kind: SetVariable
+      id: setFeedbackSources_REPLACE4
+      variable: Global.FeedbackSources
+      value: =Left(System.Response.FormattedText, 3800)
+
+    # Replace <SCHEMA> with your agent's schemaName.
+    - kind: BeginDialog
+      id: callFeedbackPersisted_REPLACE5
+      dialog: <SCHEMA>.topic.FeedbackPersisted

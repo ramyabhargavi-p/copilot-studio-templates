@@ -1,0 +1,15 @@
+# Name: FeedbackContext
+# Description: The name of the topic or area that produced the current agent response.
+#              Set to "Knowledge" by KnowledgeSearch, or set to the topic name (e.g. "PasswordReset")
+#              in structured topics before calling BeginDialog: FeedbackPersisted.
+#              Stored as the "Title" column in the SharePoint AgentFeedback list.
+# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName from settings.mcs.yml
+kind: GlobalVariableComponent
+schemaName: <AGENT-SCHEMA-NAME>.globalvariable.FeedbackContext
+displayName: FeedbackContext
+description: The topic name or area that produced the agent response being rated. Used by FeedbackPersisted to group feedback by topic for triage.
+variable:
+  name: FeedbackContext
+  aIVisibility: Hidden
+  scope: Conversation
+  defaultValue: ""
