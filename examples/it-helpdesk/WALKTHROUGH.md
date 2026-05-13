@@ -383,6 +383,49 @@ output:
 
 ---
 
+## 3.5a — Fill in OutOfScope.topic.mcs.yml
+
+`OutOfScope.topic.mcs.yml` was already copied in section 3.1. Now fill in the 5 placeholders:
+
+| Placeholder | Replace with | IT Helpdesk value |
+|-------------|-------------|-------------------|
+| `<out-of-scope phrase 1–5>` | Trigger phrases from the discovery out-of-scope list | `payroll`, `HR policy`, `annual leave`, `finance`, `personal device` |
+| `<DOMAIN>` | What this agent handles | `IT support` |
+| `<OUT-OF-SCOPE-TOPIC>` | The out-of-scope area in the redirect message | `HR and payroll` |
+| `<CONTACT>` | Where to send the user | `hr@contoso.com` |
+| `_REPLACE1`, `_REPLACE2` | Node IDs — run the ID script from section 3.7 | `_ab3f9x` |
+
+The completed trigger and redirect sections look like this:
+
+```yaml
+triggerQueries:
+  - payroll
+  - what is my salary
+  - HR policy
+  - annual leave
+  - expense claim
+  - personal laptop
+  - my own device
+  - finance approval
+
+# SendActivity redirect message:
+activity: >-
+  I'm set up for IT support only — I can't help with HR or payroll questions.
+  For those, please contact hr@contoso.com or visit the HR portal.
+  Is there anything IT-related I can help you with?
+```
+
+> **Need more trigger phrases?** Use the `prompts/ai-prompts/generate-topic.md` template:
+> ```
+> Generate 10 trigger phrases for a Copilot Studio OutOfScope topic.
+> The agent handles: IT support — password resets, VPN, software and hardware requests.
+> Out-of-scope areas: HR, payroll, finance, personal devices, legal.
+> Include: formal, casual, abbreviated, and question variations.
+> Output as a YAML list (- phrase format).
+> ```
+
+---
+
 ## 3.6 — SoftwareRequest topic (scaffold filled in)
 
 This shows how a scaffold becomes a real topic:

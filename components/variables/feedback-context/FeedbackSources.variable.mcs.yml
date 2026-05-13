@@ -1,0 +1,16 @@
+# Name: FeedbackSources
+# Description: The raw AI-generated response text before citation markers are stripped.
+#              Contains [1][2] etc. that indicate which knowledge documents were cited.
+#              Set by RemoveCitations (OnGeneratedResponse) immediately before it sends the
+#              clean response. Empty string for structured topics with no knowledge citations.
+#              Truncated to 3800 chars to fit SharePoint multiline column limits.
+# NOTE: Replace <AGENT-SCHEMA-NAME> with your agent's schemaName from settings.mcs.yml
+kind: GlobalVariableComponent
+schemaName: <AGENT-SCHEMA-NAME>.globalvariable.FeedbackSources
+displayName: FeedbackSources
+description: Raw AI response text with citation markers ([1][2]) before removal. Used by FeedbackPersisted to record which knowledge documents contributed to the answer.
+variable:
+  name: FeedbackSources
+  aIVisibility: Hidden
+  scope: Conversation
+  defaultValue: ""

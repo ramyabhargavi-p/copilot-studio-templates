@@ -243,7 +243,18 @@ cp components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml \
    agents/it_support_demo/topics/KnowledgeSearch.topic.mcs.yml
 ```
 
-In `OutOfScope.topic.mcs.yml`, add:
+Open `OutOfScope.topic.mcs.yml` and replace these 5 things:
+
+| Placeholder | Replace with | Demo value |
+|-------------|-------------|------------|
+| `<out-of-scope phrase 1–5>` | Trigger phrases for out-of-scope topics | `payroll`, `salary`, `HR policy`, `annual leave`, `expense claim` |
+| `<DOMAIN>` | What this agent handles | `IT support` |
+| `<OUT-OF-SCOPE-TOPIC>` | The out-of-scope area in the redirect message | `HR and payroll` |
+| `<CONTACT>` | Where to send the user | `hr@contoso.com` |
+| `_REPLACE1`, `_REPLACE2` | Node IDs — run the ID script in Step 6 | `_ab3f9x` |
+
+The filled-in YAML for this demo looks like this:
+
 ```yaml
 triggerQueries:
   - payroll

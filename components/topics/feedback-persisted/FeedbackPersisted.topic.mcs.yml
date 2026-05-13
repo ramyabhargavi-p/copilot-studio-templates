@@ -1,0 +1,178 @@
+mcs.metadata:
+  componentName: Feedback Persisted
+  description: |-
+    Trigger: Called via BeginDialog — from RemoveCitations after a knowledge answer, or from any
+             structured topic at the end of its action list.
+    Purpose: Show a single combined feedback card (thumbs + star rating + open comment) and write
+             the result — with the user's question and cited sources — to SharePoint and Dataverse.
+    Caller must set before calling BeginDialog:
+      Global.FeedbackQuestion  — user's original question
+      Global.FeedbackContext   — topic name (e.g. "PasswordReset") or "Knowledge"
+      Global.FeedbackSources   — raw AI response with [1][2] citation markers (empty for structured topics)
+    Full setup guide: components/topics/feedback-persisted/README.md
+    NOTE: Replace all _REPLACE suffixes with unique random strings (run the ID script — QUICKSTART.md Step 4)
+    NOTE: Replace <SCHEMA> with your agent's schemaName
+    NOTE: Replace <SP_SITE_URL> with your SharePoint site URL
+    NOTE: Replace AgentFeedback / mcs_agentfeedbacks if you used different names
+kind: AdaptiveDialog
+modelDescription: Collects structured user feedback (thumbs + star rating + open comment) after every agent response and persists it — along with the user's question and cited sources — to SharePoint and Dataverse for weekly triage.
+id: <SCHEMA>_feedbackpersisted_REPLACE1
+name: Feedback Persisted
+language: 1033
+
+triggers:
+  - kind: OnBeginDialog
+    id: onBeginFeedback_REPLACE2
+    actions:
+
+      # ── Show combined feedback card ────────────────────────────────────────────
+      # One card, one interaction. Thumbs + star rating + open comment in a single submit.
+      # "Skip" button short-circuits all storage — nothing is written on skip.
+      - kind: SendActivity
+        id: sendFeedbackCard_REPLACE3
+        activity:
+          attachments:
+            - contentType: application/vnd.microsoft.card.adaptive
+              content:
+                $schema: http://adaptivecards.io/schemas/adaptive-card.json
+                type: AdaptiveCard
+                version: "1.5"
+                body:
+                  - type: TextBlock
+                    text: Was this answer helpful?
+                    weight: Bolder
+                    size: Medium
+                    wrap: true
+                  - type: Input.ChoiceSet
+                    id: thumbs
+                    style: compact
+                    isRequired: false
+                    placeholder: Select…
+                    choices:
+                      - title: "👍  Yes, it helped"
+                        value: up
+                      - title: "👎  No, it didn't"
+                        value: down
+                  - type: TextBlock
+                    text: "Rating  (1 = very poor · 5 = excellent)"
+                    size: Small
+                    spacing: Medium
+                    wrap: true
+                  - type: Input.ChoiceSet
+                    id: stars
+                    style: compact
+                    isRequired: false
+                    placeholder: Select a rating…
+                    choices:
+                      - title: "★ · 1  Very poor"
+                        value: "1"
+                      - title: "★★ · 2  Poor"
+                        value: "2"
+                      - title: "★★★ · 3  Average"
+                        value: "3"
+                      - title: "★★★★ · 4  Good"
+                        value: "4"
+                      - title: "★★★★★ · 5  Excellent"
+                        value: "5"
+                  - type: Input.Text
+                    id: comment
+                    label: Comments (optional)
+                    placeholder: What worked well, or what could be better?
+                    isMultiline: true
+                    maxLength: 500
+                    spacing: Medium
+                actions:
+                  - type: Action.Submit
+                    title: Submit feedback
+                    style: positive
+                  - type: Action.Submit
+                    title: Skip
+                    data:
+                      skipped: "true"
+
+      - kind: Question
+        id: waitForFeedbackCard_REPLACE4
+        variable: init:Topic.FeedbackCard
+        prompt: ""
+        entityType: UserEntireResponse
+
+      # ── Skip path — do nothing, end cleanly ──────────────────────────────────
+      - kind: ConditionGroup
+        id: checkSkipped_REPLACE5
+        conditions:
+          - id: feedbackSubmitted_REPLACE6
+            condition: =Topic.FeedbackCard.skipped <> "true"
+            actions:
+
+              # ── Extract card input values ────────────────────────────────────
+              - kind: SetVariable
+                id: setThumbs_REPLACE7
+                variable: init:Topic.Thumbs
+                value: =Coalesce(Topic.FeedbackCard.thumbs, "")
+
+              - kind: SetVariable
+                id: setStars_REPLACE8
+                variable: init:Topic.Stars
+                # Value() converts "3" → 3; defaults to 0 if star rating was skipped
+                value: =If(IsBlank(Topic.FeedbackCard.stars), 0, Value(Topic.FeedbackCard.stars))
+
+              - kind: SetVariable
+                id: setComment_REPLACE9
+                variable: init:Topic.Comment
+                value: =Coalesce(Topic.FeedbackCard.comment, "")
+
+              # ── Write to SharePoint ──────────────────────────────────────────
+              # PostItem creates a new list item. Column names below are the internal
+              # SharePoint column names — match them exactly to what you created in the list.
+              # item/<ColumnName> format maps to SharePoint list columns.
+              # Replace <SP_SITE_URL> and AgentFeedback with your values.
+              - kind: InvokeConnectorAction
+                id: writeSharePoint_REPLACE10
+                connectionReference: shared_sharepointonline
+                connectionProperties:
+                  mode: Caller
+                operationId: PostItem
+                parameters:
+                  dataset: <SP_SITE_URL>
+                  table: AgentFeedback
+                  item/Title: =Global.FeedbackContext
+                  item/Question: =Global.FeedbackQuestion
+                  item/Thumbs: =Topic.Thumbs
+                  item/Stars: =Text(Topic.Stars)
+                  item/Comment: =Topic.Comment
+                  item/CitedSources: =Left(Global.FeedbackSources, 3800)
+                  item/ConversationId: =System.Conversation.Id
+
+              # ── Write to Dataverse ───────────────────────────────────────────
+              # CreateRecord writes a new row. Column names use the mcs_ prefix
+              # from the custom Dataverse table. Adjust if you used a different prefix.
+              - kind: InvokeConnectorAction
+                id: writeDataverse_REPLACE11
+                connectionReference: shared_commondataserviceforapps
+                connectionProperties:
+                  mode: Caller
+                operationId: CreateRecord
+                parameters:
+                  entityName: mcs_agentfeedbacks
+                  mcs_context: =Global.FeedbackContext
+                  mcs_question: =Global.FeedbackQuestion
+                  mcs_thumbs: =Topic.Thumbs
+                  mcs_stars: =Topic.Stars
+                  mcs_comment: =Topic.Comment
+                  mcs_citedsources: =Left(Global.FeedbackSources, 4000)
+                  mcs_conversationid: =System.Conversation.Id
+
+              # ── Telemetry (always runs — even if SP/DV writes fail) ──────────
+              - kind: LogCustomTelemetryEvent
+                id: logFeedbackPersisted_REPLACE12
+                eventName: Feedback.Persisted
+                properties: "={thumbs: Topic.Thumbs, stars: Text(Topic.Stars), context: Global.FeedbackContext, conversationId: System.Conversation.Id, timeUTC: Text(Now(), DateTimeFormat.UTC)}"
+
+              # ── Acknowledge ─────────────────────────────────────────────────
+              - kind: SendActivity
+                id: sendThanks_REPLACE13
+                activity:
+                  text: Thank you — your feedback helps us improve.
+
+      - kind: EndDialog
+        id: endFeedbackPersisted_REPLACE14

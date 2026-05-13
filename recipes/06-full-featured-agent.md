@@ -150,6 +150,29 @@ Claude output                                →  OutOfScope.topic.mcs.yml
                                                    For [topic], [contact] is best."
 ```
 
+**Add the file and fill in the placeholders:**
+
+If `OutOfScope.mcs.yml` is not yet in your `topics/` folder, copy it in:
+
+```powershell
+# PowerShell
+Copy-Item "base\topics\OutOfScope.topic.mcs.yml" "agents\<display name>\topics\OutOfScope.mcs.yml" -Force
+```
+```bash
+# Mac / Linux
+cp base/topics/OutOfScope.topic.mcs.yml "agents/<display name>/topics/OutOfScope.mcs.yml"
+```
+
+Open `OutOfScope.mcs.yml` and replace these 5 things:
+
+| Placeholder | Replace with | Example |
+|-------------|-------------|---------|
+| `<out-of-scope phrase 1–5>` | Trigger phrases from Claude's "What I cannot help with" section | `payroll`, `IT support`, `expense claim` |
+| `<DOMAIN>` | What this agent handles | `HR policies and leave management` |
+| `<OUT-OF-SCOPE-TOPIC>` | The out-of-scope area in the redirect message | `IT support` |
+| `<CONTACT>` | Where to send the user | `it@contoso.com` |
+| `_REPLACE1`, `_REPLACE2` | Run the ID script (QUICKSTART Step 4) or any 6-char random string | `_ab3f9x` |
+
 **Need more trigger phrases?** Ask Claude:
 
 ```
