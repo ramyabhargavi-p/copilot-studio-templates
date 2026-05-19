@@ -148,7 +148,7 @@ Complete list of every buildable template in this repository — 56 templates ac
 
 | Category | Count |
 |----------|-------|
-| Base YAML templates | 5 |
+| Base YAML templates | 6 |
 | Topic component templates | 11 |
 | Action templates | 2 |
 | Knowledge source templates | 3 |
@@ -159,7 +159,7 @@ Complete list of every buildable template in this repository — 56 templates ac
 | AI generation prompts | 6 |
 | Recipe guides — Copilot Studio | 6 |
 | Recipe guides — Pro-code (SDK + Foundry) | 2 |
-| **Total** | **55** |
+| **Total** | **56** |
 
 ---
 
