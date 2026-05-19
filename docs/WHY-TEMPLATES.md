@@ -152,3 +152,8 @@ a capability gap.
 - **Working agent** — right responses, correct topics, knowledge connected
 - **Production agent** — telemetry schema consistent enough to query across agents, CI/CD
   to promote across environments, delivery artifacts to sign it off
+
+---
+
+→ For the full lifecycle breakdown — what is impossible, time-consuming, or a non-obvious
+best practice at each development phase: [WHAT-TEMPLATES-ENABLE.md](WHAT-TEMPLATES-ENABLE.md)
