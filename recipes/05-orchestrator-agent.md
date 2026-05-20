@@ -101,9 +101,7 @@ Each child agent's `description:` field is what the parent reads to make routing
 
 ## How to Copy the Components
 
-> **YAML indentation:** Always use **2 spaces** — never tabs. When pasting content between files, match the indentation level of the surrounding block exactly. A single wrong indent silently breaks the file. VS Code shows indentation errors as red underlines in the Problems panel (`Ctrl+Shift+M`).
-
-> **Fresh folder vs cloned folder:** The commands below build a fresh agents folder from scratch. If you are using the Cloud-First path (VS Code Clone Agent), your folder will be named after the display name (e.g. `agents/Corporate Assistant/`) and already contains topic files. Topic files need rename-on-copy — a plain `cp Greeting.topic.mcs.yml` creates a duplicate alongside the existing `Greeting.mcs.yml`. See [troubleshooting/README.md → 2a](../troubleshooting/README.md#2a--duplicate-component-error-after-copying-template-files-into-a-cloned-folder) for the rename command.
+> **Before copying:** Use 2-space indentation (never tabs). Cloud-First (cloned folder) users need rename-on-copy — see [troubleshooting → 2a](../troubleshooting/README.md#2a--duplicate-component-error-after-copying-template-files-into-a-cloned-folder).
 
 Replace `hr_orchestrator` with your parent agent's schemaName.
 
@@ -186,18 +184,7 @@ Do not answer domain-specific questions yourself — always delegate.
 If the user's intent is unclear, use the Disambiguation topic to clarify before routing.
 ```
 
-**Verify nothing was missed before pushing:**
-
-```powershell
-# Windows — must return zero output
-Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\hr_orchestrator" | Select-String "<[A-Za-z]" | Select-Object Filename, LineNumber, Line
-Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\hr_orchestrator" | Select-String "_REPLACE" | Select-Object Filename, LineNumber, Line
-```
-```bash
-# Mac / Linux
-grep -rn "<[A-Za-z]" agents/hr_orchestrator --include="*.mcs.yml"
-grep -rn "_REPLACE" agents/hr_orchestrator --include="*.mcs.yml"
-```
+→ **Verify before pushing:** see [docs/QUICKSTART.md → Verify](../docs/QUICKSTART.md) — both commands must return zero output.
 
 ## Setup Checklist
 
