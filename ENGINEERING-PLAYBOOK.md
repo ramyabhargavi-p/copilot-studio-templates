@@ -17,11 +17,76 @@ The single reference for every engineer on the team — building, shipping, and 
 |-----------|-----------|
 | **Intern / new to CPS** | Stage 0 → Stage 1 → Stage 2 → Stage 3 (walk every step) |
 | **Developer (1–2 years)** | Stage 0 (decision) → Stage 2 (pick templates) → Stage 3 (build) |
-| **Senior developer** | Stage 4 (innovation) → Stage 4.5 (pro-code) → Stage 6 (CI/CD) → Stage 9 (telemetry) |
-| **Tech lead** | Stage 5 (governance) → Stage 6 (CI/CD) → Stage 10 (monitoring) |
+| **Senior developer** | Stage 4 (innovation) → Stage 4.5 (pro-code) → Stage 7 (CI/CD) → Stage 9 (telemetry) |
+| **Tech lead** | Stage 6 (governance) → Stage 7 (CI/CD) → Stage 10 (monitoring) |
 | **Director / business owner** | Stage 0 (decision matrix), Stage 5 (governance), Stage 10 (KPIs) |
 
-All roles: read **Stage 5 (Governance)** — it is a delivery blocker for everyone.
+All roles: read **Stage 6 (Governance)** — it is a delivery blocker for everyone.
+
+---
+
+## Delivery Pipeline at a Glance
+
+### Phase flow
+
+```mermaid
+flowchart LR
+    subgraph PLAN["PLANNING"]
+        S0["Stage 0\nPlatform Decision"]
+        S1["Stage 1\nDev Setup"]
+    end
+    subgraph BUILD["BUILD"]
+        S2["Stage 2\nTemplate Library"]
+        S3["Stage 3\nBuild Agent"]
+        S4["Stage 4/4.5\nInnovation"]
+    end
+    subgraph SHIP["SHIP"]
+        S5["Stage 5\nTesting & Evals"]
+        S6["Stage 6\nGovernance"]
+        S7["Stage 7\nCI/CD"]
+    end
+    subgraph OPERATE["OPERATE"]
+        S8["Stage 8\nDebugging"]
+        S9["Stage 9\nTelemetry"]
+        S10["Stage 10\nMonitoring"]
+    end
+
+    S0 --> S1 --> S2 --> S3
+    S3 --> S4
+    S3 --> S5
+    S4 --> S5
+    S5 --> S6 --> S7
+    S3 --> S9 --> S10
+    S8 -.->|on issues| S10
+
+    style S0 fill:#e8f4fd,stroke:#1a73e8
+    style S1 fill:#e8f4fd,stroke:#1a73e8
+    style S2 fill:#e6f4ea,stroke:#34a853
+    style S3 fill:#e6f4ea,stroke:#34a853
+    style S4 fill:#e6f4ea,stroke:#34a853
+    style S5 fill:#fce8e6,stroke:#ea4335
+    style S6 fill:#fce8e6,stroke:#ea4335
+    style S7 fill:#fce8e6,stroke:#ea4335
+    style S8 fill:#fef7e0,stroke:#f9ab00
+    style S9 fill:#fef7e0,stroke:#f9ab00
+    style S10 fill:#fef7e0,stroke:#f9ab00
+```
+
+### What you use at each stage
+
+| Stage | Goal | Key files and templates | Tools |
+|-------|------|------------------------|-------|
+| **0 — Platform Decision** | Pick the right platform before writing code | Decision matrix in this playbook, `recipes/` (choose type) | — |
+| **1 — Dev Setup** | Install tools, authenticate to Dev environment | — | `pac CLI`, VS Code + 5 extensions, git |
+| **2 — Template Library** | Know what exists before copying | `base/` (6 files), `components/` (60 templates), `recipes/` (8 guides), `prompts/` (10 prompts) | VS Code IntelliSense |
+| **3 — Build** | Assemble the agent from templates | `base/` + chosen `components/topics`, `components/actions`, `components/knowledge` | VS Code: Apply Changes, CPS test canvas |
+| **4/4.5 — Innovation** | Add MCP tools, Foundry, or pro-code logic | `components/actions/mcp/`, `recipes/07-m365-agents-sdk.md`, `recipes/08-azure-ai-foundry.md` | pac CLI, Azure Portal |
+| **5 — Testing** | Verify routing and answer quality before UAT | Eval CSV (50+ utterances), smoke test (7 cases) | Copilot Studio Kit |
+| **6 — Governance** | RAI and security sign-off | `governance/01-responsible-ai-checklist.md`, `governance/02-ai-ethics-checklist.md` | — |
+| **7 — CI/CD** | Automate Dev → UAT → Prod promotions | `ci-cd/01-push-on-pr.yml`, `ci-cd/02-promote-dev-to-uat.yml`, `ci-cd/03-promote-uat-to-prod.yml`, `ci-cd/04-solution-build-and-deploy.yml` | GitHub Actions |
+| **8 — Debugging** | Diagnose and fix issues in < 15 min | `troubleshooting/README.md` | CPS Activity log, App Insights |
+| **9 — Telemetry** | Log every significant event, scrub PII | Custom events in every topic YAML, `docs/PII-SCRUBBING.md` | Application Insights |
+| **10 — Monitoring** | Detect problems before users notice | `operations/02-monitoring-queries.md`, `operations/01-alert-setup.md`, `operations/03-runbook.md` | Azure Monitor |
 
 ---
 
@@ -252,6 +317,23 @@ If you use Claude Code, these skills generate valid YAML and run tools automatic
 
 **Goal:** Know which file to copy for each capability. You never write YAML from scratch — every pattern already exists in `components/`.
 
+### Pick your template bundle
+
+Start here. Choose the agent type that fits your use case — copy exactly these files, no more.
+
+| Agent type | Recipe | Topics to add (beyond base/) | Knowledge | Actions |
+|------------|--------|------------------------------|-----------|---------|
+| **Simple FAQ** — answers questions from SharePoint | `recipes/01-basic-faq.md` | `escalation`, `feedback`, `knowledge-search`, `remove-citations` | `sharepoint` | — |
+| **Authenticated FAQ** — greets users by name | `recipes/02-authenticated-agent.md` | above + `conversation-init`, `auth` (ManualAzureAD only) | `sharepoint` | — |
+| **Connector action agent** — submits tickets, reads data | `recipes/03-connector-action-agent.md` | `escalation`, `feedback`, `action-invoke` | — | `connector` |
+| **MCP tool agent** — calls any REST API | `recipes/04-mcp-action-agent.md` | `escalation`, `feedback`, `action-invoke` | — | `mcp` |
+| **Orchestrator** — routes to specialist sub-agents | `recipes/05-orchestrator-agent.md` | `escalation`, `feedback`, `disambiguation` | — | `child-agent` |
+| **Full-featured** — auth + knowledge + actions + CSAT | `recipes/06-full-featured-agent.md` | all of the above + `feedback-persisted` | `sharepoint` | `connector` |
+
+> **OutOfScope is already in base/:** `base/topics/OutOfScope.topic.mcs.yml` ships with every agent. Do not copy it from `components/topics/out-of-scope/`.
+
+---
+
 ### The 3-minute orientation
 
 Open these two files before anything else:
@@ -276,7 +358,7 @@ flowchart LR
         AC[actions x2]
         K[knowledge x3]
         CA[adaptive-cards x6]
-        V[variables x5]
+        V[variables x8]
     end
 
     BASE --> AGT([agents/your-agent/])
@@ -339,6 +421,7 @@ ci-cd/                             ← GitHub Actions pipelines (4 workflows + 1
 | `components/topics/disambiguation/Disambiguation.topic.mcs.yml` | `OnSelectIntent` | Clarifies ambiguous intents, logs `Agent.DisambiguationTriggered` | Multi-intent agents |
 | `components/topics/escalation/Escalation.topic.mcs.yml` | `OnRecognizedIntent` | Human handoff via `TransferConversation`, logs `Agent.EscalationTriggered` | All agents |
 | `components/topics/feedback/Feedback.topic.mcs.yml` | `OnRecognizedIntent` / `BeginDialog` | Thumbs → star rating → issue category CSAT sequence | All production agents |
+| `components/topics/feedback-persisted/FeedbackPersisted.topic.mcs.yml` | `BeginDialog` | CSAT that writes feedback + cited sources to SharePoint and Dataverse; fires `Feedback.Persisted` | Use when you need durable CSAT data for Power BI reporting |
 | `components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml` | `OnUnknownIntent` | Generative answers from knowledge sources, logs `Knowledge.AnswerFound` / `AnswerNotFound` | FAQ / KB agents |
 | `components/topics/out-of-scope/OutOfScope.topic.mcs.yml` | `OnRecognizedIntent` | Redirects out-of-scope queries, logs `Agent.OutOfScope` | All agents (guardrail) |
 | `components/topics/question-branch/QuestionBranch.topic.mcs.yml` | `OnRecognizedIntent` | Collects input and branches the conversation | Multi-step flows |
@@ -550,18 +633,16 @@ cp components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml \
 cp components/topics/escalation/Escalation.topic.mcs.yml \
    agents/it-helpdesk/topics/
 
-# CSAT thumbs → rating → free text after each answered question
+# CSAT thumbs → rating → issue category after each answered question
 cp components/topics/feedback/Feedback.topic.mcs.yml \
    agents/it-helpdesk/topics/
 
 # Remove [1][2] citation markers from KB answers
 cp components/topics/remove-citations/RemoveCitations.topic.mcs.yml \
    agents/it-helpdesk/topics/
-
-# Redirect out-of-scope questions (e.g., HR questions to HR portal)
-cp components/topics/out-of-scope/OutOfScope.topic.mcs.yml \
-   agents/it-helpdesk/topics/
 ```
+
+> **OutOfScope already copied in Step 2** from `base/topics/OutOfScope.topic.mcs.yml`. Do not copy it again from `components/topics/out-of-scope/`.
 
 ### Step 6 — Add global variables
 
@@ -2020,18 +2101,16 @@ find agents/<new-agent> -name "*.mcs.yml" \
 | Document | What it covers |
 |----------|---------------|
 | [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md) | Call signatures, inputs, and outputs for every template |
-| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 55 templates |
+| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 60 templates |
 | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | 5 steps to a running agent |
-| [`docs/START-HERE.md`](docs/START-HERE.md) | Which template to use at each project step |
 | [`docs/BEST-PRACTICES.md`](docs/BEST-PRACTICES.md) | Design rules, error handling, telemetry, naming |
 | [`docs/TOOLS-AND-PLUGINS.md`](docs/TOOLS-AND-PLUGINS.md) | Install pac CLI, VS Code extensions, Copilot Studio Kit |
 | [`docs/ACTION-SAFETY-PATTERNS.md`](docs/ACTION-SAFETY-PATTERNS.md) | Safety tiers and confirmation patterns for write actions |
 | [`docs/SKILLS-REFERENCE.md`](docs/SKILLS-REFERENCE.md) | Claude skills for generating topics, running evals, validating YAML |
 | [`docs/PII-SCRUBBING.md`](docs/PII-SCRUBBING.md) | PII prevention: telemetry rules, Power Fx masking, App Insights config, DLP, audit commands |
 | [`docs/ENV-VARIABLES.md`](docs/ENV-VARIABLES.md) | Environment variables: Power Platform env vars (CPS), .env / Key Vault / App Config / Managed Identity (pro-code) |
-| [`docs/TEAM-GUIDE.md`](docs/TEAM-GUIDE.md) | Role-based entry points, team onboarding |
 | [`governance/README.md`](governance/README.md) | Responsible AI and security review framework |
 | [`operations/03-runbook.md`](operations/03-runbook.md) | Full incident response procedures |
 | [`operations/02-monitoring-queries.md`](operations/02-monitoring-queries.md) | KQL query library |
 | [`troubleshooting/README.md`](troubleshooting/README.md) | Common errors and fixes |
-| [`examples/it-helpdesk/walkthrough.md`](examples/it-helpdesk/walkthrough.md) | Annotated IT Helpdesk build |
+| [`examples/it-helpdesk/WALKTHROUGH.md`](examples/it-helpdesk/WALKTHROUGH.md) | Annotated IT Helpdesk build |
