@@ -166,7 +166,7 @@ Complete list of every buildable template in this repository — 56 templates ac
 ## How templates relate to each other
 
 ```
-base/                          ← every agent starts here (5 files)
+base/                          ← every agent starts here (6 files)
   │
   ├── components/topics/       ← drop in topics as needed (11 options)
   │     └── _scaffold/         ← start every NEW topic from this
@@ -188,5 +188,4 @@ ci-cd/                         ← wire up after first successful push (5 pipeli
 ```
 
 → Full call signatures for every template: [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md)
-→ Which template to use at each project step: [`START-HERE.md`](START-HERE.md)
-→ Build walkthrough: [`GETTING-STARTED.md`](GETTING-STARTED.md)
+→ Build walkthrough: [`QUICKSTART.md`](QUICKSTART.md)

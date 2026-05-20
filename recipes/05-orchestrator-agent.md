@@ -85,6 +85,8 @@ instructions: |
   - If no specialist applies, say so and tell the user what you can help with
 ```
 
+→ **Follow the full steps** (apply to both files): [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
+
 ### Child agent descriptions
 
 Each child agent's `description:` field is what the parent reads to make routing decisions. Be specific and mutually exclusive.

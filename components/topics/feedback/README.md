@@ -47,8 +47,8 @@ The sequence adapts based on the response:
 | Thumbs result | Steps |
 |---|---|
 | Positive | Thumbs → thank you message → end |
-| Negative (rating > 3) | Thumbs → star rating → thank you message |
-| Negative (rating ≤ 3) | Thumbs → star rating → category dropdown → thank you message |
+| Thumbs down, rating 4–5 ★ | Thumbs → star rating → thank you message |
+| Thumbs down, rating 1–3 ★ | Thumbs → star rating → category dropdown → thank you message |
 
 The category dropdown (not free text) is what gets logged — no PII is collected.
 

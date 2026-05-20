@@ -48,6 +48,8 @@ Note: the prefix is `.globalvariable.` — not `.variable.`.
 
 ## AI visibility options
 
+Set via the `aIVisibility:` field in the variable YAML.
+
 | Value | When to use |
 |---|---|
 | `UseInAIContext` | AI should reference this value in responses (e.g., user name, user tier) |

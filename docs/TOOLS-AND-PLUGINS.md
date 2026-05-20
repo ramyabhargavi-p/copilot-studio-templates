@@ -71,10 +71,9 @@ git config --global user.email "your.email@company.com"
 
 ---
 
-### 4 — Node.js (for Copilot Studio Kit)
+### 4 — Node.js
 
-Required if you use the Copilot Studio Kit for:
-- Batch routing accuracy evaluations
+Required only if you run the Copilot Studio Kit batch evaluation scripts locally. Not needed for the managed solution install.
 
 **Install:** https://nodejs.org (LTS version)
 
@@ -107,14 +106,14 @@ code --install-extension oderwat.indent-rainbow
 
 ---
 
-## Recommended Browser Extensions
+## Useful Bookmarks
 
-| Extension | Browser | Why |
-|-----------|---------|-----|
-| **Microsoft Power Platform Admin Center** | Any | Bookmark the admin center for quick access to connections, environments, DLP |
-| **Azure Portal** | Any | Bookmark for Azure AD app registrations and Application Insights |
+Bookmark these in your browser — no extension required.
 
-No browser extension is strictly required. The tools above are desktop-only.
+| Site | Why |
+|------|-----|
+| **Microsoft Power Platform Admin Center** | Connections, environments, DLP policies |
+| **Azure Portal** | Azure AD app registrations and Application Insights |
 
 ---
 

@@ -66,12 +66,12 @@ UserQueryPreview: =Left(System.Activity.Text, 20)
 
 **Strip digits (removes phone numbers, ID numbers, account numbers):**
 
+> **Note:** Power Fx `Substitute` does not support regex — the pattern below is illustrative only and will not run as written. For real digit-stripping, route telemetry through a custom connector or Azure Function with a regex pipeline before writing to Application Insights.
+
 ```yaml
-# Power Fx — remove all digit sequences
+# Illustrative only — not valid Power Fx (Substitute does not support regex)
 UserQuerySanitised: =Substitute(System.Activity.Text, "[0-9]+", "***")
 ```
-
-> Note: Power Fx `Substitute` does not support regex. For full regex masking, route telemetry through a custom connector that calls an Azure Function or Logic App with a regex pipeline before writing to Application Insights.
 
 **Best practice — log category, not content:**
 

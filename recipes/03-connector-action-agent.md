@@ -57,8 +57,6 @@ User: "I want to submit a leave request"
 
 ## Write Instructions and OutOfScope Content
 
-→ Full steps: [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
-
 | File | What it controls |
 |------|----------------|
 | `agent.mcs.yml` → `instructions:` | What actions the agent can take, when to invoke them, escalation |
@@ -84,6 +82,8 @@ instructions: |
  Redirect those to [contact]."
 Agent name: IT Helpdesk | Auth: ManualAzureAD or None | Tone: Professional
 ```
+
+→ **Follow the full steps** (apply to both files): [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
 
 ---
 

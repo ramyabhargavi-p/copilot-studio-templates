@@ -1,6 +1,6 @@
 # Global Variable Components
 
-5 global variable templates. Variables declared here are available across all topics in the agent.
+4 global variable templates. Variables declared here are available across all topics in the agent.
 
 ---
 

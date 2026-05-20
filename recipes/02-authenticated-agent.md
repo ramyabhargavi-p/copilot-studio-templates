@@ -73,8 +73,6 @@ Subsequent messages
 
 ## Write Instructions and OutOfScope Content
 
-→ Full steps: [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
-
 | File | What it controls |
 |------|----------------|
 | `agent.mcs.yml` → `instructions:` | Who the agent is, what it answers, user context, escalation |
@@ -99,6 +97,8 @@ instructions: |
  Must NOT handle [out-of-scope]. Redirect those to [contact]."
 Agent name: [Your Agent Name] | Auth: ManualAzureAD | Tone: Empathetic
 ```
+
+→ **Follow the full steps** (apply to both files): [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
 
 ---
 

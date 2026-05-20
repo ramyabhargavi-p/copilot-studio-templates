@@ -1,7 +1,6 @@
 # Writing Instructions and OutOfScope Content
 
-Canonical reference for the two files every agent needs: `agent.mcs.yml → instructions:` and
-`topics/OutOfScope.topic.mcs.yml`. All recipe guides link here for the detailed steps.
+Reference for writing agent instructions and configuring OutOfScope trigger phrases. Recipe guides link here for the detailed steps; for the file copy and rename steps see [QUICKSTART.md](QUICKSTART.md).
 
 ---
 
@@ -88,6 +87,7 @@ exactly 2 spaces under `instructions: |` — YAML is whitespace-sensitive.
 Map Claude's "What I cannot help with" output to the OutOfScope template fields:
 
 ```
+# Example — replace with your agent's out-of-scope topics
 Claude output                                →  OutOfScope.topic.mcs.yml
 ─────────────────────────────────────────────────────────────────────────────
 "Payroll queries — payroll@company.com"         triggerQueries:

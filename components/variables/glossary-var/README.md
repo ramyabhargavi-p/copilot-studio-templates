@@ -2,7 +2,7 @@
 
 **Variable:** `Global.Glossary`
 **Type:** `String`
-**AI visibility:** `Hidden` — injected into the system prompt via instructions, not surfaced directly to the AI
+**AI visibility:** `Hidden` — the variable's content is injected into AI context via the `instructions` block, but the AI cannot reference the variable by name in responses
 
 Holds the customer-specific acronym glossary as a comma-separated string, loaded from Dataverse once at conversation start. The AI uses it to silently expand acronyms (PTO, WFH, L&D) before interpreting user messages or searching knowledge sources.
 

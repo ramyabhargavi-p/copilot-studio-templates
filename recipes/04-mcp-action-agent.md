@@ -41,8 +41,6 @@ components/
 
 ## Write Instructions and OutOfScope Content
 
-→ Full steps: [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
-
 | File | What it controls |
 |------|----------------|
 | `agent.mcs.yml` → `instructions:` | What MCP tools the agent can use, when to invoke them, escalation |
@@ -68,6 +66,8 @@ instructions: |
  Must NOT handle [out-of-scope]. Redirect those to [contact]."
 Agent name: [Your Agent Name] | Auth: ManualAzureAD or None | Tone: Professional
 ```
+
+→ **Follow the full steps** (apply to both files): [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
 
 ---
 

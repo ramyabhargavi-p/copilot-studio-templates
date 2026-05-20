@@ -106,6 +106,8 @@ Remove the `## Glossary` block if you are not using the glossary component.
 Agent name: [Your Agent Name] | Auth: ManualAzureAD or Integrated | Tone: Empathetic
 ```
 
+→ **Follow the full steps** (apply to both files): [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
+
 ---
 
 ## How to Copy the Components

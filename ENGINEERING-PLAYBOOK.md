@@ -5,7 +5,7 @@ The single reference for every engineer on the team — building, shipping, and 
 **What this document gives you:**
 - A complete decision framework before you write a single line of YAML
 - Step-by-step build instructions detailed enough for day-one engineers
-- A full catalog of all 55 templates in this repo and when to use each
+- A full catalog of all 56 templates in this repo and when to use each
 - Governance, CI/CD, testing, telemetry, and monitoring in one place
 - Advanced patterns: MCP, Azure AI Foundry, M365 Agents SDK
 
@@ -589,8 +589,10 @@ find agents/it-helpdesk -name "*.mcs.yml" \
 Also replace:
 - `<EscalationQueueName>` in `Escalation.topic.mcs.yml` → your IT team handoff queue name
   - Example: `IT-Support-Queue`
-- `<OUT_OF_SCOPE_RESOURCE>` in `OutOfScope.topic.mcs.yml` → where to redirect
-  - Example: `HR Self-Service Portal at https://hr.contoso.com`
+- In `OutOfScope.topic.mcs.yml` replace the three placeholders:
+  - `<DOMAIN>` → what the agent handles (e.g. `IT support`)
+  - `<OUT-OF-SCOPE-TOPIC>` → the out-of-scope area (e.g. `HR queries`)
+  - `<CONTACT>` → where to redirect (e.g. `hr@contoso.com`)
 
 **Verify nothing was missed:**
 ```powershell
@@ -722,7 +724,7 @@ Any YAML/connector error → OnError.topic
   └─ Safe message to user — no technical details exposed
 ```
 
-→ Detailed recipe: [`examples/it-helpdesk/walkthrough.md`](examples/it-helpdesk/walkthrough.md)
+→ Detailed recipe: [`examples/it-helpdesk/WALKTHROUGH.md`](examples/it-helpdesk/WALKTHROUGH.md)
 → Full-featured agent (auth + actions + CSAT): [`recipes/06-full-featured-agent.md`](recipes/06-full-featured-agent.md)
 
 ---

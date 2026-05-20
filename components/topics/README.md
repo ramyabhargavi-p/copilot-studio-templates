@@ -14,7 +14,7 @@
 | [`conversation-init/`](conversation-init/) | `OnActivity` (first message) | — | Loads M365 user profile (`UserDisplayName`, `UserCountry`) and glossary into global variables |
 | [`disambiguation/`](disambiguation/) | `OnSelectIntent` | — | Clarifies ambiguous intents, logs `Agent.DisambiguationTriggered` |
 | [`escalation/`](escalation/) | `OnRecognizedIntent` (12 phrases) | `BeginDialog` from Fallback | Human handoff via `TransferConversation`, logs `Agent.EscalationTriggered` |
-| [`feedback/`](feedback/) | `OnRecognizedIntent` / `BeginDialog` | — | Thumbs → rating → free text CSAT |
+| [`feedback/`](feedback/) | `OnRecognizedIntent` / `BeginDialog` | — | Thumbs → rating → issue category dropdown CSAT |
 | [`knowledge-search/`](knowledge-search/) | `OnUnknownIntent` | — | Generative answers from knowledge sources, logs `Knowledge.AnswerFound` / `AnswerNotFound` |
 | [`out-of-scope/`](out-of-scope/) | `OnRecognizedIntent` | — | Redirects queries outside the agent's domain, logs `Agent.OutOfScope` |
 | [`question-branch/`](question-branch/) | `OnRecognizedIntent` | — | Collects user input and branches the conversation |

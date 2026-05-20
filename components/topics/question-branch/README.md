@@ -36,7 +36,7 @@ cp components/topics/question-branch/QuestionBranch.topic.mcs.yml \
 
 ## Before → after (question node)
 
-The template uses `StringPrebuiltEntity` — the user types their answer as free text. There is no rendered choice list.
+The template uses `StringPrebuiltEntity` — the user types their answer as free text. There is **no rendered choice list**; the `<Option 1>` / `<Option 2>` placeholders are matched by exact text, not displayed as buttons.
 
 ```yaml
 # Before
@@ -60,7 +60,7 @@ The template uses `StringPrebuiltEntity` — the user types their answer as free
   entity: StringPrebuiltEntity
 ```
 
-The user types "Full-time" or "Part-time" (or similar), and the `ConditionGroup` matches by exact text.
+The user types "Full-time" or "Part-time", and the `ConditionGroup` matches by exact text. The match is case-insensitive but must be exact — "full time" (with a space) would not match "Full-time".
 
 ## Before → after (branch responses)
 

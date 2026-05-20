@@ -129,7 +129,7 @@ Copy these declarations into your agent, replacing `<SCHEMA>` with your schemaNa
 
 ### 1.7 Secrets in Copilot Studio
 
-CPS **does not have a built-in secret store**. For API keys and connection strings:
+Copilot Studio (CPS) **does not have a built-in secret store**. For API keys and connection strings:
 
 1. **Use connection references** — never put API keys in environment variables (they are visible to all solution editors). Connection references are encrypted and managed by the platform.
 2. **Use Azure Key Vault** via a Power Automate flow — the flow fetches the secret at runtime and passes it to the agent via a child flow output.

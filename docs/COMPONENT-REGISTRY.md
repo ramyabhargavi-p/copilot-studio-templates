@@ -194,7 +194,7 @@ Each topic is a self-contained dialog. Call any of them from any other topic usi
 ### `feedback`
 **File:** `components/topics/feedback/Feedback.topic.mcs.yml`
 **Trigger:** User says "feedback", "rate this", etc. — OR called programmatically.
-**Purpose:** Collects CSAT via thumbs → star rating → free text sequence.
+**Purpose:** Collects CSAT via thumbs → star rating (if negative) → issue category dropdown (if rating ≤ 3). No free text — PII safe.
 
 **Call from any topic at its natural end point:**
 ```yaml
@@ -207,7 +207,7 @@ Each topic is a self-contained dialog. Call any of them from any other topic usi
 
 **Outputs:** None — all data is logged to telemetry directly.
 
-**Telemetry fired:** `Feedback.Thumbs`, `Feedback.Rating` (if negative), `Feedback.Text` (if rating ≤ 3)
+**Telemetry fired:** `Feedback.Thumbs`, `Feedback.Rating` (if negative), `Feedback.Category` (if rating ≤ 3)
 
 **Use at:** Step 14 — call from the end of any topic that resolves a user request. Required for CSAT measurement (Q18 in requirements questionnaire).
 
@@ -314,9 +314,9 @@ Cards are not called via `BeginDialog` — they are inlined in `SendActivity` no
 
 ### `feedback-text`
 **File:** `components/adaptive-cards/feedback-text.json`
-**Purpose:** 💬 Free text comment + category dropdown.
+**Purpose:** Issue category dropdown — fires when thumbs-down rating ≤ 3. No free-text field (PII safe).
 
-**Response values:** `feedbackText: "..."`, `feedbackCategory: "wrong_answer"` etc., `skipped: true/false`
+**Response values:** `feedbackCategory: "wrong_answer"` etc., `skipped: true/false`
 
 **Use via:** `feedback` topic (automatic) — fires only when rating ≤ 3.
 

@@ -43,7 +43,7 @@ cp components/variables/user-country/UserCountry.variable.mcs.yml \
 | `<AGENT-SCHEMA-NAME>` | `schemaName` field and description metadata | `hr_assistant` |
 | `_REPLACE1–13` | Node IDs throughout | Run ID script |
 
-Note: uses `<AGENT-SCHEMA-NAME>` with **hyphens** — different from other components that use `<AGENT_SCHEMA>` with underscores. Same value, different format.
+Note: uses `<AGENT-SCHEMA-NAME>` with **hyphens** — different from other components that use `<AGENT_SCHEMA>` with underscores. Same value, different format. The hyphens are required by the YAML schema for this specific field — do not change to underscores.
 
 ## Before → after
 
@@ -69,7 +69,7 @@ schemaName: hr_assistant.topic.ConversationInit
 ## Common mistakes
 
 - **Adding without authentication configured** — the Office 365 Users connector call returns null; `UserDisplayName` stays blank
-- **Using `{Global.UserDisplayName}` in instructions before variable files are declared** — VS Code shows `IdentifierNotRecognized`; use `[Global.UserDisplayName]` (square brackets) as a temporary workaround
+- **Using `{Global.UserDisplayName}` in instructions before variable files are declared** — VS Code shows `IdentifierNotRecognized`; use `[Global.UserDisplayName]` (square brackets) as a temporary workaround inside plain text/instructions blocks only — curly braces are still required inside Power Fx expressions
 - **Skipping glossary variable** when using the glossary knowledge source — `{Global.Glossary}` in instructions will reference an undeclared variable
 
 ## How to use variables in the system prompt

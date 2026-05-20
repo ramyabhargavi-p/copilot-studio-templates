@@ -377,7 +377,7 @@ High tier actions must never execute in the same turn as the user's request. Alw
 
 ### Declare the tier in every action file
 
-Add this comment block at the top of every `*-action.mcs.yml` or `*-action.mcs.yml` connector file:
+Add this comment block at the top of every action file (`connector-action.mcs.yml` or `mcp-action.mcs.yml`):
 
 ```yaml
 # SAFETY TIER: Low / Medium / High

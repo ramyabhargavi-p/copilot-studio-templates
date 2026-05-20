@@ -14,7 +14,7 @@ Decision    Discovery    Design       Build        Test         Deploy       Lau
 ```
 
 Templates cover all eight phases. Most teams use only the Build phase templates and skip the
-rest — which is why agents succeed in UAT and struggle in production.
+rest — which is why agents can pass UAT but struggle in production.
 
 ---
 
