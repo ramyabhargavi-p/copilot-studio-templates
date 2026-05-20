@@ -27,28 +27,36 @@ All roles: read **Stage 6 (Governance)** — it is a delivery blocker for everyo
 
 ## Delivery Pipeline at a Glance
 
-### Phase flow
+Each box shows the stage goal and the repo folders you open at that phase.
 
 ```mermaid
-flowchart LR
-    subgraph PLAN["PLANNING"]
-        S0["Stage 0\nPlatform Decision"]
-        S1["Stage 1\nDev Setup"]
+flowchart TD
+    classDef plan fill:#1a56db,stroke:#1e3a5f,color:#ffffff
+    classDef build fill:#057a55,stroke:#014737,color:#ffffff
+    classDef ship fill:#b45309,stroke:#78350f,color:#ffffff
+    classDef operate fill:#6d28d9,stroke:#4c1d95,color:#ffffff
+
+    subgraph PLAN["  PLANNING  "]
+        S0["Stage 0 — Platform Decision<br/>📄 Decision matrix · recipes/"]:::plan
+        S1["Stage 1 — Dev Setup<br/>🔧 pac CLI · VS Code extensions · git"]:::plan
     end
-    subgraph BUILD["BUILD"]
-        S2["Stage 2\nTemplate Library"]
-        S3["Stage 3\nBuild Agent"]
-        S4["Stage 4/4.5\nInnovation"]
+
+    subgraph BUILD["  BUILD  "]
+        S2["Stage 2 — Template Library<br/>📦 base/ · components/ · prompts/ · recipes/"]:::build
+        S3["Stage 3 — Build Agent<br/>📁 base/ 6 files always<br/>📁 components/topics/<br/>📁 components/knowledge/<br/>📁 components/actions/<br/>📁 components/variables/<br/>📁 components/adaptive-cards/"]:::build
+        S4["Stage 4/4.5 — Innovation  optional<br/>📁 components/actions/mcp/<br/>📁 components/agents/<br/>📄 recipes/07-m365-agents-sdk<br/>📄 recipes/08-azure-ai-foundry"]:::build
     end
-    subgraph SHIP["SHIP"]
-        S5["Stage 5\nTesting & Evals"]
-        S6["Stage 6\nGovernance"]
-        S7["Stage 7\nCI/CD"]
+
+    subgraph SHIP["  SHIP  "]
+        S5["Stage 5 — Testing and Evals<br/>📁 agents/name/evals/ CSV<br/>🔧 Copilot Studio Kit eval runner"]:::ship
+        S6["Stage 6 — Governance<br/>📁 governance/"]:::ship
+        S7["Stage 7 — CI/CD<br/>📁 ci-cd/01 validate on PR<br/>📁 ci-cd/02 Dev to UAT<br/>📁 ci-cd/03 UAT to Prod<br/>📁 ci-cd/04 solution deploy"]:::ship
     end
-    subgraph OPERATE["OPERATE"]
-        S8["Stage 8\nDebugging"]
-        S9["Stage 9\nTelemetry"]
-        S10["Stage 10\nMonitoring"]
+
+    subgraph OPERATE["  OPERATE  "]
+        S8["Stage 8 — Debugging<br/>📁 troubleshooting/<br/>🔧 CPS Activity log · App Insights"]:::operate
+        S9["Stage 9 — Telemetry<br/>📁 Topic YAML LogCustomTelemetryEvent<br/>📄 docs/PII-SCRUBBING.md"]:::operate
+        S10["Stage 10 — Monitoring<br/>📄 operations/01-alert-setup<br/>📄 operations/02-monitoring-queries<br/>📄 operations/03-runbook"]:::operate
     end
 
     S0 --> S1 --> S2 --> S3
@@ -58,35 +66,23 @@ flowchart LR
     S5 --> S6 --> S7
     S3 --> S9 --> S10
     S8 -.->|on issues| S10
-
-    style S0 fill:#e8f4fd,stroke:#1a73e8
-    style S1 fill:#e8f4fd,stroke:#1a73e8
-    style S2 fill:#e6f4ea,stroke:#34a853
-    style S3 fill:#e6f4ea,stroke:#34a853
-    style S4 fill:#e6f4ea,stroke:#34a853
-    style S5 fill:#fce8e6,stroke:#ea4335
-    style S6 fill:#fce8e6,stroke:#ea4335
-    style S7 fill:#fce8e6,stroke:#ea4335
-    style S8 fill:#fef7e0,stroke:#f9ab00
-    style S9 fill:#fef7e0,stroke:#f9ab00
-    style S10 fill:#fef7e0,stroke:#f9ab00
 ```
 
-### What you use at each stage
+### Stage-by-stage folder reference
 
-| Stage | Goal | Key files and templates | Tools |
-|-------|------|------------------------|-------|
-| **0 — Platform Decision** | Pick the right platform before writing code | Decision matrix in this playbook, `recipes/` (choose type) | — |
-| **1 — Dev Setup** | Install tools, authenticate to Dev environment | — | `pac CLI`, VS Code + 5 extensions, git |
-| **2 — Template Library** | Know what exists before copying | `base/` (6 files), `components/` (60 templates), `recipes/` (8 guides), `prompts/` (10 prompts) | VS Code IntelliSense |
-| **3 — Build** | Assemble the agent from templates | `base/` + chosen `components/topics`, `components/actions`, `components/knowledge` | VS Code: Apply Changes, CPS test canvas |
-| **4/4.5 — Innovation** | Add MCP tools, Foundry, or pro-code logic | `components/actions/mcp/`, `recipes/07-m365-agents-sdk.md`, `recipes/08-azure-ai-foundry.md` | pac CLI, Azure Portal |
-| **5 — Testing** | Verify routing and answer quality before UAT | Eval CSV (50+ utterances), smoke test (7 cases) | Copilot Studio Kit |
-| **6 — Governance** | RAI and security sign-off | `governance/01-responsible-ai-checklist.md`, `governance/02-ai-ethics-checklist.md` | — |
-| **7 — CI/CD** | Automate Dev → UAT → Prod promotions | `ci-cd/01-push-on-pr.yml`, `ci-cd/02-promote-dev-to-uat.yml`, `ci-cd/03-promote-uat-to-prod.yml`, `ci-cd/04-solution-build-and-deploy.yml` | GitHub Actions |
-| **8 — Debugging** | Diagnose and fix issues in < 15 min | `troubleshooting/README.md` | CPS Activity log, App Insights |
-| **9 — Telemetry** | Log every significant event, scrub PII | Custom events in every topic YAML, `docs/PII-SCRUBBING.md` | Application Insights |
-| **10 — Monitoring** | Detect problems before users notice | `operations/02-monitoring-queries.md`, `operations/01-alert-setup.md`, `operations/03-runbook.md` | Azure Monitor |
+| Stage | Repo folders opened | Templates used | External tool |
+|-------|---------------------|---------------|---------------|
+| **0 — Platform Decision** | — | `recipes/` (pick type) | — |
+| **1 — Dev Setup** | — | — | `pac CLI`, VS Code + 5 extensions, git |
+| **2 — Template Library** | `base/` `components/` `prompts/` `recipes/` | All 60 templates (browse only) | VS Code IntelliSense |
+| **3 — Build** | `base/` `components/topics/` `components/knowledge/` `components/actions/` `components/variables/` `components/adaptive-cards/` | 6 base files + chosen components | VS Code: Apply Changes, CPS test canvas |
+| **4 — Innovation** | `components/actions/mcp/` `components/agents/` | `mcp-action.mcs.yml` `child-agent.mcs.yml` `recipes/07` `recipes/08` | Azure Portal |
+| **5 — Testing** | `agents/<name>/evals/` | Eval CSV (50+ rows) | Copilot Studio Kit |
+| **6 — Governance** | `governance/` | `01-responsible-ai-checklist.md` `02-ai-ethics-checklist.md` | — |
+| **7 — CI/CD** | `ci-cd/` | `01-push-on-pr.yml` `02-promote-dev-to-uat.yml` `03-promote-uat-to-prod.yml` `04-solution-build-and-deploy.yml` | GitHub Actions |
+| **8 — Debugging** | `troubleshooting/` | `README.md` issue catalogue | CPS Activity log, App Insights |
+| **9 — Telemetry** | Every `topics/*.mcs.yml` | `LogCustomTelemetryEvent` nodes | Application Insights |
+| **10 — Monitoring** | `operations/` | `01-alert-setup.md` `02-monitoring-queries.md` `03-runbook.md` | Azure Monitor |
 
 ---
 
