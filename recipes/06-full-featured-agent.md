@@ -13,7 +13,7 @@ An agent with authentication, personalised context, generative knowledge search,
 ```
 base/
 ├── agent.mcs.yml
-├── settings.mcs.yml                        ← authenticationMode: ManualAzureAD or IntegratedAzureAD
+├── settings.mcs.yml                        ← authenticationMode: ManualAzureAD or Integrated
 └── topics/
     ├── Greeting.topic.mcs.yml
     ├── Fallback.topic.mcs.yml
@@ -72,43 +72,14 @@ Any error → [OnError] → debug info (test) or safe message (prod) + telemetry
 
 ## Write Instructions and OutOfScope Content
 
-These two files define your agent's domain — write them together.
+→ Full steps: [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
 
 | File | What it controls |
 |------|----------------|
 | `agent.mcs.yml` → `instructions:` | Who the agent is, what it answers, user context, available actions, escalation |
 | `topics/OutOfScope.topic.mcs.yml` | Trigger phrases + redirect message for out-of-domain questions |
 
-**The `generate-agent-instructions.md` prompt writes both in one pass.**
-
-### Step 1 — Option A: Use a ready-made persona (5 min)
-
-```
-1. Open prompts/system-prompts/hr-assistant.md  (or customer-support.md, it-helpdesk.md)
-2. Copy everything inside the triple backticks
-3. Paste into agent.mcs.yml replacing the entire instructions: | block
-4. Replace every [BRACKET] value:
-     [Company Name]  →  e.g. Contoso
-     [company].com   →  your contact email domain
-5. Then go to Step 3 to fill OutOfScope.topic.mcs.yml manually
-```
-
-### Step 1 — Option B: Generate both with Claude (10 min, recommended)
-
-```
-1. Open prompts/ai-prompts/generate-agent-instructions.md
-2. Copy the prompt template and paste into a Claude conversation
-3. Fill in:
-     Project brief:    "Authenticated enterprise agent for [domain]. Users are identified
-                        via Azure AD. The agent answers questions from SharePoint and can
-                        [describe connector action]. Must NOT handle [out-of-scope].
-                        Redirect those to [contact]."
-     Agent name:       HR Assistant
-     Primary users:    Internal employees (authenticated)
-     Authentication:   ManualAzureAD or IntegratedAzureAD
-     Tone:             Empathetic
-4. Paste Claude's output into agent.mcs.yml
-```
+**Option A personas:** `prompts/system-prompts/hr-assistant.md`, `customer-support.md`, or `it-helpdesk.md`
 
 **After pasting either option** — add these lines at the top of the `instructions:` block:
 
@@ -126,65 +97,16 @@ instructions: |
 
 Remove the `## Glossary` block if you are not using the glossary component.
 
-### Step 2 — Apply to agent.mcs.yml
-
-Paste the output replacing the entire `instructions: |` block. Every line must be indented 2 spaces — YAML is whitespace-sensitive.
-
-### Step 3 — Apply to OutOfScope.topic.mcs.yml
-
-Claude's "What I cannot help with" items become trigger phrases and redirect text.
-
-**Mapping:**
+**Option B project brief:**
 
 ```
-Claude output                                →  OutOfScope.topic.mcs.yml
-─────────────────────────────────────────────────────────────────────────────
-"Payroll — payroll@company.com"                 triggerQueries:
-"IT issues — it@company.com"                      - payroll
-"Finance — finance@company.com"                   - what is my salary
-                                                  - IT support
-                                                  - expense reimbursement
-
-                                                SendActivity:
-                                                  "I'm only set up for [domain].
-                                                   For [topic], [contact] is best."
+"Authenticated enterprise agent for [domain]. Users are identified via Azure AD.
+ Answers questions from SharePoint and can [describe connector action].
+ Must NOT handle [out-of-scope]. Redirect those to [contact]."
+Agent name: [Your Agent Name] | Auth: ManualAzureAD or Integrated | Tone: Empathetic
 ```
 
-**Add the file and fill in the placeholders:**
-
-If `OutOfScope.mcs.yml` is not yet in your `topics/` folder, copy it in:
-
-```powershell
-# PowerShell
-Copy-Item "base\topics\OutOfScope.topic.mcs.yml" "agents\<display name>\topics\OutOfScope.mcs.yml" -Force
-```
-```bash
-# Mac / Linux
-cp base/topics/OutOfScope.topic.mcs.yml "agents/<display name>/topics/OutOfScope.mcs.yml"
-```
-
-Open `OutOfScope.mcs.yml` and replace these 5 things:
-
-| Placeholder | Replace with | Example |
-|-------------|-------------|---------|
-| `<out-of-scope phrase 1–5>` | Trigger phrases from Claude's "What I cannot help with" section | `payroll`, `IT support`, `expense claim` |
-| `<DOMAIN>` | What this agent handles | `HR policies and leave management` |
-| `<OUT-OF-SCOPE-TOPIC>` | The out-of-scope area in the redirect message | `IT support` |
-| `<CONTACT>` | Where to send the user | `it@contoso.com` |
-| `_REPLACE1`, `_REPLACE2` | Run the ID script (QUICKSTART Step 4) or any 6-char random string | `_ab3f9x` |
-
-**Need more trigger phrases?** Ask Claude:
-
-```
-Generate 10 trigger phrases for a Copilot Studio OutOfScope topic.
-The agent handles: [your domain].
-Out-of-scope areas: [list from your instructions].
-Include: formal, casual, abbreviated, and question variations.
-Output as a YAML list (- phrase format).
-```
-
-→ Template: [`prompts/ai-prompts/generate-topic.md`](../prompts/ai-prompts/generate-topic.md) → "Generate trigger phrases only"
-→ All prompt templates: [`prompts/README.md`](../prompts/README.md)
+→ **Follow the full steps** (apply to both files): [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
 
 ---
 
@@ -283,7 +205,7 @@ After the script runs, a few values still need manual edits:
 | File | Placeholder | Example |
 |------|------------|---------|
 | `agent.mcs.yml` | System prompt | Your domain, scope, out-of-scope instructions |
-| `settings.mcs.yml` | `authenticationMode` | `ManualAzureAD` or `IntegratedAzureAD` |
+| `settings.mcs.yml` | `authenticationMode` | `ManualAzureAD` or `Integrated` |
 | `topics/OutOfScope.topic.mcs.yml` | `<DOMAIN>`, `<OUT-OF-SCOPE-TOPIC>`, `<CONTACT>` | `HR policies`, `IT support`, `it@contoso.com` |
 | `knowledge/<name>.knowledge.mcs.yml` | SharePoint URL | `https://contoso.sharepoint.com/sites/HR/...` |
 | `actions/GetLeaveBalance.mcs.yml` | `<connection-reference-logical-name>`, `<OperationId>` | `shared_sharepointonline`, `GetItem` |
@@ -309,7 +231,7 @@ grep -rn "_REPLACE" agents/hr_assistant --include="*.mcs.yml"
 - [ ] Files copied, ID script run, verify commands return zero output
 
 **Configuration:**
-- [ ] `settings.mcs.yml` — set `authenticationMode: ManualAzureAD` or `IntegratedAzureAD`
+- [ ] `settings.mcs.yml` — set `authenticationMode: ManualAzureAD` or `Integrated`
 - [ ] `agent.mcs.yml` — write `instructions` referencing `{Global.UserDisplayName}` and `{Global.UserCountry}`
 - [ ] `topics/ConversationInit.topic.mcs.yml` — remove the Glossary block if you are not using a glossary knowledge source
 

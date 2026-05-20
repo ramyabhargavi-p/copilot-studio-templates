@@ -11,4 +11,4 @@ Prompts to run in Claude (or another LLM) to auto-generate YAML, system prompts,
 | `review-agent.md` | Agent quality review checklist |
 | `prompt-engineering-patterns.md` | P1–P10 pattern reference for system prompt design |
 
-→ Claude skills that use these prompts directly: [`../../SKILLS-REFERENCE.md`](../../SKILLS-REFERENCE.md)
+→ Claude skills that use these prompts directly: [`../../docs/SKILLS-REFERENCE.md`](../../docs/SKILLS-REFERENCE.md)

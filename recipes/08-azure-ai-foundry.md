@@ -320,7 +320,7 @@ AIProjectInstrumentor().instrument()
 # GUARDRAIL:   None
 # REASON:      Read-only knowledge retrieval from Foundry agent
 
-kind: TaskAction
+kind: TaskDialog
 schema: 2.0.0
 schemaName: <SCHEMA>_foundry_specialist
 displayName: Ask IT Specialist (Foundry)
@@ -399,7 +399,7 @@ Console.WriteLine(messages.Data[0].Content[0].Text.Value);
 | `components/actions/connector/` | Connector action that Copilot Studio uses to call the Foundry REST API |
 | `project-delivery/00-ai-decision-framework.md` | Step 6 scale limits section — triggers the move to Foundry |
 | `project-delivery/09-technical-design-document.md` | Documents the Copilot Studio ↔ Foundry boundary and data flow |
-| `project-delivery/13-ai-engineer-realtime-guide.md` | Post-launch progressive enhancement decision card |
+| `project-delivery/11-ai-engineer-realtime-guide.md` | Post-launch progressive enhancement decision card |
 
 ---
 
@@ -426,7 +426,7 @@ Console.WriteLine(messages.Data[0].Content[0].Text.Value);
 ### Observability
 - [ ] Enable tracing: `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true`
 - [ ] Connect to Application Insights workspace
-- [ ] Add to `operations/monitoring-queries.md` — Foundry-specific KQL queries
+- [ ] Add to `operations/02-monitoring-queries.md` — Foundry-specific KQL queries
 
 ---
 

@@ -84,17 +84,24 @@ jobs:
             --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
             --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}"
 
-      - name: Push agent to production
+      - name: Push agent to production (configure before use — see ci-cd/README.md)
         working-directory: ${{ env.AGENT_PATH }}
         run: |
-          pac copilot push \
-            --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}"
+          # pac copilot push does not exist in the pac CLI.
+          # Replace this step with your deployment approach:
+          #   Option A: VS Code "Copilot Studio: Apply Changes" (manual only, not automatable in CI)
+          #   Option B: Solution-based ALM — see ci-cd/04-solution-build-and-deploy.yml
+          echo "ERROR: This step is a placeholder. pac copilot push is not a valid pac CLI command."
+          echo "Configure your deployment approach before running this pipeline. See ci-cd/README.md."
+          exit 1
 
       - name: Publish agent to production
         run: |
           pac copilot publish \
             --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}" \
-            --schemaName "${{ vars.AGENT_SCHEMA_NAME }}"
+            --bot "${{ vars.AGENT_DISPLAY_NAME }}"
+          # Note: --bot takes the agent display name or Copilot ID (not the schema name)
+          # Set AGENT_DISPLAY_NAME in GitHub repository variables
 
       - name: Record deployment
         run: |
@@ -110,7 +117,7 @@ jobs:
           echo "**Post-deployment checklist:**" >> $GITHUB_STEP_SUMMARY
           echo "- [ ] Verify published version in Copilot Studio test canvas" >> $GITHUB_STEP_SUMMARY
           echo "- [ ] Check Application Insights for errors (first 15 minutes)" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Run post-publish smoke test (see \`launch/launch-checklist.md\`)" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Run post-publish smoke test (see \`launch/01-launch-checklist.md\`)" >> $GITHUB_STEP_SUMMARY
           echo "- [ ] Send user communication if this is a first release or breaking change" >> $GITHUB_STEP_SUMMARY
 
       - name: Notify on failure
@@ -124,4 +131,4 @@ jobs:
           echo "1. Review the logs above to identify the failure point" >> $GITHUB_STEP_SUMMARY
           echo "2. Check Power Platform service health: https://admin.powerplatform.microsoft.com/servicestatus" >> $GITHUB_STEP_SUMMARY
           echo "3. If push succeeded but publish failed: publish manually in Copilot Studio UI" >> $GITHUB_STEP_SUMMARY
-          echo "4. See \`operations/runbook.md\` for recovery procedures" >> $GITHUB_STEP_SUMMARY
+          echo "4. See \`operations/03-runbook.md\` for recovery procedures" >> $GITHUB_STEP_SUMMARY

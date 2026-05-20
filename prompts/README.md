@@ -54,8 +54,6 @@ Tone: Empathetic
 
 > **Tip:** You can also ask Claude to refine an existing instructions block. Open the "Variations" section in `generate-agent-instructions.md` for the refine and add-date-context prompts.
 
-Two types of prompts — one for what you paste into your agent, one for what you send to Claude.
-
 ---
 
 ## Two subfolders
@@ -99,5 +97,5 @@ After pasting, replace `<ORG_NAME>`, `<AGENT_NAME>`, and any other `<AngleBracke
 4. Copy the generated YAML back into your agent folder
 5. Replace all `_REPLACE` node IDs with unique 6-char strings (see `../QUICKSTART.md`)
 
-→ Full template inventory: [`../TEMPLATES.md`](../TEMPLATES.md)
-→ How topics fit together: [`../COMPONENT-REGISTRY.md`](../COMPONENT-REGISTRY.md)
+→ Full template inventory: [`../docs/TEMPLATES.md`](../docs/TEMPLATES.md)
+→ How topics fit together: [`../docs/COMPONENT-REGISTRY.md`](../docs/COMPONENT-REGISTRY.md)

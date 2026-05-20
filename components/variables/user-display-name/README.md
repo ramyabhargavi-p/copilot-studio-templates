@@ -42,12 +42,7 @@ Note: the prefix is `.globalvariable.` — not `.variable.`.
 
 ## Apply Changes limitation
 
-> If pushing this file causes `[0x800608ad:ExportKeyAttributeInvalidPrefix]`:
-> 1. Delete this file from your agent's `variables/` folder
-> 2. Run Apply Changes to push topics and settings first
-> 3. Re-add this file and run Apply Changes again
->
-> The declaration exists for VS Code IntelliSense only. The `conversation-init` topic populates `Global.UserDisplayName` at runtime via `SetVariable` — the declaration file is optional.
+> **Apply Changes export error?** See [Known issue — Apply Changes export error](../README.md#known-issue--apply-changes-export-error) in the variables README.
 
 ## Usage in agent instructions
 

@@ -21,7 +21,7 @@ The first two weeks after launch are the highest-risk period. User behaviour is 
 |------|----------|
 | Before send | Confirm Application Insights is receiving events (open Copilot Studio → send test message → check Live Metrics) |
 | After announcement sent | Monitor Teams/feedback channel for immediate issues |
-| 1 hour post-launch | Run the **Dashboard Queries** in `operations/monitoring-queries.md` — baseline the key metrics |
+| 1 hour post-launch | Run the **Dashboard Queries** in `operations/02-monitoring-queries.md` — baseline the key metrics |
 | End of day | Run the **Monthly Health Report** query — record the numbers |
 
 ### Days 1–3 — Active Monitoring
@@ -29,13 +29,13 @@ The first two weeks after launch are the highest-risk period. User behaviour is 
 Check these every morning:
 
 ```
-1. Error spike? → monitoring-queries.md → Error frequency query
+1. Error spike? → 02-monitoring-queries.md → Error frequency query
 2. High fallback rate? → Fallback rate query
 3. Action failures? → Action success / failure rate query
 4. Any unanswered questions that reveal knowledge gaps? → Unanswered questions query
 ```
 
-If any metric looks wrong: follow the relevant procedure in `operations/runbook.md`.
+If any metric looks wrong: follow the relevant procedure in `operations/03-runbook.md`.
 
 **Daily 5-minute check:**
 - Any user feedback or complaints in the feedback channel?

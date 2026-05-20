@@ -85,7 +85,7 @@ Ctrl+Shift+P → Copilot Studio: Apply Changes
 |-------|---------|
 | `None` | Anonymous — no user identity; suitable for public-facing or Teams-embedded agents without personalisation |
 | `ManualAzureAD` | Users sign in explicitly; add the [`auth` component](../components/topics/auth/) |
-| `IntegratedAzureAD` | Silent SSO via Teams / M365; user identity auto-available in `System.User.*` |
+| `Integrated` | Silent SSO via Teams / M365; user identity auto-available in `System.User.*` |
 
 ### `schemaName`
 

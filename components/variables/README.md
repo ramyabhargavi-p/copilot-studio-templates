@@ -1,13 +1,6 @@
 # Global Variable Components
 
-5 global variable templates. Variables declared here are available across all topics in the agent.
-
-> **Apply Changes limitation** — If pushing a variable file causes `[0x800608ad:ExportKeyAttributeInvalidPrefix]`:
-> 1. Delete the `.variable.mcs.yml` file(s) from your agent's `variables/` folder
-> 2. Run Apply Changes to push topics and settings first
-> 3. Re-add the variable file(s) and run Apply Changes again once the agent is in the cloud
->
-> Global variables are created dynamically at runtime by `SetVariable` actions — the declaration file exists for VS Code IntelliSense only. Your agent works correctly without it.
+4 global variable templates. Variables declared here are available across all topics in the agent.
 
 ---
 
@@ -35,6 +28,18 @@ For values used only within a single topic, use `Topic.` variables instead.
 cp components/variables/global-variable/global-variable.variable.mcs.yml \
    agents/<your-agent>/variables/<VariableName>.variable.mcs.yml
 ```
+
+---
+
+## Known issue — Apply Changes export error
+
+If pushing a variable file causes `[0x800608ad:ExportKeyAttributeInvalidPrefix]`:
+
+1. Delete the variable file from your agent's `variables/` folder
+2. Run **Copilot Studio: Apply Changes** to push topics and settings first
+3. Re-add the variable file and run **Copilot Studio: Apply Changes** again
+
+This happens when variables are pushed before the topics that reference them. Pushing topics first resolves it.
 
 → How `UserDisplayName` and `UserCountry` are loaded: [`../topics/conversation-init/README.md`](../topics/conversation-init/README.md)
 → Generic variable template: [`global-variable/README.md`](global-variable/README.md)

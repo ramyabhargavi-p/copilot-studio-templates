@@ -33,7 +33,7 @@ Work through each section in order. Check off each item. If any item fails, fix 
 
 | # | Item | Status |
 |---|------|--------|
-| E1 | Full eval CSV created with minimum row count (see `project-delivery/05-eval-scenarios.md`) | ☐ |
+| E1 | Full eval CSV created with minimum row count (see `project-delivery/12-eval-scenarios.md`) | ☐ |
 | E2 | Topic routing accuracy ≥ 85% | Score: ____% ☐ |
 | E3 | Out-of-scope routing accuracy = 100% | ☐ |
 | E4 | Response groundedness ≥ 80% (if knowledge sources present) | Score: ____% ☐ |
@@ -45,8 +45,8 @@ Work through each section in order. Check off each item. If any item fails, fix 
 
 | # | Item | Status |
 |---|------|--------|
-| G1 | Responsible AI checklist completed and signed (`governance/ai-ethics-checklist.md`) | ☐ |
-| G2 | Security review checklist completed (`governance/security-review.md`) | ☐ |
+| G1 | Responsible AI checklist completed and signed (`governance/02-ai-ethics-checklist.md`) | ☐ |
+| G2 | Security review checklist completed (`governance/03-security-review.md`) | ☐ |
 | G3 | Prompt injection resistance tests all passed | ☐ |
 | G4 | No PII in telemetry events | ☐ |
 | G5 | DLP policy confirmed with Power Platform admin | ☐ |
@@ -73,9 +73,9 @@ Work through each section in order. Check off each item. If any item fails, fix 
 | # | Item | Status |
 |---|------|--------|
 | O1 | Application Insights connected and receiving events | ☐ |
-| O2 | Alert rules created (see `operations/alert-setup.md`) | ☐ |
-| O3 | On-call contact identified and documented in runbook | ☐ |
-| O4 | Runbook (`operations/runbook.md`) reviewed and adapted for this agent | ☐ |
+| O2 | Alert rules created (see `operations/01-alert-setup.md`) | ☐ |
+| O3 | On-call contact identified and documented in 03-runbook | ☐ |
+| O4 | Runbook (`operations/03-runbook.md`) reviewed and adapted for this agent | ☐ |
 | O5 | Monitoring queries bookmarked in Application Insights | ☐ |
 
 ---
@@ -90,7 +90,7 @@ Work through each section in order. Check off each item. If any item fails, fix 
 | D4 | Correct channel(s) enabled and verified (Teams / website / Copilot) | ☐ |
 | D5 | Agent owner has access to the Copilot Studio environment and Application Insights | ☐ |
 | D6 | Git repository handed over / access granted to agent owner | ☐ |
-| D7 | User communication sent (see `launch/user-communication-template.md`) | ☐ |
+| D7 | User communication sent (see `launch/02-user-communication-template.md`) | ☐ |
 
 ---
 
@@ -98,7 +98,7 @@ Work through each section in order. Check off each item. If any item fails, fix 
 
 | # | Item | Status |
 |---|------|--------|
-| H1 | Hypercare schedule confirmed (see `launch/hypercare-guide.md`) | ☐ |
+| H1 | Hypercare schedule confirmed (see `launch/03-hypercare-guide.md`) | ☐ |
 | H2 | Feedback channel (email or Teams) communicated to users | ☐ |
 | H3 | Day 1 check-in scheduled for the morning after launch | ☐ |
 

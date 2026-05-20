@@ -47,9 +47,9 @@ Use these queries to pull technical details already shared in emails or Teams be
 **What auth mode will this agent use?**
 - [ ] `None` — anonymous, no user identity
 - [ ] `ManualAzureAD` — explicit sign-in (web, external, or non-Teams channels)
-- [ ] `IntegratedAzureAD` — SSO via Teams / Microsoft 365 (no sign-in prompt)
+- [ ] `Integrated` — SSO via Teams / Microsoft 365 (no sign-in prompt)
 
-**If ManualAzureAD or IntegratedAzureAD:**
+**If ManualAzureAD or Integrated:**
 
 | Item | Value |
 |------|-------|

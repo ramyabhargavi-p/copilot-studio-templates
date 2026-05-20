@@ -40,7 +40,7 @@ Complete before go-live and after any change to authentication, connectors, or s
 | Sp1 | System prompt does not contain internal service names, URLs, or infrastructure details | Review `agent.mcs.yml` instructions | |
 | Sp2 | System prompt does not contain passwords, API keys, or secrets | | |
 | Sp3 | System prompt includes out-of-scope and refusal guidance | | |
-| Sp4 | Prompt injection resistance tests I1–I5 in `ai-ethics-checklist.md` all pass | | |
+| Sp4 | Prompt injection resistance tests I1–I5 in `02-ai-ethics-checklist.md` all pass | | |
 
 ---
 

@@ -110,7 +110,7 @@ From `project-delivery/00-ai-decision-framework.md`:
 
 ## 1.2 — Requirements (key answers)
 
-From `project-delivery/01-requirements-questionnaire.md`:
+From `project-delivery/02-requirements-questionnaire.md`:
 
 ```
 Top 5 things users will ask:
@@ -134,7 +134,7 @@ Feedback: Thumbs + star rating + free text
 
 ## 1.3 — Technical Discovery
 
-From `project-delivery/02-technical-discovery.md`:
+From `project-delivery/03-technical-discovery.md`:
 
 ```
 Dev environment URL:   https://contosoit-dev.crm.dynamics.com
@@ -355,7 +355,7 @@ description: >
 # GUARDRAIL:   confirmation-card
 # REASON:      Creates a new incident record in ServiceNow — user must confirm before submitting
 
-kind: TaskAction
+kind: TaskDialog
 schema: 2.0.0
 schemaName: it_helpdesk_submitticket
 displayName: Submit ServiceNow Ticket
@@ -736,7 +736,7 @@ Feedback.Thumbs
 
 ## 4.2 — Run automated routing eval
 
-Prepare `project-delivery/05-eval-scenarios.md` with these test cases:
+Prepare `project-delivery/12-eval-scenarios.md` with these test cases:
 
 ```yaml
 scenarios:
@@ -766,7 +766,7 @@ scenarios:
 # Run eval (requires Kit)
 npm run eval -- --agent-name "IT Helpdesk Assistant" \
                 --environment https://contosoit-dev.crm.dynamics.com \
-                --scenarios ./project-delivery/05-eval-scenarios.yml
+                --scenarios ./project-delivery/12-eval-scenarios.yml
 
 # Target: ≥ 85% routing accuracy
 # If below 85%: add more trigger phrases to failing topics → push → re-eval
@@ -777,7 +777,7 @@ npm run eval -- --agent-name "IT Helpdesk Assistant" \
 ## 4.3 — Governance review
 
 ```bash
-code governance/ai-ethics-checklist.md
+code governance/02-ai-ethics-checklist.md
 ```
 
 Key items for this project:
@@ -790,7 +790,7 @@ Key items for this project:
 ```
 
 ```bash
-code governance/security-review.md
+code governance/03-security-review.md
 ```
 ```
 □ Connector: ServiceNow connection uses service account with CreateRecord only — no delete permissions
@@ -825,14 +825,14 @@ pac env who
 pac copilot publish --bot "IT Helpdesk Assistant"
 
 # Run UAT test plan with 5 real employees from different departments
-# Get sign-off from IT Manager (Priya) on project-delivery/04-uat-test-plan.md
+# Get sign-off from IT Manager (Priya) on project-delivery/13-uat-test-plan.md
 ```
 
 ## 5.3 — Go-live to Prod
 
 ```bash
 # Complete launch checklist
-code launch/launch-checklist.md
+code launch/01-launch-checklist.md
 # Every box ticked, IT Manager signed
 
 # Switch to Prod
@@ -852,7 +852,7 @@ git push origin v1.0.0
 
 ## 5.4 — Send user announcement
 
-Edit and send `launch/user-communication-template.md`:
+Edit and send `launch/02-user-communication-template.md`:
 
 ```
 Subject: New IT Helpdesk Assistant now available in Microsoft Teams
@@ -879,7 +879,7 @@ at itsupport@contoso.com.
 
 ## 6.1 — Hypercare (first 2 weeks)
 
-Daily check for 14 days using `launch/hypercare-guide.md`:
+Daily check for 14 days using `launch/03-hypercare-guide.md`:
 
 ```bash
 # Open App Insights and run daily volume check
@@ -892,7 +892,7 @@ customEvents
 # Day 1: 47 conversations — normal for a team of 200
 ```
 
-## 6.2 — Weekly health check (from `operations/monitoring-queries.md`)
+## 6.2 — Weekly health check (from `operations/02-monitoring-queries.md`)
 
 **Week 2 results (example):**
 
@@ -996,4 +996,4 @@ agents/it-helpdesk/
 
 → All 49 templates: [`../../docs/TEMPLATES.md`](../../docs/TEMPLATES.md)
 → Component call signatures: [`../../docs/COMPONENT-REGISTRY.md`](../../docs/COMPONENT-REGISTRY.md)
-→ Full command reference: [`../../commands/pac-commands.md`](../../commands/pac-commands.md)
+→ Full command reference: [`../../commands/COMMANDS.md`](../../commands/COMMANDS.md)

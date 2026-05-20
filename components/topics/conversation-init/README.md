@@ -34,7 +34,7 @@ cp components/variables/user-country/UserCountry.variable.mcs.yml \
    agents/hr_assistant/variables/UserCountry.variable.mcs.yml
 ```
 
-Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 ## Placeholders
 
@@ -43,7 +43,7 @@ Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTA
 | `<AGENT-SCHEMA-NAME>` | `schemaName` field and description metadata | `hr_assistant` |
 | `_REPLACE1–13` | Node IDs throughout | Run ID script |
 
-Note: uses `<AGENT-SCHEMA-NAME>` with **hyphens** — different from other components that use `<AGENT_SCHEMA>` with underscores. Same value, different format.
+Note: uses `<AGENT-SCHEMA-NAME>` with **hyphens** — different from other components that use `<AGENT_SCHEMA>` with underscores. Same value, different format. The hyphens are required by the YAML schema for this specific field — do not change to underscores.
 
 ## Before → after
 
@@ -57,24 +57,19 @@ schemaName: hr_assistant.topic.ConversationInit
 
 ## Prerequisites checklist
 
-- [ ] `authenticationMode: IntegratedAzureAD` or `ManualAzureAD` in `settings.mcs.yml`
+- [ ] `authenticationMode: Integrated` or `ManualAzureAD` in `settings.mcs.yml`
 - [ ] Office 365 Users connector connection exists in the Power Platform environment
 - [ ] Connection has `User.Read` scope
 - [ ] If using glossary: glossary knowledge source exists in `agents/<schema>/knowledge/`
 
 ## Variable file warning
 
-> **Apply Changes limitation:** If pushing variable files causes `[0x800608ad:ExportKeyAttributeInvalidPrefix]`:
-> 1. Delete the `.variable.mcs.yml` files from your `variables/` folder
-> 2. Run Apply Changes to push the topic first
-> 3. Re-add the variable files and run Apply Changes again
->
-> Variable declarations exist for VS Code IntelliSense only. The agent populates variables at runtime via `SetVariable` — the declaration files are optional.
+> **Apply Changes export error?** See [Known issue — Apply Changes export error](../../variables/README.md#known-issue--apply-changes-export-error) in the variables README.
 
 ## Common mistakes
 
 - **Adding without authentication configured** — the Office 365 Users connector call returns null; `UserDisplayName` stays blank
-- **Using `{Global.UserDisplayName}` in instructions before variable files are declared** — VS Code shows `IdentifierNotRecognized`; use `[Global.UserDisplayName]` (square brackets) as a temporary workaround
+- **Using `{Global.UserDisplayName}` in instructions before variable files are declared** — VS Code shows `IdentifierNotRecognized`; use `[Global.UserDisplayName]` (square brackets) as a temporary workaround inside plain text/instructions blocks only — curly braces are still required inside Power Fx expressions
 - **Skipping glossary variable** when using the glossary knowledge source — `{Global.Glossary}` in instructions will reference an undeclared variable
 
 ## How to use variables in the system prompt

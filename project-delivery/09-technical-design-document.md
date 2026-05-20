@@ -27,7 +27,7 @@ Complete this after `08-workflow-logic-design.md`. Every security control, promp
 |---------|-------|-----------|
 | `schemaName` | `[org]_[function]_[env]` | Unique per environment; follows naming standard |
 | `displayName` | `[Function] Assistant` | Clear to users |
-| `authenticationMode` | `None` / `ManualAzureAD` / `IntegratedAzureAD` | Determined by: is user identity required for any use case? |
+| `authenticationMode` | `None` / `ManualAzureAD` / `Integrated` | Determined by: is user identity required for any use case? |
 | `recognizer` | `NLU.MultiIntent` | Required for multi-topic intent matching |
 | `GenerativeActionsEnabled` | `true` / `false` | `false` if strict knowledge grounding is required; `true` if broad AI responses are acceptable |
 | Language | `en-US` / `[locale]` | Primary language of target user base |
@@ -193,7 +193,7 @@ to provide relevant information, but always note if the policy varies by region.
 
 | Component | Design decision | Rationale |
 |-----------|----------------|-----------|
-| Authentication mode | `[None / ManualAzureAD / IntegratedAzureAD]` | |
+| Authentication mode | `[None / ManualAzureAD / Integrated]` | |
 | Azure AD app registration | New app per agent / Shared app | New per agent recommended — isolated permissions |
 | Redirect URI | Copy from Copilot Studio → Settings → Authentication | Must match exactly in Azure AD |
 | Token scope | `User.Read` minimum; add only what is needed | Least privilege |
@@ -213,7 +213,7 @@ Prompt injection is an attack where a user or a document in the knowledge source
 | Grounding | Knowledge search grounding instructions + `GenerativeActionsEnabled: false` | Include in knowledge agents |
 | Output validation | `ConditionGroup` validates all action responses before sending to user | Include in all action topics |
 | PII non-logging | No PII in `customDimensions` of any telemetry node | Verify in security review |
-| Pre-launch injection tests | Tests I1–I5 in `governance/ai-ethics-checklist.md` | Must all pass before go-live |
+| Pre-launch injection tests | Tests I1–I5 in `governance/02-ai-ethics-checklist.md` | Must all pass before go-live |
 
 **Pre-launch injection test results:**
 
@@ -266,7 +266,7 @@ Layer 4 — Monitoring and alerts (operations level)
   - Error rate > 5 in 15 minutes
   - Action failures ≥ 3 in 10 minutes
   - Zero conversations for 2 hours (agent may be down)
-  See: operations/alert-setup.md
+  See: operations/01-alert-setup.md
 ```
 
 ### 4.2 — Error response standards
@@ -291,7 +291,7 @@ Every error message shown to users must meet these standards:
 | `OnError` safe message reviewed and approved by Project Owner | Developer + PO | ☐ |
 | All error messages give a named next step (email, phone, resource) | Developer + PO | ☐ |
 | Error messages reviewed against data classification — no PII or system details | Security | ☐ |
-| Azure Monitor error alert is configured (`operations/alert-setup.md` Alert 1) | DevOps | ☐ |
+| Azure Monitor error alert is configured (`operations/01-alert-setup.md` Alert 1) | DevOps | ☐ |
 
 ---
 
@@ -336,7 +336,7 @@ AI agents are probabilistic — they will not always give the identical response
 | Error handling | Manual test — trigger each error path in test canvas | Safe message shown; telemetry logged | Developer |
 | Authentication flow | Manual test in target channel (Teams) | Sign-in completes; user name populated | Developer |
 | Action success and failure | Manual test — success case and failure case per action | Both paths produce correct response | Developer |
-| UAT sign-off | `project-delivery/04-uat-test-plan.md` | All sections pass | Developer + PO |
+| UAT sign-off | `project-delivery/13-uat-test-plan.md` | All sections pass | Developer + PO |
 | Performance | Manual observation — response times in production simulation | Knowledge: <5s, Actions: <8s | Developer |
 
 ---

@@ -95,7 +95,7 @@ conversationStarters:
 Open `settings.mcs.yml` and set:
 ```yaml
 schemaName: it_support_demo
-authenticationMode: IntegratedAzureAD   # Silent SSO via Teams — no sign-in prompt
+authenticationMode: Integrated   # Silent SSO via Teams — no sign-in prompt
 ```
 
 ---
@@ -380,7 +380,7 @@ Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path $folder |
 agents/
 └── it_support_demo/
     ├── agent.mcs.yml                    ← identity, system prompt
-    ├── settings.mcs.yml                 ← schemaName, IntegratedAzureAD auth
+    ├── settings.mcs.yml                 ← schemaName, Integrated auth
     ├── topics/
     │   ├── Greeting.topic.mcs.yml       ← from base/
     │   ├── Fallback.topic.mcs.yml       ← from base/
@@ -432,7 +432,7 @@ These are great follow-up topics once the team has built their first agent.
 2. Replace `it_support_demo` with the real agent schemaName
 3. Add real SharePoint URL and connector reference
 4. Run the eval CSV (50 test cases minimum) before pushing to UAT
-5. Complete `governance/ai-ethics-checklist.md` — required before UAT
+5. Complete `governance/02-ai-ethics-checklist.md` — required before UAT
 
 → Full build guide: [ENGINEERING-PLAYBOOK.md](../../ENGINEERING-PLAYBOOK.md)
 → Template library: [docs/TEMPLATES.md](../../docs/TEMPLATES.md)

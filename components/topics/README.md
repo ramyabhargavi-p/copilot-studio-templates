@@ -1,69 +1,80 @@
 # Topic Components
 
-11 drop-in conversation topic templates. Each fires telemetry, handles errors, and chains to the Feedback topic — nothing to add manually.
+12 drop-in conversation topics. Each has telemetry, error handling, and a CSAT guard — nothing to add manually.
 
 ---
 
-## Topics
+## What to add for your agent type
 
-| Folder | Primary trigger | Also callable via | Purpose |
-|--------|----------------|-------------------|---------|
-| [`_scaffold/`](_scaffold/) | `OnRecognizedIntent` | — | **Start here for every new topic** — error handling, telemetry, CSAT guard |
-| [`action-invoke/`](action-invoke/) | `OnRecognizedIntent` | `BeginDialog` | Calls a connector action with output validation and telemetry |
-| [`auth/`](auth/) | `OnSignIn` | — | Sign-in flow with `Auth.SignInStarted` / `Auth.SignInCompleted` telemetry |
-| [`conversation-init/`](conversation-init/) | `OnActivity` (first message) | — | Loads M365 user profile (`UserDisplayName`, `UserCountry`) and glossary into global variables |
-| [`disambiguation/`](disambiguation/) | `OnSelectIntent` | — | Clarifies ambiguous intents, logs `Agent.DisambiguationTriggered` |
-| [`escalation/`](escalation/) | `OnRecognizedIntent` (12 phrases) | `BeginDialog` from Fallback | Human handoff via `TransferConversation`, logs `Agent.EscalationTriggered` |
-| [`feedback/`](feedback/) | `OnRecognizedIntent` / `BeginDialog` | — | Thumbs → rating → free text CSAT |
-| [`knowledge-search/`](knowledge-search/) | `OnUnknownIntent` | — | Generative answers from knowledge sources, logs `Knowledge.AnswerFound` / `AnswerNotFound` |
-| [`out-of-scope/`](out-of-scope/) | `OnRecognizedIntent` | — | Redirects queries outside the agent's domain, logs `Agent.OutOfScope` |
-| [`question-branch/`](question-branch/) | `OnRecognizedIntent` | — | Collects user input and branches the conversation |
-| [`remove-citations/`](remove-citations/) | `OnGeneratedResponse` | — | Strips `[1][2]` citation markers from AI-generated responses |
+| If your agent… | Add these topics |
+|----------------|-----------------|
+| Every production agent | `out-of-scope`, `escalation`, `feedback` |
+| Answers questions from SharePoint or a website | + `knowledge-search`, `remove-citations` |
+| Persists feedback to SharePoint / Dataverse for Power BI | + `feedback-persisted` (requires `knowledge-search` + `remove-citations`) |
+| Signs users in + greets them by name | + `conversation-init`, `auth` (ManualAzureAD only) |
+| Calls a connector (reads data, submits a form) | + `action-invoke` |
+| Asks one question and branches on the answer | + `question-branch` |
+| Has 5+ topics with overlapping trigger phrases | + `disambiguation` |
+| Writing a new custom topic | Start from `_scaffold` |
 
 ---
 
-## Which topic do I need?
+## Topic index
 
-```mermaid
-flowchart TD
-    A[What does this topic need to do?] --> B{Answer questions from documents?}
-    B -->|Yes| C[knowledge-search/]
-    B -->|No| D{Call an external system?}
-    D -->|Via Power Platform connector| E[action-invoke/]
-    D -->|No| F{Sign users in first?}
-    F -->|Yes| G[auth/]
-    F -->|No| H{Collect structured input?}
-    H -->|Yes with branching| I[question-branch/]
-    H -->|No| J{Transfer to human agent?}
-    J -->|Yes| K[escalation/]
-    J -->|No, custom logic| L[_scaffold/  — always start here]
-```
+### Foundation — add to every production agent
 
-**Notes:**
-- `conversation-init/` — add to every authenticated agent (loads user profile once per session)
-- `feedback/` — add to every production agent (CSAT collection)
-- `remove-citations/` — add when using `knowledge-search/` (removes `[1][2]` markers)
-- `out-of-scope/` — add to every agent as a guardrail
-- `disambiguation/` — add when multiple topics have overlapping trigger phrases
+| Folder | Trigger | Purpose |
+|--------|---------|---------|
+| [`out-of-scope/`](out-of-scope/) | `OnRecognizedIntent` | Redirects queries outside the agent's domain; logs `Agent.OutOfScope` |
+| [`escalation/`](escalation/) | `OnRecognizedIntent` / `BeginDialog` from Fallback | Hands off to a live agent queue; logs `Agent.EscalationTriggered` |
+| [`feedback/`](feedback/) | `OnRecognizedIntent` / `BeginDialog` | Thumbs → star rating → issue category CSAT; once per conversation |
+
+> **Note:** `out-of-scope` is already included in `base/topics/OutOfScope.topic.mcs.yml`. You do not need to copy it from here if you started from `base/`.
+
+### Knowledge agents — add when knowledge sources are configured
+
+| Folder | Trigger | Purpose |
+|--------|---------|---------|
+| [`knowledge-search/`](knowledge-search/) | `OnUnknownIntent` | Telemetry hook for generative AI answers; logs `Knowledge.SearchInvoked` |
+| [`remove-citations/`](remove-citations/) | `OnGeneratedResponse` | Strips `[1][2]` citation markers before response is sent to user |
+| [`feedback-persisted/`](feedback-persisted/) | `BeginDialog` | CSAT that writes feedback + cited sources to SharePoint and Dataverse |
+
+Use all three together. `remove-citations` calls `feedback-persisted`; `knowledge-search` captures the question and context for feedback.
+
+### Authenticated agents — add when users sign in
+
+| Folder | Trigger | Purpose |
+|--------|---------|---------|
+| [`conversation-init/`](conversation-init/) | `OnActivity` (first message) | Loads `UserDisplayName`, `UserCountry`, and glossary from M365 profile |
+| [`auth/`](auth/) | `OnSignIn` | Sign-in flow — add only for `ManualAzureAD` auth mode |
+
+### Interaction patterns — add as needed
+
+| Folder | Trigger | Purpose |
+|--------|---------|---------|
+| [`action-invoke/`](action-invoke/) | `OnRecognizedIntent` | Calls a connector inline (read data, submit form, update record) |
+| [`question-branch/`](question-branch/) | `OnRecognizedIntent` | Asks one question and branches the conversation on the answer |
+| [`disambiguation/`](disambiguation/) | `OnSelectIntent` | Shows a choice card when 2+ topics match at similar confidence |
+
+### Template for new topics
+
+| Folder | Trigger | Purpose |
+|--------|---------|---------|
+| [`_scaffold/`](_scaffold/) | `OnRecognizedIntent` | **Start every new custom topic here** — telemetry, error handling, CSAT guard included |
 
 ---
 
 ## Usage rule
 
-**Never write a topic from scratch.** Always copy `_scaffold/` first, then add your logic to the MAIN LOGIC section. This guarantees telemetry and error handling are present.
+**Never write a topic from scratch.** Always copy `_scaffold/` first, then add your logic to the MAIN LOGIC section.
 
 ```bash
-# Step 1 — copy scaffold
 cp components/topics/_scaffold/TopicScaffold.topic.mcs.yml \
    agents/<your-agent>/topics/<TopicName>.topic.mcs.yml
-
-# Step 2 — replace schema placeholder
-sed -i 's/<SCHEMA>/<your-schema-name>/g' agents/<your-agent>/topics/<TopicName>.topic.mcs.yml
-
-# Step 3 — add your logic in the MAIN LOGIC section
-# Step 4 — run the _REPLACE ID script (see docs/QUICKSTART.md → Replace node IDs)
 ```
 
-→ Detailed scaffold guide: [`_scaffold/README.md`](_scaffold/README.md)
-→ Call signatures and inputs/outputs for each topic: [`../../docs/COMPONENT-REGISTRY.md`](../../docs/COMPONENT-REGISTRY.md)
-→ Claude skills: `/copilot-studio:new-topic` generates a complete topic from plain English
+For pre-built patterns (connector call, branching, sign-in) copy the matching template directly — it is already customised for that use case.
+
+→ Per-topic placeholder tables and examples: open the `README.md` inside any topic folder
+→ Call signatures and inputs/outputs: [`../../docs/COMPONENT-REGISTRY.md`](../../docs/COMPONENT-REGISTRY.md)
+→ Generate a new topic from plain English: `/copilot-studio:new-topic`

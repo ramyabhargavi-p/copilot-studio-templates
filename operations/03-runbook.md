@@ -19,7 +19,7 @@ Procedures for the on-call agent owner. Use this when something goes wrong in pr
 
 When an alert fires:
 
-1. Open Application Insights → check [monitoring-queries.md](monitoring-queries.md) **Error frequency** query
+1. Open Application Insights → check [02-monitoring-queries.md](02-monitoring-queries.md) **Error frequency** query
 2. Identify the ConversationId from the error event
 3. Run the **Trace a single conversation** query to reconstruct the failure
 4. Check Power Platform Service Health: `https://admin.powerplatform.microsoft.com/servicestatus`
@@ -169,6 +169,6 @@ Fix applied:
 Preventative action:
   [ ] Add/update monitoring alert
   [ ] Add regression test to eval CSV
-  [ ] Update this runbook
+  [ ] Update this 03-runbook
   [ ] Other:
 ```

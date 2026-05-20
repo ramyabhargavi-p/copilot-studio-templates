@@ -132,14 +132,14 @@ Peak concurrent users × average messages per minute = peak RPM
 If peak RPM > 6,000 (leaving 25% headroom before the 8,000 limit):
 - Flag to the project sponsor now
 - Consider batching, caching, or planning a Foundry migration path
-- Document in `02-technical-discovery.md` under "Scale planning"
+- Document in `03-technical-discovery.md` under "Scale planning"
 
 **Week 1–2 exit criteria:**
 - [ ] All topics created from `_scaffold` (not blank YAML)
 - [ ] Every connector action has a Safety Tier comment
 - [ ] Confirmation card wired for all Medium tier actions
 - [ ] Approval flow stub created for all High tier actions
-- [ ] RPM estimate in `02-technical-discovery.md`
+- [ ] RPM estimate in `03-technical-discovery.md`
 - [ ] VS Code "Copilot Studio: Apply Changes" succeeds with no errors
 
 ---
@@ -150,7 +150,7 @@ If peak RPM > 6,000 (leaving 25% headroom before the 8,000 limit):
 
 ### What to do
 
-**1. Run eval scenarios (`05-eval-scenarios.md`)**
+**1. Run eval scenarios (`12-eval-scenarios.md`)**
 
 Target: ≥ 85% correct topic routing. Use `/copilot-studio:run-eval` or the Kit.
 
@@ -215,8 +215,8 @@ Five categories — all must pass:
 **2. Complete the governance documents**
 
 ```
-governance/ai-ethics-checklist.md    → complete all items
-governance/security-review.md        → complete all items (especially prompt injection tests)
+governance/02-ai-ethics-checklist.md    → complete all items
+governance/03-security-review.md        → complete all items (especially prompt injection tests)
 ```
 
 **3. Action Safety final audit**
@@ -230,17 +230,17 @@ grep -r "InvokeConnectorTaskAction" agents/
 **4. Go-live sequence**
 
 ```
-launch/launch-checklist.md           → tick every box
+launch/01-launch-checklist.md           → tick every box
 VS Code → "Copilot Studio: Apply Changes" (connected to production environment)
 pac copilot publish --bot "<schema>"
-launch/user-communication-template.md → send to users
+launch/02-user-communication-template.md → send to users
 ```
 
 **5. Set up monitoring alerts**
 
 ```
-operations/alert-setup.md            → configure Azure Monitor alerts
-operations/monitoring-queries.md     → deploy KQL dashboard
+operations/01-alert-setup.md            → configure Azure Monitor alerts
+operations/02-monitoring-queries.md     → deploy KQL dashboard
 ```
 
 **Week 4 exit criteria:**
@@ -256,13 +256,13 @@ operations/monitoring-queries.md     → deploy KQL dashboard
 ## Post-launch — Operate and Scale
 
 **Weekly (Agent Owner):**
-- Run health check queries from `operations/monitoring-queries.md`
+- Run health check queries from `operations/02-monitoring-queries.md`
 - Monitor `Agent.FallbackTriggered` rate — should stay < 20%
 - Monitor `Action.Failed` rate — alert if > 5%
 - Check CSAT thumbs-up rate — target ≥ 75% at 3 months
 
 **Monthly (Agent Owner + Developer):**
-- Review unanswered questions section in `operations/monitoring-queries.md`
+- Review unanswered questions section in `operations/02-monitoring-queries.md`
 - Add trigger phrases for topics that are consistently misrouted
 - Audit `Agent.OutOfScope` events — high rates suggest scope mismatch
 

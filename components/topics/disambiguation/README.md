@@ -19,7 +19,7 @@ cp components/topics/disambiguation/Disambiguation.topic.mcs.yml \
    agents/hr_assistant/topics/Disambiguation.topic.mcs.yml
 ```
 
-Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 ## Placeholders
 
@@ -61,4 +61,4 @@ Topic A: "leave policy", "annual leave rules", "how does leave work"
 Topic B: "check leave balance", "how many days left", "remaining leave"
 ```
 
-→ KQL query for disambiguation rates: [`../../../operations/monitoring-queries.md`](../../../operations/monitoring-queries.md)
+→ KQL query for disambiguation rates: [`../../../operations/02-monitoring-queries.md`](../../../operations/02-monitoring-queries.md)

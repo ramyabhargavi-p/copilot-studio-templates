@@ -49,38 +49,26 @@ User message
 
 ## Write Instructions and OutOfScope Content
 
-These two files define your orchestrator's routing scope — write them together.
+→ Full steps: [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
 
 | File | What it controls |
 |------|----------------|
 | `agent.mcs.yml` → `instructions:` | Routing rules — lists specialists and when to delegate to each |
 | `topics/OutOfScope.topic.mcs.yml` | Trigger phrases for questions outside ALL specialist domains |
 
-**The `generate-agent-instructions.md` prompt writes both in one pass.** Its "What I cannot help with" section covers what no specialist handles.
+**No ready-made persona fits an orchestrator** — write the instructions directly or use Option B.
 
-### Step 1 — Parent orchestrator instructions
-
-The parent's `instructions:` must focus on **routing only** — not domain knowledge. No ready-made persona fits this exactly, so use Option B.
-
-**Option B — Generate both with Claude (recommended)**
+**Option B project brief:**
 
 ```
-1. Open prompts/ai-prompts/generate-agent-instructions.md
-2. Copy the prompt template and paste into a Claude conversation
-3. Fill in:
-     Project brief:    "Orchestrator agent that routes user requests to specialist child agents.
-                        Specialists: [list each domain, e.g. HR, IT, Finance].
-                        The orchestrator must NOT answer domain questions itself.
-                        Always delegate to the correct specialist.
-                        Out-of-scope: anything no specialist handles → redirect to [contact]."
-     Agent name:       Corporate Assistant
-     Primary users:    Internal employees
-     Authentication:   ManualAzureAD or IntegratedAzureAD
-     Tone:             Professional
-4. Paste Claude's output into agent.mcs.yml
+"Orchestrator agent that routes user requests to specialist child agents.
+ Specialists: [list each domain, e.g. HR, IT, Finance].
+ The orchestrator must NOT answer domain questions itself.
+ Out-of-scope: anything no specialist handles → redirect to [contact]."
+Agent name: Corporate Assistant | Auth: ManualAzureAD or Integrated | Tone: Professional
 ```
 
-**Or write it directly** — the orchestrator instructions are short by design:
+**Or write it directly** — orchestrator instructions are short by design:
 
 ```yaml
 instructions: |
@@ -97,68 +85,11 @@ instructions: |
   - If no specialist applies, say so and tell the user what you can help with
 ```
 
-### Step 2 — Apply to agent.mcs.yml
-
-Paste replacing the entire `instructions: |` block. Every line must be indented 2 spaces — YAML is whitespace-sensitive.
-
-### Step 3 — Apply to OutOfScope.topic.mcs.yml
-
-Claude's "What I cannot help with" section covers questions no specialist handles — map those to trigger phrases.
-
-**Mapping:**
-
-```
-Claude output                                →  OutOfScope.topic.mcs.yml
-─────────────────────────────────────────────────────────────────────────────
-"Facilities bookings — facilities@co.com"       triggerQueries:
-"Legal queries — legal@co.com"                    - book a meeting room
-"Marketing requests — mktg@co.com"               - legal contract review
-                                                  - marketing budget
-
-                                                SendActivity:
-                                                  "That's outside what I can route.
-                                                   For [topic], contact [contact]."
-```
-
-**Add the file and fill in the placeholders:**
-
-If `OutOfScope.mcs.yml` is not yet in your `topics/` folder, copy it in:
-
-```powershell
-# PowerShell
-Copy-Item "base\topics\OutOfScope.topic.mcs.yml" "agents\<display name>\topics\OutOfScope.mcs.yml" -Force
-```
-```bash
-# Mac / Linux
-cp base/topics/OutOfScope.topic.mcs.yml "agents/<display name>/topics/OutOfScope.mcs.yml"
-```
-
-Open `OutOfScope.mcs.yml` and replace these 5 things:
-
-| Placeholder | Replace with | Example |
-|-------------|-------------|---------|
-| `<out-of-scope phrase 1–5>` | Trigger phrases from Claude's "What I cannot help with" section | `payroll`, `IT support`, `expense claim` |
-| `<DOMAIN>` | What this agent handles | `HR policies and leave management` |
-| `<OUT-OF-SCOPE-TOPIC>` | The out-of-scope area in the redirect message | `IT support` |
-| `<CONTACT>` | Where to send the user | `it@contoso.com` |
-| `_REPLACE1`, `_REPLACE2` | Run the ID script (QUICKSTART Step 4) or any 6-char random string | `_ab3f9x` |
-
-**Need more trigger phrases?** Ask Claude:
-
-```
-Generate 10 trigger phrases for a Copilot Studio OutOfScope topic.
-The agent routes to: HR, IT, and Finance specialists.
-Out-of-scope areas: [list from your instructions — what no specialist handles].
-Include: formal, casual, abbreviated, and question variations.
-Output as a YAML list (- phrase format).
-```
-
-→ Template: [`prompts/ai-prompts/generate-topic.md`](../prompts/ai-prompts/generate-topic.md) → "Generate trigger phrases only"
-→ All prompt templates: [`prompts/README.md`](../prompts/README.md)
+→ **Follow the full steps** (apply to both files): [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
 
 ### Child agent descriptions
 
-Each child agent's `description:` field is what the parent reads to make routing decisions. Write it in `agents/<name>.mcs.yml` under the `description:` key. Be specific and mutually exclusive.
+Each child agent's `description:` field is what the parent reads to make routing decisions. Be specific and mutually exclusive.
 
 | Child agent | Good description | Bad description (too vague) |
 |---|---|---|

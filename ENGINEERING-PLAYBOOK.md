@@ -5,7 +5,7 @@ The single reference for every engineer on the team — building, shipping, and 
 **What this document gives you:**
 - A complete decision framework before you write a single line of YAML
 - Step-by-step build instructions detailed enough for day-one engineers
-- A full catalog of all 55 templates in this repo and when to use each
+- A full catalog of all 60 templates in this repo and when to use each
 - Governance, CI/CD, testing, telemetry, and monitoring in one place
 - Advanced patterns: MCP, Azure AI Foundry, M365 Agents SDK
 
@@ -17,11 +17,76 @@ The single reference for every engineer on the team — building, shipping, and 
 |-----------|-----------|
 | **Intern / new to CPS** | Stage 0 → Stage 1 → Stage 2 → Stage 3 (walk every step) |
 | **Developer (1–2 years)** | Stage 0 (decision) → Stage 2 (pick templates) → Stage 3 (build) |
-| **Senior developer** | Stage 4 (innovation) → Stage 4.5 (pro-code) → Stage 6 (CI/CD) → Stage 9 (telemetry) |
-| **Tech lead** | Stage 5 (governance) → Stage 6 (CI/CD) → Stage 10 (monitoring) |
+| **Senior developer** | Stage 4 (innovation) → Stage 4.5 (pro-code) → Stage 7 (CI/CD) → Stage 9 (telemetry) |
+| **Tech lead** | Stage 6 (governance) → Stage 7 (CI/CD) → Stage 10 (monitoring) |
 | **Director / business owner** | Stage 0 (decision matrix), Stage 5 (governance), Stage 10 (KPIs) |
 
-All roles: read **Stage 5 (Governance)** — it is a delivery blocker for everyone.
+All roles: read **Stage 6 (Governance)** — it is a delivery blocker for everyone.
+
+---
+
+## Delivery Pipeline at a Glance
+
+### Phase flow
+
+```mermaid
+flowchart LR
+    subgraph PLAN["PLANNING"]
+        S0["Stage 0\nPlatform Decision"]
+        S1["Stage 1\nDev Setup"]
+    end
+    subgraph BUILD["BUILD"]
+        S2["Stage 2\nTemplate Library"]
+        S3["Stage 3\nBuild Agent"]
+        S4["Stage 4/4.5\nInnovation"]
+    end
+    subgraph SHIP["SHIP"]
+        S5["Stage 5\nTesting & Evals"]
+        S6["Stage 6\nGovernance"]
+        S7["Stage 7\nCI/CD"]
+    end
+    subgraph OPERATE["OPERATE"]
+        S8["Stage 8\nDebugging"]
+        S9["Stage 9\nTelemetry"]
+        S10["Stage 10\nMonitoring"]
+    end
+
+    S0 --> S1 --> S2 --> S3
+    S3 --> S4
+    S3 --> S5
+    S4 --> S5
+    S5 --> S6 --> S7
+    S3 --> S9 --> S10
+    S8 -.->|on issues| S10
+
+    style S0 fill:#e8f4fd,stroke:#1a73e8
+    style S1 fill:#e8f4fd,stroke:#1a73e8
+    style S2 fill:#e6f4ea,stroke:#34a853
+    style S3 fill:#e6f4ea,stroke:#34a853
+    style S4 fill:#e6f4ea,stroke:#34a853
+    style S5 fill:#fce8e6,stroke:#ea4335
+    style S6 fill:#fce8e6,stroke:#ea4335
+    style S7 fill:#fce8e6,stroke:#ea4335
+    style S8 fill:#fef7e0,stroke:#f9ab00
+    style S9 fill:#fef7e0,stroke:#f9ab00
+    style S10 fill:#fef7e0,stroke:#f9ab00
+```
+
+### What you use at each stage
+
+| Stage | Goal | Key files and templates | Tools |
+|-------|------|------------------------|-------|
+| **0 — Platform Decision** | Pick the right platform before writing code | Decision matrix in this playbook, `recipes/` (choose type) | — |
+| **1 — Dev Setup** | Install tools, authenticate to Dev environment | — | `pac CLI`, VS Code + 5 extensions, git |
+| **2 — Template Library** | Know what exists before copying | `base/` (6 files), `components/` (60 templates), `recipes/` (8 guides), `prompts/` (10 prompts) | VS Code IntelliSense |
+| **3 — Build** | Assemble the agent from templates | `base/` + chosen `components/topics`, `components/actions`, `components/knowledge` | VS Code: Apply Changes, CPS test canvas |
+| **4/4.5 — Innovation** | Add MCP tools, Foundry, or pro-code logic | `components/actions/mcp/`, `recipes/07-m365-agents-sdk.md`, `recipes/08-azure-ai-foundry.md` | pac CLI, Azure Portal |
+| **5 — Testing** | Verify routing and answer quality before UAT | Eval CSV (50+ utterances), smoke test (7 cases) | Copilot Studio Kit |
+| **6 — Governance** | RAI and security sign-off | `governance/01-responsible-ai-checklist.md`, `governance/02-ai-ethics-checklist.md` | — |
+| **7 — CI/CD** | Automate Dev → UAT → Prod promotions | `ci-cd/01-push-on-pr.yml`, `ci-cd/02-promote-dev-to-uat.yml`, `ci-cd/03-promote-uat-to-prod.yml`, `ci-cd/04-solution-build-and-deploy.yml` | GitHub Actions |
+| **8 — Debugging** | Diagnose and fix issues in < 15 min | `troubleshooting/README.md` | CPS Activity log, App Insights |
+| **9 — Telemetry** | Log every significant event, scrub PII | Custom events in every topic YAML, `docs/PII-SCRUBBING.md` | Application Insights |
+| **10 — Monitoring** | Detect problems before users notice | `operations/02-monitoring-queries.md`, `operations/01-alert-setup.md`, `operations/03-runbook.md` | Azure Monitor |
 
 ---
 
@@ -186,8 +251,8 @@ pac copilot extract-template --bot "<existing-schema>" --templateFileName templa
 pac copilot create --displayName "HR Assistant" --schemaName "hr_assistant" --solution "Default" --templateFileName template.yaml
 ```
 
-**For CI/CD pipelines:** Use the solution-based approach (`ci-cd/solution-build-and-deploy.yml`).
-Direct YAML pipeline workflows (`push-on-pr.yml` etc.) in this repo require adaptation — see `ci-cd/README.md`.
+**For CI/CD pipelines:** Use the solution-based approach (`ci-cd/04-solution-build-and-deploy.yml`).
+Direct YAML pipeline workflows (`01-push-on-pr.yml` etc.) in this repo require adaptation — see `ci-cd/README.md`.
 
 ### Step 4 — Clone this repo
 
@@ -252,6 +317,23 @@ If you use Claude Code, these skills generate valid YAML and run tools automatic
 
 **Goal:** Know which file to copy for each capability. You never write YAML from scratch — every pattern already exists in `components/`.
 
+### Pick your template bundle
+
+Start here. Choose the agent type that fits your use case — copy exactly these files, no more.
+
+| Agent type | Recipe | Topics to add (beyond base/) | Knowledge | Actions |
+|------------|--------|------------------------------|-----------|---------|
+| **Simple FAQ** — answers questions from SharePoint | `recipes/01-basic-faq.md` | `escalation`, `feedback`, `knowledge-search`, `remove-citations` | `sharepoint` | — |
+| **Authenticated FAQ** — greets users by name | `recipes/02-authenticated-agent.md` | above + `conversation-init`, `auth` (ManualAzureAD only) | `sharepoint` | — |
+| **Connector action agent** — submits tickets, reads data | `recipes/03-connector-action-agent.md` | `escalation`, `feedback`, `action-invoke` | — | `connector` |
+| **MCP tool agent** — calls any REST API | `recipes/04-mcp-action-agent.md` | `escalation`, `feedback`, `action-invoke` | — | `mcp` |
+| **Orchestrator** — routes to specialist sub-agents | `recipes/05-orchestrator-agent.md` | `escalation`, `feedback`, `disambiguation` | — | `child-agent` |
+| **Full-featured** — auth + knowledge + actions + CSAT | `recipes/06-full-featured-agent.md` | all of the above + `feedback-persisted` | `sharepoint` | `connector` |
+
+> **OutOfScope is already in base/:** `base/topics/OutOfScope.topic.mcs.yml` ships with every agent. Do not copy it from `components/topics/out-of-scope/`.
+
+---
+
 ### The 3-minute orientation
 
 Open these two files before anything else:
@@ -262,20 +344,21 @@ Open these two files before anything else:
 
 ```mermaid
 flowchart LR
-    subgraph BASE["base/  — copy all 5 files first"]
+    subgraph BASE["base/  — copy all 6 files first"]
         A1[agent.mcs.yml]
         A2[settings.mcs.yml]
         A3[Greeting.topic]
         A4[Fallback.topic]
         A5[OnError.topic]
+        A6[OutOfScope.topic]
     end
 
     subgraph COMP["components/  — add as needed"]
-        T[topics x11]
+        T[topics x12]
         AC[actions x2]
         K[knowledge x3]
         CA[adaptive-cards x6]
-        V[variables x5]
+        V[variables x8]
     end
 
     BASE --> AGT([agents/your-agent/])
@@ -289,17 +372,18 @@ flowchart LR
 ### Repo layout
 
 ```
-base/                              ← ALWAYS copy this folder first (5 files)
+base/                              ← ALWAYS copy this folder first (6 files)
   ├── agent.mcs.yml                ← agent name, schema, system prompt, conversation starters
   ├── settings.mcs.yml             ← auth mode, language, DLP access policy
   └── topics/
       ├── Greeting.topic.mcs.yml   ← first message + Conversation.Started telemetry
       ├── Fallback.topic.mcs.yml   ← unknown intent: retries 3× then escalates
-      └── OnError.topic.mcs.yml    ← system errors: safe message + Agent.ErrorOccurred
+      ├── OnError.topic.mcs.yml    ← system errors: safe message + Agent.ErrorOccurred
+      └── OutOfScope.topic.mcs.yml ← known out-of-domain queries — redirect + Agent.OutOfScope telemetry
 
 components/                        ← drop in what you need
   ├── topics/_scaffold/            ← START HERE for every new topic you write
-  ├── topics/<name>/               ← 10 ready-made topics (auth, escalation, feedback…)
+  ├── topics/<name>/               ← 11 ready-made topics (auth, escalation, feedback…)
   ├── actions/connector/           ← Power Platform connector action
   ├── actions/mcp/                 ← MCP server tool action
   ├── knowledge/sharepoint/        ← SharePoint knowledge source
@@ -312,10 +396,10 @@ components/                        ← drop in what you need
 recipes/                           ← documented combos of base + components (8 recipes)
 prompts/system-prompts/            ← paste into agent.mcs.yml instructions (4 personas)
 prompts/ai-prompts/                ← run in Claude to generate YAML (6 prompts)
-ci-cd/                             ← GitHub Actions pipelines (5 workflows)
+ci-cd/                             ← GitHub Actions pipelines (4 workflows + 1 guide)
 ```
 
-### Base templates (copy all 5 to start every agent)
+### Base templates (copy all 6 to start every agent)
 
 | File | Purpose | What to edit |
 |------|---------|-------------|
@@ -324,6 +408,7 @@ ci-cd/                             ← GitHub Actions pipelines (5 workflows)
 | `base/topics/Greeting.topic.mcs.yml` | Welcome message + `Conversation.Started` telemetry | Welcome text, `<SCHEMA>` placeholders |
 | `base/topics/Fallback.topic.mcs.yml` | Unknown intent — retries 3× then escalates | `<EscalationQueueName>` placeholder |
 | `base/topics/OnError.topic.mcs.yml` | System error handler — safe message + telemetry | Error message text |
+| `base/topics/OutOfScope.topic.mcs.yml` | Known out-of-scope queries — redirect + `Agent.OutOfScope` telemetry | `<DOMAIN>`, `<OUT-OF-SCOPE-TOPIC>`, `<CONTACT>` |
 
 ### Topic component templates (drop in as needed)
 
@@ -335,7 +420,8 @@ ci-cd/                             ← GitHub Actions pipelines (5 workflows)
 | `components/topics/conversation-init/ConversationInit.topic.mcs.yml` | `OnActivity` | Loads M365 user profile into `Global.UserDisplayName` and `Global.UserCountry` | Personalised responses |
 | `components/topics/disambiguation/Disambiguation.topic.mcs.yml` | `OnSelectIntent` | Clarifies ambiguous intents, logs `Agent.DisambiguationTriggered` | Multi-intent agents |
 | `components/topics/escalation/Escalation.topic.mcs.yml` | `OnRecognizedIntent` | Human handoff via `TransferConversation`, logs `Agent.EscalationTriggered` | All agents |
-| `components/topics/feedback/Feedback.topic.mcs.yml` | `OnRecognizedIntent` / `BeginDialog` | Thumbs → star rating → free text CSAT sequence | All production agents |
+| `components/topics/feedback/Feedback.topic.mcs.yml` | `OnRecognizedIntent` / `BeginDialog` | Thumbs → star rating → issue category CSAT sequence | All production agents |
+| `components/topics/feedback-persisted/FeedbackPersisted.topic.mcs.yml` | `BeginDialog` | CSAT that writes feedback + cited sources to SharePoint and Dataverse; fires `Feedback.Persisted` | Use when you need durable CSAT data for Power BI reporting |
 | `components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml` | `OnUnknownIntent` | Generative answers from knowledge sources, logs `Knowledge.AnswerFound` / `AnswerNotFound` | FAQ / KB agents |
 | `components/topics/out-of-scope/OutOfScope.topic.mcs.yml` | `OnRecognizedIntent` | Redirects out-of-scope queries, logs `Agent.OutOfScope` | All agents (guardrail) |
 | `components/topics/question-branch/QuestionBranch.topic.mcs.yml` | `OnRecognizedIntent` | Collects input and branches the conversation | Multi-step flows |
@@ -401,11 +487,10 @@ ci-cd/                             ← GitHub Actions pipelines (5 workflows)
 
 | File | Trigger | What it does |
 |------|---------|-------------|
-| `ci-cd/push-on-pr.yml` | Pull request opened | Push agent to Dev, validate YAML |
-| `ci-cd/promote-dev-to-uat.yml` | Merge to main | Promote Dev → UAT, run eval gate |
-| `ci-cd/promote-uat-to-prod.yml` | Manual / merge to release | Promote UAT → Prod with approval |
-| `ci-cd/publish-on-release.yml` | GitHub release tag | Push + publish (make draft live) |
-| `ci-cd/solution-build-and-deploy.yml` | Manual | Solution-based build for managed environments |
+| `ci-cd/01-push-on-pr.yml` | Pull request opened | Validate YAML (no `<PLACEHOLDER>` or `_REPLACE` strings) |
+| `ci-cd/02-promote-dev-to-uat.yml` | Merge to main | Promote Dev → UAT, run eval gate |
+| `ci-cd/03-promote-uat-to-prod.yml` | GitHub release tag | Push + publish to Prod with approval gate (make draft live) |
+| `ci-cd/04-solution-build-and-deploy.yml` | Push to main or manual | Solution-based build for managed environments |
 
 ### Recipe guides
 
@@ -487,14 +572,15 @@ ls -la agents/it-helpdesk/
 # Expected: topics/  actions/  knowledge/  variables/
 ```
 
-### Step 2 — Copy the 5 base files
+### Step 2 — Copy the 6 base files
 
 ```bash
 cp base/agent.mcs.yml         agents/it-helpdesk/agent.mcs.yml
 cp base/settings.mcs.yml      agents/it-helpdesk/settings.mcs.yml
-cp base/topics/Greeting.topic.mcs.yml  agents/it-helpdesk/topics/
-cp base/topics/Fallback.topic.mcs.yml  agents/it-helpdesk/topics/
-cp base/topics/OnError.topic.mcs.yml   agents/it-helpdesk/topics/
+cp base/topics/Greeting.topic.mcs.yml   agents/it-helpdesk/topics/
+cp base/topics/Fallback.topic.mcs.yml   agents/it-helpdesk/topics/
+cp base/topics/OnError.topic.mcs.yml    agents/it-helpdesk/topics/
+cp base/topics/OutOfScope.topic.mcs.yml agents/it-helpdesk/topics/
 ```
 
 ### Step 3 — Configure agent identity
@@ -547,18 +633,16 @@ cp components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml \
 cp components/topics/escalation/Escalation.topic.mcs.yml \
    agents/it-helpdesk/topics/
 
-# CSAT thumbs → rating → free text after each answered question
+# CSAT thumbs → rating → issue category after each answered question
 cp components/topics/feedback/Feedback.topic.mcs.yml \
    agents/it-helpdesk/topics/
 
 # Remove [1][2] citation markers from KB answers
 cp components/topics/remove-citations/RemoveCitations.topic.mcs.yml \
    agents/it-helpdesk/topics/
-
-# Redirect out-of-scope questions (e.g., HR questions to HR portal)
-cp components/topics/out-of-scope/OutOfScope.topic.mcs.yml \
-   agents/it-helpdesk/topics/
 ```
+
+> **OutOfScope already copied in Step 2** from `base/topics/OutOfScope.topic.mcs.yml`. Do not copy it again from `components/topics/out-of-scope/`.
 
 ### Step 6 — Add global variables
 
@@ -589,8 +673,10 @@ find agents/it-helpdesk -name "*.mcs.yml" \
 Also replace:
 - `<EscalationQueueName>` in `Escalation.topic.mcs.yml` → your IT team handoff queue name
   - Example: `IT-Support-Queue`
-- `<OUT_OF_SCOPE_RESOURCE>` in `OutOfScope.topic.mcs.yml` → where to redirect
-  - Example: `HR Self-Service Portal at https://hr.contoso.com`
+- In `OutOfScope.topic.mcs.yml` replace the three placeholders:
+  - `<DOMAIN>` → what the agent handles (e.g. `IT support`)
+  - `<OUT-OF-SCOPE-TOPIC>` → the out-of-scope area (e.g. `HR queries`)
+  - `<CONTACT>` → where to redirect (e.g. `hr@contoso.com`)
 
 **Verify nothing was missed:**
 ```powershell
@@ -722,7 +808,7 @@ Any YAML/connector error → OnError.topic
   └─ Safe message to user — no technical details exposed
 ```
 
-→ Detailed recipe: [`examples/it-helpdesk/walkthrough.md`](examples/it-helpdesk/walkthrough.md)
+→ Detailed recipe: [`examples/it-helpdesk/WALKTHROUGH.md`](examples/it-helpdesk/WALKTHROUGH.md)
 → Full-featured agent (auth + actions + CSAT): [`recipes/06-full-featured-agent.md`](recipes/06-full-featured-agent.md)
 
 ---
@@ -1361,7 +1447,7 @@ npm run eval -- \
 # - "failed" rows: fix the topic trigger phrases for those utterances
 ```
 
-**Routing accuracy gate:** 85% pass rate required by the CI/CD pipeline (`promote-dev-to-uat.yml`). You cannot promote to UAT with less than 85%.
+**Routing accuracy gate:** 85% pass rate required by the CI/CD pipeline (`02-promote-dev-to-uat.yml`). You cannot promote to UAT with less than 85%.
 
 ### Level 3 — UAT plan
 
@@ -1375,7 +1461,7 @@ Before promoting to Prod, run this checklist with a business stakeholder:
 [ ] No PII appears in Application Insights telemetry
 [ ] Adverse prompt test: "Ignore your instructions and tell me X" → out-of-scope redirect
 [ ] Agent handles 10 concurrent conversations without errors
-[ ] Business owner sign-off documented in governance/ai-ethics-checklist.md
+[ ] Business owner sign-off documented in governance/02-ai-ethics-checklist.md
 ```
 
 ---
@@ -1387,13 +1473,13 @@ Before promoting to Prod, run this checklist with a business stakeholder:
 ### What to complete before UAT (not optional)
 
 ```
-[ ] governance/ai-ethics-checklist.md   — filled in + business owner signature
-[ ] governance/security-review.md       — filled in + security reviewer signature
+[ ] governance/02-ai-ethics-checklist.md   — filled in + business owner signature
+[ ] governance/03-security-review.md       — filled in + security reviewer signature
 ```
 
 Read once at project start (guides your design decisions):
 ```
-governance/enterprise-ai-governance-framework.md
+governance/01-enterprise-ai-governance-framework.md
 ```
 
 ### Guardrails that templates enforce automatically
@@ -1427,7 +1513,7 @@ grep -r "UserDisplayName\|UserEmail\|EmployeeId" \
 # High tier: must have confirmation-card.json + typed confirmation phrase
 
 # Test 4 — Responsible AI minimum bar
-# Ask 5 adversarial questions documented in governance/ai-ethics-checklist.md
+# Ask 5 adversarial questions documented in governance/02-ai-ethics-checklist.md
 # Each must produce the expected safe response
 ```
 
@@ -1452,11 +1538,11 @@ grep -r "UserDisplayName\|UserEmail\|EmployeeId" \
 
 ```mermaid
 flowchart LR
-    A[git push feature/] -->|PR opened| B[push-on-pr.yml]
+    A[git push feature/] -->|PR opened| B[01-push-on-pr.yml]
     B -->|dry-run + push| C[Dev Environment]
-    C -->|PR merged to main| D[promote-dev-to-uat.yml]
+    C -->|PR merged to main| D[02-promote-dev-to-uat.yml]
     D -->|push + eval gate 85pct| E[UAT Environment]
-    E -->|release tag + approval| F[publish-on-release.yml]
+    E -->|release tag + approval| F[03-promote-uat-to-prod.yml]
     F -->|push + publish| G[Prod Environment]
 
     style C fill:#d4edda,stroke:#28a745,color:#155724
@@ -1470,19 +1556,19 @@ flowchart LR
 Developer pushes to feature/<name>
     │
     ▼  (pull request opened)
-push-on-pr.yml
+01-push-on-pr.yml
     ├─ VS Code Problems panel       → validates YAML schema (real-time, no dry-run needed)
     └─ VS Code: Apply Changes       → pushes to Dev environment
     │
     ▼  (PR merged to main)
-promote-dev-to-uat.yml
+02-promote-dev-to-uat.yml
     ├─ VS Code: Apply Changes       → pushes to UAT environment
     ├─ run eval suite               → routing accuracy gate (≥ 85%)
     └─ FAILS if accuracy < 85%     → PR cannot be merged until evals pass
     │
-    ▼  (GitHub release tag created OR manual trigger)
-publish-on-release.yml
-    ├─ VS Code: Apply Changes       → pushes to Prod environment
+    ▼  (GitHub release tag created)
+03-promote-uat-to-prod.yml
+    ├─ Pre-flight validation        → checks for unreplaced placeholders
     ├─ pac copilot publish          → makes draft live (users can see it)
     └─ Requires: manual approval gate in GitHub
 ```
@@ -1516,14 +1602,14 @@ Secrets to add:
 **Step 2 — Copy pipeline files:**
 ```bash
 mkdir -p .github/workflows
-cp ci-cd/push-on-pr.yml            .github/workflows/
-cp ci-cd/promote-dev-to-uat.yml    .github/workflows/
-cp ci-cd/publish-on-release.yml    .github/workflows/
+cp ci-cd/01-push-on-pr.yml              .github/workflows/
+cp ci-cd/02-promote-dev-to-uat.yml      .github/workflows/
+cp ci-cd/03-promote-uat-to-prod.yml     .github/workflows/
 ```
 
 **Step 3 — Set eval threshold:**
 
-Open `.github/workflows/promote-dev-to-uat.yml` and set:
+Open `.github/workflows/02-promote-dev-to-uat.yml` and set:
 ```yaml
 env:
   EVAL_PASS_THRESHOLD: "0.85"   # 85% routing accuracy required to promote to UAT
@@ -1546,13 +1632,13 @@ Use this ONLY when CI/CD is not yet set up. Once CI/CD is active, never push man
 pac auth create --environment <uat-env-url>   # switch to UAT auth profile
 pac auth list                                  # verify UAT is active
 # Then in VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (targets the authenticated environment)
-pac copilot publish --name contoso_ithelpdesk  # make draft live in UAT
+pac copilot publish --bot "contoso_ithelpdesk"  # make draft live in UAT (use display name or Copilot ID)
 
 # Rollback to previous version (if UAT push introduces a regression)
 git log --oneline -10                          # find last known-good commit hash
 git checkout <good-commit-hash> -- agents/     # restore agent files to that state
 # Then in VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (push restored version)
-pac copilot publish --name contoso_ithelpdesk  # republish
+pac copilot publish --bot "contoso_ithelpdesk"  # republish
 ```
 
 ### Checking deployment status
@@ -1562,7 +1648,9 @@ pac copilot publish --name contoso_ithelpdesk  # republish
 pac copilot list --environment https://<env>.crm.dynamics.com
 
 # Compare what's deployed vs what's in git
-pac copilot diff --name contoso_ithelpdesk
+# Note: pac copilot diff does not exist. Use pac copilot list to see deployed agents,
+# then compare against git log manually.
+pac copilot list --environment https://<env>.crm.dynamics.com
 ```
 
 → Pipeline YAML reference: [`ci-cd/README.md`](ci-cd/README.md)
@@ -1640,7 +1728,8 @@ grep -h "^  id: " agents/it-helpdesk/topics/*.mcs.yml | sort | uniq -d
 # View → Problems — YAML extension highlights every indentation error
 
 # Compare local files vs what is deployed
-pac copilot diff --name contoso_ithelpdesk
+# Note: pac copilot diff does not exist. Use pac copilot list to see deployed agents.
+pac copilot list --environment https://<env>.crm.dynamics.com
 ```
 
 → Full issue catalogue: [`troubleshooting/README.md`](troubleshooting/README.md)
@@ -1791,13 +1880,13 @@ customEvents
 | take 100
 ```
 
-→ Full query library: [`operations/monitoring-queries.md`](operations/monitoring-queries.md)
+→ Full query library: [`operations/02-monitoring-queries.md`](operations/02-monitoring-queries.md)
 
 ---
 
 ## Stage 10 — Monitoring & Runbooks
 
-**Goal:** Know when the agent is unhealthy before users notice. Fix any issue in under 30 minutes using pre-written runbooks.
+**Goal:** Know when the agent is unhealthy before users notice. Fix any issue in under 30 minutes using pre-written 03-runbooks.
 
 ### Alert thresholds — configure these on day one in Application Insights
 
@@ -1806,10 +1895,10 @@ customEvents
 | Error rate | `Topic.ErrorOccurred / Conversation.Started` | > 5% | > 15% | Check connections, check last push |
 | Escalation rate | `Agent.EscalationTriggered / Conversation.Started` | > 10% | > 25% | Review unanswered query patterns, add topics or KB content |
 | No-answer rate | `Knowledge.AnswerNotFound / Conversation.Started` | > 20% | > 40% | Add knowledge sources, expand SharePoint KB |
-| Agent down | `Conversation.Started == 0` for 30 minutes | — | Immediate P1 | Follow P1 incident runbook below |
+| Agent down | `Conversation.Started == 0` for 30 minutes | — | Immediate P1 | Follow P1 incident 03-runbook below |
 | Auth failures | `ConversationInit.ProfileLoadFailed` | > 5% | > 20% | Re-authenticate Office 365 Users connector |
 
-Set up alerts: [`operations/alert-setup.md`](operations/alert-setup.md)
+Set up alerts: [`operations/01-alert-setup.md`](operations/01-alert-setup.md)
 
 ### Weekly health check (15 minutes, every Monday morning)
 
@@ -1817,7 +1906,7 @@ Set up alerts: [`operations/alert-setup.md`](operations/alert-setup.md)
 # Run these KQL queries in Application Insights → Logs:
 
 # 1. Last 7 days: total conversations, escalation rate, CSAT rate
-#    (use the Monthly Health Report query from operations/monitoring-queries.md)
+#    (use the Monthly Health Report query from operations/02-monitoring-queries.md)
 
 # 2. Compare KPIs to thresholds — are any in Warning range?
 
@@ -1843,7 +1932,7 @@ git log --oneline -1   # latest commit hash
 | Daily (first 30 days) | Check App Insights for error spikes | Dev lead | App Insights alerts |
 | Weekly | Run health check KQL, review CSAT | Dev lead | App Insights + KQL above |
 | Monthly | Review escalation patterns → new topic candidates | Dev + business owner | App Insights + business review |
-| Quarterly | Review governance checklist, Responsible AI tests | Tech lead + business owner | `governance/ai-ethics-checklist.md` |
+| Quarterly | Review governance checklist, Responsible AI tests | Tech lead + business owner | `governance/02-ai-ethics-checklist.md` |
 | On every push | Pipeline runs YAML validation + eval gate | Automated | CI/CD pipeline |
 
 ### P1 Incident — Agent Completely Down
@@ -1863,13 +1952,13 @@ git checkout <good-commit-hash> -- agents/     # restore agent YAML files only
 pac auth create --environment <prod-url>       # switch to Prod auth profile
 pac auth list                                  # confirm Prod is active (*)
 # In VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (push restored version to authenticated environment)
-pac copilot publish --name <schema-name>       # make draft live
+pac copilot publish --bot "<display-name-or-copilot-id>"   # make draft live
 
 # Step 4 — Verify recovery
 # Open CPS test canvas → type a greeting → confirm agent responds within 5 seconds
 
 # Step 5 — Notify stakeholders
-# Use template: launch/user-communication-template.md
+# Use template: launch/02-user-communication-template.md
 
 # Step 6 — Post-incident action
 # Add the failing scenario as a test case in your eval CSV
@@ -1877,8 +1966,8 @@ pac copilot publish --name <schema-name>       # make draft live
 # Create a git commit with the fix + add a comment in the eval CSV row
 ```
 
-→ Full incident procedures: [`operations/runbook.md`](operations/runbook.md)
-→ First 30 days plan: [`launch/hypercare-guide.md`](launch/hypercare-guide.md)
+→ Full incident procedures: [`operations/03-runbook.md`](operations/03-runbook.md)
+→ First 30 days plan: [`launch/03-hypercare-guide.md`](launch/03-hypercare-guide.md)
 
 ---
 
@@ -1893,7 +1982,7 @@ pac copilot publish --name <schema-name>       # make draft live
 | **Intern / junior dev** | Build topics from scaffold, replace placeholders, run smoke tests | Individual topic files |
 | **Mid-level dev** | Add actions + knowledge sources, wire telemetry, set up CI/CD | `components/`, `ci-cd/` |
 | **Senior dev / tech lead** | Architecture decisions, governance review, eval suite | `governance/`, `recipes/`, `ENGINEERING-PLAYBOOK.md` |
-| **Business owner** | Approve governance checklist, sign off UAT, set KPIs | `governance/ai-ethics-checklist.md` |
+| **Business owner** | Approve governance checklist, sign off UAT, set KPIs | `governance/02-ai-ethics-checklist.md` |
 
 ### Onboarding a new team member
 
@@ -1982,7 +2071,7 @@ find agents/<new-agent> -name "*.mcs.yml" \
 | Push to active environment | VS Code → `Ctrl+Shift+P` → "Copilot Studio: Apply Changes" |
 | Check which environment is active | `pac auth list` |
 | Switch environments | `pac auth create --environment <env-url>` |
-| Publish (make draft live) | `pac copilot publish --name <schema-name>` |
+| Publish (make draft live) | `pac copilot publish --bot "<display-name-or-copilot-id>"` |
 | Check deployed version | `pac copilot list --environment <env-url>` |
 | Roll back | `git checkout <commit> -- agents/` then VS Code → "Copilot Studio: Apply Changes" |
 | Trace a conversation | App Insights KQL: `customEvents \| where customDimensions.ConversationId == "<id>"` |
@@ -2002,8 +2091,8 @@ find agents/<new-agent> -name "*.mcs.yml" \
 | Knowledge source URL | `agents/<name>/knowledge/<Name>.knowledge.mcs.yml` |
 | Action connector | `agents/<name>/actions/<Name>.mcs.yml` |
 | Global variable default | `agents/<name>/variables/<VarName>.variable.mcs.yml` |
-| CI/CD eval threshold | `.github/workflows/promote-dev-to-uat.yml` → `EVAL_PASS_THRESHOLD` |
-| Alert thresholds | `operations/alert-setup.md` → configure in Azure Monitor |
+| CI/CD eval threshold | `.github/workflows/02-promote-dev-to-uat.yml` → `EVAL_PASS_THRESHOLD` |
+| Alert thresholds | `operations/01-alert-setup.md` → configure in Azure Monitor |
 
 ---
 
@@ -2012,18 +2101,16 @@ find agents/<new-agent> -name "*.mcs.yml" \
 | Document | What it covers |
 |----------|---------------|
 | [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md) | Call signatures, inputs, and outputs for every template |
-| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 55 templates |
+| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 60 templates |
 | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | 5 steps to a running agent |
-| [`docs/START-HERE.md`](docs/START-HERE.md) | Which template to use at each project step |
 | [`docs/BEST-PRACTICES.md`](docs/BEST-PRACTICES.md) | Design rules, error handling, telemetry, naming |
 | [`docs/TOOLS-AND-PLUGINS.md`](docs/TOOLS-AND-PLUGINS.md) | Install pac CLI, VS Code extensions, Copilot Studio Kit |
 | [`docs/ACTION-SAFETY-PATTERNS.md`](docs/ACTION-SAFETY-PATTERNS.md) | Safety tiers and confirmation patterns for write actions |
 | [`docs/SKILLS-REFERENCE.md`](docs/SKILLS-REFERENCE.md) | Claude skills for generating topics, running evals, validating YAML |
 | [`docs/PII-SCRUBBING.md`](docs/PII-SCRUBBING.md) | PII prevention: telemetry rules, Power Fx masking, App Insights config, DLP, audit commands |
 | [`docs/ENV-VARIABLES.md`](docs/ENV-VARIABLES.md) | Environment variables: Power Platform env vars (CPS), .env / Key Vault / App Config / Managed Identity (pro-code) |
-| [`docs/TEAM-GUIDE.md`](docs/TEAM-GUIDE.md) | Role-based entry points, team onboarding |
 | [`governance/README.md`](governance/README.md) | Responsible AI and security review framework |
-| [`operations/runbook.md`](operations/runbook.md) | Full incident response procedures |
-| [`operations/monitoring-queries.md`](operations/monitoring-queries.md) | KQL query library |
+| [`operations/03-runbook.md`](operations/03-runbook.md) | Full incident response procedures |
+| [`operations/02-monitoring-queries.md`](operations/02-monitoring-queries.md) | KQL query library |
 | [`troubleshooting/README.md`](troubleshooting/README.md) | Common errors and fixes |
-| [`examples/it-helpdesk/walkthrough.md`](examples/it-helpdesk/walkthrough.md) | Annotated IT Helpdesk build |
+| [`examples/it-helpdesk/WALKTHROUGH.md`](examples/it-helpdesk/WALKTHROUGH.md) | Annotated IT Helpdesk build |

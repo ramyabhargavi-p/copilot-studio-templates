@@ -69,6 +69,8 @@ Knowledge.AnswerFound     { ConversationId, UserQuery, Channel, TimeUTC }
 Knowledge.AnswerNotFound  { ConversationId, UserQuery, Channel, TimeUTC }
 ```
 
+→ Full event registry with all properties: [`ENGINEERING-PLAYBOOK.md` → Telemetry](../ENGINEERING-PLAYBOOK.md#stage-9--telemetry--logging)
+
 One KQL query monitors the entire agent fleet:
 
 ```kusto

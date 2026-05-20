@@ -287,7 +287,7 @@ grep -rn "_REPLACE" agents/hr_assistant --include="*.mcs.yml"
 Copy components from `components/` into your agent folder and fill in their placeholders.
 
 → **Full per-component guide** (what to copy, exact placeholders, examples):
-[`components/README.md`](../components/README.md#component-quick-reference)
+[`components/README.md`](../components/README.md)
 
 Quick reference — what each component folder provides:
 
@@ -314,9 +314,9 @@ Quick reference — what each component folder provides:
 
 | Check | How |
 |-------|-----|
-| Routing accuracy ≥ 85% | `/copilot-studio:run-eval` or `project-delivery/05-eval-scenarios.md` |
+| Routing accuracy ≥ 85% | `/copilot-studio:run-eval` or `project-delivery/12-eval-scenarios.md` |
 | No YAML errors | `/copilot-studio:validate` — zero red errors in VS Code Problems panel |
-| Responsible AI review | `governance/ai-ethics-checklist.md` — tick every box |
+| Responsible AI review | `governance/02-ai-ethics-checklist.md` — tick every box |
 
 ---
 

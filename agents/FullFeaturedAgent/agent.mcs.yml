@@ -59,4 +59,4 @@ conversationStarters:
     text: I'm a new starter — what do I need to know?
 aISettings:
   model:
-    modelNameHint: Sonnet46
+    modelNameHint: GPT5Chat               # Options: GPT5Chat (GPT-4o) | GPT4o | GPT35TurboChat

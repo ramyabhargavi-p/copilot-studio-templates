@@ -2,7 +2,7 @@
 
 **Variable:** `Global.Glossary`
 **Type:** `String`
-**AI visibility:** `Hidden` — injected into the system prompt via instructions, not surfaced directly to the AI
+**AI visibility:** `Hidden` — the variable's content is injected into AI context via the `instructions` block, but the AI cannot reference the variable by name in responses
 
 Holds the customer-specific acronym glossary as a comma-separated string, loaded from Dataverse once at conversation start. The AI uses it to silently expand acronyms (PTO, WFH, L&D) before interpreting user messages or searching knowledge sources.
 
@@ -45,10 +45,7 @@ Note: the prefix is `.globalvariable.` — not `.variable.`.
 
 ## Apply Changes limitation
 
-> If pushing this file causes `[0x800608ad:ExportKeyAttributeInvalidPrefix]`:
-> 1. Delete this file from your agent's `variables/` folder
-> 2. Run Apply Changes to push topics and settings first
-> 3. Re-add this file and run Apply Changes again
+> **Apply Changes export error?** See [Known issue — Apply Changes export error](../README.md#known-issue--apply-changes-export-error) in the variables README.
 
 ## Usage in agent instructions
 

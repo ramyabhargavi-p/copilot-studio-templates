@@ -62,10 +62,10 @@ Complete only if the agent uses knowledge sources. Reference `06-content-audit.m
 
 | Step | Action | Configuration | Done? |
 |------|--------|--------------|-------|
-| 1 | Confirm SharePoint site is indexed (check Site Settings → Search) | Site URL from `02-technical-discovery.md` | ☐ |
+| 1 | Confirm SharePoint site is indexed (check Site Settings → Search) | Site URL from `03-technical-discovery.md` | ☐ |
 | 2 | Confirm all documents are checked in (not draft) | Content owner sign-off in `06-content-audit.md` | ☐ |
 | 3 | Copy `components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml` | | ☐ |
-| 4 | Set `siteUrl` and `libraryName` | From `02-technical-discovery.md` | ☐ |
+| 4 | Set `siteUrl` and `libraryName` | From `03-technical-discovery.md` | ☐ |
 | 5 | Set component ID: `<schemaName>.knowledge.SharePoint` | `schemaName` from `settings.mcs.yml` | ☐ |
 | 6 | Replace all `_REPLACE` node ID suffixes | | ☐ |
 | 7 | Add `components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml` | | ☐ |
@@ -116,7 +116,7 @@ For each topic, complete all items before moving to the next.
 
 | Check | Source | Done? |
 |-------|--------|-------|
-| Trigger phrases cover all vocabulary variations from workflow analysis | `11-user-workflow-analysis.md` Section 3 | ☐ |
+| Trigger phrases cover all vocabulary variations from workflow analysis | `04-user-workflow-analysis.md` Section 3 | ☐ |
 | Slot-filling: all required variables collected and validated | `08-workflow-logic-design.md` Section 3 | ☐ |
 | All `ConditionGroup` nodes have `elseActions` branch | `09-TDD` Section 4 | ☐ |
 | Action output validated with `!IsBlank(Topic.ActionResponse)` | `09-TDD` Section 4 | ☐ |
@@ -155,7 +155,7 @@ Complete only if the agent calls connector or MCP actions.
 
 | Check | Source | Done? |
 |-------|--------|-------|
-| Connector logical name confirmed with environment admin | `02-technical-discovery.md` | ☐ |
+| Connector logical name confirmed with environment admin | `03-technical-discovery.md` | ☐ |
 | Connector operation name matches the exact API operation (case-sensitive) | Test in Power Platform connector explorer | ☐ |
 | All input parameters defined and mapped from topic variables | `08-workflow-logic-design.md` Section 2 | ☐ |
 | Output mapping: connector response mapped to `Topic.ActionResponse` | | ☐ |
@@ -180,7 +180,7 @@ Complete only if the agent calls connector or MCP actions.
 | `OnError` production branch tested — shows Reference ID only, not full error | Test in canvas with `System.IsTestMode = false` simulation | ☐ |
 | Connection references use service accounts (not personal accounts) | Env admin confirms | ☐ |
 | Azure AD app registration permissions are minimum required | `09-TDD` Section 3.1 | ☐ |
-| `governance/security-review.md` completed and signed | Security reviewer | ☐ |
+| `governance/03-security-review.md` completed and signed | Security reviewer | ☐ |
 
 ### 5.2 — DLP alignment verification
 
@@ -267,8 +267,8 @@ The developer signs off that the build is complete, tested, and ready for promot
 | Eval: ≥ 85% routing accuracy | ☐ |
 | Telemetry verified in Application Insights | ☐ |
 | All YAML committed to version control | ☐ |
-| `governance/ai-ethics-checklist.md` completed | ☐ |
-| `governance/security-review.md` completed | ☐ |
+| `governance/02-ai-ethics-checklist.md` completed | ☐ |
+| `governance/03-security-review.md` completed | ☐ |
 
 | Role | Name | Sign-off | Date |
 |------|------|---------|------|

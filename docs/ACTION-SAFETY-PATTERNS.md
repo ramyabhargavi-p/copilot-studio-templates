@@ -39,8 +39,6 @@ Ask one question: **what is the worst thing that happens if this fires by mistak
 
 ---
 
----
-
 # Medium Tier — Confirmation Card Pattern
 
 ## When to use
@@ -88,7 +86,7 @@ Show confirmation card — summary of exactly what will happen
 # GUARDRAIL:   confirmation-card
 # REASON:      Creates a ServiceNow incident record — user must confirm before submitting
 
-kind: TaskAction
+kind: TaskDialog
 schema: 2.0.0
 schemaName: <SCHEMA>_submitticket
 displayName: Submit ServiceNow Ticket
@@ -313,8 +311,6 @@ Test 3 — Prompt injection attempt
 
 ---
 
----
-
 # High Tier — Approval Flow Pattern
 
 ## When to use
@@ -413,7 +409,7 @@ If No (rejected):
 # GUARDRAIL:   approval-flow
 # REASON:      Permanently deletes an AAD user account — irreversible, requires manager approval
 
-kind: TaskAction
+kind: TaskDialog
 schema: 2.0.0
 schemaName: <SCHEMA>_deleteuseraccount
 displayName: Request Account Deletion (Approval Required)
@@ -646,8 +642,6 @@ Test 5 — Unauthorised user
   Expect: "Only IT Admins can request account deletion."
   Expect: Topic ends immediately — no card shown
 ```
-
----
 
 ---
 

@@ -175,7 +175,7 @@ pac solution import \
   --force-overwrite
 pac org publish --environment <UAT_ENV_URL>
 
-# Run UAT testing (project-delivery/04-uat-test-plan.md)
+# Run UAT testing (project-delivery/13-uat-test-plan.md)
 
 # ─── PROD: Import, publish, and go live ───────────────────────────
 pac auth create --environment <PROD_ENV_URL> ...
@@ -184,7 +184,7 @@ pac solution import \
   --environment <PROD_ENV_URL> \
   --force-overwrite
 pac org publish --environment <PROD_ENV_URL>
-pac copilot publish --environment <PROD_ENV_URL> --schemaName "<AGENT_SCHEMA_NAME>"
+pac copilot publish --environment <PROD_ENV_URL> --bot "<AGENT_DISPLAY_NAME_OR_COPILOT_ID>"
 ```
 
 ---
@@ -216,7 +216,7 @@ pac connector list --environment <ENV_URL>
 ## Automated pipeline
 
 For automated Dev → UAT → Prod promotion, use the GitHub Actions workflow at:
-`ci-cd/solution-build-and-deploy.yml`
+`ci-cd/04-solution-build-and-deploy.yml`
 
 It handles: export → artifact storage → UAT import → production import (with approval gate).
 

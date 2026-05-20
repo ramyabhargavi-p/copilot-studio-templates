@@ -33,7 +33,7 @@ Project brief:
 
 Agent name: [agent name]
 Primary users: [internal employees / external customers / specific department]
-Authentication: [None / ManualAzureAD / IntegratedAzureAD]
+Authentication: [None / ManualAzureAD / Integrated]
 Tone: [Formal / Conversational / Empathetic / Technical]
 ```
 

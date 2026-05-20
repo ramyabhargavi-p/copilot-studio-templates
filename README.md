@@ -8,10 +8,9 @@ Reusable YAML templates for building Copilot Studio agents — with error handli
 
 ### Step 1 — Set up tools (once per machine, ~20 min)
 
-```powershell
-# Install pac CLI
-dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+> Install the PAC CLI: see [TOOLS-AND-PLUGINS.md → PAC CLI](docs/TOOLS-AND-PLUGINS.md) for install instructions.
 
+```powershell
 # Authenticate to your Dev environment
 pac auth create
 pac env select --environment "Dev - My Project"
@@ -229,7 +228,7 @@ Full per-component placeholder guide and examples: [`components/README.md`](comp
 | [`project-delivery/`](project-delivery/) | Discovery → Design → Build → UAT documents |
 | [`governance/`](governance/) | Responsible AI and security review checklists |
 | [`launch/`](launch/) | Go-live checklist, user communications, hypercare guide |
-| [`operations/`](operations/) | KQL monitoring queries, alerts, runbook |
+| [`operations/`](operations/) | KQL monitoring queries, alerts, 03-runbook |
 | [`troubleshooting/`](troubleshooting/) | Common errors and fixes |
 
 ---
@@ -239,7 +238,7 @@ Full per-component placeholder guide and examples: [`components/README.md`](comp
 | Doc | What it covers |
 |-----|---------------|
 | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | Creation paths, placeholder guide, node ID scripts |
-| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 56 templates |
+| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 60 templates |
 | [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md) | Call signatures and I/O for every component |
 | [`docs/BEST-PRACTICES.md`](docs/BEST-PRACTICES.md) | Design rules, error handling, naming, telemetry |
 | [`docs/TOOLS-AND-PLUGINS.md`](docs/TOOLS-AND-PLUGINS.md) | pac CLI, VS Code extensions, Copilot Studio Kit |

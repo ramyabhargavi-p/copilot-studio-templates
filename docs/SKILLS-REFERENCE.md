@@ -22,7 +22,7 @@ Invoke any skill by typing its slash command in your Claude session.
 
 ## WorkIQ — M365 Context
 
-WorkIQ reads your Microsoft 365 data — attended meetings, Teams chats, emails, SharePoint, calendar, and Planner — and feeds that context directly into your development work. Instead of hunting through notes or asking colleagues what was decided, you ask WorkIQ and it pulls the answer from your actual M365 activity.
+WorkIQ reads your M365 data (meetings, Teams chats, emails, SharePoint, calendar, Planner) and surfaces context directly in your development session — so you can ask what was decided instead of hunting through notes.
 
 **The core pattern:** Ask WorkIQ first to load context → then use that context to drive the next dev action.
 

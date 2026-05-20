@@ -21,7 +21,7 @@ cp components/topics/feedback/Feedback.topic.mcs.yml \
 
 The adaptive card UI is **inline in the YAML** — no separate card JSON files needed.
 
-Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 ## Placeholders
 
@@ -47,8 +47,8 @@ The sequence adapts based on the response:
 | Thumbs result | Steps |
 |---|---|
 | Positive | Thumbs → thank you message → end |
-| Negative (rating > 3) | Thumbs → star rating → thank you message |
-| Negative (rating ≤ 3) | Thumbs → star rating → category dropdown → thank you message |
+| Thumbs down, rating 4–5 ★ | Thumbs → star rating → thank you message |
+| Thumbs down, rating 1–3 ★ | Thumbs → star rating → category dropdown → thank you message |
 
 The category dropdown (not free text) is what gets logged — no PII is collected.
 
@@ -74,4 +74,4 @@ When you use `_scaffold/`, Section 4 calls the Feedback topic. Replace `<SCHEMA>
 - **Adding to a demo agent** — users rarely complete the full flow in demos, generating noisy CSAT data
 - **Expecting free-text comments in telemetry** — the template logs only a category dropdown value, not free text, to avoid PII
 
-→ CSAT KQL queries: [`../../../operations/monitoring-queries.md`](../../../operations/monitoring-queries.md)
+→ CSAT KQL queries: [`../../../operations/02-monitoring-queries.md`](../../../operations/02-monitoring-queries.md)

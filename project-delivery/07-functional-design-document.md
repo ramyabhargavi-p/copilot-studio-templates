@@ -2,7 +2,7 @@
 
 A structured specification of what the agent must do, for whom, under what conditions, and to what standard. This document is the contract between the business and the development team. Every topic, action, and knowledge source built during Phase 3 (Build) must trace back to a functional requirement here.
 
-Complete this document after `03-agent-design-worksheet.md` and before writing any YAML.
+Complete this document after `05-agent-design-worksheet.md` and before writing any YAML.
 
 ---
 
@@ -179,7 +179,7 @@ What data the agent reads, writes, or transforms. This informs the connector and
 
 ## 6 — Integration Requirements
 
-Each integration must be confirmed as available before the build starts. See `02-technical-discovery.md` for the technical details.
+Each integration must be confirmed as available before the build starts. See `03-technical-discovery.md` for the technical details.
 
 | Integration ID | System | Operation | Connector logical name | Required for use case(s) | Confirmed available? |
 |---------------|--------|-----------|----------------------|--------------------------|---------------------|

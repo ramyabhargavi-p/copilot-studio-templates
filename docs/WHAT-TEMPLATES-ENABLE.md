@@ -14,7 +14,7 @@ Decision    Discovery    Design       Build        Test         Deploy       Lau
 ```
 
 Templates cover all eight phases. Most teams use only the Build phase templates and skip the
-rest — which is why agents succeed in UAT and struggle in production.
+rest — which is why agents can pass UAT but struggle in production.
 
 ---
 
@@ -36,8 +36,8 @@ measured in weeks.
 
 ## Phase 1 — Discovery: What exactly are we building?
 
-**Templates:** `project-delivery/01-requirements-questionnaire.md`,
-`project-delivery/02-technical-discovery.md`, `project-delivery/11-user-workflow-analysis.md`
+**Templates:** `project-delivery/02-requirements-questionnaire.md`,
+`project-delivery/03-technical-discovery.md`, `project-delivery/04-user-workflow-analysis.md`
 
 These are not paperwork. They surface the blockers early:
 
@@ -54,17 +54,17 @@ the SharePoint library is not indexed, or the user workflow has a branch nobody 
 
 ## Phase 2 — Design: What will it do and how?
 
-**Templates:** `project-delivery/03-agent-design-worksheet.md`,
+**Templates:** `project-delivery/05-agent-design-worksheet.md`,
 `project-delivery/07-functional-design-document.md`,
 `project-delivery/08-workflow-logic-design.md`,
 `project-delivery/09-technical-design-document.md`,
-`project-delivery/12-build-specification.md`,
-`project-delivery/10-enterprise-readiness-assessment.md`,
-`governance/enterprise-ai-governance-framework.md`
+`project-delivery/10-build-specification.md`,
+`project-delivery/01-enterprise-readiness-assessment.md`,
+`governance/01-enterprise-ai-governance-framework.md`
 
 ### Enterprise readiness assessment — the most underused template in the repo
 
-`10-enterprise-readiness-assessment.md` is a 36-item scoring checklist across five
+`01-enterprise-readiness-assessment.md` is a 36-item scoring checklist across five
 dimensions: strategic alignment, technical infrastructure, operational readiness, governance,
 and risk. Scores below 28/40 are a formal no-go.
 
@@ -80,7 +80,7 @@ and risk. Scores below 28/40 are a formal no-go.
 
 ### Governance framework — delivery blocker for all roles
 
-`governance/enterprise-ai-governance-framework.md` defines stage gates that must be passed
+`governance/01-enterprise-ai-governance-framework.md` defines stage gates that must be passed
 before proceeding to the next phase. It cannot be retrofitted after build.
 
 **Non-obvious requirements it encodes:**
@@ -148,8 +148,8 @@ start requires:
 2. Office 365 Users connector in **Invoker** connection mode — uses the signed-in user's
    identity, not the bot's service account
 3. Error handling that allows conversation to continue even if the profile call fails
-4. `SearchAndSummarizeContent` for glossary loading — a Power Fx function specific to
-   knowledge sources
+4. `SearchAndSummarizeContent` for glossary loading — a Copilot Studio YAML node kind
+   (`kind: SearchAndSummarizeContent`), not a Power Fx function
 
 **Without it:** Users are greeted as "user" with no personalisation, and the glossary is
 not loaded — meaning the agent cannot expand internal acronyms used in questions.
@@ -219,13 +219,13 @@ instantly with no approval (irreversible damage in production).
 
 ## Phase 4 — Test: Structured verification before release
 
-**Templates:** `project-delivery/04-uat-test-plan.md`,
-`project-delivery/05-eval-scenarios.md`,
-`governance/ai-ethics-checklist.md`
+**Templates:** `project-delivery/13-uat-test-plan.md`,
+`project-delivery/12-eval-scenarios.md`,
+`governance/02-ai-ethics-checklist.md`
 
 ### UAT test plan — not a spot-check
 
-`04-uat-test-plan.md` defines eight test categories that must all pass before release:
+`13-uat-test-plan.md` defines eight test categories that must all pass before release:
 
 - **S1–S7:** System tests — fallback retries exactly 3×, escalation triggers, OnError fires
   in test mode correctly, safe message in production mode
@@ -243,7 +243,7 @@ out-of-scope hallucinations go to production.
 
 ### AI ethics checklist — mandatory sign-off
 
-`governance/ai-ethics-checklist.md` is a 7-dimension responsible AI checklist mapped to
+`governance/02-ai-ethics-checklist.md` is a 7-dimension responsible AI checklist mapped to
 Microsoft's RAI principles. Notable requirements:
 
 - **85% routing accuracy** is a hard threshold — measured by running eval scenarios, not
@@ -257,8 +257,8 @@ Microsoft's RAI principles. Notable requirements:
 
 ## Phase 5 — Deploy: Consistent promotion across environments
 
-**Templates:** `ci-cd/push-on-pr.yml`, `ci-cd/promote-dev-to-uat.yml`,
-`ci-cd/promote-uat-to-prod.yml`, `ci-cd/publish-on-release.yml`
+**Templates:** `ci-cd/01-push-on-pr.yml`, `ci-cd/02-promote-dev-to-uat.yml`,
+`ci-cd/03-promote-uat-to-prod.yml`, `ci-cd/04-solution-build-and-deploy.yml`
 
 ### What these pipelines do that manual promotion cannot
 
@@ -282,12 +282,12 @@ specific knowledge of both platforms.
 
 ## Phase 6 — Launch: Controlled rollout
 
-**Templates:** `launch/launch-checklist.md`, `launch/hypercare-guide.md`,
-`launch/user-communication-template.md`
+**Templates:** `launch/01-launch-checklist.md`, `launch/03-hypercare-guide.md`,
+`launch/02-user-communication-template.md`
 
 ### Hypercare — the phase most teams skip
 
-`launch/hypercare-guide.md` defines a structured post-launch monitoring period:
+`launch/03-hypercare-guide.md` defines a structured post-launch monitoring period:
 
 - **Week 1–2:** Daily review of fallback rate, escalation rate, error frequency
 - **Week 3–4:** Weekly review, address content gaps surfaced by monitoring
@@ -301,12 +301,12 @@ complain.
 
 ## Phase 7 — Operate: Running in production
 
-**Templates:** `operations/runbook.md`, `operations/monitoring-queries.md`,
-`operations/alert-setup.md`, `operations/user-feedback.md`
+**Templates:** `operations/03-runbook.md`, `operations/02-monitoring-queries.md`,
+`operations/01-alert-setup.md`, `operations/04-user-feedback.md`
 
 ### Monitoring queries — only work with consistent telemetry schema
 
-`operations/monitoring-queries.md` contains ready-to-paste KQL queries for Application
+`operations/02-monitoring-queries.md` contains ready-to-paste KQL queries for Application
 Insights:
 
 ```kusto
@@ -335,7 +335,7 @@ event names + correct property key names. 1–2 days for a developer unfamiliar 
 
 ### Runbook — on-call decisions that require platform knowledge
 
-`operations/runbook.md` encodes operational knowledge that only comes from having been
+`operations/03-runbook.md` encodes operational knowledge that only comes from having been
 on-call for a Copilot Studio agent. Examples:
 
 - Error code 401 → re-authenticate the connection in Power Platform admin
@@ -368,7 +368,7 @@ and escalate before checking the actual cause.
 | Enterprise readiness assessment (36-item, stage-gated) | 1–2 days to create from scratch |
 | UAT test plan (8 test categories, structured sign-off) | 3–4 hours per engagement |
 | Application Insights monitoring queries (KQL) | 1–2 days without KQL expertise |
-| On-call runbook with platform-specific diagnostics | Accumulated over multiple incidents |
+| On-call 03-runbook with platform-specific diagnostics | Accumulated over multiple incidents |
 | AI ethics checklist (7-dimension RAI sign-off) | Requires RAI expertise to write |
 | Governance framework (stage gates, data classification, DLP) | Legal/compliance expertise + platform knowledge |
 

@@ -95,6 +95,8 @@ Use `{Category}.{Action}` format:
 | `Action` | `Succeeded`, `Failed` |
 | `ConversationInit` | `Completed`, `ProfileLoadFailed` |
 
+→ Full event registry: [`ENGINEERING-PLAYBOOK.md` → Telemetry & Logging](../ENGINEERING-PLAYBOOK.md#stage-9--telemetry--logging)
+
 ### Standard properties
 Include these in every telemetry event:
 ```yaml
@@ -199,7 +201,7 @@ modelDescription: >
 
 ### `mode` selection
 ```yaml
-mode: Invoker   # Action runs as the signed-in user — requires ManualAzureAD or IntegratedAzureAD
+mode: Invoker   # Action runs as the signed-in user — requires ManualAzureAD or Integrated
 mode: Caller    # Action runs as the agent's service principal — works with authenticationMode: None
 ```
 
@@ -240,7 +242,7 @@ If the agent should answer from multiple libraries, add a separate `.knowledge.m
 | Scenario | Auth mode |
 |----------|-----------|
 | Anonymous agent (no user identity needed) | `None` |
-| Teams/M365 deployment (SSO) | `IntegratedAzureAD` |
+| Teams/M365 deployment (SSO) | `Integrated` |
 | Web/external channel (explicit sign-in) | `ManualAzureAD` |
 
 ### Load user context once
@@ -375,7 +377,7 @@ High tier actions must never execute in the same turn as the user's request. Alw
 
 ### Declare the tier in every action file
 
-Add this comment block at the top of every `*-action.mcs.yml` or `*-action.mcs.yml` connector file:
+Add this comment block at the top of every action file (`connector-action.mcs.yml` or `mcp-action.mcs.yml`):
 
 ```yaml
 # SAFETY TIER: Low / Medium / High
@@ -429,4 +431,4 @@ grep -l "SAFETY TIER" agents/**/*.yml
 
 The two lists should match. Any file in list 1 that is not in list 2 is missing its tier declaration.
 
-→ Full implementation guide: [`project-delivery/13-ai-engineer-realtime-guide.md`](../project-delivery/13-ai-engineer-realtime-guide.md)
+→ Full implementation guide: [`project-delivery/11-ai-engineer-realtime-guide.md`](../project-delivery/11-ai-engineer-realtime-guide.md)

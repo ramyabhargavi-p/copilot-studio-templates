@@ -40,7 +40,7 @@ Show which topics exist and how they relate. This is not a conversation flow —
         └── error ──→ [OnError] ──→ safe message + telemetry
 ```
 
-**Instructions:** Replace `[Topic A]`, `[Topic B]` etc. with the actual topics from your `03-agent-design-worksheet.md`. Add branches for every topic you plan to build.
+**Instructions:** Replace `[Topic A]`, `[Topic B]` etc. with the actual topics from your `05-agent-design-worksheet.md`. Add branches for every topic you plan to build.
 
 ---
 
@@ -239,7 +239,7 @@ Define every path that leads to a human handoff.
 | Out-of-scope + no self-serve option | OutOfScope topic elseActions | Redirect to [contact/resource] | N/A — message only, no transfer |
 | [Other escalation trigger] | | | |
 
-**Pre-build check:** Confirm the queue name `[QUEUE_NAME]` with the environment admin in `02-technical-discovery.md` before building. An incorrect queue name causes a silent failure at the `TransferConversation` node.
+**Pre-build check:** Confirm the queue name `[QUEUE_NAME]` with the environment admin in `03-technical-discovery.md` before building. An incorrect queue name causes a silent failure at the `TransferConversation` node.
 
 ---
 
