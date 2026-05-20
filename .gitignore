@@ -1,0 +1,5 @@
+node_modules/
+package*.json
+*.pptx
+generate-pptx*.js
+generate-pptx*.ps1
