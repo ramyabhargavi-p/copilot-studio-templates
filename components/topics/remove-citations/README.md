@@ -2,7 +2,7 @@
 
 Strips `[1]` through `[10]` citation markers from every AI-generated response. Fires automatically after every generative answer.
 
-## When to add
+## When to use
 
 Add whenever **knowledge-search is active** and citation markers appear in test canvas responses.
 

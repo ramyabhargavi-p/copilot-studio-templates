@@ -2,7 +2,11 @@
 
 Returns a helpful redirect message when users ask questions outside the agent's domain, and logs every attempt for monitoring.
 
-## When to configure
+> **Already in base/:** `base/topics/OutOfScope.topic.mcs.yml` ships with every agent. If you started from `base/`, configure that file directly — do not copy this one. Use this folder as a reference for the placeholder table and examples.
+
+---
+
+## When to use
 
 Every agent needs out-of-scope handling. Configure the file already in your agent at `topics/OutOfScope.topic.mcs.yml`:
 
@@ -61,10 +65,6 @@ Never attempt to answer out-of-scope questions.
 
 ## Monitoring
 
-High `Agent.OutOfScope` rates in App Insights indicate either users are trying to use the agent for unintended purposes, or scope is too narrow. Review the logged `UserQuery` values and decide whether to expand scope or reinforce the system prompt.
+High `Agent.OutOfScope` rates in App Insights indicate users are trying to use the agent for unintended purposes, or scope is too narrow. Review the logged `UserQuery` values and decide whether to expand scope or reinforce the system prompt.
 
 → KQL queries for out-of-scope events: [`../../../operations/02-monitoring-queries.md`](../../../operations/02-monitoring-queries.md)
-
----
-
-> **Note:** `base/topics/OutOfScope.topic.mcs.yml` ships with every agent — you do not need to copy this component if you started from `base/`. Use this component folder only if you built an agent without `base/` or need a reference copy.
