@@ -164,7 +164,7 @@ Add to agent instructions: _______________
 | Knowledge search hit rate | > ___% |
 
 **18a. Which feedback collection method will this agent use?**
-See `operations/user-feedback.md` for card templates and wiring instructions.
+See `operations/04-user-feedback.md` for card templates and wiring instructions.
 - [ ] Thumbs up / down — shown after every conversation (default, lowest friction)
 - [ ] Star rating (1–5) — shown after resolved topics
 - [ ] Free-text statement — shown when user rates 3 stars or below

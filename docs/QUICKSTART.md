@@ -316,7 +316,7 @@ Quick reference — what each component folder provides:
 |-------|-----|
 | Routing accuracy ≥ 85% | `/copilot-studio:run-eval` or `project-delivery/12-eval-scenarios.md` |
 | No YAML errors | `/copilot-studio:validate` — zero red errors in VS Code Problems panel |
-| Responsible AI review | `governance/ai-ethics-checklist.md` — tick every box |
+| Responsible AI review | `governance/02-ai-ethics-checklist.md` — tick every box |
 
 ---
 

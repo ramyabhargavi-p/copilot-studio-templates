@@ -125,7 +125,7 @@ Separate three distinct concerns:
 |---------|---------|------------|
 | **Grounding (RAG)** | Retrieve relevant content per question | SharePoint knowledge source, public website knowledge, Azure AI Search |
 | **Memory** | Persist conversation state | Copilot Studio global variables + Dataverse |
-| **Analytics** | Retain transcripts for review | Application Insights + monitoring-queries.md |
+| **Analytics** | Retain transcripts for review | Application Insights + 02-monitoring-queries.md |
 
 **In this template repo:** SharePoint knowledge = Foundry IQ layer (grounding). WorkIQ = Work IQ layer (live org context).
 
@@ -407,7 +407,7 @@ Complete before committing to build:
 - [ ] Monthly spend estimate documented
 - [ ] Azure Cost Management alerts configured (if using metered consumption)
 
-See `governance/enterprise-ai-governance-framework.md` for the full model.
+See `governance/01-enterprise-ai-governance-framework.md` for the full model.
 
 ---
 

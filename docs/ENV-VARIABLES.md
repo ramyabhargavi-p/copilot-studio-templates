@@ -100,7 +100,7 @@ pac env var list --environment <env-url>
 **Via GitHub Actions (CI/CD pipeline):**
 
 ```yaml
-# In promote-dev-to-uat.yml
+# In 02-promote-dev-to-uat.yml
 - name: Set UAT environment variables
   run: |
     pac auth create --environment ${{ vars.UAT_ENV_URL }} \

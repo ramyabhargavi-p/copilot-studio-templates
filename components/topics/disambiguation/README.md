@@ -61,4 +61,4 @@ Topic A: "leave policy", "annual leave rules", "how does leave work"
 Topic B: "check leave balance", "how many days left", "remaining leave"
 ```
 
-→ KQL query for disambiguation rates: [`../../../operations/monitoring-queries.md`](../../../operations/monitoring-queries.md)
+→ KQL query for disambiguation rates: [`../../../operations/02-monitoring-queries.md`](../../../operations/02-monitoring-queries.md)

@@ -5,15 +5,15 @@
 > - GitHub secrets set: `POWER_PLATFORM_URL`, `CLIENT_ID`, `CLIENT_SECRET`, `TENANT_ID`
 > - Note: `pac copilot push` does not exist in pac CLI. The pipeline YAML files in this folder
 >   use it as a placeholder — replace with your deployment approach (solution import or VS Code Apply Changes via agent).
->   The `solution-build-and-deploy.yml` workflow is the recommended enterprise-grade approach.
+>   The `04-solution-build-and-deploy.yml` workflow is the recommended enterprise-grade approach.
 > - Three environments: Dev, UAT, Production (separate Power Platform environments)
 >
 > **Which workflow file to use:**
 > | Workflow | Trigger | What it does |
 > |----------|---------|-------------|
-> | `push-on-pr.yml` | PR to `main` | Validates YAML (no `<PLACEHOLDER>` or `_REPLACE` strings) |
-> | `promote-dev-to-uat.yml` | Merge to `main` (agents/** changed) | Pushes agent to UAT environment |
-> | `promote-uat-to-prod.yml` | GitHub Release published | Promotes to Production with approval gate |
+> | `01-push-on-pr.yml` | PR to `main` | Validates YAML (no `<PLACEHOLDER>` or `_REPLACE` strings) |
+> | `02-promote-dev-to-uat.yml` | Merge to `main` (agents/** changed) | Pushes agent to UAT environment |
+> | `03-promote-uat-to-prod.yml` | GitHub Release published | Promotes to Production with approval gate |
 
 Automated push and publish workflows for Copilot Studio agents using GitHub Actions and the Power Platform CLI (`pac`).
 
@@ -23,10 +23,10 @@ Automated push and publish workflows for Copilot Studio agents using GitHub Acti
 
 | Approach | Workflows | When to use |
 |----------|-----------|------------|
-| **Direct YAML push** | `push-on-pr.yml`, `promote-dev-to-uat.yml`, `promote-uat-to-prod.yml` | Rapid development iteration; single-agent deployments |
-| **Solution-based** | `solution-build-and-deploy.yml` | Enterprise ALM; multi-component solutions; managed layer for Prod |
+| **Direct YAML push** | `01-push-on-pr.yml`, `02-promote-dev-to-uat.yml`, `03-promote-uat-to-prod.yml` | Rapid development iteration; single-agent deployments |
+| **Solution-based** | `04-solution-build-and-deploy.yml` | Enterprise ALM; multi-component solutions; managed layer for Prod |
 
-→ **Can you build solutions from CLI?** Yes. See [`solution-cli-guide.md`](solution-cli-guide.md) for the full `pac solution` command reference.
+→ **Can you build solutions from CLI?** Yes. See [`05-solution-cli-guide.md`](05-solution-cli-guide.md) for the full `pac solution` command reference.
 
 ---
 
@@ -34,15 +34,15 @@ Automated push and publish workflows for Copilot Studio agents using GitHub Acti
 
 | File | Trigger | What it does |
 |------|---------|-------------|
-| [`push-on-pr.yml`](push-on-pr.yml) | Pull request to `main` | Validates YAML and pushes to dev environment |
-| [`promote-dev-to-uat.yml`](promote-dev-to-uat.yml) | Merge to `main` | Pushes agent to UAT environment (requires UAT environment approval) |
-| [`promote-uat-to-prod.yml`](promote-uat-to-prod.yml) | GitHub Release published | Pushes and publishes to production (requires production environment approval) |
+| [`01-push-on-pr.yml`](01-push-on-pr.yml) | Pull request to `main` | Validates YAML and pushes to dev environment |
+| [`02-promote-dev-to-uat.yml`](02-promote-dev-to-uat.yml) | Merge to `main` | Pushes agent to UAT environment (requires UAT environment approval) |
+| [`03-promote-uat-to-prod.yml`](03-promote-uat-to-prod.yml) | GitHub Release published | Pushes and publishes to production (requires production environment approval) |
 
 ## Workflows — Solution-Based
 
 | File | Trigger | What it does |
 |------|---------|-------------|
-| [`solution-build-and-deploy.yml`](solution-build-and-deploy.yml) | Push to `main` or manual dispatch | Exports managed solution from Dev → imports to UAT or Prod with approval gates |
+| [`04-solution-build-and-deploy.yml`](04-solution-build-and-deploy.yml) | Push to `main` or manual dispatch | Exports managed solution from Dev → imports to UAT or Prod with approval gates |
 
 ---
 
@@ -105,11 +105,11 @@ Your agent YAML files should live in a subfolder named after the agent's `schema
 
 ```
 feature/* ─────────────────────────────────────────────── dev branches
-              ↓ PR (push-on-pr.yml validates + pushes to dev)
+              ↓ PR (01-push-on-pr.yml validates + pushes to dev)
 main ──────────────────────────────────────────────────── auto-promote to UAT
-              ↓ (promote-dev-to-uat.yml — requires UAT approval)
+              ↓ (02-promote-dev-to-uat.yml — requires UAT approval)
 uat ────────────────────────────────────────────────────── UAT testing
-              ↓ GitHub Release (promote-uat-to-prod.yml — requires prod approval)
+              ↓ GitHub Release (03-promote-uat-to-prod.yml — requires prod approval)
 production ────────────────────────────────────────────── push + publish to prod
 ```
 
@@ -117,7 +117,7 @@ production ───────────────────────
 
 ## Protecting Production
 
-For the `promote-uat-to-prod.yml` workflow, add a GitHub **Environment** called `production` with a required reviewer:
+For the `03-promote-uat-to-prod.yml` workflow, add a GitHub **Environment** called `production` with a required reviewer:
 
 **Settings → Environments → New environment → `production`** → add required reviewer
 

@@ -180,7 +180,7 @@ Complete only if the agent calls connector or MCP actions.
 | `OnError` production branch tested — shows Reference ID only, not full error | Test in canvas with `System.IsTestMode = false` simulation | ☐ |
 | Connection references use service accounts (not personal accounts) | Env admin confirms | ☐ |
 | Azure AD app registration permissions are minimum required | `09-TDD` Section 3.1 | ☐ |
-| `governance/security-review.md` completed and signed | Security reviewer | ☐ |
+| `governance/03-security-review.md` completed and signed | Security reviewer | ☐ |
 
 ### 5.2 — DLP alignment verification
 
@@ -267,8 +267,8 @@ The developer signs off that the build is complete, tested, and ready for promot
 | Eval: ≥ 85% routing accuracy | ☐ |
 | Telemetry verified in Application Insights | ☐ |
 | All YAML committed to version control | ☐ |
-| `governance/ai-ethics-checklist.md` completed | ☐ |
-| `governance/security-review.md` completed | ☐ |
+| `governance/02-ai-ethics-checklist.md` completed | ☐ |
+| `governance/03-security-review.md` completed | ☐ |
 
 | Role | Name | Sign-off | Date |
 |------|------|---------|------|

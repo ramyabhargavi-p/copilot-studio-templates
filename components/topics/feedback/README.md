@@ -74,4 +74,4 @@ When you use `_scaffold/`, Section 4 calls the Feedback topic. Replace `<SCHEMA>
 - **Adding to a demo agent** — users rarely complete the full flow in demos, generating noisy CSAT data
 - **Expecting free-text comments in telemetry** — the template logs only a category dropdown value, not free text, to avoid PII
 
-→ CSAT KQL queries: [`../../../operations/monitoring-queries.md`](../../../operations/monitoring-queries.md)
+→ CSAT KQL queries: [`../../../operations/02-monitoring-queries.md`](../../../operations/02-monitoring-queries.md)

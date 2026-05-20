@@ -32,7 +32,7 @@ Before creating alerts, create a shared Action Group:
 | Setting | Value |
 |---------|-------|
 | Signal type | Custom log search |
-| Query | See [monitoring-queries.md](monitoring-queries.md) — **Alert: Error rate spike** |
+| Query | See [02-monitoring-queries.md](02-monitoring-queries.md) — **Alert: Error rate spike** |
 | Threshold | Greater than 0 (query only returns results when > 5 errors) |
 | Aggregation granularity | 15 minutes |
 | Frequency | Every 5 minutes |
@@ -44,7 +44,7 @@ Before creating alerts, create a shared Action Group:
 | Setting | Value |
 |---------|-------|
 | Signal type | Custom log search |
-| Query | See [monitoring-queries.md](monitoring-queries.md) — **Alert: High fallback rate** |
+| Query | See [02-monitoring-queries.md](02-monitoring-queries.md) — **Alert: High fallback rate** |
 | Threshold | Greater than 0 (query only returns results when fallback rate > 40%) |
 | Aggregation granularity | 1 hour |
 | Frequency | Every 15 minutes |
@@ -57,7 +57,7 @@ Before creating alerts, create a shared Action Group:
 | Setting | Value |
 |---------|-------|
 | Signal type | Custom log search |
-| Query | See [monitoring-queries.md](monitoring-queries.md) — **Alert: Action failure spike** |
+| Query | See [02-monitoring-queries.md](02-monitoring-queries.md) — **Alert: Action failure spike** |
 | Threshold | Greater than 0 |
 | Aggregation granularity | 10 minutes |
 | Frequency | Every 5 minutes |
@@ -69,7 +69,7 @@ Before creating alerts, create a shared Action Group:
 | Setting | Value |
 |---------|-------|
 | Signal type | Custom log search |
-| Query | See [monitoring-queries.md](monitoring-queries.md) — **Alert: Zero conversations** |
+| Query | See [02-monitoring-queries.md](02-monitoring-queries.md) — **Alert: Zero conversations** |
 | Threshold | Greater than 0 |
 | Aggregation granularity | 2 hours |
 | Frequency | Every 30 minutes |

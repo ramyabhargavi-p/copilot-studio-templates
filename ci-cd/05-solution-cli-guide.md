@@ -216,7 +216,7 @@ pac connector list --environment <ENV_URL>
 ## Automated pipeline
 
 For automated Dev → UAT → Prod promotion, use the GitHub Actions workflow at:
-`ci-cd/solution-build-and-deploy.yml`
+`ci-cd/04-solution-build-and-deploy.yml`
 
 It handles: export → artifact storage → UAT import → production import (with approval gate).
 

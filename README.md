@@ -228,7 +228,7 @@ Full per-component placeholder guide and examples: [`components/README.md`](comp
 | [`project-delivery/`](project-delivery/) | Discovery → Design → Build → UAT documents |
 | [`governance/`](governance/) | Responsible AI and security review checklists |
 | [`launch/`](launch/) | Go-live checklist, user communications, hypercare guide |
-| [`operations/`](operations/) | KQL monitoring queries, alerts, runbook |
+| [`operations/`](operations/) | KQL monitoring queries, alerts, 03-runbook |
 | [`troubleshooting/`](troubleshooting/) | Common errors and fixes |
 
 ---

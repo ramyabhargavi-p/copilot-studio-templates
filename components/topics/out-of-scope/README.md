@@ -63,7 +63,7 @@ Never attempt to answer out-of-scope questions.
 
 High `Agent.OutOfScope` rates in App Insights indicate either users are trying to use the agent for unintended purposes, or scope is too narrow. Review the logged `UserQuery` values and decide whether to expand scope or reinforce the system prompt.
 
-→ KQL queries for out-of-scope events: [`../../../operations/monitoring-queries.md`](../../../operations/monitoring-queries.md)
+→ KQL queries for out-of-scope events: [`../../../operations/02-monitoring-queries.md`](../../../operations/02-monitoring-queries.md)
 
 ---
 

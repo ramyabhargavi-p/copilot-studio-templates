@@ -113,5 +113,5 @@ Note: the output variable in the template is `Topic.ActionResponse` — check th
 | `Topic.ErrorOccurred` | Option B: action returned null or empty |
 | `Feedback.*` | Via Feedback topic at end of main logic |
 
-→ KQL queries for all events: [`../../../operations/monitoring-queries.md`](../../../operations/monitoring-queries.md)
+→ KQL queries for all events: [`../../../operations/02-monitoring-queries.md`](../../../operations/02-monitoring-queries.md)
 → Calling a connector: [`../action-invoke/README.md`](../action-invoke/README.md)

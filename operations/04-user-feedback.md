@@ -179,7 +179,7 @@ If `wrong_answer` is the top category, that is a grounding / hallucination probl
 
 ## Application Insights Queries
 
-Paste these into `operations/monitoring-queries.md` or run directly in your App Insights workspace.
+Paste these into `operations/02-monitoring-queries.md` or run directly in your App Insights workspace.
 
 ```kusto
 // Thumbs-up rate over time

@@ -54,7 +54,7 @@ jobs:
           # pac copilot push does not exist in the pac CLI.
           # Replace this step with your deployment approach:
           #   Option A: VS Code "Copilot Studio: Apply Changes" (manual only, not automatable in CI)
-          #   Option B: Solution-based ALM — see ci-cd/solution-build-and-deploy.yml
+          #   Option B: Solution-based ALM — see ci-cd/04-solution-build-and-deploy.yml
           echo "ERROR: This step is a placeholder. pac copilot push is not a valid pac CLI command."
           echo "Configure your deployment approach before running this pipeline. See ci-cd/README.md."
           exit 1

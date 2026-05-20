@@ -213,7 +213,7 @@ Prompt injection is an attack where a user or a document in the knowledge source
 | Grounding | Knowledge search grounding instructions + `GenerativeActionsEnabled: false` | Include in knowledge agents |
 | Output validation | `ConditionGroup` validates all action responses before sending to user | Include in all action topics |
 | PII non-logging | No PII in `customDimensions` of any telemetry node | Verify in security review |
-| Pre-launch injection tests | Tests I1–I5 in `governance/ai-ethics-checklist.md` | Must all pass before go-live |
+| Pre-launch injection tests | Tests I1–I5 in `governance/02-ai-ethics-checklist.md` | Must all pass before go-live |
 
 **Pre-launch injection test results:**
 
@@ -266,7 +266,7 @@ Layer 4 — Monitoring and alerts (operations level)
   - Error rate > 5 in 15 minutes
   - Action failures ≥ 3 in 10 minutes
   - Zero conversations for 2 hours (agent may be down)
-  See: operations/alert-setup.md
+  See: operations/01-alert-setup.md
 ```
 
 ### 4.2 — Error response standards
@@ -291,7 +291,7 @@ Every error message shown to users must meet these standards:
 | `OnError` safe message reviewed and approved by Project Owner | Developer + PO | ☐ |
 | All error messages give a named next step (email, phone, resource) | Developer + PO | ☐ |
 | Error messages reviewed against data classification — no PII or system details | Security | ☐ |
-| Azure Monitor error alert is configured (`operations/alert-setup.md` Alert 1) | DevOps | ☐ |
+| Azure Monitor error alert is configured (`operations/01-alert-setup.md` Alert 1) | DevOps | ☐ |
 
 ---
 

@@ -239,4 +239,4 @@ jobs:
         run: |
           echo "### ❌ PRODUCTION DEPLOYMENT FAILED" >> $GITHUB_STEP_SUMMARY
           echo "The production environment has NOT been updated." >> $GITHUB_STEP_SUMMARY
-          echo "See \`operations/runbook.md\` for recovery procedures." >> $GITHUB_STEP_SUMMARY
+          echo "See \`operations/03-runbook.md\` for recovery procedures." >> $GITHUB_STEP_SUMMARY

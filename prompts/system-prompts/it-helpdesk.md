@@ -73,9 +73,9 @@ conversationStarters:
 |-----------|--------|
 | `auth` (Integrated for Teams) | Identify the employee for ticket creation |
 | `conversation-init` | Load employee display name |
-| `knowledge-search` | IT runbooks and troubleshooting guides from SharePoint |
+| `knowledge-search` | IT 03-runbooks and troubleshooting guides from SharePoint |
 | `sharepoint` knowledge | IT documentation library |
-| `remove-citations` | Internal runbooks shouldn't show citation markers |
+| `remove-citations` | Internal 03-runbooks shouldn't show citation markers |
 | `out-of-scope` | HR, finance, and facilities are common misdirections |
 | `escalation` | Raise tickets and transfer to senior tech |
 | `action-invoke` + connector | Create ServiceNow/Jira tickets if integrated |

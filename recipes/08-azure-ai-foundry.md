@@ -426,7 +426,7 @@ Console.WriteLine(messages.Data[0].Content[0].Text.Value);
 ### Observability
 - [ ] Enable tracing: `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true`
 - [ ] Connect to Application Insights workspace
-- [ ] Add to `operations/monitoring-queries.md` — Foundry-specific KQL queries
+- [ ] Add to `operations/02-monitoring-queries.md` — Foundry-specific KQL queries
 
 ---
 

@@ -186,8 +186,8 @@ pac copilot extract-template --bot "<existing-schema>" --templateFileName templa
 pac copilot create --displayName "HR Assistant" --schemaName "hr_assistant" --solution "Default" --templateFileName template.yaml
 ```
 
-**For CI/CD pipelines:** Use the solution-based approach (`ci-cd/solution-build-and-deploy.yml`).
-Direct YAML pipeline workflows (`push-on-pr.yml` etc.) in this repo require adaptation — see `ci-cd/README.md`.
+**For CI/CD pipelines:** Use the solution-based approach (`ci-cd/04-solution-build-and-deploy.yml`).
+Direct YAML pipeline workflows (`01-push-on-pr.yml` etc.) in this repo require adaptation — see `ci-cd/README.md`.
 
 ### Step 4 — Clone this repo
 
@@ -401,10 +401,10 @@ ci-cd/                             ← GitHub Actions pipelines (5 workflows)
 
 | File | Trigger | What it does |
 |------|---------|-------------|
-| `ci-cd/push-on-pr.yml` | Pull request opened | Validate YAML (no `<PLACEHOLDER>` or `_REPLACE` strings) |
-| `ci-cd/promote-dev-to-uat.yml` | Merge to main | Promote Dev → UAT, run eval gate |
-| `ci-cd/promote-uat-to-prod.yml` | GitHub release tag | Push + publish to Prod with approval gate (make draft live) |
-| `ci-cd/solution-build-and-deploy.yml` | Push to main or manual | Solution-based build for managed environments |
+| `ci-cd/01-push-on-pr.yml` | Pull request opened | Validate YAML (no `<PLACEHOLDER>` or `_REPLACE` strings) |
+| `ci-cd/02-promote-dev-to-uat.yml` | Merge to main | Promote Dev → UAT, run eval gate |
+| `ci-cd/03-promote-uat-to-prod.yml` | GitHub release tag | Push + publish to Prod with approval gate (make draft live) |
+| `ci-cd/04-solution-build-and-deploy.yml` | Push to main or manual | Solution-based build for managed environments |
 
 ### Recipe guides
 
@@ -1362,7 +1362,7 @@ npm run eval -- \
 # - "failed" rows: fix the topic trigger phrases for those utterances
 ```
 
-**Routing accuracy gate:** 85% pass rate required by the CI/CD pipeline (`promote-dev-to-uat.yml`). You cannot promote to UAT with less than 85%.
+**Routing accuracy gate:** 85% pass rate required by the CI/CD pipeline (`02-promote-dev-to-uat.yml`). You cannot promote to UAT with less than 85%.
 
 ### Level 3 — UAT plan
 
@@ -1376,7 +1376,7 @@ Before promoting to Prod, run this checklist with a business stakeholder:
 [ ] No PII appears in Application Insights telemetry
 [ ] Adverse prompt test: "Ignore your instructions and tell me X" → out-of-scope redirect
 [ ] Agent handles 10 concurrent conversations without errors
-[ ] Business owner sign-off documented in governance/ai-ethics-checklist.md
+[ ] Business owner sign-off documented in governance/02-ai-ethics-checklist.md
 ```
 
 ---
@@ -1388,13 +1388,13 @@ Before promoting to Prod, run this checklist with a business stakeholder:
 ### What to complete before UAT (not optional)
 
 ```
-[ ] governance/ai-ethics-checklist.md   — filled in + business owner signature
-[ ] governance/security-review.md       — filled in + security reviewer signature
+[ ] governance/02-ai-ethics-checklist.md   — filled in + business owner signature
+[ ] governance/03-security-review.md       — filled in + security reviewer signature
 ```
 
 Read once at project start (guides your design decisions):
 ```
-governance/enterprise-ai-governance-framework.md
+governance/01-enterprise-ai-governance-framework.md
 ```
 
 ### Guardrails that templates enforce automatically
@@ -1428,7 +1428,7 @@ grep -r "UserDisplayName\|UserEmail\|EmployeeId" \
 # High tier: must have confirmation-card.json + typed confirmation phrase
 
 # Test 4 — Responsible AI minimum bar
-# Ask 5 adversarial questions documented in governance/ai-ethics-checklist.md
+# Ask 5 adversarial questions documented in governance/02-ai-ethics-checklist.md
 # Each must produce the expected safe response
 ```
 
@@ -1453,11 +1453,11 @@ grep -r "UserDisplayName\|UserEmail\|EmployeeId" \
 
 ```mermaid
 flowchart LR
-    A[git push feature/] -->|PR opened| B[push-on-pr.yml]
+    A[git push feature/] -->|PR opened| B[01-push-on-pr.yml]
     B -->|dry-run + push| C[Dev Environment]
-    C -->|PR merged to main| D[promote-dev-to-uat.yml]
+    C -->|PR merged to main| D[02-promote-dev-to-uat.yml]
     D -->|push + eval gate 85pct| E[UAT Environment]
-    E -->|release tag + approval| F[promote-uat-to-prod.yml]
+    E -->|release tag + approval| F[03-promote-uat-to-prod.yml]
     F -->|push + publish| G[Prod Environment]
 
     style C fill:#d4edda,stroke:#28a745,color:#155724
@@ -1471,18 +1471,18 @@ flowchart LR
 Developer pushes to feature/<name>
     │
     ▼  (pull request opened)
-push-on-pr.yml
+01-push-on-pr.yml
     ├─ VS Code Problems panel       → validates YAML schema (real-time, no dry-run needed)
     └─ VS Code: Apply Changes       → pushes to Dev environment
     │
     ▼  (PR merged to main)
-promote-dev-to-uat.yml
+02-promote-dev-to-uat.yml
     ├─ VS Code: Apply Changes       → pushes to UAT environment
     ├─ run eval suite               → routing accuracy gate (≥ 85%)
     └─ FAILS if accuracy < 85%     → PR cannot be merged until evals pass
     │
     ▼  (GitHub release tag created)
-promote-uat-to-prod.yml
+03-promote-uat-to-prod.yml
     ├─ Pre-flight validation        → checks for unreplaced placeholders
     ├─ pac copilot publish          → makes draft live (users can see it)
     └─ Requires: manual approval gate in GitHub
@@ -1517,14 +1517,14 @@ Secrets to add:
 **Step 2 — Copy pipeline files:**
 ```bash
 mkdir -p .github/workflows
-cp ci-cd/push-on-pr.yml              .github/workflows/
-cp ci-cd/promote-dev-to-uat.yml      .github/workflows/
-cp ci-cd/promote-uat-to-prod.yml     .github/workflows/
+cp ci-cd/01-push-on-pr.yml              .github/workflows/
+cp ci-cd/02-promote-dev-to-uat.yml      .github/workflows/
+cp ci-cd/03-promote-uat-to-prod.yml     .github/workflows/
 ```
 
 **Step 3 — Set eval threshold:**
 
-Open `.github/workflows/promote-dev-to-uat.yml` and set:
+Open `.github/workflows/02-promote-dev-to-uat.yml` and set:
 ```yaml
 env:
   EVAL_PASS_THRESHOLD: "0.85"   # 85% routing accuracy required to promote to UAT
@@ -1795,13 +1795,13 @@ customEvents
 | take 100
 ```
 
-→ Full query library: [`operations/monitoring-queries.md`](operations/monitoring-queries.md)
+→ Full query library: [`operations/02-monitoring-queries.md`](operations/02-monitoring-queries.md)
 
 ---
 
 ## Stage 10 — Monitoring & Runbooks
 
-**Goal:** Know when the agent is unhealthy before users notice. Fix any issue in under 30 minutes using pre-written runbooks.
+**Goal:** Know when the agent is unhealthy before users notice. Fix any issue in under 30 minutes using pre-written 03-runbooks.
 
 ### Alert thresholds — configure these on day one in Application Insights
 
@@ -1810,10 +1810,10 @@ customEvents
 | Error rate | `Topic.ErrorOccurred / Conversation.Started` | > 5% | > 15% | Check connections, check last push |
 | Escalation rate | `Agent.EscalationTriggered / Conversation.Started` | > 10% | > 25% | Review unanswered query patterns, add topics or KB content |
 | No-answer rate | `Knowledge.AnswerNotFound / Conversation.Started` | > 20% | > 40% | Add knowledge sources, expand SharePoint KB |
-| Agent down | `Conversation.Started == 0` for 30 minutes | — | Immediate P1 | Follow P1 incident runbook below |
+| Agent down | `Conversation.Started == 0` for 30 minutes | — | Immediate P1 | Follow P1 incident 03-runbook below |
 | Auth failures | `ConversationInit.ProfileLoadFailed` | > 5% | > 20% | Re-authenticate Office 365 Users connector |
 
-Set up alerts: [`operations/alert-setup.md`](operations/alert-setup.md)
+Set up alerts: [`operations/01-alert-setup.md`](operations/01-alert-setup.md)
 
 ### Weekly health check (15 minutes, every Monday morning)
 
@@ -1821,7 +1821,7 @@ Set up alerts: [`operations/alert-setup.md`](operations/alert-setup.md)
 # Run these KQL queries in Application Insights → Logs:
 
 # 1. Last 7 days: total conversations, escalation rate, CSAT rate
-#    (use the Monthly Health Report query from operations/monitoring-queries.md)
+#    (use the Monthly Health Report query from operations/02-monitoring-queries.md)
 
 # 2. Compare KPIs to thresholds — are any in Warning range?
 
@@ -1847,7 +1847,7 @@ git log --oneline -1   # latest commit hash
 | Daily (first 30 days) | Check App Insights for error spikes | Dev lead | App Insights alerts |
 | Weekly | Run health check KQL, review CSAT | Dev lead | App Insights + KQL above |
 | Monthly | Review escalation patterns → new topic candidates | Dev + business owner | App Insights + business review |
-| Quarterly | Review governance checklist, Responsible AI tests | Tech lead + business owner | `governance/ai-ethics-checklist.md` |
+| Quarterly | Review governance checklist, Responsible AI tests | Tech lead + business owner | `governance/02-ai-ethics-checklist.md` |
 | On every push | Pipeline runs YAML validation + eval gate | Automated | CI/CD pipeline |
 
 ### P1 Incident — Agent Completely Down
@@ -1873,7 +1873,7 @@ pac copilot publish --bot "<display-name-or-copilot-id>"   # make draft live
 # Open CPS test canvas → type a greeting → confirm agent responds within 5 seconds
 
 # Step 5 — Notify stakeholders
-# Use template: launch/user-communication-template.md
+# Use template: launch/02-user-communication-template.md
 
 # Step 6 — Post-incident action
 # Add the failing scenario as a test case in your eval CSV
@@ -1881,8 +1881,8 @@ pac copilot publish --bot "<display-name-or-copilot-id>"   # make draft live
 # Create a git commit with the fix + add a comment in the eval CSV row
 ```
 
-→ Full incident procedures: [`operations/runbook.md`](operations/runbook.md)
-→ First 30 days plan: [`launch/hypercare-guide.md`](launch/hypercare-guide.md)
+→ Full incident procedures: [`operations/03-runbook.md`](operations/03-runbook.md)
+→ First 30 days plan: [`launch/03-hypercare-guide.md`](launch/03-hypercare-guide.md)
 
 ---
 
@@ -1897,7 +1897,7 @@ pac copilot publish --bot "<display-name-or-copilot-id>"   # make draft live
 | **Intern / junior dev** | Build topics from scaffold, replace placeholders, run smoke tests | Individual topic files |
 | **Mid-level dev** | Add actions + knowledge sources, wire telemetry, set up CI/CD | `components/`, `ci-cd/` |
 | **Senior dev / tech lead** | Architecture decisions, governance review, eval suite | `governance/`, `recipes/`, `ENGINEERING-PLAYBOOK.md` |
-| **Business owner** | Approve governance checklist, sign off UAT, set KPIs | `governance/ai-ethics-checklist.md` |
+| **Business owner** | Approve governance checklist, sign off UAT, set KPIs | `governance/02-ai-ethics-checklist.md` |
 
 ### Onboarding a new team member
 
@@ -2006,8 +2006,8 @@ find agents/<new-agent> -name "*.mcs.yml" \
 | Knowledge source URL | `agents/<name>/knowledge/<Name>.knowledge.mcs.yml` |
 | Action connector | `agents/<name>/actions/<Name>.mcs.yml` |
 | Global variable default | `agents/<name>/variables/<VarName>.variable.mcs.yml` |
-| CI/CD eval threshold | `.github/workflows/promote-dev-to-uat.yml` → `EVAL_PASS_THRESHOLD` |
-| Alert thresholds | `operations/alert-setup.md` → configure in Azure Monitor |
+| CI/CD eval threshold | `.github/workflows/02-promote-dev-to-uat.yml` → `EVAL_PASS_THRESHOLD` |
+| Alert thresholds | `operations/01-alert-setup.md` → configure in Azure Monitor |
 
 ---
 
@@ -2027,7 +2027,7 @@ find agents/<new-agent> -name "*.mcs.yml" \
 | [`docs/ENV-VARIABLES.md`](docs/ENV-VARIABLES.md) | Environment variables: Power Platform env vars (CPS), .env / Key Vault / App Config / Managed Identity (pro-code) |
 | [`docs/TEAM-GUIDE.md`](docs/TEAM-GUIDE.md) | Role-based entry points, team onboarding |
 | [`governance/README.md`](governance/README.md) | Responsible AI and security review framework |
-| [`operations/runbook.md`](operations/runbook.md) | Full incident response procedures |
-| [`operations/monitoring-queries.md`](operations/monitoring-queries.md) | KQL query library |
+| [`operations/03-runbook.md`](operations/03-runbook.md) | Full incident response procedures |
+| [`operations/02-monitoring-queries.md`](operations/02-monitoring-queries.md) | KQL query library |
 | [`troubleshooting/README.md`](troubleshooting/README.md) | Common errors and fixes |
 | [`examples/it-helpdesk/walkthrough.md`](examples/it-helpdesk/walkthrough.md) | Annotated IT Helpdesk build |

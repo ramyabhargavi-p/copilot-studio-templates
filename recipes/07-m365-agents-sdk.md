@@ -298,7 +298,7 @@ az bot create \
 | `base/agent.mcs.yml` | The Copilot Studio agent that this SDK agent calls via `agents-copilotstudio-client` |
 | `components/topics/_scaffold/` | Topics in the underlying Copilot Studio agent |
 | `project-delivery/09-technical-design-document.md` | Document the SDK ↔ Copilot Studio boundary |
-| `governance/security-review.md` | Additional section needed for Azure Bot Service + App Service security |
+| `governance/03-security-review.md` | Additional section needed for Azure Bot Service + App Service security |
 
 ---
 

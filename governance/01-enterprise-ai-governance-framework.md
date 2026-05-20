@@ -31,14 +31,14 @@ These principles take precedence over all implementation decisions.
 | **Developer** | Builds and maintains the agent YAML. Runs eval. Deploys via approved pipeline. | Power Platform developer with Copilot Studio training. |
 | **Project Owner** | Defines requirements. Signs off on UAT. Approves scope changes. | Business stakeholder with authority over the process being automated. |
 | **Environment Admin** | Manages Power Platform environments, DLP policies, connection references, and licensing. | Power Platform / M365 admin. |
-| **Security Reviewer** | Completes `governance/security-review.md` before each go-live. | Security or IT compliance function. |
+| **Security Reviewer** | Completes `governance/03-security-review.md` before each go-live. | Security or IT compliance function. |
 
 ### Organizational roles (for multi-agent programs)
 
 | Role | Responsibilities |
 |------|----------------|
 | **CoE Lead** | Maintains the agent registry. Enforces naming and taxonomy standards. Reviews new agent proposals. Manages the shared template library. |
-| **AI Ethics Reviewer** | Completes `governance/ai-ethics-checklist.md`. Escalates Responsible AI concerns. |
+| **AI Ethics Reviewer** | Completes `governance/02-ai-ethics-checklist.md`. Escalates Responsible AI concerns. |
 | **Legal / Data Privacy** | Reviews agents handling PII, regulated data, or providing guidance that carries legal risk. |
 
 ---
@@ -62,8 +62,8 @@ PROPOSAL ──→ ASSESSMENT ──→ DESIGN ──→ BUILD ──→ REVIEW 
 | Assessment → Design | `01-enterprise-readiness-assessment.md` passed | Tech Lead + CoE Lead |
 | Design → Build | `07-functional-design-document.md` + `08-workflow-logic-design.md` approved | Developer + Project Owner |
 | Build → Review | All YAML committed; eval ≥ 85% routing accuracy | Developer |
-| Review → Deploy | `governance/ai-ethics-checklist.md` + `governance/security-review.md` passed; UAT signed off | Agent Owner + Security |
-| Deploy → Operate | `launch/launch-checklist.md` complete | Agent Owner |
+| Review → Deploy | `governance/02-ai-ethics-checklist.md` + `governance/03-security-review.md` passed; UAT signed off | Agent Owner + Security |
+| Deploy → Operate | `launch/01-launch-checklist.md` complete | Agent Owner |
 | Operate → Retire | Retirement notice issued; users informed; agent decommissioned | Agent Owner + CoE Lead |
 
 ---
@@ -137,7 +137,7 @@ All events use `{Category}.{Action}` — see the Telemetry Events Reference in r
 1. Never write PII to `customDimensions` in any `LogCustomTelemetryEvent` node
 2. Never include PII in `SendActivity` text that is also logged
 3. Use `Global.UserDisplayName` (first name only acceptable) for personalization — never employee ID, salary, medical data
-4. Any agent topic that handles PII must be reviewed in `governance/security-review.md` Section 2
+4. Any agent topic that handles PII must be reviewed in `governance/03-security-review.md` Section 2
 
 ---
 
@@ -210,7 +210,7 @@ If the agent produces output that is harmful, discriminatory, legally risky, or 
 1. **Immediately:** Agent Owner takes the agent offline (unpublish or disable the channel)
 2. **Within 1 hour:** Notify the CoE Lead and Legal
 3. **Within 4 hours:** Root cause identified — was this a prompt injection, a knowledge source issue, or a system prompt gap?
-4. **Fix:** Do not republish until `governance/ai-ethics-checklist.md` is re-run and all affected items pass
+4. **Fix:** Do not republish until `governance/02-ai-ethics-checklist.md` is re-run and all affected items pass
 5. **Post-incident:** Document in the incident log and update the ethics checklist with the new test case
 
 ---
@@ -230,7 +230,7 @@ Agents must be formally retired when they are no longer needed. Abandoned agents
 | Step | Action | Owner | Timing |
 |------|--------|-------|--------|
 | 1 | Confirm retirement decision with Project Owner and Agent Owner | CoE Lead | At trigger |
-| 2 | Notify users via `launch/user-communication-template.md` (adapted for retirement) | Agent Owner | 4 weeks before |
+| 2 | Notify users via `launch/02-user-communication-template.md` (adapted for retirement) | Agent Owner | 4 weeks before |
 | 3 | Disable agent channels (Teams, website) in Copilot Studio | Developer | 1 week before |
 | 4 | Unpublish agent | Developer | Retirement date |
 | 5 | Archive YAML in git with a `retired/` tag | Developer | Retirement date |

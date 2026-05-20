@@ -226,11 +226,11 @@ For each affected user group, assess the change impact and required management a
 
 | Action | Owner | Timing | Status |
 |--------|-------|--------|--------|
-| User announcement (see `launch/user-communication-template.md`) | | Before go-live | ☐ |
+| User announcement (see `launch/02-user-communication-template.md`) | | Before go-live | ☐ |
 | Manager briefing (if workflow change is significant) | | 1 week before go-live | ☐ |
 | User guide / FAQ document | | By go-live | ☐ |
 | Feedback channel set up | | By go-live | ☐ |
-| Hypercare monitoring (see `launch/hypercare-guide.md`) | | Weeks 1–2 post-launch | ☐ |
+| Hypercare monitoring (see `launch/03-hypercare-guide.md`) | | Weeks 1–2 post-launch | ☐ |
 
 ---
 

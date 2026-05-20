@@ -4,7 +4,7 @@ An agent that answers questions from a SharePoint knowledge base using generativ
 
 ## Use Case
 
-- Internal knowledge base assistant (HR policies, IT runbooks, company procedures)
+- Internal knowledge base assistant (HR policies, IT 03-runbooks, company procedures)
 - First responder that deflects common questions without a human agent
 - Anonymous agent — no sign-in required
 

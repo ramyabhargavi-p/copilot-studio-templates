@@ -68,4 +68,4 @@ No additional wiring needed — just ensure the `<AGENT_SCHEMA>` placeholder in 
 - **Adding this topic but no contact centre connection** — `TransferConversation` succeeds in YAML but fails at runtime if the channel doesn't support handoff
 
 → Fallback topic: [`../../../base/topics/Fallback.topic.mcs.yml`](../../../base/topics/Fallback.topic.mcs.yml)
-→ Escalation telemetry query: [`../../../operations/monitoring-queries.md`](../../../operations/monitoring-queries.md)
+→ Escalation telemetry query: [`../../../operations/02-monitoring-queries.md`](../../../operations/02-monitoring-queries.md)

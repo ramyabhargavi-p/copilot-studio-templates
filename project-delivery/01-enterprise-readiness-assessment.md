@@ -169,7 +169,7 @@ AI agents require an ongoing support model. An agent without a defined support m
 | Prerequisite | Required | Current state | Gap |
 |-------------|---------|---------------|-----|
 | Organization has an AI use policy or acceptable use policy for AI tools | Yes | | |
-| Responsible AI review process exists or `governance/ai-ethics-checklist.md` is adopted | Yes | | |
+| Responsible AI review process exists or `governance/02-ai-ethics-checklist.md` is adopted | Yes | | |
 | Legal / compliance has reviewed the intended use of AI agents | Yes | | |
 | Data Protection Officer (DPO) / Privacy has been consulted (if agents handle PII) | Required if PII | | |
 | A process exists to handle user requests to opt out of AI interactions | Yes | | |
