@@ -11,7 +11,7 @@ flowchart TD
     BASE[base/] --> AGENT([Your Agent])
 
     subgraph COMP["components/  — drop in as needed"]
-        T[topics x11]
+        T[topics x12]
         AC[actions x2]
         K[knowledge x3]
         CA[adaptive-cards x6]
@@ -35,7 +35,7 @@ Start with `base/` (6 files). Add components from `components/` as your agent ne
 
 | Folder | Count | Contents | Use when… |
 |--------|-------|----------|-----------|
-| [`topics/`](topics/) | 11 | Conversation topic templates | Adding a capability to an agent |
+| [`topics/`](topics/) | 12 | Conversation topic templates | Adding a capability to an agent |
 | [`actions/`](actions/) | 2 | Connector and MCP action types | Calling external systems |
 | [`knowledge/`](knowledge/) | 3 | Knowledge source types (SharePoint, web, glossary) | Answering questions from documents |
 | [`adaptive-cards/`](adaptive-cards/) | 6 | Card templates (confirmation, form, feedback) | Collecting input or showing results |
@@ -157,6 +157,7 @@ Open any component's README for copy commands, placeholder tables, and YAML exam
 | [`user-display-name`](variables/user-display-name/) | `Global.UserDisplayName` | Personalise responses with the signed-in user's display name |
 | [`user-country`](variables/user-country/) | `Global.UserCountry` | Adapt responses based on the user's country |
 | [`glossary-var`](variables/glossary-var/) | `Global.Glossary` | Expand domain acronyms in AI context |
+| [`feedback-context`](variables/feedback-context/) | `Global.FeedbackContext`, `Global.FeedbackQuestion`, `Global.FeedbackSources` | Required when using `feedback-persisted` — stores the topic name, user question, and cited sources |
 
 ### Child agents
 

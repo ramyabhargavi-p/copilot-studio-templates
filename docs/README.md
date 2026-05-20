@@ -5,7 +5,7 @@ Guides, references, and standards for building Copilot Studio agents with this r
 | File | What it covers |
 |------|---------------|
 | [QUICKSTART.md](QUICKSTART.md) | Create, configure, and push your first agent — two paths (Cloud-First / CLI-only) |
-| [TEMPLATES.md](TEMPLATES.md) | Full inventory of all 56 templates |
+| [TEMPLATES.md](TEMPLATES.md) | Full inventory of all 60 templates |
 | [WHY-TEMPLATES.md](WHY-TEMPLATES.md) | Where templates genuinely help vs where any developer could do the same — honest ranking by folder |
 | [WHAT-TEMPLATES-ENABLE.md](WHAT-TEMPLATES-ENABLE.md) | What templates enable across every development phase — impossible patterns, time-consuming work, and best practices baked in |
 | [COMPONENT-REGISTRY.md](COMPONENT-REGISTRY.md) | Call signatures and inputs/outputs for every component |

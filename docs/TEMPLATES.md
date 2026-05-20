@@ -1,6 +1,6 @@
 # Templates Inventory
 
-Complete list of every buildable template in this repository — 56 templates across 11 categories.
+Complete list of every buildable template in this repository — 60 templates across 11 categories.
 
 > **When to use this doc:** When you want a complete inventory of all YAML templates before starting a build.
 > Use this as a checklist to confirm which templates you've customized and which still have `<PLACEHOLDER>` values.
@@ -23,7 +23,7 @@ Complete list of every buildable template in this repository — 56 templates ac
 ---
 
 ## Topic Component Templates
-*11 drop-in topics — copy the one you need into your agent's `topics/` folder*
+*12 drop-in topics — copy the one you need into your agent's `topics/` folder*
 
 | # | File | Trigger | Purpose |
 |---|------|---------|---------|
@@ -34,10 +34,11 @@ Complete list of every buildable template in this repository — 56 templates ac
 | 11 | `components/topics/disambiguation/Disambiguation.topic.mcs.yml` | `OnSelectIntent` | Clarifies ambiguous intents, logs `Agent.DisambiguationTriggered` |
 | 12 | `components/topics/escalation/Escalation.topic.mcs.yml` | `BeginDialog` | Human handoff via `TransferConversation`, logs `Agent.EscalationTriggered` |
 | 13 | `components/topics/feedback/Feedback.topic.mcs.yml` | `OnRecognizedIntent` / `BeginDialog` | Thumbs → star rating → issue category CSAT sequence |
-| 14 | `components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml` | `OnUnknownIntent` | Generative answers from knowledge sources, logs `Knowledge.AnswerFound` / `AnswerNotFound` |
-| 15 | `components/topics/out-of-scope/OutOfScope.topic.mcs.yml` | `OnRecognizedIntent` | Redirects out-of-scope queries with named resource, logs `Agent.OutOfScope` |
-| 16 | `components/topics/question-branch/QuestionBranch.topic.mcs.yml` | `OnRecognizedIntent` | Collects user input and branches the conversation |
-| 17 | `components/topics/remove-citations/RemoveCitations.topic.mcs.yml` | `OnGeneratedResponse` | Strips `[1][2]` citation markers from AI-generated responses |
+| 14 | `components/topics/feedback-persisted/FeedbackPersisted.topic.mcs.yml` | `BeginDialog` | CSAT that writes feedback + cited sources to SharePoint and Dataverse; fires `Feedback.Persisted` telemetry |
+| 15 | `components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml` | `OnUnknownIntent` | Generative answers from knowledge sources, logs `Knowledge.AnswerFound` / `AnswerNotFound` |
+| 16 | `components/topics/out-of-scope/OutOfScope.topic.mcs.yml` | `OnRecognizedIntent` | Redirects out-of-scope queries with named resource, logs `Agent.OutOfScope` |
+| 17 | `components/topics/question-branch/QuestionBranch.topic.mcs.yml` | `OnRecognizedIntent` | Collects user input and branches the conversation |
+| 18 | `components/topics/remove-citations/RemoveCitations.topic.mcs.yml` | `OnGeneratedResponse` | Strips `[1][2]` citation markers from AI-generated responses |
 
 ---
 
@@ -46,8 +47,8 @@ Complete list of every buildable template in this repository — 56 templates ac
 
 | # | File | Kind | Purpose |
 |---|------|------|---------|
-| 18 | `components/actions/connector/connector-action.mcs.yml` | `InvokeConnectorTaskAction` | Calls any Power Platform connector operation |
-| 19 | `components/actions/mcp/mcp-action.mcs.yml` | `InvokeExternalAgentTaskAction` | Calls an MCP server tool |
+| 19 | `components/actions/connector/connector-action.mcs.yml` | `InvokeConnectorTaskAction` | Calls any Power Platform connector operation |
+| 20 | `components/actions/mcp/mcp-action.mcs.yml` | `InvokeExternalAgentTaskAction` | Calls an MCP server tool |
 
 ---
 
@@ -56,9 +57,9 @@ Complete list of every buildable template in this repository — 56 templates ac
 
 | # | File | Source Type | Purpose |
 |---|------|------------|---------|
-| 20 | `components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml` | SharePoint library | Internal document search and generative answers |
-| 21 | `components/knowledge/public-website/public-website.knowledge.mcs.yml` | Public URL | Public website and documentation search |
-| 22 | `components/knowledge/glossary/glossary.knowledge.mcs.yml` | Dataverse (CSV) | JIT acronym glossary — `triggerCondition: false`, loaded explicitly by `conversation-init` |
+| 21 | `components/knowledge/sharepoint/sharepoint.knowledge.mcs.yml` | SharePoint library | Internal document search and generative answers |
+| 22 | `components/knowledge/public-website/public-website.knowledge.mcs.yml` | Public URL | Public website and documentation search |
+| 23 | `components/knowledge/glossary/glossary.knowledge.mcs.yml` | Dataverse (CSV) | JIT acronym glossary — `triggerCondition: false`, loaded explicitly by `conversation-init` |
 
 ---
 
@@ -67,37 +68,41 @@ Complete list of every buildable template in this repository — 56 templates ac
 
 | # | File | Use case |
 |---|------|---------|
-| 23 | `components/adaptive-cards/confirmation-card.json` | Confirm or cancel before executing an action (required for Medium safety tier) |
-| 24 | `components/adaptive-cards/status-card.json` | Display action result with status colour (success / warning / error) |
-| 25 | `components/adaptive-cards/form-card.json` | Collect structured input — text, date, dropdown — in a single card |
-| 26 | `components/adaptive-cards/feedback-thumbs.json` | Binary satisfaction (Yes / No) |
-| 27 | `components/adaptive-cards/feedback-rating.json` | 1–5 star rating |
-| 28 | `components/adaptive-cards/feedback-text.json` | Issue category dropdown (no free-text — PII safe) |
+| 24 | `components/adaptive-cards/confirmation-card.json` | Confirm or cancel before executing an action (required for Medium safety tier) |
+| 25 | `components/adaptive-cards/status-card.json` | Display action result with status colour (success / warning / error) |
+| 26 | `components/adaptive-cards/form-card.json` | Collect structured input — text, date, dropdown — in a single card |
+| 27 | `components/adaptive-cards/feedback-thumbs.json` | Binary satisfaction (Yes / No) |
+| 28 | `components/adaptive-cards/feedback-rating.json` | 1–5 star rating |
+| 29 | `components/adaptive-cards/feedback-text.json` | Issue category dropdown (no free-text — PII safe) |
 
 ---
 
 ## Agent and Variable Templates
-*5 templates*
+*8 templates*
 
 | # | File | Kind | Purpose |
 |---|------|------|---------|
-| 29 | `components/agents/child-agent/child-agent.mcs.yml` | `AgentDialog` | Specialist sub-agent for orchestrator pattern (recipe 05) |
-| 30 | `components/variables/global-variable/global-variable.variable.mcs.yml` | Conversation scope | Generic shared-state variable — user profile, locale, flags |
-| 31 | `components/variables/user-country/UserCountry.variable.mcs.yml` | Conversation scope | User's M365 country — loaded by `conversation-init`, used for country-aware answers |
-| 32 | `components/variables/user-display-name/UserDisplayName.variable.mcs.yml` | Conversation scope | User's M365 display name — loaded by `conversation-init`, used for personalised responses |
-| 33 | `components/variables/glossary-var/Glossary.variable.mcs.yml` | Conversation scope | Customer acronym glossary — loaded by `conversation-init`, injected into orchestrator instructions |
+| 30 | `components/agents/child-agent/child-agent.mcs.yml` | `AgentDialog` | Specialist sub-agent for orchestrator pattern (recipe 05) |
+| 31 | `components/variables/global-variable/global-variable.variable.mcs.yml` | Conversation scope | Generic shared-state variable — user profile, locale, flags |
+| 32 | `components/variables/user-country/UserCountry.variable.mcs.yml` | Conversation scope | User's M365 country — loaded by `conversation-init`, used for country-aware answers |
+| 33 | `components/variables/user-display-name/UserDisplayName.variable.mcs.yml` | Conversation scope | User's M365 display name — loaded by `conversation-init`, used for personalised responses |
+| 34 | `components/variables/glossary-var/Glossary.variable.mcs.yml` | Conversation scope | Customer acronym glossary — loaded by `conversation-init`, injected into orchestrator instructions |
+| 35 | `components/variables/feedback-context/FeedbackContext.variable.mcs.yml` | Conversation scope | Topic name for the current interaction — set before calling `feedback-persisted` |
+| 36 | `components/variables/feedback-context/FeedbackQuestion.variable.mcs.yml` | Conversation scope | User's question text — captured by `knowledge-search` or set manually in structured topics |
+| 37 | `components/variables/feedback-context/FeedbackSources.variable.mcs.yml` | Conversation scope | Raw AI response with `[1][2]` citation markers — captured by `remove-citations` |
 
 ---
 
 ## CI/CD Pipeline Templates
-*5 GitHub Actions workflows*
+*4 pipeline workflows + 1 CLI reference guide*
 
 | # | File | Trigger | Purpose |
 |---|------|---------|---------|
-| 34 | `ci-cd/01-push-on-pr.yml` | Pull request to main | Validate YAML — blocks merge if placeholders remain |
-| 35 | `ci-cd/02-promote-dev-to-uat.yml` | Merge to main | Promote agent from Dev to UAT |
-| 36 | `ci-cd/03-promote-uat-to-prod.yml` | GitHub release tag | Promote UAT → Prod with approval gate; publish draft live |
-| 37 | `ci-cd/04-solution-build-and-deploy.yml` | Push to main or manual | Solution-based build and deploy for managed environments |
+| 38 | `ci-cd/01-push-on-pr.yml` | Pull request to main | Validate YAML — blocks merge if placeholders remain |
+| 39 | `ci-cd/02-promote-dev-to-uat.yml` | Merge to main | Promote agent from Dev to UAT |
+| 40 | `ci-cd/03-promote-uat-to-prod.yml` | GitHub release tag | Promote UAT → Prod with approval gate; publish draft live |
+| 41 | `ci-cd/04-solution-build-and-deploy.yml` | Push to main or manual | Solution-based build and deploy for managed environments |
+| 42 | `ci-cd/05-solution-cli-guide.md` | Reference | Full `pac solution` command reference for building and deploying solutions from CLI |
 
 ---
 
@@ -106,10 +111,10 @@ Complete list of every buildable template in this repository — 56 templates ac
 
 | # | File | For |
 |---|------|-----|
-| 39 | `prompts/system-prompts/hr-assistant.md` | HR policies, leave management, benefits |
-| 40 | `prompts/system-prompts/it-helpdesk.md` | IT support, service desk, password resets |
-| 41 | `prompts/system-prompts/customer-support.md` | External customer-facing service agent |
-| 42 | `prompts/system-prompts/knowledge-base.md` | Generic internal knowledge base assistant |
+| 43 | `prompts/system-prompts/hr-assistant.md` | HR policies, leave management, benefits |
+| 44 | `prompts/system-prompts/it-helpdesk.md` | IT support, service desk, password resets |
+| 45 | `prompts/system-prompts/customer-support.md` | External customer-facing service agent |
+| 46 | `prompts/system-prompts/knowledge-base.md` | Generic internal knowledge base assistant |
 
 ---
 
@@ -118,12 +123,12 @@ Complete list of every buildable template in this repository — 56 templates ac
 
 | # | File | What it generates |
 |---|------|------------------|
-| 43 | `prompts/ai-prompts/generate-topic.md` | Complete `.topic.mcs.yml` from a plain-English scenario |
-| 44 | `prompts/ai-prompts/generate-agent-instructions.md` | System prompt for `agent.mcs.yml` |
-| 45 | `prompts/ai-prompts/generate-adaptive-card.md` | Adaptive card JSON from a description |
-| 46 | `prompts/ai-prompts/generate-eval-cases.md` | Eval test cases for routing accuracy testing |
-| 47 | `prompts/ai-prompts/review-agent.md` | Agent quality review and improvement checklist |
-| 48 | `prompts/ai-prompts/prompt-engineering-patterns.md` | P1–P10 pattern reference for system prompt design |
+| 47 | `prompts/ai-prompts/generate-topic.md` | Complete `.topic.mcs.yml` from a plain-English scenario |
+| 48 | `prompts/ai-prompts/generate-agent-instructions.md` | System prompt for `agent.mcs.yml` |
+| 49 | `prompts/ai-prompts/generate-adaptive-card.md` | Adaptive card JSON from a description |
+| 50 | `prompts/ai-prompts/generate-eval-cases.md` | Eval test cases for routing accuracy testing |
+| 51 | `prompts/ai-prompts/review-agent.md` | Agent quality review and improvement checklist |
+| 52 | `prompts/ai-prompts/prompt-engineering-patterns.md` | P1–P10 pattern reference for system prompt design |
 
 ---
 
@@ -132,14 +137,14 @@ Complete list of every buildable template in this repository — 56 templates ac
 
 | # | File | What it builds | Complexity | Time |
 |---|------|---------------|-----------|------|
-| 49 | `recipes/01-basic-faq.md` | Generative Q&A from SharePoint documents | Low | 30 min |
-| 50 | `recipes/02-authenticated-agent.md` | Sign-in + personalised M365 user context | Low–Medium | 45 min |
-| 51 | `recipes/03-connector-action-agent.md` | Calls a Power Platform connector (submit, retrieve) | Medium | 60 min |
-| 52 | `recipes/04-mcp-action-agent.md` | Calls an MCP server tool | Medium | 60 min |
-| 53 | `recipes/05-orchestrator-agent.md` | Multi-specialist agent with child agents | High | 2+ hr |
-| 54 | `recipes/06-full-featured-agent.md` | Auth + knowledge + actions + CSAT | High | 2+ hr |
-| 55 | `recipes/07-m365-agents-sdk.md` | Pro-code agent (C# / TypeScript / Python) — wraps or extends Copilot Studio agents | High | 2+ hr |
-| 56 | `recipes/08-azure-ai-foundry.md` | Azure AI Foundry agent — code interpreter, custom models, > 8K RPM scale, Progressive Enhancement from Copilot Studio | High | 3+ hr |
+| 53 | `recipes/01-basic-faq.md` | Generative Q&A from SharePoint documents | Low | 30 min |
+| 54 | `recipes/02-authenticated-agent.md` | Sign-in + personalised M365 user context | Low–Medium | 45 min |
+| 55 | `recipes/03-connector-action-agent.md` | Calls a Power Platform connector (submit, retrieve) | Medium | 60 min |
+| 56 | `recipes/04-mcp-action-agent.md` | Calls an MCP server tool | Medium | 60 min |
+| 57 | `recipes/05-orchestrator-agent.md` | Multi-specialist agent with child agents | High | 2+ hr |
+| 58 | `recipes/06-full-featured-agent.md` | Auth + knowledge + actions + CSAT | High | 2+ hr |
+| 59 | `recipes/07-m365-agents-sdk.md` | Pro-code agent (C# / TypeScript / Python) — wraps or extends Copilot Studio agents | High | 2+ hr |
+| 60 | `recipes/08-azure-ai-foundry.md` | Azure AI Foundry agent — code interpreter, custom models, > 8K RPM scale, Progressive Enhancement from Copilot Studio | High | 3+ hr |
 
 ---
 
@@ -148,17 +153,17 @@ Complete list of every buildable template in this repository — 56 templates ac
 | Category | Count |
 |----------|-------|
 | Base YAML templates | 6 |
-| Topic component templates | 11 |
+| Topic component templates | 12 |
 | Action templates | 2 |
 | Knowledge source templates | 3 |
 | Adaptive card templates | 6 |
-| Agent / variable templates | 5 |
+| Agent / variable templates | 8 |
 | CI/CD pipeline templates | 5 |
 | System prompt templates | 4 |
 | AI generation prompts | 6 |
 | Recipe guides — Copilot Studio | 6 |
 | Recipe guides — Pro-code (SDK + Foundry) | 2 |
-| **Total** | **56** |
+| **Total** | **60** |
 
 ---
 
@@ -167,23 +172,23 @@ Complete list of every buildable template in this repository — 56 templates ac
 ```
 base/                          ← every agent starts here (6 files)
   │
-  ├── components/topics/       ← drop in topics as needed (11 options)
+  ├── components/topics/       ← drop in topics as needed (12 options)
   │     └── _scaffold/         ← start every NEW topic from this
   │
   ├── components/actions/      ← add connector or MCP actions (2 options)
   │
-  ├── components/knowledge/    ← add knowledge sources (2 options)
+  ├── components/knowledge/    ← add knowledge sources (3 options)
   │
   ├── components/adaptive-cards/  ← wire into topic YAML (6 options)
   │
   └── components/agents/       ← add child agents for orchestrator (1)
 
-recipes/                       ← documented combinations of the above (6 recipes)
+recipes/                       ← documented combinations of the above (8 recipes)
 
 prompts/system-prompts/        ← paste into agent.mcs.yml instructions (4)
 prompts/ai-prompts/            ← run in Claude to generate any of the above (6)
 
-ci-cd/                         ← wire up after first successful push (5 pipelines)
+ci-cd/                         ← wire up after first successful push (4 pipelines + 1 guide)
 ```
 
 → Full call signatures for every template: [`COMPONENT-REGISTRY.md`](COMPONENT-REGISTRY.md)

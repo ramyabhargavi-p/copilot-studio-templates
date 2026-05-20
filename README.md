@@ -238,7 +238,7 @@ Full per-component placeholder guide and examples: [`components/README.md`](comp
 | Doc | What it covers |
 |-----|---------------|
 | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | Creation paths, placeholder guide, node ID scripts |
-| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 56 templates |
+| [`docs/TEMPLATES.md`](docs/TEMPLATES.md) | Full inventory of all 60 templates |
 | [`docs/COMPONENT-REGISTRY.md`](docs/COMPONENT-REGISTRY.md) | Call signatures and I/O for every component |
 | [`docs/BEST-PRACTICES.md`](docs/BEST-PRACTICES.md) | Design rules, error handling, naming, telemetry |
 | [`docs/TOOLS-AND-PLUGINS.md`](docs/TOOLS-AND-PLUGINS.md) | pac CLI, VS Code extensions, Copilot Studio Kit |

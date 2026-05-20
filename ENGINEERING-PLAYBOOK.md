@@ -5,7 +5,7 @@ The single reference for every engineer on the team — building, shipping, and 
 **What this document gives you:**
 - A complete decision framework before you write a single line of YAML
 - Step-by-step build instructions detailed enough for day-one engineers
-- A full catalog of all 56 templates in this repo and when to use each
+- A full catalog of all 60 templates in this repo and when to use each
 - Governance, CI/CD, testing, telemetry, and monitoring in one place
 - Advanced patterns: MCP, Azure AI Foundry, M365 Agents SDK
 
@@ -262,16 +262,17 @@ Open these two files before anything else:
 
 ```mermaid
 flowchart LR
-    subgraph BASE["base/  — copy all 5 files first"]
+    subgraph BASE["base/  — copy all 6 files first"]
         A1[agent.mcs.yml]
         A2[settings.mcs.yml]
         A3[Greeting.topic]
         A4[Fallback.topic]
         A5[OnError.topic]
+        A6[OutOfScope.topic]
     end
 
     subgraph COMP["components/  — add as needed"]
-        T[topics x11]
+        T[topics x12]
         AC[actions x2]
         K[knowledge x3]
         CA[adaptive-cards x6]
@@ -289,17 +290,18 @@ flowchart LR
 ### Repo layout
 
 ```
-base/                              ← ALWAYS copy this folder first (5 files)
+base/                              ← ALWAYS copy this folder first (6 files)
   ├── agent.mcs.yml                ← agent name, schema, system prompt, conversation starters
   ├── settings.mcs.yml             ← auth mode, language, DLP access policy
   └── topics/
       ├── Greeting.topic.mcs.yml   ← first message + Conversation.Started telemetry
       ├── Fallback.topic.mcs.yml   ← unknown intent: retries 3× then escalates
-      └── OnError.topic.mcs.yml    ← system errors: safe message + Agent.ErrorOccurred
+      ├── OnError.topic.mcs.yml    ← system errors: safe message + Agent.ErrorOccurred
+      └── OutOfScope.topic.mcs.yml ← known out-of-domain queries — redirect + Agent.OutOfScope telemetry
 
 components/                        ← drop in what you need
   ├── topics/_scaffold/            ← START HERE for every new topic you write
-  ├── topics/<name>/               ← 10 ready-made topics (auth, escalation, feedback…)
+  ├── topics/<name>/               ← 11 ready-made topics (auth, escalation, feedback…)
   ├── actions/connector/           ← Power Platform connector action
   ├── actions/mcp/                 ← MCP server tool action
   ├── knowledge/sharepoint/        ← SharePoint knowledge source
@@ -312,10 +314,10 @@ components/                        ← drop in what you need
 recipes/                           ← documented combos of base + components (8 recipes)
 prompts/system-prompts/            ← paste into agent.mcs.yml instructions (4 personas)
 prompts/ai-prompts/                ← run in Claude to generate YAML (6 prompts)
-ci-cd/                             ← GitHub Actions pipelines (5 workflows)
+ci-cd/                             ← GitHub Actions pipelines (4 workflows + 1 guide)
 ```
 
-### Base templates (copy all 5 to start every agent)
+### Base templates (copy all 6 to start every agent)
 
 | File | Purpose | What to edit |
 |------|---------|-------------|
@@ -324,6 +326,7 @@ ci-cd/                             ← GitHub Actions pipelines (5 workflows)
 | `base/topics/Greeting.topic.mcs.yml` | Welcome message + `Conversation.Started` telemetry | Welcome text, `<SCHEMA>` placeholders |
 | `base/topics/Fallback.topic.mcs.yml` | Unknown intent — retries 3× then escalates | `<EscalationQueueName>` placeholder |
 | `base/topics/OnError.topic.mcs.yml` | System error handler — safe message + telemetry | Error message text |
+| `base/topics/OutOfScope.topic.mcs.yml` | Known out-of-scope queries — redirect + `Agent.OutOfScope` telemetry | `<DOMAIN>`, `<OUT-OF-SCOPE-TOPIC>`, `<CONTACT>` |
 
 ### Topic component templates (drop in as needed)
 
@@ -335,7 +338,7 @@ ci-cd/                             ← GitHub Actions pipelines (5 workflows)
 | `components/topics/conversation-init/ConversationInit.topic.mcs.yml` | `OnActivity` | Loads M365 user profile into `Global.UserDisplayName` and `Global.UserCountry` | Personalised responses |
 | `components/topics/disambiguation/Disambiguation.topic.mcs.yml` | `OnSelectIntent` | Clarifies ambiguous intents, logs `Agent.DisambiguationTriggered` | Multi-intent agents |
 | `components/topics/escalation/Escalation.topic.mcs.yml` | `OnRecognizedIntent` | Human handoff via `TransferConversation`, logs `Agent.EscalationTriggered` | All agents |
-| `components/topics/feedback/Feedback.topic.mcs.yml` | `OnRecognizedIntent` / `BeginDialog` | Thumbs → star rating → free text CSAT sequence | All production agents |
+| `components/topics/feedback/Feedback.topic.mcs.yml` | `OnRecognizedIntent` / `BeginDialog` | Thumbs → star rating → issue category CSAT sequence | All production agents |
 | `components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml` | `OnUnknownIntent` | Generative answers from knowledge sources, logs `Knowledge.AnswerFound` / `AnswerNotFound` | FAQ / KB agents |
 | `components/topics/out-of-scope/OutOfScope.topic.mcs.yml` | `OnRecognizedIntent` | Redirects out-of-scope queries, logs `Agent.OutOfScope` | All agents (guardrail) |
 | `components/topics/question-branch/QuestionBranch.topic.mcs.yml` | `OnRecognizedIntent` | Collects input and branches the conversation | Multi-step flows |
@@ -486,14 +489,15 @@ ls -la agents/it-helpdesk/
 # Expected: topics/  actions/  knowledge/  variables/
 ```
 
-### Step 2 — Copy the 5 base files
+### Step 2 — Copy the 6 base files
 
 ```bash
 cp base/agent.mcs.yml         agents/it-helpdesk/agent.mcs.yml
 cp base/settings.mcs.yml      agents/it-helpdesk/settings.mcs.yml
-cp base/topics/Greeting.topic.mcs.yml  agents/it-helpdesk/topics/
-cp base/topics/Fallback.topic.mcs.yml  agents/it-helpdesk/topics/
-cp base/topics/OnError.topic.mcs.yml   agents/it-helpdesk/topics/
+cp base/topics/Greeting.topic.mcs.yml   agents/it-helpdesk/topics/
+cp base/topics/Fallback.topic.mcs.yml   agents/it-helpdesk/topics/
+cp base/topics/OnError.topic.mcs.yml    agents/it-helpdesk/topics/
+cp base/topics/OutOfScope.topic.mcs.yml agents/it-helpdesk/topics/
 ```
 
 ### Step 3 — Configure agent identity
