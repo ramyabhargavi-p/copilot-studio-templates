@@ -27,62 +27,50 @@ All roles: read **Stage 6 (Governance)** — it is a delivery blocker for everyo
 
 ## Delivery Pipeline at a Glance
 
-Each box shows the stage goal and the repo folders you open at that phase.
+8 delivery phases — each box shows which **repo folders** to open and which **project-delivery documents** to complete. Every folder in this repo has a home in exactly one phase.
 
 ```mermaid
 flowchart TD
-    classDef plan fill:#1a56db,stroke:#1e3a5f,color:#ffffff
-    classDef build fill:#057a55,stroke:#014737,color:#ffffff
-    classDef ship fill:#b45309,stroke:#78350f,color:#ffffff
-    classDef operate fill:#6d28d9,stroke:#4c1d95,color:#ffffff
+    classDef decision  fill:#1a56db,stroke:#1e3a5f,color:#ffffff
+    classDef discovery fill:#0369a1,stroke:#075985,color:#ffffff
+    classDef design    fill:#047857,stroke:#065f46,color:#ffffff
+    classDef build     fill:#166534,stroke:#14532d,color:#ffffff
+    classDef test      fill:#92400e,stroke:#78350f,color:#ffffff
+    classDef govern    fill:#b45309,stroke:#92400e,color:#ffffff
+    classDef launch    fill:#9f1239,stroke:#881337,color:#ffffff
+    classDef operate   fill:#5b21b6,stroke:#4c1d95,color:#ffffff
 
-    subgraph PLAN["  PLANNING  "]
-        S0["Stage 0 — Platform Decision<br/>📄 Decision matrix · recipes/"]:::plan
-        S1["Stage 1 — Dev Setup<br/>🔧 pac CLI · VS Code extensions · git"]:::plan
-    end
+    PH1["PHASE 1 · DECISION  — Playbook Stage 0<br/>Should we build this? What platform?<br/>────────────────────────────────<br/>📄 project-delivery/00-ai-decision-framework<br/>📄 project-delivery/01-enterprise-readiness-assessment<br/>📋 ENGINEERING-PLAYBOOK Stage 0 decision matrix<br/>📋 recipes/ — pick your agent type"]:::decision
 
-    subgraph BUILD["  BUILD  "]
-        S2["Stage 2 — Template Library<br/>📦 base/ · components/ · prompts/ · recipes/"]:::build
-        S3["Stage 3 — Build Agent<br/>📁 base/ 6 files always<br/>📁 components/topics/<br/>📁 components/knowledge/<br/>📁 components/actions/<br/>📁 components/variables/<br/>📁 components/adaptive-cards/"]:::build
-        S4["Stage 4/4.5 — Innovation  optional<br/>📁 components/actions/mcp/<br/>📁 components/agents/<br/>📄 recipes/07-m365-agents-sdk<br/>📄 recipes/08-azure-ai-foundry"]:::build
-    end
+    PH2["PHASE 2 · DISCOVERY  — Playbook Stage 1<br/>What exactly are we building? For whom?<br/>────────────────────────────────<br/>🔧 pac CLI · VS Code 5 extensions · git feature branch<br/>📄 project-delivery/02-requirements-questionnaire<br/>📄 project-delivery/03-technical-discovery<br/>📄 project-delivery/04-user-workflow-analysis"]:::discovery
 
-    subgraph SHIP["  SHIP  "]
-        S5["Stage 5 — Testing and Evals<br/>📁 agents/name/evals/ CSV<br/>🔧 Copilot Studio Kit eval runner"]:::ship
-        S6["Stage 6 — Governance<br/>📁 governance/"]:::ship
-        S7["Stage 7 — CI/CD<br/>📁 ci-cd/01 validate on PR<br/>📁 ci-cd/02 Dev to UAT<br/>📁 ci-cd/03 UAT to Prod<br/>📁 ci-cd/04 solution deploy"]:::ship
-    end
+    PH3["PHASE 3 · DESIGN  — Playbook Stage 2<br/>How will it work? What components do we need?<br/>────────────────────────────────<br/>📦 base/ · components/ · prompts/ · recipes/ — browse all 60 templates<br/>📄 project-delivery/05-agent-design-worksheet<br/>📄 project-delivery/06-content-audit<br/>📄 project-delivery/07-functional-design-document<br/>📄 project-delivery/08-workflow-logic-design<br/>📄 project-delivery/09-technical-design-document"]:::design
 
-    subgraph OPERATE["  OPERATE  "]
-        S8["Stage 8 — Debugging<br/>📁 troubleshooting/<br/>🔧 CPS Activity log · App Insights"]:::operate
-        S9["Stage 9 — Telemetry<br/>📁 Topic YAML LogCustomTelemetryEvent<br/>📄 docs/PII-SCRUBBING.md"]:::operate
-        S10["Stage 10 — Monitoring<br/>📄 operations/01-alert-setup<br/>📄 operations/02-monitoring-queries<br/>📄 operations/03-runbook"]:::operate
-    end
+    PH4["PHASE 4 · BUILD  — Playbook Stages 3 + 4 + 4.5<br/>Implement in YAML. Copy, configure, push.<br/>────────────────────────────────<br/>📁 base/ 6 files — always copy first<br/>📁 components/topics/ · components/knowledge/<br/>📁 components/actions/ · components/variables/<br/>📁 components/adaptive-cards/ · components/agents/<br/>📝 prompts/system-prompts/ · prompts/ai-prompts/<br/>📄 project-delivery/10-build-specification<br/>📄 project-delivery/11-ai-engineer-realtime-guide<br/>🔧 VS Code Apply Changes · CPS test canvas"]:::build
 
-    S0 --> S1 --> S2 --> S3
-    S3 --> S4
-    S3 --> S5
-    S4 --> S5
-    S5 --> S6 --> S7
-    S3 --> S9 --> S10
-    S8 -.->|on issues| S10
+    PH5["PHASE 5 · TEST  — Playbook Stage 5<br/>Verify routing and answer quality before users see it.<br/>────────────────────────────────<br/>📁 agents/name/evals/ — eval CSV 50 rows minimum<br/>📄 project-delivery/12-eval-scenarios<br/>📄 project-delivery/13-uat-test-plan<br/>🔧 Copilot Studio Kit eval runner — 85% pass rate gate"]:::test
+
+    PH6["PHASE 6 · GOVERN + DEPLOY  — Playbook Stages 6 + 7<br/>Sign off on RAI and security. Automate Dev to Prod.<br/>────────────────────────────────<br/>📁 governance/01-enterprise-ai-governance-framework<br/>📁 governance/02-ai-ethics-checklist<br/>📁 governance/03-security-review<br/>📁 ci-cd/01-push-on-pr — validate YAML on PR<br/>📁 ci-cd/02-promote-dev-to-uat — Dev to UAT with eval gate<br/>📁 ci-cd/03-promote-uat-to-prod — UAT to Prod with approval<br/>📁 ci-cd/04-solution-build-and-deploy — managed environments"]:::govern
+
+    PH7["PHASE 7 · LAUNCH<br/>Go live. Communicate. Watch the first week.<br/>────────────────────────────────<br/>📄 launch/01-launch-checklist<br/>📄 launch/02-user-communication-template<br/>📄 launch/03-hypercare-guide — week 1 and 2 daily review"]:::launch
+
+    PH8["PHASE 8 · OPERATE  — Playbook Stages 8 + 9 + 10<br/>Keep running. Detect problems before users notice.<br/>────────────────────────────────<br/>📁 Topic YAML — LogCustomTelemetryEvent in every topic<br/>📄 docs/PII-SCRUBBING.md — no names or emails in telemetry<br/>📄 operations/01-alert-setup — configure before launch<br/>📄 operations/02-monitoring-queries — KQL library<br/>📄 operations/03-runbook — on-call decisions<br/>📁 troubleshooting/ · CPS Activity log · App Insights"]:::operate
+
+    PH1 --> PH2 --> PH3 --> PH4 --> PH5 --> PH6 --> PH7 --> PH8
 ```
 
-### Stage-by-stage folder reference
+### Complete folder-to-phase map
 
-| Stage | Repo folders opened | Templates used | External tool |
-|-------|---------------------|---------------|---------------|
-| **0 — Platform Decision** | — | `recipes/` (pick type) | — |
-| **1 — Dev Setup** | — | — | `pac CLI`, VS Code + 5 extensions, git |
-| **2 — Template Library** | `base/` `components/` `prompts/` `recipes/` | All 60 templates (browse only) | VS Code IntelliSense |
-| **3 — Build** | `base/` `components/topics/` `components/knowledge/` `components/actions/` `components/variables/` `components/adaptive-cards/` | 6 base files + chosen components | VS Code: Apply Changes, CPS test canvas |
-| **4 — Innovation** | `components/actions/mcp/` `components/agents/` | `mcp-action.mcs.yml` `child-agent.mcs.yml` `recipes/07` `recipes/08` | Azure Portal |
-| **5 — Testing** | `agents/<name>/evals/` | Eval CSV (50+ rows) | Copilot Studio Kit |
-| **6 — Governance** | `governance/` | `01-responsible-ai-checklist.md` `02-ai-ethics-checklist.md` | — |
-| **7 — CI/CD** | `ci-cd/` | `01-push-on-pr.yml` `02-promote-dev-to-uat.yml` `03-promote-uat-to-prod.yml` `04-solution-build-and-deploy.yml` | GitHub Actions |
-| **8 — Debugging** | `troubleshooting/` | `README.md` issue catalogue | CPS Activity log, App Insights |
-| **9 — Telemetry** | Every `topics/*.mcs.yml` | `LogCustomTelemetryEvent` nodes | Application Insights |
-| **10 — Monitoring** | `operations/` | `01-alert-setup.md` `02-monitoring-queries.md` `03-runbook.md` | Azure Monitor |
+| Phase | Repo folders | `project-delivery/` docs | Playbook stage |
+|-------|-------------|--------------------------|---------------|
+| **1 — Decision** | `recipes/` | `00-ai-decision-framework` · `01-enterprise-readiness-assessment` | Stage 0 |
+| **2 — Discovery** | — | `02-requirements-questionnaire` · `03-technical-discovery` · `04-user-workflow-analysis` | Stage 1 |
+| **3 — Design** | `base/` `components/` `prompts/` `recipes/` (browse) | `05-agent-design-worksheet` · `06-content-audit` · `07-functional-design-document` · `08-workflow-logic-design` · `09-technical-design-document` | Stage 2 |
+| **4 — Build** | `base/` `components/topics/` `components/knowledge/` `components/actions/` `components/variables/` `components/adaptive-cards/` `prompts/` | `10-build-specification` · `11-ai-engineer-realtime-guide` | Stages 3 + 4 |
+| **5 — Test** | `agents/<name>/evals/` | `12-eval-scenarios` · `13-uat-test-plan` | Stage 5 |
+| **6 — Govern + Deploy** | `governance/` `ci-cd/` | — | Stages 6 + 7 |
+| **7 — Launch** | `launch/` | — | — |
+| **8 — Operate** | `operations/` `troubleshooting/` every `topics/*.mcs.yml` | — | Stages 8 + 9 + 10 |
 
 ---
 
