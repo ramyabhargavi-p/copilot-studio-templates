@@ -1,20 +1,8 @@
 # Project Delivery Documents
 
-> **Delivery sequence:** Work through documents 00 → 13 in order.
-> Each document feeds the next — don't skip 00 (decision framework) or 02 (technical discovery).
-> Completed documents become the project record — store in SharePoint alongside the agent YAML.
->
-> | Doc | When to complete |
-> |-----|-----------------|
-> | `00-ai-decision-framework.md` | Before kickoff — is Copilot Studio the right tool? |
-> | `01-requirements-questionnaire.md` | Week 1 — discovery with business owner |
-> | `02-technical-discovery.md` | Week 1-2 — environment, connectors, auth |
-> | `03-agent-design-worksheet.md` | Week 2 — topics, actions, knowledge sources |
-> | `04-uat-test-plan.md` | Week 3 — before build starts |
-> | `05-eval-scenarios.md` | Week 3 — routing accuracy test cases |
-> | `06+` | Supporting design artifacts as needed |
+14 documents covering every phase from decision to post-launch. Work through them in phase order — do not skip phases. Completed documents are your project record; store them in SharePoint alongside the agent YAML.
 
-14 numbered documents covering every phase from decision to post-launch. Work through them in phase order — do not skip phases.
+> **Do not skip:** `00-ai-decision-framework.md` (is this the right tool?) and `02-technical-discovery.md` (what can we build with?). Every other doc depends on these two.
 
 ---
 

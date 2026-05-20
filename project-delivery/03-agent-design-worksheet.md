@@ -100,6 +100,8 @@ For each action, is a wrapping topic needed?
 
 ## 5. Knowledge Sources
 
+> If adding any knowledge source, complete [`06-content-audit.md`](06-content-audit.md) before build starts — it verifies the content is accurate, current, and properly scoped.
+
 | Source name | Type | URL / Path | Scope | Citations visible? |
 |------------|------|------------|-------|-------------------|
 | | SharePoint / Website | | | Yes / No |
