@@ -10,6 +10,8 @@ These are not optional — you need all of them.
 
 ### 1 — Power Platform CLI (`pac`)
 
+> **This is the canonical install reference for the PAC CLI.** Other docs in this repo link here.
+
 The command-line tool for pushing YAML to a Power Platform environment and publishing agents.
 
 **Install:**

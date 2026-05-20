@@ -21,7 +21,7 @@ cp components/topics/feedback/Feedback.topic.mcs.yml \
 
 The adaptive card UI is **inline in the YAML** — no separate card JSON files needed.
 
-Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 ## Placeholders
 

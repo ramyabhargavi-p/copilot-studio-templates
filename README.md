@@ -8,10 +8,9 @@ Reusable YAML templates for building Copilot Studio agents — with error handli
 
 ### Step 1 — Set up tools (once per machine, ~20 min)
 
-```powershell
-# Install pac CLI
-dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+> Install the PAC CLI: see [TOOLS-AND-PLUGINS.md → PAC CLI](docs/TOOLS-AND-PLUGINS.md) for install instructions.
 
+```powershell
 # Authenticate to your Dev environment
 pac auth create
 pac env select --environment "Dev - My Project"

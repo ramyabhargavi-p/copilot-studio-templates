@@ -47,8 +47,9 @@ Four dedicated command references for the full end-to-end Copilot Studio develop
 
 ## Confirmed working on Windows 11
 
+> Install the PAC CLI: see [TOOLS-AND-PLUGINS.md → PAC CLI](../docs/TOOLS-AND-PLUGINS.md) for install instructions.
+
 ```powershell
-winget install Microsoft.PowerAppsCLI   # pac CLI
 winget install Microsoft.VisualStudioCode
 winget install Git.Git
 winget install OpenJS.NodeJS.LTS        # only needed for eval Kit

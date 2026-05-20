@@ -28,7 +28,7 @@ cp components/topics/knowledge-search/KnowledgeSearch.topic.mcs.yml \
    agents/hr_assistant/topics/KnowledgeSearch.topic.mcs.yml
 ```
 
-Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 Only `_REPLACE1` — one node ID to replace.
 

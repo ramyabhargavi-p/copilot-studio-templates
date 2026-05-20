@@ -17,7 +17,7 @@ cp components/topics/question-branch/QuestionBranch.topic.mcs.yml \
    agents/hr_assistant/topics/CheckEmploymentType.topic.mcs.yml
 ```
 
-Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 ## Placeholders
 

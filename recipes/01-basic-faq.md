@@ -58,119 +58,22 @@ User message
 
 ## Write Instructions and OutOfScope Content
 
-These two files define your agent's domain — write them together.
+→ Full steps: [`docs/SYSTEM-PROMPT-PATTERN.md`](../docs/SYSTEM-PROMPT-PATTERN.md)
 
 | File | What it controls |
 |------|----------------|
 | `agent.mcs.yml` → `instructions:` | Who the agent is, what it answers, tone, escalation |
 | `topics/OutOfScope.topic.mcs.yml` | Trigger phrases + redirect message for out-of-domain questions |
 
-**The `generate-agent-instructions.md` prompt writes both in one pass.** Its output includes a `## What I cannot help with` section that maps directly into `OutOfScope.topic.mcs.yml`.
+**Option A persona:** `prompts/system-prompts/knowledge-base.md`
 
-### Step 1 — Option A: Use a ready-made persona (5 min)
-
-```
-1. Open prompts/system-prompts/knowledge-base.md
-2. Copy everything inside the triple backticks
-3. Paste into agent.mcs.yml replacing the entire instructions: | block
-4. Replace every [BRACKET] value:
-     [Company Name]  →  e.g. Contoso
-     [SCOPE]         →  e.g. HR policies and leave management
-     [company].com   →  your contact email domain
-5. Then go to Step 3 below to fill in OutOfScope.topic.mcs.yml manually
-```
-
-### Step 1 — Option B: Generate both with Claude (10 min, recommended)
+**Option B project brief:**
 
 ```
-1. Open prompts/ai-prompts/generate-agent-instructions.md
-2. Copy the prompt template and paste into Claude
-3. Fill in:
-     Project brief:  "Answers questions about [topic] from a SharePoint knowledge base.
-                      Must NOT handle [out-of-scope areas]. Redirect those to [contact]."
-     Agent name:     HR Assistant
-     Primary users:  Internal employees
-     Authentication: None (anonymous)
-     Tone:           Professional
-4. Claude returns the full instructions: | block — paste it into agent.mcs.yml
+"Answers questions about [topic] from a SharePoint knowledge base.
+ Must NOT handle [out-of-scope areas]. Redirect those to [contact]."
+Agent name: [Your Agent Name] | Auth: None | Tone: Professional
 ```
-
-Claude's output will include:
-
-```yaml
-instructions: |
-  ## What I can help with
-  - [in-scope topic 1]
-  - [in-scope topic 2]
-
-  ## What I cannot help with          ← use this in OutOfScope.topic.mcs.yml
-  - Payroll queries — contact: payroll@company.com
-  - IT issues — contact: it@company.com
-
-  ## Handling out-of-scope questions  ← becomes the SendActivity text
-  Say: "I only handle [domain]. For [topic], [contact] is your best resource."
-```
-
-### Step 2 — Apply to agent.mcs.yml
-
-Paste Claude's output replacing the entire `instructions: |` block. Every line must be indented exactly 2 spaces under `instructions: |` — YAML is whitespace-sensitive.
-
-### Step 3 — Apply to OutOfScope.topic.mcs.yml
-
-Claude's "What I cannot help with" items become trigger phrases and redirect text.
-
-**Mapping:**
-
-```
-Claude output                                →  OutOfScope.topic.mcs.yml
-─────────────────────────────────────────────────────────────────────────────
-"Payroll queries — payroll@company.com"         triggerQueries:
-"IT issues — it@company.com"                      - payroll
-                                                  - what is my salary
-                                                  - IT support
-                                                  - my laptop is broken
-
-                                                SendActivity:
-                                                  "I'm only set up for [domain].
-                                                   For [topic], [contact] is your
-                                                   best contact."
-```
-
-**Add the file and fill in the placeholders:**
-
-If `OutOfScope.mcs.yml` is not yet in your `topics/` folder, copy it in:
-
-```powershell
-# PowerShell
-Copy-Item "base\topics\OutOfScope.topic.mcs.yml" "agents\<display name>\topics\OutOfScope.mcs.yml" -Force
-```
-```bash
-# Mac / Linux
-cp base/topics/OutOfScope.topic.mcs.yml "agents/<display name>/topics/OutOfScope.mcs.yml"
-```
-
-Open `OutOfScope.mcs.yml` and replace these 5 things:
-
-| Placeholder | Replace with | Example |
-|-------------|-------------|---------|
-| `<out-of-scope phrase 1–5>` | Trigger phrases from Claude's "What I cannot help with" section | `payroll`, `IT support`, `expense claim` |
-| `<DOMAIN>` | What this agent handles | `HR policies and leave management` |
-| `<OUT-OF-SCOPE-TOPIC>` | The out-of-scope area in the redirect message | `IT support` |
-| `<CONTACT>` | Where to send the user | `it@contoso.com` |
-| `_REPLACE1`, `_REPLACE2` | Run the ID script (QUICKSTART Step 4) or any 6-char random string | `_ab3f9x` |
-
-**Need more trigger phrases?** Ask Claude:
-
-```
-Generate 10 trigger phrases for a Copilot Studio OutOfScope topic.
-The agent handles: [your domain — e.g. HR policies and leave management].
-Out-of-scope areas: [list from your instructions].
-Include: formal, casual, abbreviated phrasings, and question variations.
-Output as a YAML list (- phrase format).
-```
-
-→ Template: [`prompts/ai-prompts/generate-topic.md`](../prompts/ai-prompts/generate-topic.md) → "Generate trigger phrases only"
-→ All prompt templates: [`prompts/README.md`](../prompts/README.md)
 
 ---
 

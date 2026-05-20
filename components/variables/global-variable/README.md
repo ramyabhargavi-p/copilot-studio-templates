@@ -55,12 +55,7 @@ Note: the prefix is `.globalvariable.` — not `.variable.`.
 
 ## Apply Changes limitation
 
-> If pushing this file causes `[0x800608ad:ExportKeyAttributeInvalidPrefix]`:
-> 1. Delete this file from your agent's `variables/` folder
-> 2. Run Apply Changes to push topics and settings first
-> 3. Re-add this file and run Apply Changes again
->
-> Global variables are created at runtime by `SetVariable` — the declaration file exists for VS Code IntelliSense only.
+> **Apply Changes export error?** See [Known issue — Apply Changes export error](../README.md#known-issue--apply-changes-export-error) in the variables README.
 
 ## Example — session flag to track authentication
 

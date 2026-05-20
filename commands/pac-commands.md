@@ -20,13 +20,7 @@ pac copilot create              # Create a new agent from a template file
 
 ## 1. Install
 
-```powershell
-# Recommended on Windows
-winget install Microsoft.PowerAppsCLI
-
-# Alternative
-dotnet tool install --global Microsoft.PowerApps.CLI.Tool
-```
+> Install the PAC CLI: see [TOOLS-AND-PLUGINS.md → PAC CLI](../docs/TOOLS-AND-PLUGINS.md) for install instructions.
 
 After install, close and reopen terminal:
 

@@ -34,7 +34,7 @@ cp components/variables/user-country/UserCountry.variable.mcs.yml \
    agents/hr_assistant/variables/UserCountry.variable.mcs.yml
 ```
 
-Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 ## Placeholders
 
@@ -64,12 +64,7 @@ schemaName: hr_assistant.topic.ConversationInit
 
 ## Variable file warning
 
-> **Apply Changes limitation:** If pushing variable files causes `[0x800608ad:ExportKeyAttributeInvalidPrefix]`:
-> 1. Delete the `.variable.mcs.yml` files from your `variables/` folder
-> 2. Run Apply Changes to push the topic first
-> 3. Re-add the variable files and run Apply Changes again
->
-> Variable declarations exist for VS Code IntelliSense only. The agent populates variables at runtime via `SetVariable` — the declaration files are optional.
+> **Apply Changes export error?** See [Known issue — Apply Changes export error](../../variables/README.md#known-issue--apply-changes-export-error) in the variables README.
 
 ## Common mistakes
 

@@ -25,7 +25,9 @@ Every agent needs out-of-scope handling. Configure the file already in your agen
 | `<DOMAIN>` | 48 | `HR policies` |
 | `<OUT-OF-SCOPE-TOPIC>` | 48 | `IT support` |
 | `<CONTACT>` | 49 | `it@contoso.com` |
-| `_REPLACE1–2` | — | Run ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs |
+| `_REPLACE1–2` | — | Run ID script |
+
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 ## Before → after
 

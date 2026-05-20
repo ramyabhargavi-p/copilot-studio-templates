@@ -95,6 +95,8 @@ Use `{Category}.{Action}` format:
 | `Action` | `Succeeded`, `Failed` |
 | `ConversationInit` | `Completed`, `ProfileLoadFailed` |
 
+→ Full event registry: [`ENGINEERING-PLAYBOOK.md` → Telemetry & Logging](../ENGINEERING-PLAYBOOK.md#stage-9--telemetry--logging)
+
 ### Standard properties
 Include these in every telemetry event:
 ```yaml

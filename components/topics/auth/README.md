@@ -17,11 +17,11 @@ cp components/topics/auth/SignIn.topic.mcs.yml \
    agents/hr_assistant/topics/SignIn.topic.mcs.yml
 ```
 
-Then run the `_REPLACE` ID script — see [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+> **Node IDs:** Replace every `_REPLACE` suffix with a unique string before use — see [QUICKSTART.md → Replace node IDs](../../../docs/QUICKSTART.md).
 
 ## Placeholders
 
-Only `_REPLACE1–6` — run the ID script, no manual placeholders. See [QUICKSTART.md](../../../docs/QUICKSTART.md) → Replace node IDs.
+Only `_REPLACE1–6` — no manual placeholders.
 
 ## Prerequisites checklist
 
