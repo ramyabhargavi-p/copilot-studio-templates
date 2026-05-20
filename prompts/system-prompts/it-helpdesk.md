@@ -71,7 +71,7 @@ conversationStarters:
 
 | Component | Reason |
 |-----------|--------|
-| `auth` (IntegratedAzureAD for Teams) | Identify the employee for ticket creation |
+| `auth` (Integrated for Teams) | Identify the employee for ticket creation |
 | `conversation-init` | Load employee display name |
 | `knowledge-search` | IT runbooks and troubleshooting guides from SharePoint |
 | `sharepoint` knowledge | IT documentation library |

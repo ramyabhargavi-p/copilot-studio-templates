@@ -95,7 +95,7 @@ conversationStarters:
 Open `settings.mcs.yml` and set:
 ```yaml
 schemaName: it_support_demo
-authenticationMode: IntegratedAzureAD   # Silent SSO via Teams — no sign-in prompt
+authenticationMode: Integrated   # Silent SSO via Teams — no sign-in prompt
 ```
 
 ---
@@ -380,7 +380,7 @@ Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path $folder |
 agents/
 └── it_support_demo/
     ├── agent.mcs.yml                    ← identity, system prompt
-    ├── settings.mcs.yml                 ← schemaName, IntegratedAzureAD auth
+    ├── settings.mcs.yml                 ← schemaName, Integrated auth
     ├── topics/
     │   ├── Greeting.topic.mcs.yml       ← from base/
     │   ├── Fallback.topic.mcs.yml       ← from base/

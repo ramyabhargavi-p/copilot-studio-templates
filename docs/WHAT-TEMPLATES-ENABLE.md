@@ -148,8 +148,8 @@ start requires:
 2. Office 365 Users connector in **Invoker** connection mode — uses the signed-in user's
    identity, not the bot's service account
 3. Error handling that allows conversation to continue even if the profile call fails
-4. `SearchAndSummarizeContent` for glossary loading — a Power Fx function specific to
-   knowledge sources
+4. `SearchAndSummarizeContent` for glossary loading — a Copilot Studio YAML node kind
+   (`kind: SearchAndSummarizeContent`), not a Power Fx function
 
 **Without it:** Users are greeted as "user" with no personalisation, and the glossary is
 not loaded — meaning the agent cannot expand internal acronyms used in questions.

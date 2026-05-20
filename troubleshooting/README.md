@@ -333,7 +333,7 @@ Fix:
 
 ### Sign-in prompt never appears
 
-1. Check `settings.mcs.yml` — `authenticationMode` must be `ManualAzureAD` or `IntegratedAzureAD`
+1. Check `settings.mcs.yml` — `authenticationMode` must be `ManualAzureAD` or `Integrated`
 2. Check the `auth` topic component is added — the `OAuthInput` node triggers the sign-in card
 3. In Teams, check the Teams app has the `webApplicationInfo` section in its manifest with the correct app ID
 

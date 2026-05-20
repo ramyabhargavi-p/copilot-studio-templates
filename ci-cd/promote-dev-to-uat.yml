@@ -57,11 +57,16 @@ jobs:
             --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
             --environment "${{ secrets.POWER_PLATFORM_UAT_URL }}"
 
-      - name: Push agent to UAT
+      - name: Push agent to UAT (configure before use — see ci-cd/README.md)
         working-directory: ${{ env.AGENT_PATH }}
         run: |
-          pac copilot push \
-            --environment "${{ secrets.POWER_PLATFORM_UAT_URL }}"
+          # pac copilot push does not exist in the pac CLI.
+          # Replace this step with your deployment approach:
+          #   Option A: VS Code "Copilot Studio: Apply Changes" (manual only, not automatable in CI)
+          #   Option B: Solution-based ALM — see ci-cd/solution-build-and-deploy.yml
+          echo "ERROR: This step is a placeholder. pac copilot push is not a valid pac CLI command."
+          echo "Configure your deployment approach before running this pipeline. See ci-cd/README.md."
+          exit 1
 
       - name: UAT promotion summary
         if: success()

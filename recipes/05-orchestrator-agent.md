@@ -75,7 +75,7 @@ The parent's `instructions:` must focus on **routing only** — not domain knowl
                         Out-of-scope: anything no specialist handles → redirect to [contact]."
      Agent name:       Corporate Assistant
      Primary users:    Internal employees
-     Authentication:   ManualAzureAD or IntegratedAzureAD
+     Authentication:   ManualAzureAD or Integrated
      Tone:             Professional
 4. Paste Claude's output into agent.mcs.yml
 ```

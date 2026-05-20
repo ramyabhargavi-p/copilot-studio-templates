@@ -1,7 +1,7 @@
 displayName: <Agent Display Name>         # Must match displayName in agent.mcs.yml
 schemaName: <agent_schema_name>           # Lowercase, underscores only — prefix for all component schemaNames (e.g. hr_assistant)
 accessControlPolicy: ChatbotReaders       # Who can chat: ChatbotReaders | SpecificPeople | Anyone
-authenticationMode: None                  # None | ManualAzureAD | IntegratedAzureAD (see base/README.md)
+authenticationMode: None                  # None | ManualAzureAD | Integrated (see base/README.md)
 
 configuration:
   settings:

@@ -27,7 +27,7 @@ Scenario:
 
 Topic name: [display name for the topic]
 Action needed: [Yes — describe the connector action / No — just collect and respond]
-Auth mode: [None / ManualAzureAD / IntegratedAzureAD]
+Auth mode: [None / ManualAzureAD / Integrated]
 Agent schema name: [schemaName from settings.mcs.yml]
 ```
 
@@ -41,7 +41,7 @@ The agent should ask for confirmation ("your leave as of today"), then call the 
 
 Topic name: Get Leave Balance
 Action needed: Yes — InvokeConnectorAction on Dataverse to read leave balance
-Auth mode: IntegratedAzureAD
+Auth mode: Integrated
 Agent schema name: hr_assistant
 ```
 

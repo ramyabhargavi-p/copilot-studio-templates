@@ -603,7 +603,7 @@ Use this instead of deciding from scratch which components to add.
 - [ ] `auth` — sign-in topic
 - [ ] `conversation-init` — required for user profile
 - [ ] Prompt pattern P5 — personalised response
-- [ ] `settings.mcs.yml` → `authenticationMode: ManualAzureAD` or `IntegratedAzureAD`
+- [ ] `settings.mcs.yml` → `authenticationMode: ManualAzureAD` or `Integrated`
 
 ### Agent with actions (form submission, data read/write)
 - All minimum, plus:

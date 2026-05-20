@@ -217,7 +217,8 @@ jobs:
         run: |
           pac copilot publish \
             --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}" \
-            --schemaName "${{ vars.AGENT_SCHEMA_NAME }}"
+            --bot "${{ vars.AGENT_DISPLAY_NAME }}"
+          # Note: --bot takes the agent display name or Copilot ID (not the schema name)
 
       - name: Production deployment summary
         if: success()

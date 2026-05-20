@@ -660,7 +660,7 @@ schemaName: <AGENT-SCHEMA-NAME>.globalvariable.UserDisplayName
 schemaName: hr_assistant.globalvariable.UserDisplayName
 ```
 
-**Note:** Requires: `conversation-init` topic + `IntegratedAzureAD` or `ManualAzureAD` auth. Used in system prompt as `{Global.UserDisplayName}` and `{Global.UserCountry}`.
+**Note:** Requires: `conversation-init` topic + `Integrated` or `ManualAzureAD` auth. Used in system prompt as `{Global.UserDisplayName}` and `{Global.UserCountry}`.
 See [Apply Changes limitation](variables/user-display-name/README.md) before pushing variable files.
 
 ---

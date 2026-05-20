@@ -248,7 +248,7 @@ grep -rn "_REPLACE" agents/hr_assistant --include="*.mcs.yml"
 ## Setup Checklist
 
 - [ ] Files copied and ID script run (verify returns zero output)
-- [ ] `settings.mcs.yml` — `authenticationMode` set to `ManualAzureAD` or `IntegratedAzureAD`
+- [ ] `settings.mcs.yml` — `authenticationMode` set to `ManualAzureAD` or `Integrated`
 - [ ] `agent.mcs.yml` — system prompt includes `"Address the user as {Global.UserDisplayName}"`
 - [ ] `topics/ConversationInit.topic.mcs.yml` — remove Glossary block if not using a glossary knowledge source
 - [ ] Add **Office 365 Users** connector connection in your environment (required by ConversationInit)

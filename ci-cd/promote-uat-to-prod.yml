@@ -84,17 +84,24 @@ jobs:
             --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
             --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}"
 
-      - name: Push agent to production
+      - name: Push agent to production (configure before use — see ci-cd/README.md)
         working-directory: ${{ env.AGENT_PATH }}
         run: |
-          pac copilot push \
-            --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}"
+          # pac copilot push does not exist in the pac CLI.
+          # Replace this step with your deployment approach:
+          #   Option A: VS Code "Copilot Studio: Apply Changes" (manual only, not automatable in CI)
+          #   Option B: Solution-based ALM — see ci-cd/solution-build-and-deploy.yml
+          echo "ERROR: This step is a placeholder. pac copilot push is not a valid pac CLI command."
+          echo "Configure your deployment approach before running this pipeline. See ci-cd/README.md."
+          exit 1
 
       - name: Publish agent to production
         run: |
           pac copilot publish \
             --environment "${{ secrets.POWER_PLATFORM_PROD_URL }}" \
-            --schemaName "${{ vars.AGENT_SCHEMA_NAME }}"
+            --bot "${{ vars.AGENT_DISPLAY_NAME }}"
+          # Note: --bot takes the agent display name or Copilot ID (not the schema name)
+          # Set AGENT_DISPLAY_NAME in GitHub repository variables
 
       - name: Record deployment
         run: |

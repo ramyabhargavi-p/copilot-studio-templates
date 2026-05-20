@@ -13,7 +13,7 @@ An agent with authentication, personalised context, generative knowledge search,
 ```
 base/
 ├── agent.mcs.yml
-├── settings.mcs.yml                        ← authenticationMode: ManualAzureAD or IntegratedAzureAD
+├── settings.mcs.yml                        ← authenticationMode: ManualAzureAD or Integrated
 └── topics/
     ├── Greeting.topic.mcs.yml
     ├── Fallback.topic.mcs.yml
@@ -105,7 +105,7 @@ These two files define your agent's domain — write them together.
                         Redirect those to [contact]."
      Agent name:       HR Assistant
      Primary users:    Internal employees (authenticated)
-     Authentication:   ManualAzureAD or IntegratedAzureAD
+     Authentication:   ManualAzureAD or Integrated
      Tone:             Empathetic
 4. Paste Claude's output into agent.mcs.yml
 ```
@@ -283,7 +283,7 @@ After the script runs, a few values still need manual edits:
 | File | Placeholder | Example |
 |------|------------|---------|
 | `agent.mcs.yml` | System prompt | Your domain, scope, out-of-scope instructions |
-| `settings.mcs.yml` | `authenticationMode` | `ManualAzureAD` or `IntegratedAzureAD` |
+| `settings.mcs.yml` | `authenticationMode` | `ManualAzureAD` or `Integrated` |
 | `topics/OutOfScope.topic.mcs.yml` | `<DOMAIN>`, `<OUT-OF-SCOPE-TOPIC>`, `<CONTACT>` | `HR policies`, `IT support`, `it@contoso.com` |
 | `knowledge/<name>.knowledge.mcs.yml` | SharePoint URL | `https://contoso.sharepoint.com/sites/HR/...` |
 | `actions/GetLeaveBalance.mcs.yml` | `<connection-reference-logical-name>`, `<OperationId>` | `shared_sharepointonline`, `GetItem` |
@@ -309,7 +309,7 @@ grep -rn "_REPLACE" agents/hr_assistant --include="*.mcs.yml"
 - [ ] Files copied, ID script run, verify commands return zero output
 
 **Configuration:**
-- [ ] `settings.mcs.yml` — set `authenticationMode: ManualAzureAD` or `IntegratedAzureAD`
+- [ ] `settings.mcs.yml` — set `authenticationMode: ManualAzureAD` or `Integrated`
 - [ ] `agent.mcs.yml` — write `instructions` referencing `{Global.UserDisplayName}` and `{Global.UserCountry}`
 - [ ] `topics/ConversationInit.topic.mcs.yml` — remove the Glossary block if you are not using a glossary knowledge source
 

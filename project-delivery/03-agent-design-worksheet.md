@@ -12,7 +12,7 @@ Fill this in after requirements, before writing any YAML. One worksheet per agen
 | Agent name (internal) | | `agent.mcs.yml` → `componentName` |
 | Agent display name | | `agent.mcs.yml` → `displayName` |
 | Schema name (lowercase, underscores) | | `settings.mcs.yml` → `schemaName` |
-| Authentication mode | None / ManualAzureAD / IntegratedAzureAD | `settings.mcs.yml` → `authenticationMode` |
+| Authentication mode | None / ManualAzureAD / Integrated | `settings.mcs.yml` → `authenticationMode` |
 | AI model | GPT5Chat / GPT4o | `agent.mcs.yml` → `modelNameHint` |
 | Language | 1033 (English) / other | `settings.mcs.yml` → `language` |
 | Generative actions enabled | Yes / No | `settings.mcs.yml` → `GenerativeActionsEnabled` |

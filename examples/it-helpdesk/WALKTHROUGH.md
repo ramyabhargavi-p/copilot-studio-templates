@@ -355,7 +355,7 @@ description: >
 # GUARDRAIL:   confirmation-card
 # REASON:      Creates a new incident record in ServiceNow — user must confirm before submitting
 
-kind: TaskAction
+kind: TaskDialog
 schema: 2.0.0
 schemaName: it_helpdesk_submitticket
 displayName: Submit ServiceNow Ticket

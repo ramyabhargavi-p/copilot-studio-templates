@@ -1546,13 +1546,13 @@ Use this ONLY when CI/CD is not yet set up. Once CI/CD is active, never push man
 pac auth create --environment <uat-env-url>   # switch to UAT auth profile
 pac auth list                                  # verify UAT is active
 # Then in VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (targets the authenticated environment)
-pac copilot publish --name contoso_ithelpdesk  # make draft live in UAT
+pac copilot publish --bot "contoso_ithelpdesk"  # make draft live in UAT (use display name or Copilot ID)
 
 # Rollback to previous version (if UAT push introduces a regression)
 git log --oneline -10                          # find last known-good commit hash
 git checkout <good-commit-hash> -- agents/     # restore agent files to that state
 # Then in VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (push restored version)
-pac copilot publish --name contoso_ithelpdesk  # republish
+pac copilot publish --bot "contoso_ithelpdesk"  # republish
 ```
 
 ### Checking deployment status
@@ -1562,7 +1562,9 @@ pac copilot publish --name contoso_ithelpdesk  # republish
 pac copilot list --environment https://<env>.crm.dynamics.com
 
 # Compare what's deployed vs what's in git
-pac copilot diff --name contoso_ithelpdesk
+# Note: pac copilot diff does not exist. Use pac copilot list to see deployed agents,
+# then compare against git log manually.
+pac copilot list --environment https://<env>.crm.dynamics.com
 ```
 
 → Pipeline YAML reference: [`ci-cd/README.md`](ci-cd/README.md)
@@ -1640,7 +1642,8 @@ grep -h "^  id: " agents/it-helpdesk/topics/*.mcs.yml | sort | uniq -d
 # View → Problems — YAML extension highlights every indentation error
 
 # Compare local files vs what is deployed
-pac copilot diff --name contoso_ithelpdesk
+# Note: pac copilot diff does not exist. Use pac copilot list to see deployed agents.
+pac copilot list --environment https://<env>.crm.dynamics.com
 ```
 
 → Full issue catalogue: [`troubleshooting/README.md`](troubleshooting/README.md)
@@ -1863,7 +1866,7 @@ git checkout <good-commit-hash> -- agents/     # restore agent YAML files only
 pac auth create --environment <prod-url>       # switch to Prod auth profile
 pac auth list                                  # confirm Prod is active (*)
 # In VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"  (push restored version to authenticated environment)
-pac copilot publish --name <schema-name>       # make draft live
+pac copilot publish --bot "<display-name-or-copilot-id>"   # make draft live
 
 # Step 4 — Verify recovery
 # Open CPS test canvas → type a greeting → confirm agent responds within 5 seconds
@@ -1982,7 +1985,7 @@ find agents/<new-agent> -name "*.mcs.yml" \
 | Push to active environment | VS Code → `Ctrl+Shift+P` → "Copilot Studio: Apply Changes" |
 | Check which environment is active | `pac auth list` |
 | Switch environments | `pac auth create --environment <env-url>` |
-| Publish (make draft live) | `pac copilot publish --name <schema-name>` |
+| Publish (make draft live) | `pac copilot publish --bot "<display-name-or-copilot-id>"` |
 | Check deployed version | `pac copilot list --environment <env-url>` |
 | Roll back | `git checkout <commit> -- agents/` then VS Code → "Copilot Studio: Apply Changes" |
 | Trace a conversation | App Insights KQL: `customEvents \| where customDimensions.ConversationId == "<id>"` |

@@ -57,7 +57,7 @@ schemaName: hr_assistant.topic.ConversationInit
 
 ## Prerequisites checklist
 
-- [ ] `authenticationMode: IntegratedAzureAD` or `ManualAzureAD` in `settings.mcs.yml`
+- [ ] `authenticationMode: Integrated` or `ManualAzureAD` in `settings.mcs.yml`
 - [ ] Office 365 Users connector connection exists in the Power Platform environment
 - [ ] Connection has `User.Read` scope
 - [ ] If using glossary: glossary knowledge source exists in `agents/<schema>/knowledge/`

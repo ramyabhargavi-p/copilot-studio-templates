@@ -184,7 +184,7 @@ pac solution import \
   --environment <PROD_ENV_URL> \
   --force-overwrite
 pac org publish --environment <PROD_ENV_URL>
-pac copilot publish --environment <PROD_ENV_URL> --schemaName "<AGENT_SCHEMA_NAME>"
+pac copilot publish --environment <PROD_ENV_URL> --bot "<AGENT_DISPLAY_NAME_OR_COPILOT_ID>"
 ```
 
 ---

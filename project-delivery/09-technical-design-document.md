@@ -27,7 +27,7 @@ Complete this after `08-workflow-logic-design.md`. Every security control, promp
 |---------|-------|-----------|
 | `schemaName` | `[org]_[function]_[env]` | Unique per environment; follows naming standard |
 | `displayName` | `[Function] Assistant` | Clear to users |
-| `authenticationMode` | `None` / `ManualAzureAD` / `IntegratedAzureAD` | Determined by: is user identity required for any use case? |
+| `authenticationMode` | `None` / `ManualAzureAD` / `Integrated` | Determined by: is user identity required for any use case? |
 | `recognizer` | `NLU.MultiIntent` | Required for multi-topic intent matching |
 | `GenerativeActionsEnabled` | `true` / `false` | `false` if strict knowledge grounding is required; `true` if broad AI responses are acceptable |
 | Language | `en-US` / `[locale]` | Primary language of target user base |
@@ -193,7 +193,7 @@ to provide relevant information, but always note if the policy varies by region.
 
 | Component | Design decision | Rationale |
 |-----------|----------------|-----------|
-| Authentication mode | `[None / ManualAzureAD / IntegratedAzureAD]` | |
+| Authentication mode | `[None / ManualAzureAD / Integrated]` | |
 | Azure AD app registration | New app per agent / Shared app | New per agent recommended — isolated permissions |
 | Redirect URI | Copy from Copilot Studio → Settings → Authentication | Must match exactly in Azure AD |
 | Token scope | `User.Read` minimum; add only what is needed | Least privilege |

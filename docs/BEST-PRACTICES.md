@@ -199,7 +199,7 @@ modelDescription: >
 
 ### `mode` selection
 ```yaml
-mode: Invoker   # Action runs as the signed-in user — requires ManualAzureAD or IntegratedAzureAD
+mode: Invoker   # Action runs as the signed-in user — requires ManualAzureAD or Integrated
 mode: Caller    # Action runs as the agent's service principal — works with authenticationMode: None
 ```
 
@@ -240,7 +240,7 @@ If the agent should answer from multiple libraries, add a separate `.knowledge.m
 | Scenario | Auth mode |
 |----------|-----------|
 | Anonymous agent (no user identity needed) | `None` |
-| Teams/M365 deployment (SSO) | `IntegratedAzureAD` |
+| Teams/M365 deployment (SSO) | `Integrated` |
 | Web/external channel (explicit sign-in) | `ManualAzureAD` |
 
 ### Load user context once

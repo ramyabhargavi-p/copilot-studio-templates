@@ -320,7 +320,7 @@ AIProjectInstrumentor().instrument()
 # GUARDRAIL:   None
 # REASON:      Read-only knowledge retrieval from Foundry agent
 
-kind: TaskAction
+kind: TaskDialog
 schema: 2.0.0
 schemaName: <SCHEMA>_foundry_specialist
 displayName: Ask IT Specialist (Foundry)

@@ -88,7 +88,7 @@ Show confirmation card — summary of exactly what will happen
 # GUARDRAIL:   confirmation-card
 # REASON:      Creates a ServiceNow incident record — user must confirm before submitting
 
-kind: TaskAction
+kind: TaskDialog
 schema: 2.0.0
 schemaName: <SCHEMA>_submitticket
 displayName: Submit ServiceNow Ticket
@@ -413,7 +413,7 @@ If No (rejected):
 # GUARDRAIL:   approval-flow
 # REASON:      Permanently deletes an AAD user account — irreversible, requires manager approval
 
-kind: TaskAction
+kind: TaskDialog
 schema: 2.0.0
 schemaName: <SCHEMA>_deleteuseraccount
 displayName: Request Account Deletion (Approval Required)
