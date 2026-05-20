@@ -258,7 +258,7 @@ Microsoft's RAI principles. Notable requirements:
 ## Phase 5 — Deploy: Consistent promotion across environments
 
 **Templates:** `ci-cd/push-on-pr.yml`, `ci-cd/promote-dev-to-uat.yml`,
-`ci-cd/promote-uat-to-prod.yml`, `ci-cd/publish-on-release.yml`
+`ci-cd/promote-uat-to-prod.yml`, `ci-cd/solution-build-and-deploy.yml`
 
 ### What these pipelines do that manual promotion cannot
 

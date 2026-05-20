@@ -45,7 +45,7 @@ Before creating alerts, create a shared Action Group:
 |---------|-------|
 | Signal type | Custom log search |
 | Query | See [monitoring-queries.md](monitoring-queries.md) — **Alert: High fallback rate** |
-| Threshold | Greater than 0 |
+| Threshold | Greater than 0 (query only returns results when fallback rate > 40%) |
 | Aggregation granularity | 1 hour |
 | Frequency | Every 15 minutes |
 | Severity | 3 |

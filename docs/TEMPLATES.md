@@ -94,11 +94,10 @@ Complete list of every buildable template in this repository — 56 templates ac
 
 | # | File | Trigger | Purpose |
 |---|------|---------|---------|
-| 34 | `ci-cd/push-on-pr.yml` | Pull request | Push agent to Dev environment on every PR |
-| 35 | `ci-cd/promote-dev-to-uat.yml` | Manual / merge to UAT branch | Promote agent from Dev to UAT |
-| 36 | `ci-cd/promote-uat-to-prod.yml` | Manual / merge to Prod branch | Promote agent from UAT to Prod |
-| 37 | `ci-cd/publish-on-release.yml` | Release tag | Publish agent on GitHub release |
-| 38 | `ci-cd/solution-build-and-deploy.yml` | Manual | Solution-based build and deploy for managed environments |
+| 34 | `ci-cd/push-on-pr.yml` | Pull request to main | Validate YAML — blocks merge if placeholders remain |
+| 35 | `ci-cd/promote-dev-to-uat.yml` | Merge to main | Promote agent from Dev to UAT |
+| 36 | `ci-cd/promote-uat-to-prod.yml` | GitHub release tag | Promote UAT → Prod with approval gate; publish draft live |
+| 37 | `ci-cd/solution-build-and-deploy.yml` | Push to main or manual | Solution-based build and deploy for managed environments |
 
 ---
 

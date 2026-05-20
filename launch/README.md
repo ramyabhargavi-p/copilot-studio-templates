@@ -16,25 +16,11 @@ Three documents covering the final step before users see your agent.
 
 ## Sequence
 
-```
-1. Complete launch-checklist.md  → all boxes ticked, signed off
-2. Send user-communication-template.md  → users know the agent exists
-3. Begin hypercare-guide.md monitoring  → watch for issues in first 14 days
-```
+1. **`launch-checklist.md`** — Gate: every item ticked and signed off before go-live
+2. **`user-communication-template.md`** — Send to users 5–7 days before launch, then again on launch day
+3. **`hypercare-guide.md`** — Follow for the first 14 days post-launch
 
-After hypercare ends, hand off to [`../operations/`](../operations/) for steady-state monitoring.
-
----
-
-## Sequence
-
-Use these files in this order:
-
-1. **`launch-checklist.md`** — Gate: all items checked before go-live
-2. **`user-communication-template.md`** — Send to users 5–7 days before launch, then on launch day
-3. **`hypercare-guide.md`** — Follow for the first 14 days after launch
-
-> After hypercare, hand off to operations: see [`../operations/README.md`](../operations/README.md).
+> After hypercare ends, hand off to steady-state monitoring: [`../operations/README.md`](../operations/README.md).
 
 ---
 

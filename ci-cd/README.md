@@ -11,9 +11,9 @@
 > **Which workflow file to use:**
 > | Workflow | Trigger | What it does |
 > |----------|---------|-------------|
-> | `push-on-pr.yml` | PR to main | Validates YAML (no `<PLACEHOLDER>` or `_REPLACE` strings), runs dry-run |
-> | `promote-dev-to-uat.yml` | Manual dispatch | Pushes agent to UAT environment with approval gate |
-> | `promote-uat-to-prod.yml` | Manual dispatch after UAT sign-off | Promotes to Production |
+> | `push-on-pr.yml` | PR to `main` | Validates YAML (no `<PLACEHOLDER>` or `_REPLACE` strings) |
+> | `promote-dev-to-uat.yml` | Merge to `main` (agents/** changed) | Pushes agent to UAT environment |
+> | `promote-uat-to-prod.yml` | GitHub Release published | Promotes to Production with approval gate |
 
 Automated push and publish workflows for Copilot Studio agents using GitHub Actions and the Power Platform CLI (`pac`).
 
@@ -117,7 +117,7 @@ production ───────────────────────
 
 ## Protecting Production
 
-For the `publish-on-release.yml` workflow, add a GitHub **Environment** called `production` with a required reviewer:
+For the `promote-uat-to-prod.yml` workflow, add a GitHub **Environment** called `production` with a required reviewer:
 
 **Settings → Environments → New environment → `production`** → add required reviewer
 
@@ -137,11 +137,12 @@ pac auth create \
   --tenant <TENANT_ID> \
   --environment <ENV_URL>
 
-# Push
-pac copilot push --environment <ENV_URL>
+# Push YAML edits to the connected environment
+# VS Code: Ctrl+Shift+P → "Copilot Studio: Apply Changes"
+# (pac copilot push does not exist — Apply Changes is the only push mechanism)
 
-# Publish in Copilot Studio UI, or via:
-# pac copilot publish (not available in all pac CLI versions)
+# Publish the draft live
+pac copilot publish --bot "<agent display name or GUID>"
 ```
 
-See [`docs/TOOLS-AND-PLUGINS.md`](../docs/TOOLS-AND-PLUGINS.md) for `pac` installation instructions.
+See [`commands/COMMANDS.md`](../commands/COMMANDS.md) for the full pac CLI reference.

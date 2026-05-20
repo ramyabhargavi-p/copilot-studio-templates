@@ -401,11 +401,10 @@ ci-cd/                             ← GitHub Actions pipelines (5 workflows)
 
 | File | Trigger | What it does |
 |------|---------|-------------|
-| `ci-cd/push-on-pr.yml` | Pull request opened | Push agent to Dev, validate YAML |
+| `ci-cd/push-on-pr.yml` | Pull request opened | Validate YAML (no `<PLACEHOLDER>` or `_REPLACE` strings) |
 | `ci-cd/promote-dev-to-uat.yml` | Merge to main | Promote Dev → UAT, run eval gate |
-| `ci-cd/promote-uat-to-prod.yml` | Manual / merge to release | Promote UAT → Prod with approval |
-| `ci-cd/publish-on-release.yml` | GitHub release tag | Push + publish (make draft live) |
-| `ci-cd/solution-build-and-deploy.yml` | Manual | Solution-based build for managed environments |
+| `ci-cd/promote-uat-to-prod.yml` | GitHub release tag | Push + publish to Prod with approval gate (make draft live) |
+| `ci-cd/solution-build-and-deploy.yml` | Push to main or manual | Solution-based build for managed environments |
 
 ### Recipe guides
 
@@ -1458,7 +1457,7 @@ flowchart LR
     B -->|dry-run + push| C[Dev Environment]
     C -->|PR merged to main| D[promote-dev-to-uat.yml]
     D -->|push + eval gate 85pct| E[UAT Environment]
-    E -->|release tag + approval| F[publish-on-release.yml]
+    E -->|release tag + approval| F[promote-uat-to-prod.yml]
     F -->|push + publish| G[Prod Environment]
 
     style C fill:#d4edda,stroke:#28a745,color:#155724
@@ -1482,9 +1481,9 @@ promote-dev-to-uat.yml
     ├─ run eval suite               → routing accuracy gate (≥ 85%)
     └─ FAILS if accuracy < 85%     → PR cannot be merged until evals pass
     │
-    ▼  (GitHub release tag created OR manual trigger)
-publish-on-release.yml
-    ├─ VS Code: Apply Changes       → pushes to Prod environment
+    ▼  (GitHub release tag created)
+promote-uat-to-prod.yml
+    ├─ Pre-flight validation        → checks for unreplaced placeholders
     ├─ pac copilot publish          → makes draft live (users can see it)
     └─ Requires: manual approval gate in GitHub
 ```
@@ -1518,9 +1517,9 @@ Secrets to add:
 **Step 2 — Copy pipeline files:**
 ```bash
 mkdir -p .github/workflows
-cp ci-cd/push-on-pr.yml            .github/workflows/
-cp ci-cd/promote-dev-to-uat.yml    .github/workflows/
-cp ci-cd/publish-on-release.yml    .github/workflows/
+cp ci-cd/push-on-pr.yml              .github/workflows/
+cp ci-cd/promote-dev-to-uat.yml      .github/workflows/
+cp ci-cd/promote-uat-to-prod.yml     .github/workflows/
 ```
 
 **Step 3 — Set eval threshold:**
