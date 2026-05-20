@@ -287,7 +287,7 @@ grep -rn "_REPLACE" agents/hr_assistant --include="*.mcs.yml"
 Copy components from `components/` into your agent folder and fill in their placeholders.
 
 → **Full per-component guide** (what to copy, exact placeholders, examples):
-[`components/README.md`](../components/README.md#component-quick-reference)
+[`components/README.md`](../components/README.md)
 
 Quick reference — what each component folder provides:
 
