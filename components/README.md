@@ -15,7 +15,7 @@ flowchart TD
         AC[actions x2]
         K[knowledge x3]
         CA[adaptive-cards x6]
-        V[variables x5]
+        V[variables x8]
         CH[agents x1]
     end
 
@@ -40,7 +40,7 @@ Start with `base/` (6 files). Add components from `components/` as your agent ne
 | [`knowledge/`](knowledge/) | 3 | Knowledge source types (SharePoint, web, glossary) | Answering questions from documents |
 | [`adaptive-cards/`](adaptive-cards/) | 6 | Card templates (confirmation, form, feedback) | Collecting input or showing results |
 | [`agents/`](agents/) | 1 | Child agent template | Orchestrator pattern with specialist sub-agents |
-| [`variables/`](variables/) | 5 | Global variable templates | Sharing state across topics in a conversation |
+| [`variables/`](variables/) | 8 | Global variable templates | Sharing state across topics in a conversation |
 
 ---
 
@@ -71,18 +71,7 @@ grep -n "<" agents/<your-agent>/topics/Escalation.topic.mcs.yml
 | `_REPLACE` | `sendActivity_REPLACE` | Replace by running the ID script (see QUICKSTART.md) |
 | `schemaName` prefix | `contoso_agent.topic.Escalate` | Follows from your `schemaName` in `agent.mcs.yml` |
 
-### Verify nothing was missed before pushing
-
-```powershell
-# Windows PowerShell — both must return zero output before Apply Changes
-Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\<your-agent>" | Select-String "<[A-Za-z]" | Select-Object Filename, LineNumber, Line
-Get-ChildItem -Recurse -Filter "*.mcs.yml" -Path "agents\<your-agent>" | Select-String "_REPLACE" | Select-Object Filename, LineNumber, Line
-```
-```bash
-# Mac / Linux
-grep -rn "<[A-Za-z]" agents/<your-agent> --include="*.mcs.yml"
-grep -rn "_REPLACE" agents/<your-agent> --include="*.mcs.yml"
-```
+→ **Verify before pushing:** see [docs/QUICKSTART.md → Verify](../docs/QUICKSTART.md) — both commands must return zero output.
 
 ---
 
