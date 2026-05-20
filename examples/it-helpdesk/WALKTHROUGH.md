@@ -996,4 +996,4 @@ agents/it-helpdesk/
 
 → All 49 templates: [`../../docs/TEMPLATES.md`](../../docs/TEMPLATES.md)
 → Component call signatures: [`../../docs/COMPONENT-REGISTRY.md`](../../docs/COMPONENT-REGISTRY.md)
-→ Full command reference: [`../../commands/pac-commands.md`](../../commands/pac-commands.md)
+→ Full command reference: [`../../commands/COMMANDS.md`](../../commands/COMMANDS.md)

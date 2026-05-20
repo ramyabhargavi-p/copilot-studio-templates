@@ -91,4 +91,4 @@
 | 12 | `12-build-specification.md` | 4 — Build | Yes |
 | 13 | `13-ai-engineer-realtime-guide.md` | All | AI engineer reference |
 
-→ Full delivery sequence with roles and skills: [`../START-HERE.md`](../START-HERE.md)
+→ Full delivery sequence with roles and skills: [`../ENGINEERING-PLAYBOOK.md`](../ENGINEERING-PLAYBOOK.md)
