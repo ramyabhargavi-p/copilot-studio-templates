@@ -84,7 +84,7 @@ If anything doesn't work as expected, let me know at [contact].
 |-------------|------------------------|
 | `[Agent Name]` | `agent.mcs.yml` → `displayName` |
 | `[topic]` | Your project requirements questionnaire |
-| `[Capability 1–3]` | Your `03-agent-design-worksheet.md` topic list |
+| `[Capability 1–3]` | Your `05-agent-design-worksheet.md` topic list |
 | `[Out-of-scope topics]` | Your requirements questionnaire Q5 |
 | `[Teams deep link]` | Teams admin center → the agent's app → copy link |
 | `[Conversation starter examples]` | `agent.mcs.yml` → `conversationStarters` |

@@ -42,6 +42,6 @@ Use these files in this order:
 
 - [ ] `launch-checklist.md` — all items checked, business owner signed
 - [ ] Governance docs complete — `../governance/ai-ethics-checklist.md` + `security-review.md`
-- [ ] At least one UAT sign-off round complete — `../project-delivery/04-uat-test-plan.md`
+- [ ] At least one UAT sign-off round complete — `../project-delivery/13-uat-test-plan.md`
 
 → Post-launch operations: [`../operations/README.md`](../operations/README.md)

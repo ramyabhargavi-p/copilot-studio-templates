@@ -36,8 +36,8 @@ measured in weeks.
 
 ## Phase 1 — Discovery: What exactly are we building?
 
-**Templates:** `project-delivery/01-requirements-questionnaire.md`,
-`project-delivery/02-technical-discovery.md`, `project-delivery/11-user-workflow-analysis.md`
+**Templates:** `project-delivery/02-requirements-questionnaire.md`,
+`project-delivery/03-technical-discovery.md`, `project-delivery/04-user-workflow-analysis.md`
 
 These are not paperwork. They surface the blockers early:
 
@@ -54,17 +54,17 @@ the SharePoint library is not indexed, or the user workflow has a branch nobody 
 
 ## Phase 2 — Design: What will it do and how?
 
-**Templates:** `project-delivery/03-agent-design-worksheet.md`,
+**Templates:** `project-delivery/05-agent-design-worksheet.md`,
 `project-delivery/07-functional-design-document.md`,
 `project-delivery/08-workflow-logic-design.md`,
 `project-delivery/09-technical-design-document.md`,
-`project-delivery/12-build-specification.md`,
-`project-delivery/10-enterprise-readiness-assessment.md`,
+`project-delivery/10-build-specification.md`,
+`project-delivery/01-enterprise-readiness-assessment.md`,
 `governance/enterprise-ai-governance-framework.md`
 
 ### Enterprise readiness assessment — the most underused template in the repo
 
-`10-enterprise-readiness-assessment.md` is a 36-item scoring checklist across five
+`01-enterprise-readiness-assessment.md` is a 36-item scoring checklist across five
 dimensions: strategic alignment, technical infrastructure, operational readiness, governance,
 and risk. Scores below 28/40 are a formal no-go.
 
@@ -219,13 +219,13 @@ instantly with no approval (irreversible damage in production).
 
 ## Phase 4 — Test: Structured verification before release
 
-**Templates:** `project-delivery/04-uat-test-plan.md`,
-`project-delivery/05-eval-scenarios.md`,
+**Templates:** `project-delivery/13-uat-test-plan.md`,
+`project-delivery/12-eval-scenarios.md`,
 `governance/ai-ethics-checklist.md`
 
 ### UAT test plan — not a spot-check
 
-`04-uat-test-plan.md` defines eight test categories that must all pass before release:
+`13-uat-test-plan.md` defines eight test categories that must all pass before release:
 
 - **S1–S7:** System tests — fallback retries exactly 3×, escalation triggers, OnError fires
   in test mode correctly, safe message in production mode

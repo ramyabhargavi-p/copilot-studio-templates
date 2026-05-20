@@ -59,7 +59,7 @@ PROPOSAL ──→ ASSESSMENT ──→ DESIGN ──→ BUILD ──→ REVIEW 
 | Gate | Documents required | Approvers |
 |------|--------------------|-----------|
 | Proposal → Assessment | Agent proposal (use case, persona, scope, data) | CoE Lead |
-| Assessment → Design | `10-enterprise-readiness-assessment.md` passed | Tech Lead + CoE Lead |
+| Assessment → Design | `01-enterprise-readiness-assessment.md` passed | Tech Lead + CoE Lead |
 | Design → Build | `07-functional-design-document.md` + `08-workflow-logic-design.md` approved | Developer + Project Owner |
 | Build → Review | All YAML committed; eval ≥ 85% routing accuracy | Developer |
 | Review → Deploy | `governance/ai-ethics-checklist.md` + `governance/security-review.md` passed; UAT signed off | Agent Owner + Security |

@@ -175,7 +175,7 @@ pac solution import \
   --force-overwrite
 pac org publish --environment <UAT_ENV_URL>
 
-# Run UAT testing (project-delivery/04-uat-test-plan.md)
+# Run UAT testing (project-delivery/13-uat-test-plan.md)
 
 # ─── PROD: Import, publish, and go live ───────────────────────────
 pac auth create --environment <PROD_ENV_URL> ...

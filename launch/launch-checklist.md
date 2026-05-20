@@ -33,7 +33,7 @@ Work through each section in order. Check off each item. If any item fails, fix 
 
 | # | Item | Status |
 |---|------|--------|
-| E1 | Full eval CSV created with minimum row count (see `project-delivery/05-eval-scenarios.md`) | ☐ |
+| E1 | Full eval CSV created with minimum row count (see `project-delivery/12-eval-scenarios.md`) | ☐ |
 | E2 | Topic routing accuracy ≥ 85% | Score: ____% ☐ |
 | E3 | Out-of-scope routing accuracy = 100% | ☐ |
 | E4 | Response groundedness ≥ 80% (if knowledge sources present) | Score: ____% ☐ |

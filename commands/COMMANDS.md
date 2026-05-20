@@ -286,7 +286,7 @@ npm --version     # 10.X.X
 npm install
 npm run build
 npm run eval -- --agent-name "HR Assistant" --environment <ENV_URL>
-npm run eval -- --scenarios ./project-delivery/05-eval-scenarios.yml
+npm run eval -- --scenarios ./project-delivery/12-eval-scenarios.yml
 ```
 
 ### pac CLI via npm (if winget unavailable)

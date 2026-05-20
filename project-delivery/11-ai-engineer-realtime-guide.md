@@ -132,14 +132,14 @@ Peak concurrent users × average messages per minute = peak RPM
 If peak RPM > 6,000 (leaving 25% headroom before the 8,000 limit):
 - Flag to the project sponsor now
 - Consider batching, caching, or planning a Foundry migration path
-- Document in `02-technical-discovery.md` under "Scale planning"
+- Document in `03-technical-discovery.md` under "Scale planning"
 
 **Week 1–2 exit criteria:**
 - [ ] All topics created from `_scaffold` (not blank YAML)
 - [ ] Every connector action has a Safety Tier comment
 - [ ] Confirmation card wired for all Medium tier actions
 - [ ] Approval flow stub created for all High tier actions
-- [ ] RPM estimate in `02-technical-discovery.md`
+- [ ] RPM estimate in `03-technical-discovery.md`
 - [ ] VS Code "Copilot Studio: Apply Changes" succeeds with no errors
 
 ---
@@ -150,7 +150,7 @@ If peak RPM > 6,000 (leaving 25% headroom before the 8,000 limit):
 
 ### What to do
 
-**1. Run eval scenarios (`05-eval-scenarios.md`)**
+**1. Run eval scenarios (`12-eval-scenarios.md`)**
 
 Target: ≥ 85% correct topic routing. Use `/copilot-studio:run-eval` or the Kit.
 

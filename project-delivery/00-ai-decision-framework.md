@@ -73,7 +73,7 @@ Validate all three dimensions before selecting any technology. Low scores in any
 | Question | Answer | Notes |
 |----------|--------|-------|
 | Do we have Copilot Studio licensing? | | M365 licence or Copilot Studio capacity pack |
-| Do we have Dev, UAT, Prod environments? | | See `10-enterprise-readiness-assessment.md` |
+| Do we have Dev, UAT, Prod environments? | | See `01-enterprise-readiness-assessment.md` |
 | Is the knowledge content in SharePoint or accessible via URL? | | Knowledge source readiness |
 | Do we need backend system connections? | | Connector availability, API access, auth model |
 | Do we have a developer AND a named agent owner? | | Both required — build and operate |
@@ -428,7 +428,7 @@ See `governance/enterprise-ai-governance-framework.md` for the full model.
 | Recommended tool | |
 | **Decision** | **Proceed / Proceed with conditions / Do not proceed** |
 | Conditions (if applicable) | |
-| Next step | `project-delivery/01-requirements-questionnaire.md` |
+| Next step | `project-delivery/02-requirements-questionnaire.md` |
 
 ### Decision justification
 
@@ -439,13 +439,13 @@ See `governance/enterprise-ai-governance-framework.md` for the full model.
 ## What Happens Next
 
 **Proceed:**
-1. Complete `01-requirements-questionnaire.md` with the stakeholder
-2. Complete `10-enterprise-readiness-assessment.md` (tech lead + security)
-3. Begin `02-technical-discovery.md` (developer + environment admin)
+1. Complete `02-requirements-questionnaire.md` with the stakeholder
+2. Complete `01-enterprise-readiness-assessment.md` (tech lead + security)
+3. Begin `03-technical-discovery.md` (developer + environment admin)
 
 **Proceed with conditions:**
 - Document the conditions in the Decision Record above
-- Resolve all conditions before starting design (`03-agent-design-worksheet.md`)
+- Resolve all conditions before starting design (`05-agent-design-worksheet.md`)
 
 **Do not proceed:**
 - Document the alternative (e.g. "use M365 Copilot Graph Connector instead")

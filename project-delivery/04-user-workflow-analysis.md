@@ -144,7 +144,7 @@ Complete one block per workflow from the inventory. These map directly to use ca
 
 #### User Acceptance Criteria
 
-These map directly to UAT test cases in `04-uat-test-plan.md`.
+These map directly to UAT test cases in `13-uat-test-plan.md`.
 
 | # | Scenario | Expected agent behaviour | Pass criteria |
 |---|---------|------------------------|--------------|

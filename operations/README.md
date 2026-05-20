@@ -53,5 +53,5 @@ Watch for these signals from `monitoring-queries.md`:
 | CSAT drop > 0.5 stars week-over-week | Review recent topic changes |
 | `Topic.ErrorOccurred` spike | Check `runbook.md` → connector or action issue |
 
-→ Progressive enhancement decision: [`../project-delivery/13-ai-engineer-realtime-guide.md`](../project-delivery/13-ai-engineer-realtime-guide.md) Post-launch section
+→ Progressive enhancement decision: [`../project-delivery/11-ai-engineer-realtime-guide.md`](../project-delivery/11-ai-engineer-realtime-guide.md) Post-launch section
 → Incident response: [`runbook.md`](runbook.md)

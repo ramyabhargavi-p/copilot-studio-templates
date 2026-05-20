@@ -110,7 +110,7 @@ From `project-delivery/00-ai-decision-framework.md`:
 
 ## 1.2 — Requirements (key answers)
 
-From `project-delivery/01-requirements-questionnaire.md`:
+From `project-delivery/02-requirements-questionnaire.md`:
 
 ```
 Top 5 things users will ask:
@@ -134,7 +134,7 @@ Feedback: Thumbs + star rating + free text
 
 ## 1.3 — Technical Discovery
 
-From `project-delivery/02-technical-discovery.md`:
+From `project-delivery/03-technical-discovery.md`:
 
 ```
 Dev environment URL:   https://contosoit-dev.crm.dynamics.com
@@ -736,7 +736,7 @@ Feedback.Thumbs
 
 ## 4.2 — Run automated routing eval
 
-Prepare `project-delivery/05-eval-scenarios.md` with these test cases:
+Prepare `project-delivery/12-eval-scenarios.md` with these test cases:
 
 ```yaml
 scenarios:
@@ -766,7 +766,7 @@ scenarios:
 # Run eval (requires Kit)
 npm run eval -- --agent-name "IT Helpdesk Assistant" \
                 --environment https://contosoit-dev.crm.dynamics.com \
-                --scenarios ./project-delivery/05-eval-scenarios.yml
+                --scenarios ./project-delivery/12-eval-scenarios.yml
 
 # Target: ≥ 85% routing accuracy
 # If below 85%: add more trigger phrases to failing topics → push → re-eval
@@ -825,7 +825,7 @@ pac env who
 pac copilot publish --bot "IT Helpdesk Assistant"
 
 # Run UAT test plan with 5 real employees from different departments
-# Get sign-off from IT Manager (Priya) on project-delivery/04-uat-test-plan.md
+# Get sign-off from IT Manager (Priya) on project-delivery/13-uat-test-plan.md
 ```
 
 ## 5.3 — Go-live to Prod

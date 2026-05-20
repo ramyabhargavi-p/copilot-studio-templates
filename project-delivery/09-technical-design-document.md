@@ -336,7 +336,7 @@ AI agents are probabilistic — they will not always give the identical response
 | Error handling | Manual test — trigger each error path in test canvas | Safe message shown; telemetry logged | Developer |
 | Authentication flow | Manual test in target channel (Teams) | Sign-in completes; user name populated | Developer |
 | Action success and failure | Manual test — success case and failure case per action | Both paths produce correct response | Developer |
-| UAT sign-off | `project-delivery/04-uat-test-plan.md` | All sections pass | Developer + PO |
+| UAT sign-off | `project-delivery/13-uat-test-plan.md` | All sections pass | Developer + PO |
 | Performance | Manual observation — response times in production simulation | Knowledge: <5s, Actions: <8s | Developer |
 
 ---
